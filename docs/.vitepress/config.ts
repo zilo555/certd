@@ -78,15 +78,16 @@ export default defineConfig({
               ]
             },
             { text: "演示教程", link: "/guide/tutorial.md" },
-            { text: "版本升级", link: "/guide/install/upgrade.md" },
-            { text: "切换数据库", link: "/guide/install/database.md" }
+            { text: "版本升级", link: "/guide/install/upgrade.md" }
           ]
         },
         {
           text: "特性",
           items: [
             { text: "CNAME代理校验", link: "/guide/feature/cname/index.md" },
-            { text: "插件列表", link: "/guide/plugins.md" }
+            { text: "插件列表", link: "/guide/plugins.md" },
+            { text: "多数据库支持", link: "/guide/install/database.md" },
+            { text: "开放接口", link: "/guide/open/index.md" }
           ]
         },
         {
