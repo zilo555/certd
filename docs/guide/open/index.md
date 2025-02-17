@@ -17,3 +17,5 @@ header中传入x-certd-token即可调用开放接口
 3、将content加上keySecret进行签名： sign = md5(content + keySecret)   
 4、然后将content和sign分别base64后用.号连接： x-certd-token = base64(content) +"."+base64(sign)   
 
+## SDK
+待开发
