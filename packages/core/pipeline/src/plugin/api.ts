@@ -193,7 +193,7 @@ export abstract class AbstractTaskPlugin implements ITaskPlugin {
     if (name == null) {
       name = "certd";
     }
-    return name + "_" + dayjs().format("YYYYMMDDHHmmss");
+    return name + "_" + dayjs().format("YYYYMMDDHHmmssSSS");
   }
 
   async onRequest(req: PluginRequestHandleReq<any>) {
