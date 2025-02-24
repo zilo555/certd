@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.30.6](https://github.com/certd/certd/compare/v1.30.5...v1.30.6) (2025-02-24)
+
+### Performance Improvements
+
+* 上传到阿里云证书名称后缀增加毫秒时间戳 ([9f0ee21](https://github.com/certd/certd/commit/9f0ee219d02907ffe128a5cf10173397d934ccd7))
+
 ## [1.30.5](https://github.com/certd/certd/compare/v1.30.4...v1.30.5) (2025-02-14)
 
 **Note:** Version bump only for package @certd/pipeline

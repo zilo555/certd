@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.30.6](https://github.com/certd/certd/compare/v1.30.5...v1.30.6) (2025-02-24)
+
+### Performance Improvements
+
+* 禁止爬虫爬取本网站 ([5164116](https://github.com/certd/certd/commit/5164116bde60dabac774cdf94f5317ff386e95ca))
+* 上传到阿里云证书名称后缀增加毫秒时间戳 ([9f0ee21](https://github.com/certd/certd/commit/9f0ee219d02907ffe128a5cf10173397d934ccd7))
+* 支持部署到阿里云FC3.0 ([bcaf54d](https://github.com/certd/certd/commit/bcaf54d4cb7bc469486aae6cdb127ae017eb3abb))
+* 支持新版本LeCDN ([44d43f4](https://github.com/certd/certd/commit/44d43f45cb9094619df7494c2a64a51ba77ad116))
+
 ## [1.30.5](https://github.com/certd/certd/compare/v1.30.4...v1.30.5) (2025-02-14)
 
 **Note:** Version bump only for package root

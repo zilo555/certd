@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.30.6](https://github.com/certd/certd/compare/v1.30.5...v1.30.6) (2025-02-24)
+
+### Performance Improvements
+
+* 支持新版本LeCDN ([44d43f4](https://github.com/certd/certd/commit/44d43f45cb9094619df7494c2a64a51ba77ad116))
+
 ## [1.30.5](https://github.com/certd/certd/compare/v1.30.4...v1.30.5) (2025-02-14)
 
 **Note:** Version bump only for package @certd/basic
