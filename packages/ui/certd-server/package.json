@@ -30,7 +30,11 @@
     "slimming": "node ./slimming.js"
   },
   "dependencies": {
+    "@alicloud/fc20230330": "^4.1.7",
+    "@alicloud/openapi-client": "^0.4.12",
     "@alicloud/pop-core": "^1.7.10",
+    "@alicloud/tea-typescript": "^1.8.0",
+    "@alicloud/tea-util": "^1.4.10",
     "@aws-sdk/client-acm": "^3.699.0",
     "@aws-sdk/client-cloudfront": "^3.699.0",
     "@aws-sdk/client-s3": "^3.705.0",
