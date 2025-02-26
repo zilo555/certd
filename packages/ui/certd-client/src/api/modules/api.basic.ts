@@ -34,6 +34,7 @@ export type SysPublicSetting = {
   limitUserPipelineCount?: number;
   managerOtherUserPipeline?: boolean;
   icpNo?: string;
+  robots?: boolean;
 };
 export type SuiteSetting = {
   enabled?: boolean;

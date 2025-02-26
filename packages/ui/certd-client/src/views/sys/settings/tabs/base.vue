@@ -13,6 +13,10 @@
         <a-input v-model:value="formState.public.icpNo" placeholder="粤ICP备xxxxxxx号" />
       </a-form-item>
 
+      <a-form-item label="允许爬虫" :name="['public', 'robots']">
+        <a-switch v-model:checked="formState.public.robots" />
+      </a-form-item>
+
       <a-form-item label="HTTP代理" :name="['private', 'httpProxy']" :rules="urlRules">
         <a-input v-model:value="formState.private.httpProxy" placeholder="http://192.168.1.2:18010/" />
         <div class="helper">当某些网站被墙时可以配置</div>

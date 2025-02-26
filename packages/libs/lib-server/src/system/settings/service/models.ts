@@ -25,6 +25,7 @@ export class SysPublicSettings extends BaseSettings {
   limitUserPipelineCount = 0;
   managerOtherUserPipeline = false;
   icpNo?: string;
+  robots?: boolean = true;
 }
 
 export class SysPrivateSettings extends BaseSettings {
