@@ -36,19 +36,19 @@ pnpm config set registry https://registry.npmmirror.com
 pnpm install
 
 # 初始化构建
-npm run init
+pnpm init
 ```
 
 ### 启动 server:
 ```shell
 cd packages/ui/certd-server
-npm run dev
+pnpm dev
 ```
 
 ### 启动 client:
 ```shell
 cd packages/ui/certd-client
-npm run dev
+pnpm dev
 
 # 会自动打开浏览器，确认正常运行
 
