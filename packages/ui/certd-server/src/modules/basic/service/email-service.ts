@@ -6,7 +6,7 @@ import { logger } from '@certd/basic';
 import { isComm, isPlus } from '@certd/plus-core';
 
 import nodemailer from 'nodemailer';
-import type SMTPConnection from 'nodemailer/lib/smtp-connection';
+import { SendMailOptions } from 'nodemailer';
 import { UserSettingsService } from '../../mine/service/user-settings-service.js';
 import { PlusService, SysSettingsService, SysSiteInfo } from '@certd/lib-server';
 import { getEmailSettings } from '../../sys/settings/fix.js';
@@ -25,7 +25,7 @@ export type EmailConfig = {
   };
   sender: string;
   usePlus?: boolean;
-} & SMTPConnection.Options;
+} & SendMailOptions;
 @Provide()
 @Scope(ScopeEnum.Request, { allowDowngrade: true })
 export class EmailService implements IEmailService {
