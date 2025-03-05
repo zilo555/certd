@@ -16,8 +16,15 @@ import { WoaiAccess } from '../access.js';
 })
 export class WoaiCdnPlugin extends AbstractTaskPlugin {
   @TaskInput({
+    title: '接口地址(可留空)',
+    helper: '请填写我爱云的地址, 默认为 [API](https://console.edeg.sxhjgy.cn) 末尾请不要携带`/`',
+    component: { name: 'a-input' },
+    required: false,
+  })
+  baseApi?: string;
+  @TaskInput({
     title: '证书ID',
-    helper: '请填写 [证书列表](https://console.edge.51vs.club/site/certificate) 中的证书的ID',
+    helper: '请填写 [证书列表](https://console.edge.sxhjgy.cn/site/certificate) 中的证书的ID',
     component: { name: 'a-input' },
     required: true,
   })
@@ -42,7 +49,6 @@ export class WoaiCdnPlugin extends AbstractTaskPlugin {
     required: true,
   })
   accessId!: string;
-  private readonly baseApi = 'https://console.edeg.51vs.club';
 
   async onInstance() {}
 
@@ -66,8 +72,10 @@ export class WoaiCdnPlugin extends AbstractTaskPlugin {
   async execute(): Promise<void> {
     const { certId, cert, accessId } = this;
     const access = (await this.accessService.getById(accessId)) as WoaiAccess;
+    // 使用默认值或用户输入的值
+    const apiBase = this.baseApi || 'https://console.edeg.sxhjgy.cn';
     // 登录获取token
-    const loginResponse = await this.doRequestApi(`${this.baseApi}/account/login`, {
+    const loginResponse = await this.doRequestApi(`${apiBase}/account/login`, {
       username: access.username,
       password: access.password,
     });
@@ -75,7 +83,7 @@ export class WoaiCdnPlugin extends AbstractTaskPlugin {
     this.logger.info('登录成功,获取到Token:', token);
     // 更新证书
     const editCertResponse = await this.doRequestApi(
-      `${this.baseApi}/certificate/edit`,
+      `${apiBase}/certificate/edit`,
       {
         id: certId,
         cert: cert.crt,
