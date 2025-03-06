@@ -1,4 +1,5 @@
 import { useSettingStore } from "/@/store/modules/settings";
+import aboutResource from "/@/router/source/modules/about";
 
 export const certdResources = [
   {
@@ -8,7 +9,8 @@ export const certdResources = [
     redirect: "/certd/pipeline",
     meta: {
       icon: "ion:key-outline",
-      auth: true
+      auth: true,
+      order: 0
     },
     children: [
       {
@@ -220,3 +222,5 @@ export const certdResources = [
     ]
   }
 ];
+
+export default certdResources;

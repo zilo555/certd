@@ -1,5 +1,5 @@
 import LayoutPass from "/src/layout/layout-pass.vue";
-import * as _ from "lodash-es";
+import { cloneDeep } from "lodash-es";
 import { outsideResource } from "./source/outside";
 import { headerResource } from "./source/header";
 import { frameworkResource } from "./source/framework";
@@ -19,7 +19,7 @@ function transformOneResource(resource: any, parent: any) {
   if (meta.isMenu === false) {
     menu = null;
   } else {
-    menu = _.cloneDeep(resource);
+    menu = cloneDeep(resource);
     delete menu.component;
     if (menu.path?.startsWith("/")) {
       menu.fullPath = menu.path;
@@ -28,11 +28,11 @@ function transformOneResource(resource: any, parent: any) {
     }
   }
   let route;
-  if (meta.isRoute === false || resource.path == null || resource.path.startsWith("https://") || resource.path.startsWith("http://")) {
+  if (meta.isRoute === false || resource.path == null) {
     //没有route
     route = null;
   } else {
-    route = _.cloneDeep(resource);
+    route = cloneDeep(resource);
     if (route.component && typeof route.component === "string") {
       const path = "/src/views" + route.component;
       route.component = modules[path];

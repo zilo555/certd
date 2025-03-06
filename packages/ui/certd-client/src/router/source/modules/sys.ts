@@ -1,5 +1,6 @@
 import LayoutPass from "/@/layout/layout-pass.vue";
 import { useSettingStore } from "/@/store/modules/settings";
+import aboutResource from "/@/router/source/modules/about";
 
 export const sysResources = [
   {
@@ -7,10 +8,10 @@ export const sysResources = [
     name: "SysRoot",
     path: "/sys",
     redirect: "/sys/settings",
-    component: LayoutPass,
     meta: {
       icon: "ion:settings-outline",
-      permission: "sys:settings:view"
+      permission: "sys:settings:view",
+      order: 10
     },
     children: [
       {
@@ -231,3 +232,5 @@ export const sysResources = [
     ]
   }
 ];
+
+export default sysResources;

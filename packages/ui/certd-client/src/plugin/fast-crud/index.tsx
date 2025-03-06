@@ -29,10 +29,11 @@ import {
 import "@fast-crud/fast-extends/dist/style.css";
 import UiAntdv from "@fast-crud/ui-antdv4";
 import "@fast-crud/ui-antdv4/dist/style.css";
-import * as _ from "lodash-es";
+import { merge } from "lodash-es";
 import { useCrudPermission } from "../permission";
 import { App } from "vue";
 import { notification } from "ant-design-vue";
+import { usePreferences } from "/@/vben/preferences";
 
 function install(app: App, options: any = {}) {
   app.use(UiAntdv);
@@ -54,7 +55,18 @@ function install(app: App, options: any = {}) {
     commonOptions(props: UseCrudProps): CrudOptions {
       utils.logger.debug("commonOptions:", props);
       const crudBinding = props.crudExpose?.crudBinding;
+      const { isMobile } = usePreferences();
       const opts: CrudOptions = {
+        settings: {
+          plugins: {
+            mobile: {
+              enabled: true,
+              props: {
+                isMobile: isMobile
+              }
+            }
+          }
+        },
         table: {
           scroll: {
             x: 960
@@ -90,6 +102,7 @@ function install(app: App, options: any = {}) {
           }
         },
         rowHandle: {
+          fixed: "right",
           buttons: {
             view: { type: "link", text: null, icon: "ion:eye-outline" },
             copy: { show: true, type: "link", text: null, icon: "ion:copy-outline" },
@@ -174,6 +187,20 @@ function install(app: App, options: any = {}) {
               order: 999999,
               width: -1
             }
+          },
+          //最后一列空白，用于自动伸缩列宽
+          __blank__: {
+            title: "",
+            type: "text",
+            form: {
+              show: false
+            },
+            column: {
+              order: 99999,
+              width: -1,
+              columnSetShow: false,
+              resizable: false
+            }
           }
         }
       };
@@ -198,7 +225,11 @@ function install(app: App, options: any = {}) {
       action: "/basic/file/upload",
       name: "file",
       withCredentials: false,
-      uploadRequest: async ({ action, file, onProgress }: any) => {
+      test: 22,
+      custom: { aaa: 22 },
+      uploadRequest: async (opts: any) => {
+        console.log("uploadRequest:", opts);
+        const { action, file, onProgress } = opts;
         // @ts-ignore
         const data = new FormData();
         data.append("file", file);
@@ -268,11 +299,30 @@ function install(app: App, options: any = {}) {
       // 比如你可以定义一个readonly的公共属性，处理该字段只读，不能编辑
       if (columnProps.readonly) {
         // 合并column配置
-        _.merge(columnProps, {
+        merge(columnProps, {
           form: { show: false },
           viewForm: { show: true }
         });
       }
+      return columnProps;
+    }
+  });
+
+  //默认宽度，支持自动拖动调整列宽
+  registerMergeColumnPlugin({
+    name: "resize-column-plugin",
+    order: 2,
+    handle: (columnProps: ColumnCompositionProps) => {
+      if (!columnProps.column) {
+        columnProps.column = {};
+      }
+      if (columnProps.column.resizable == null) {
+        columnProps.column.resizable = true;
+        if (!columnProps.column.width) {
+          columnProps.column.width = 200;
+        }
+      }
+
       return columnProps;
     }
   });

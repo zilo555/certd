@@ -1,5 +1,8 @@
-// @ts-ignore
-import * as _ from "lodash-es";
+import {forEach} from "lodash-es";
+export function getEnvValue(key: string) {
+  // @ts-ignore
+  return import.meta.env["VITE_APP_" + key];
+}
 
 export class EnvConfig {
   MODE: string = import.meta.env.MODE;

@@ -31,7 +31,7 @@
         </div>
       </div>
       <div class="suggest">
-        <tutorial-button class="flex-center mt-10">
+        <tutorial-button class="flex-center mt-2">
           <a-tooltip title="点击查看详细教程">
             <a-tag color="blue" class="flex-center">
               仅需3步，全自动申请部署证书
@@ -46,8 +46,7 @@
       <a-alert type="warning" show-icon>
         <template #message>
           证书和授权为敏感信息，不要使用来历不明的在线Certd服务和镜像，以免泄露；请务必私有化部署使用，认准官方版本发布渠道：
-          <a class="ml-5 flex-inline" href="https://gitee.com/certd/certd" target="_blank">gitee</a>、
-          <a class="ml-5 flex-inline" href="https://github.com/certd/certd" target="_blank">github</a>、
+          <a class="ml-5 flex-inline" href="https://gitee.com/certd/certd" target="_blank">gitee</a>、 <a class="ml-5 flex-inline" href="https://github.com/certd/certd" target="_blank">github</a>、
           <a class="ml-5 flex-inline" href="https://certd.docmirror.cn" target="_blank">帮助文档</a>
         </template>
       </a-alert>
