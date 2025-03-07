@@ -73,7 +73,7 @@ function useMixedMenu() {
     if (!needSplit.value) {
       return menus.value;
     }
-    return menus.value.map((item) => {
+    return menus.value.map((item: any) => {
       return {
         ...item,
         children: []
@@ -85,6 +85,10 @@ function useMixedMenu() {
    * 侧边菜单
    */
   const sidebarMenus = computed(() => {
+    if (preferences.app.isMobile) {
+      return [...holdMenus.value, ...menus.value];
+    }
+
     const sideMenus = needSplit.value ? splitSideMenus.value : menus.value;
     return [...holdMenus.value, ...sideMenus];
   });
@@ -116,7 +120,7 @@ function useMixedMenu() {
     }
     if (!splitSideMenus.value || splitSideMenus.value.length === 0) {
       //仍然为空，从所有菜单中查找
-      const hasChildren = allMenus.value.find((item) => {
+      const hasChildren = allMenus.value.find((item: any) => {
         return item.children && item.children.length > 0;
       });
       if (hasChildren) {
@@ -136,7 +140,7 @@ function useMixedMenu() {
       return;
     }
 
-    const rootMenu = menus.value.find((item) => item.path === key);
+    const rootMenu = menus.value.find((item: any) => item.path === key);
     rootMenuPath.value = rootMenu?.path ?? "";
     splitSideMenus.value = rootMenu?.children ?? [];
     saveLastSplitSideMenus();
@@ -165,7 +169,7 @@ function useMixedMenu() {
   function calcSideMenus(path: string = route.path) {
     let { rootMenu } = findRootMenuByPath(menus.value, path);
     if (!rootMenu) {
-      rootMenu = menus.value.find((item) => item.path === path);
+      rootMenu = menus.value.find((item: any) => item.path === path);
     }
     const result = findRootMenuByPath(rootMenu?.children || [], path, 1);
     mixedRootMenuPath.value = result.rootMenuPath ?? "";

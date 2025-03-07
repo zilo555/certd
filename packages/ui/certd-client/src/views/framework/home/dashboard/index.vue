@@ -1,36 +1,39 @@
 <template>
   <div class="dashboard-user">
-    <div class="header-profile">
-      <div class="avatar">
-        <a-avatar v-if="userInfo.avatar" size="large" :src="'/api/basic/file/download?&key=' + userInfo.avatar" style="background-color: #eee"> </a-avatar>
-        <a-avatar v-else size="large" style="background-color: #00b4f5">
-          {{ userInfo.username }}
-        </a-avatar>
-      </div>
-      <div class="text">
-        <div class="left">
-          <div>
-            <span>您好，{{ userInfo.nickName || userInfo.username }}， 欢迎使用 【{{ siteInfo.title }}】</span>
-          </div>
-          <div class="flex-o">
-            <a-tag color="green" class="flex-inline pointer m-0"> <fs-icon icon="ion:time-outline"></fs-icon> {{ now }}</a-tag>
-            <template v-if="userStore.isAdmin">
-              <a-divider type="vertical" />
-              <a-badge :dot="hasNewVersion">
-                <a-tag color="blue" class="flex-inline pointer m-0" :title="'最新版本:' + latestVersion" @click="openUpgradeUrl()">
-                  <fs-icon icon="ion:rocket-outline" class="mr-5"></fs-icon>
-                  v{{ version }}
-                </a-tag>
-              </a-badge>
-            </template>
-            <template v-if="settingsStore.isComm">
-              <a-divider type="vertical" />
-              <suite-card class="m-0"></suite-card>
-            </template>
+    <div class="header-profile flex-wrap bg-white dark:bg-black">
+      <div class="flex flex-1">
+        <div class="avatar">
+          <a-avatar v-if="userInfo.avatar" size="large" :src="'/api/basic/file/download?&key=' + userInfo.avatar" style="background-color: #eee"> </a-avatar>
+          <a-avatar v-else size="large" style="background-color: #00b4f5">
+            {{ userInfo.username }}
+          </a-avatar>
+        </div>
+        <div class="text">
+          <div class="left">
+            <div>
+              <span>您好，{{ userInfo.nickName || userInfo.username }}， 欢迎使用 【{{ siteInfo.title }}】</span>
+            </div>
+            <div class="flex-o">
+              <a-tag color="green" class="flex-inline pointer m-0"> <fs-icon icon="ion:time-outline"></fs-icon> {{ now }}</a-tag>
+              <template v-if="userStore.isAdmin">
+                <a-divider type="vertical" />
+                <a-badge :dot="hasNewVersion">
+                  <a-tag color="blue" class="flex-inline pointer m-0" :title="'最新版本:' + latestVersion" @click="openUpgradeUrl()">
+                    <fs-icon icon="ion:rocket-outline" class="mr-5"></fs-icon>
+                    v{{ version }}
+                  </a-tag>
+                </a-badge>
+              </template>
+              <template v-if="settingsStore.isComm">
+                <a-divider type="vertical" />
+                <suite-card class="m-0"></suite-card>
+              </template>
+            </div>
           </div>
         </div>
       </div>
-      <div class="suggest">
+
+      <div class="suggest hidden md:block">
         <tutorial-button class="flex-center mt-2">
           <a-tooltip title="点击查看详细教程">
             <a-tag color="blue" class="flex-center">
@@ -53,8 +56,8 @@
     </div>
 
     <div class="statistic-data m-20">
-      <a-row :gutter="20">
-        <a-col :span="6">
+      <a-row :gutter="20" class="flex-wrap">
+        <a-col :md="6" :xs="24">
           <statistic-card title="证书流水线数量" :count="count.pipelineCount">
             <template v-if="count.pipelineCount === 0" #default>
               <div class="flex-center flex-1 flex-col">
@@ -67,17 +70,17 @@
             </template>
           </statistic-card>
         </a-col>
-        <a-col :span="6">
+        <a-col :md="6" :xs="24">
           <statistic-card title="流水线状态" :footer="false">
             <pie-count v-if="count.pipelineStatusCount" :data="count.pipelineStatusCount"></pie-count>
           </statistic-card>
         </a-col>
-        <a-col :span="6">
+        <a-col :md="6" :xs="24">
           <statistic-card title="最近运行统计" :footer="false">
             <day-count v-if="count.historyCountPerDay" :data="count.historyCountPerDay" title="运行次数"></day-count>
           </statistic-card>
         </a-col>
-        <a-col :span="6">
+        <a-col :md="6" :xs="24">
           <statistic-card title="最快到期证书">
             <expiring-list v-if="count.expiringList" :data="count.expiringList"></expiring-list>
           </statistic-card>
@@ -91,9 +94,9 @@
           已支持的部署任务总览 <a-tag color="green">{{ pluginGroups.groups.all.plugins.length }}</a-tag>
         </template>
         <a-row :gutter="10">
-          <a-col v-for="item of pluginGroups.groups.all.plugins" :key="item.name" class="plugin-item-col" :span="4">
+          <a-col v-for="item of pluginGroups.groups.all.plugins" :key="item.name" class="plugin-item-col" :xl="4" :md="6" :xs="24">
             <a-card>
-              <a-tooltip :title="item.desc" class="flex-between">
+              <a-tooltip :title="item.desc" class="flex-between overflow-hidden">
                 <div class="plugin-item pointer">
                   <div class="icon">
                     <fs-icon :icon="item.icon" class="font-size-16 color-blue" />
@@ -239,7 +242,6 @@ function openUpgradeUrl() {
     display: flex;
     align-items: center;
     padding: 20px;
-    background-color: #fff;
 
     .avatar {
       margin-right: 10px;

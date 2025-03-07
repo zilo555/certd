@@ -1,5 +1,5 @@
 <template>
-  <fs-page class="home—index">
+  <fs-page class="home—index bg-neutral-100 dark:bg-black">
     <!--    <page-content />-->
     <dashboard-user />
     <change-password-button ref="changePasswordButtonRef" :show-button="false"></change-password-button>
@@ -32,6 +32,5 @@ onMounted(() => {
 </script>
 <style lang="less">
 .home—index {
-  background-color: #eee;
 }
 </style>

@@ -4,17 +4,25 @@ import { getPermissions } from "./api";
 import { mitter } from "/@/utils/util.mitt";
 import { env } from "/@/utils/util.env";
 import { useAccessStore } from "/@/vben/stores";
+import { eachTree } from "/@/utils/util.tree";
+import util from "/@/plugin/permission/util.permission";
 
 //监听注销事件
 mitter.on("app.logout", () => {
   const permissionStore = usePermissionStore();
   permissionStore.clear();
+  const accessStore = useAccessStore();
+  accessStore.setIsAccessChecked(false);
 });
 
 mitter.on("app.login", () => {
-  const permissionStore = useResourceStore();
+  const accessStore = useAccessStore();
+  accessStore.setIsAccessChecked(false);
+  const permissionStore = usePermissionStore();
   permissionStore.clear();
-  permissionStore.init();
+  // const accessStore = useAccessStore();
+  // accessStore.setAccessCode([]);
+  // permissionStore.init();
 });
 
 interface PermissionState {
@@ -28,7 +36,7 @@ interface PermissionState {
  * @param permissionList
  * @returns {*}
  */
-function formatPermissions(menuTree: Array<any>, permissionList: any[] = []) {
+export function formatPermissions(menuTree: Array<any>, permissionList: any[] = []) {
   if (menuTree == null) {
     menuTree = [];
   }

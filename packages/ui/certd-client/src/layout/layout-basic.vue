@@ -8,28 +8,29 @@ import { useUserStore } from "/@/store/modules/user";
 import VipButton from "/@/components/vip-button/index.vue";
 import TutorialButton from "/@/components/tutorial/index.vue";
 import { useSettingStore } from "/@/store/modules/settings";
-import Footer from "./components/footer/index.vue";
+import PageFooter from "./components/footer/index.vue";
+import { useRouter } from "vue-router";
 const userStore = useUserStore();
 const accessStore = useAccessStore();
 
+const router = useRouter();
 const menus = computed(() => [
-  // {
-  //   handler: () => {
-  //     openWindow(VBEN_DOC_URL, {
-  //       target: "_blank"
-  //     });
-  //   },
-  //   icon: BookOpenText,
-  //   text: $t("ui.widgets.document")
-  // }
+  {
+    handler: () => {
+      router.push("/certd/mine/user-profile");
+    },
+    icon: "fa-solid:book",
+    text: "账号信息"
+  }
 ]);
 
 const avatar = computed(() => {
-  return userStore.userInfo?.avatar ?? preferences.app.defaultAvatar;
+  const avt = userStore.getUserInfo?.avatar;
+  return avt ? `/api/basic/file/download?key=${avt}` : "";
 });
 
 async function handleLogout() {
-  await userStore.logout(true);
+  userStore.logout(true);
 }
 
 const settingStore = useSettingStore();
@@ -56,21 +57,21 @@ onMounted(async () => {
 <template>
   <BasicLayout @clear-preferences-and-logout="handleLogout">
     <template #user-dropdown>
-      <UserDropdown :avatar :menus :text="userStore.userInfo?.nickName" description="development@handsfree.work" tag-text="Pro" @logout="handleLogout" />
+      <UserDropdown :avatar="avatar" :menus="menus" :text="userStore.userInfo?.nickName || userStore.userInfo?.username" description="" tag-text="" @logout="handleLogout" />
     </template>
     <template #lock-screen>
       <LockScreen :avatar @to-login="handleLogout" />
     </template>
     <template #header-right-0>
-      <div class="hover:bg-accent ml-1 mr-2 cursor-pointer rounded-full p-1.5 pl-3 pr-3">
+      <div class="hover:bg-accent ml-1 mr-2 cursor-pointer rounded-full hidden md:block">
         <tutorial-button v-if="!settingStore.isComm" class="flex-center header-btn" />
       </div>
-      <div class="hover:bg-accent ml-1 mr-2 cursor-pointer rounded-full p-1.5 pl-3 pr-3">
+      <div class="hover:bg-accent ml-1 mr-2 cursor-pointer rounded-full">
         <vip-button class="flex-center header-btn" mode="nav" />
       </div>
     </template>
     <template #footer>
-      <Footer></Footer>
+      <PageFooter></PageFooter>
     </template>
   </BasicLayout>
 </template>
@@ -78,5 +79,6 @@ onMounted(async () => {
 <style lang="less">
 .header-btn {
   font-size: 14px;
+  padding: 5px;
 }
 </style>

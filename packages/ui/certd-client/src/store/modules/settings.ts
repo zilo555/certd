@@ -9,7 +9,7 @@ import { HeaderMenus, PlusInfo, SiteEnv, SiteInfo, SuiteSetting, SysInstallInfo,
 import { useUserStore } from "/@/store/modules/user";
 import { mitter } from "/@/utils/util.mitt";
 import { env } from "/@/utils/util.env";
-import { preferences } from "/@/vben/preferences";
+import { updatePreferences } from "/@/vben/preferences";
 
 export interface SettingState {
   sysPublic?: SysPublicSetting;
@@ -140,7 +140,11 @@ export const useSettingStore = defineStore({
       this.siteInfo = _.merge({}, defaultSiteInfo, siteInfo);
 
       if (this.siteInfo.logo) {
-        preferences.logo.source = this.siteInfo.logo;
+        updatePreferences({
+          logo: {
+            source: this.siteInfo.logo
+          }
+        });
       }
     },
     async checkUrlBound() {

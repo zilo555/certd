@@ -109,8 +109,8 @@ function createService() {
       error.message += `: ${error.response?.config?.url}`;
       errorLog(error, error?.response?.config?.showErrorNotify);
       if (status === 401) {
-        const userStore = useUserStore();
-        userStore.logout();
+        // const userStore = useUserStore();
+        // userStore.logout();
       }
 
       if (error?.config?.onError) {

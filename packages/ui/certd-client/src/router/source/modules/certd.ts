@@ -66,7 +66,8 @@ export const certdResources = [
       {
         title: "设置",
         name: "MineSetting",
-        path: "/certd/mine",
+        path: "/certd/setting",
+        redirect: "/certd/cname/record",
         meta: {
           icon: "ion:settings-outline",
           auth: true,

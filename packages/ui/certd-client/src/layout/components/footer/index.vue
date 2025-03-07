@@ -1,6 +1,6 @@
 <template>
-  <div class="flex flex-between full-w">
-    <div class="flex">
+  <div class="flex flex-between w-full text-sm p-5 bg-neutral-100 dark:bg-neutral-900">
+    <div class="flex items-center">
       <span v-if="!settingStore.isComm">
         <span>Powered by</span>
         <a> handsfree.work </a>
@@ -26,7 +26,7 @@ import { computed, onMounted, ref } from "vue";
 import { useSettingStore } from "/@/store/modules/settings";
 
 defineOptions({
-  name: "Footer"
+  name: "PageFooter"
 });
 const version = ref(import.meta.env.VITE_APP_VERSION);
 

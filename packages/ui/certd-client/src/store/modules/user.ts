@@ -13,6 +13,8 @@ import { useI18n } from "vue-i18n";
 import { mitter } from "/src/utils/util.mitt";
 import { resetAllStores, useAccessStore } from "/@/vben/stores";
 
+import { useUserStore as vbenUserStore } from "/@/vben/stores/modules/user";
+
 interface UserState {
   userInfo: Nullable<UserInfoRes>;
   token?: string;
@@ -48,6 +50,8 @@ export const useUserStore = defineStore({
     },
     setUserInfo(info: UserInfoRes) {
       this.userInfo = info;
+      const userStore = vbenUserStore();
+      userStore.setUserInfo(info);
       LocalStorage.set(USER_INFO_KEY, info);
     },
     resetState() {
@@ -81,6 +85,7 @@ export const useUserStore = defineStore({
         // get user info
         return await this.onLoginSuccess(loginRes);
       } catch (error) {
+        console.error(error);
         return null;
       }
     },

@@ -7,15 +7,17 @@ import Empty from "ant-design-vue/es/empty";
 import Avatar from "ant-design-vue/es/avatar";
 import Steps from "ant-design-vue/es/steps";
 import Select from "ant-design-vue/es/select";
+import PageHeader from "ant-design-vue/es/page-header";
 
 export default {
   install(app: any) {
     app.use(Input);
     app.use(Button);
-    app.component("ADivider", Divider);
-    app.component("ABadge", Badge);
-    app.component("AEmpty", Empty);
-    app.component("AAvatar", Avatar);
+    app.use(Divider);
+    app.use(Badge);
+    app.use(Empty);
+    app.use(Avatar);
+    app.use(PageHeader);
     app.use(Steps);
     app.use(Select);
 
@@ -165,8 +167,8 @@ export default {
       defineAsyncComponent(() => import("ant-design-vue/es/tree-select"))
     );
     app.component(
-      "AToar",
-      defineAsyncComponent(() => import("ant-design-vue/es/tree-select"))
+      "ATour",
+      defineAsyncComponent(() => import("ant-design-vue/es/tour"))
     );
 
     app.component(
@@ -185,6 +187,41 @@ export default {
     app.component(
       "AProgress",
       defineAsyncComponent(() => import("ant-design-vue/es/progress"))
+    );
+    app.component(
+      "ATimelineItem",
+      defineAsyncComponent(() => import("ant-design-vue/es/timeline/TimelineItem"))
+    );
+    app.component(
+      "ATimeline",
+      defineAsyncComponent(() => import("ant-design-vue/es/timeline/Timeline"))
+    );
+    app.component(
+      "APageHeader",
+      defineAsyncComponent(() => import("ant-design-vue/es/page-header/index"))
+    );
+    app.component(
+      "APopover",
+      defineAsyncComponent(() => import("ant-design-vue/es/popover"))
+    );
+    app.component(
+      "APopconfirm",
+      defineAsyncComponent(() => import("ant-design-vue/es/popconfirm"))
+    );
+    app.component(
+      "ACollapse",
+      defineAsyncComponent(() => import("ant-design-vue/es/collapse"))
+    );
+    app.component(
+      "ADescriptions",
+      defineAsyncComponent(() => import("ant-design-vue/es/descriptions"))
+    );
+    app.component(
+      "ADescriptionsItem",
+      defineAsyncComponent(async () => {
+        const m = await import("ant-design-vue/es/descriptions/");
+        return m.DescriptionsItem;
+      })
     );
   }
 };

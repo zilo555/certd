@@ -13,7 +13,7 @@ const slots = defineSlots();
   <div class="tutorial-button pointer" @click="open">
     <template v-if="!slots.default">
       <fs-icon icon="ant-design:question-circle-outlined"></fs-icon>
-      <div class="ml-5">使用教程</div>
+      <div class="hidden md:block ml-0.5">使用教程</div>
     </template>
     <slot></slot>
     <a-modal v-model:open="openedRef" class="tutorial-modal" width="90%">

@@ -28,7 +28,6 @@ export function registerRouterHook() {
     if (!token || token === "undefined") {
       return true;
     }
-
     // 初始化权限列表
     try {
       console.log("permission is enabled");

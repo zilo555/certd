@@ -1,18 +1,17 @@
 <template>
   <div class="sys-settings-form sys-settings-register">
     <a-form :model="formState" name="register" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" @finish="onFinish">
+      <a-form-item label="管理其他用户流水线" :name="['public', 'managerOtherUserPipeline']">
+        <a-switch v-model:checked="formState.public.managerOtherUserPipeline" />
+      </a-form-item>
+      <a-form-item label="限制用户流水线数量" :name="['public', 'limitUserPipelineCount']">
+        <a-input-number v-model:value="formState.public.limitUserPipelineCount" />
+        <div class="helper">0为不限制</div>
+      </a-form-item>
       <a-form-item label="开启自助注册" :name="['public', 'registerEnabled']">
         <a-switch v-model:checked="formState.public.registerEnabled" />
       </a-form-item>
       <template v-if="formState.public.registerEnabled">
-        <a-form-item label="限制用户流水线数量" :name="['public', 'limitUserPipelineCount']">
-          <a-input-number v-model:value="formState.public.limitUserPipelineCount" />
-          <div class="helper">0为不限制</div>
-        </a-form-item>
-        <a-form-item label="管理其他用户流水线" :name="['public', 'managerOtherUserPipeline']">
-          <a-switch v-model:checked="formState.public.managerOtherUserPipeline" />
-        </a-form-item>
-
         <a-form-item label="开启用户名注册" :name="['public', 'usernameRegisterEnabled']">
           <a-switch v-model:checked="formState.public.usernameRegisterEnabled" />
         </a-form-item>

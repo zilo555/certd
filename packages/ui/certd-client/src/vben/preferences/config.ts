@@ -9,9 +9,9 @@ const defaultPreferences: Preferences = {
     colorWeakMode: false,
     compact: false,
     contentCompact: "wide",
-    defaultAvatar: "https://unpkg.com/@vbenjs/static-source@0.1.7/source/avatar-v1.webp",
+    defaultAvatar: "./static/images/logo/logo.svg",
     dynamicTitle: true,
-    enableCheckUpdates: true,
+    enableCheckUpdates: false,
     enablePreferences: true,
     enableRefreshToken: false,
     isMobile: false,
@@ -65,7 +65,7 @@ const defaultPreferences: Preferences = {
     globalSearch: true
   },
   sidebar: {
-    autoActivateChild: false,
+    autoActivateChild: true,
     collapsed: false,
     collapsedShowTitle: false,
     enable: true,
@@ -108,9 +108,9 @@ const defaultPreferences: Preferences = {
   widget: {
     fullscreen: true,
     globalSearch: true,
-    languageToggle: true,
+    languageToggle: false,
     lockScreen: true,
-    notification: true,
+    notification: false,
     refresh: true,
     sidebarToggle: true,
     themeToggle: true

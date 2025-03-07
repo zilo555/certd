@@ -58,7 +58,7 @@ export abstract class CertApplyBasePlugin extends AbstractTaskPlugin {
     },
     required: false,
     order: 100,
-    helper: "PFX、jks格式证书是否加密\njks必须设置密码，不传则默认123456",
+    helper: "PFX、jks格式证书是否加密\njks必须设置密码，不传则默认123456\npfx不传则为空密码",
   })
   pfxPassword!: string;
 

@@ -6,7 +6,32 @@ import { useAccessStore } from "/@/vben/stores";
 import { generateMenus, startProgress, stopProgress } from "/@/vben/utils";
 import { frameworkRoutes } from "/@/router/resolve";
 import { useSettingStore } from "/@/store/modules/settings";
+import { usePermissionStore } from "/@/plugin/permission/store.permission";
+import util from "/@/plugin/permission/util.permission";
+import { useUserStore } from "/@/store/modules/user";
 
+function buildAccessedMenus(menus: any) {
+  if (menus == null) {
+    return;
+  }
+  const list: any = [];
+  for (const sub of menus) {
+    if (sub.meta?.permission != null) {
+      if (!util.hasPermissions(sub.meta.permission)) {
+        continue;
+      }
+    }
+    const item: any = {
+      ...sub
+    };
+
+    list.push(item);
+    if (sub.children && sub.children.length > 0) {
+      item.children = buildAccessedMenus(sub.children);
+    }
+  }
+  return list;
+}
 /**
  * 通用守卫配置
  * @param router
@@ -70,7 +95,15 @@ function setupAccessGuard(router: Router) {
 
     // 是否已经生成过动态路由
     if (!accessStore.isAccessChecked) {
-      const accessibleMenus = await generateMenus(frameworkRoutes[0].children, router);
+      if (accessStore.accessToken) {
+        const permissionStore = usePermissionStore();
+        await permissionStore.loadFromRemote();
+        const userStore = useUserStore();
+        await userStore.getUserInfoAction();
+      }
+
+      const allMenus = await generateMenus(frameworkRoutes[0].children, router);
+      const accessibleMenus = buildAccessedMenus(allMenus);
       accessStore.setAccessRoutes(frameworkRoutes);
       accessStore.setAccessMenus(accessibleMenus);
       accessStore.setIsAccessChecked(true);

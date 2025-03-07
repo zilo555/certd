@@ -3,10 +3,10 @@
     <contextHolder />
     <fs-icon icon="mingcute:vip-1-line" :title="text.title" />
 
-    <div v-if="mode !== 'icon'" class="text">
+    <div v-if="mode !== 'icon'" class="text hidden md:block ml-0.5">
       <a-tooltip>
         <template #title> {{ text.title }}</template>
-        <span>{{ text.name }}</span>
+        <span class="">{{ text.name }}</span>
       </a-tooltip>
     </div>
   </div>
@@ -390,7 +390,6 @@ onMounted(() => {
   }
 
   .text {
-    margin-left: 5px;
   }
 }
 

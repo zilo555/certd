@@ -18,7 +18,7 @@
 
     <div class="layout">
       <div class="layout-left">
-        <div class="pipeline-container">
+        <div class="pipeline-container bg-neutral-100 dark:bg-black">
           <div class="pipeline">
             <v-draggable v-model="pipeline.stages" class="stages" item-key="id" handle=".stage-move-handle" :disabled="!settingStore.isPlus">
               <template #header>
@@ -95,19 +95,10 @@
                               <!--                          :open="true"-->
                               <template #content>
                                 <div v-for="(item, index) of task.steps" :key="item.id" class="flex-o w-100">
-                                  <span class="ellipsis flex-1 step-title" :class="{ disabled: item.disabled, deleted: item.disabled }">
-                                    {{ index + 1 }}. {{ item.title }}
-                                  </span>
+                                  <span class="ellipsis flex-1 step-title" :class="{ disabled: item.disabled, deleted: item.disabled }"> {{ index + 1 }}. {{ item.title }} </span>
                                   <pi-status-show v-if="!editMode" :status="item.status?.result"></pi-status-show>
                                   <a-tooltip title="强制重新执行此步骤">
-                                    <fs-icon
-                                      v-if="!editMode"
-                                      class="pointer color-blue ml-2"
-                                      style="font-size: 16px"
-                                      title="强制重新执行此步骤"
-                                      icon="icon-park-outline:replay-music"
-                                      @click="run(item.id)"
-                                    ></fs-icon>
+                                    <fs-icon v-if="!editMode" class="pointer color-blue ml-2" style="font-size: 16px" title="强制重新执行此步骤" icon="icon-park-outline:replay-music" @click="run(item.id)"></fs-icon>
                                   </a-tooltip>
                                 </div>
                               </template>
@@ -231,7 +222,7 @@
       </div>
 
       <div class="layout-right">
-        <a-page-header title="运行历史" sub-title="点任务可查看日志" class="logs-block">
+        <a-page-header title="运行历史" sub-title="点任务可查看日志" class="logs-block" :ghost="false">
           <a-timeline class="mt-10">
             <template v-for="item of histories" :key="item.id">
               <pi-history-timeline-item
@@ -813,7 +804,6 @@ export default defineComponent({
     width: 100%;
     height: 100%;
     position: relative;
-    background-color: #f0f0f0;
     overflow: auto;
   }
   .pipeline {
@@ -821,7 +811,6 @@ export default defineComponent({
     left: 0;
     top: 0;
     height: 100%;
-    background-color: #f0f0f0;
     .stages {
       display: flex;
       overflow: auto;
