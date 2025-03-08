@@ -16,8 +16,8 @@ export async function setupVben(app: any, { loadMessages, router }: any) {
   const store = await initStores(app, { namespace: "fs" });
   watchEffect(() => {
     if (preferences.app.dynamicTitle) {
-      const routeTitle = router.currentRoute.value.title;
-      const pageTitle = routeTitle || "" + preferences.app.name;
+      const routeTitle = router.currentRoute.value.meta?.title;
+      const pageTitle = (routeTitle ? `${routeTitle} - ` : "") + preferences.app.name;
       useTitle(pageTitle);
     }
   });

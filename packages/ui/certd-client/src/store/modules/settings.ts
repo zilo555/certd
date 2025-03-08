@@ -10,7 +10,7 @@ import { useUserStore } from "/@/store/modules/user";
 import { mitter } from "/@/utils/util.mitt";
 import { env } from "/@/utils/util.env";
 import { updatePreferences } from "/@/vben/preferences";
-
+import { useTitle } from "@vueuse/core";
 export interface SettingState {
   sysPublic?: SysPublicSetting;
   installInfo?: {
@@ -145,6 +145,14 @@ export const useSettingStore = defineStore({
             source: this.siteInfo.logo
           }
         });
+      }
+      if (this.siteInfo.title) {
+        updatePreferences({
+          app: {
+            name: this.siteInfo.title
+          }
+        });
+        useTitle(this.siteInfo.title);
       }
     },
     async checkUrlBound() {

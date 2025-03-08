@@ -18,7 +18,7 @@ const defaultPreferences: Preferences = {
     layout: "mixed-nav",
     locale: "zh-CN",
     loginExpiredMode: "page",
-    name: "FsAdmin",
+    name: "",
     preferencesButtonPosition: "auto",
     watermark: false
   },
