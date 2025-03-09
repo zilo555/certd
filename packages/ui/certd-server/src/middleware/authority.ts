@@ -92,7 +92,7 @@ export class AuthorityMiddleware implements IWebMiddleware {
       const pass = await this.authService.checkPermission(ctx, permission);
       if (!pass) {
         logger.info('not permission: ', ctx.req.url);
-        ctx.status = 401;
+        ctx.status = 200;
         ctx.body = Constants.res.permission;
         return;
       }

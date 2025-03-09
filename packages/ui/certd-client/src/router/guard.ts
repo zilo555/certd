@@ -82,7 +82,23 @@ function setupAccessGuard(router: Router) {
         await userStore.getUserInfoAction();
       }
 
-      const allMenus = await generateMenus(frameworkRoutes[0].children, router);
+      const settingsStore = useSettingStore();
+      let headerMenus: any[] = settingsStore.getHeaderMenus;
+      headerMenus = headerMenus.map((menu: any) => {
+        return {
+          ...menu,
+          name: menu.title,
+          meta: {
+            title: menu.title,
+            icon: menu.icon,
+            link: menu.link,
+            order: 99999
+          }
+        };
+      });
+      debugger;
+      let allMenus = await generateMenus(frameworkRoutes[0].children, router);
+      allMenus = allMenus.concat(headerMenus);
       const accessibleMenus = buildAccessedMenus(allMenus);
       accessStore.setAccessRoutes(frameworkRoutes);
       accessStore.setAccessMenus(accessibleMenus);

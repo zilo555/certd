@@ -67,7 +67,7 @@ export class PluginController extends CrudController<PluginService> {
     await this.service.setDisabled(body);
     return this.ok();
   }
-  @Post('/getCommPluginConfigs', { summary: 'sys:settings:edit' })
+  @Post('/getCommPluginConfigs', { summary: 'sys:settings:view' })
   async getCommPluginConfigs() {
     const res = await this.pluginConfigService.getCommPluginConfig();
     return this.ok(res);

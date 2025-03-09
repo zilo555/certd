@@ -54,7 +54,7 @@ function createService() {
             return dataAxios.data;
           default:
             // 不是正确的 code
-            const errorMessage = dataAxios.msg;
+            const errorMessage = dataAxios.msg || dataAxios.message || "未知错误";
             // @ts-ignore
             if (response?.config?.onError) {
               // @ts-ignore

@@ -72,7 +72,7 @@ export class SysSettingsController extends CrudController<SysSettingsService> {
   }
 
   // savePublicSettings
-  @Post('/getEmailSettings', { summary: 'sys:settings:edit' })
+  @Post('/getEmailSettings', { summary: 'sys:settings:view' })
   async getEmailSettings(@Body(ALL) body) {
     const conf = await getEmailSettings(this.service, this.userSettingsService);
     return this.ok(conf);
@@ -86,7 +86,7 @@ export class SysSettingsController extends CrudController<SysSettingsService> {
     return this.ok(conf);
   }
 
-  @Post('/getSysSettings', { summary: 'sys:settings:edit' })
+  @Post('/getSysSettings', { summary: 'sys:settings:view' })
   async getSysSettings() {
     const publicSettings = await this.service.getPublicSettings();
     let privateSettings = await this.service.getPrivateSettings();

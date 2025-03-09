@@ -176,6 +176,7 @@ export const sysResources = [
         title: "套餐管理",
         name: "SuiteManager",
         path: "/sys/suite",
+        redirect: "/sys/suite/setting",
         meta: {
           icon: "ion:cart-outline",
           permission: "sys:settings:edit",
