@@ -6,6 +6,7 @@ import { useSettingStore } from "/@/store/modules/settings";
 import { cloneDeep, find, merge, remove } from "lodash-es";
 import { nanoid } from "nanoid";
 import { SettingsSave } from "../api";
+import { utils } from "/@/utils";
 
 export default function ({ crudExpose, context }: CreateCrudOptionsProps): CreateCrudOptionsRet {
   const { crudBinding } = crudExpose;
@@ -18,20 +19,11 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
     await SettingsSave("sys.header.menus", menus);
   }
 
-  function eachTree(tree: any[], callback: (item: any) => void) {
-    tree.forEach((item) => {
-      callback(item);
-      if (item.children) {
-        eachTree(item.children, callback);
-      }
-    });
-  }
-
   const expandedRowKeys = ref<string[]>([]);
   const pageRequest = async (query: UserPageQuery): Promise<UserPageRes> => {
     const records = cloneDeep(settingStore.headerMenus?.menus || []);
     expandedRowKeys.value = [];
-    eachTree(records, (item) => {
+    utils.tree.eachTree(records, (item: any) => {
       if (item.children && item.children.length > 0) {
         expandedRowKeys.value.push(item.id);
       }
@@ -47,7 +39,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
   const editRequest = async ({ form, row }: EditReq) => {
     form.id = row.id;
     let found: any = undefined;
-    eachTree(settingStore.headerMenus?.menus || [], (item) => {
+    utils.tree.eachTree(settingStore.headerMenus?.menus || [], (item) => {
       if (item.id === row.id) {
         merge(item, form);
         found = item;
@@ -57,9 +49,9 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
     return found;
   };
   const delRequest = async ({ row }: DelReq) => {
-    eachTree([{ children: settingStore.headerMenus?.menus }], (item) => {
+    utils.tree.eachTree([{ children: settingStore.headerMenus?.menus }], (item) => {
       if (item.children) {
-        remove(item.children, (child) => child.id === row.id);
+        remove(item.children, (child: any) => child.id === row.id);
       }
     });
     await saveMenus();
@@ -68,7 +60,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
   const addRequest = async ({ form }: AddReq) => {
     form.id = nanoid();
     if (form.parentId) {
-      eachTree(settingStore.headerMenus?.menus || [], (item) => {
+      utils.tree.eachTree(settingStore.headerMenus?.menus || [], (item) => {
         if (item.id === form.parentId) {
           if (!item.children) {
             item.children = [];
@@ -79,7 +71,6 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
     } else {
       settingStore.headerMenus?.menus.push(form);
     }
-    parent.value = null;
     await saveMenus();
     return form;
   };
@@ -175,14 +166,15 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           form: {
             rules: [
               {
-                required: true,
+                required: false,
                 message: "请输入链接"
               },
               {
                 type: "url",
                 message: "请输入正确的链接"
               }
-            ]
+            ],
+            helper: "如果有子菜单，这里链接不要填"
           }
         }
       }

@@ -11,6 +11,8 @@ import { mitter } from "/@/utils/util.mitt";
 import { env } from "/@/utils/util.env";
 import { updatePreferences } from "/@/vben/preferences";
 import { useTitle } from "@vueuse/core";
+import { utils } from "/@/utils";
+import { cloneDeep } from "lodash-es";
 export interface SettingState {
   sysPublic?: SysPublicSetting;
   installInfo?: {
@@ -98,9 +100,22 @@ export const useSettingStore = defineStore({
       };
       return vipLabelMap[this.plusInfo?.vipType || "free"];
     },
-    getHeaderMenus(): { menus: any[] } {
+    getHeaderMenus(): any[] {
       // @ts-ignore
-      return this.headerMenus?.menus || { menus: [] };
+      let menus = this.headerMenus?.menus || [];
+      menus = cloneDeep(menus);
+      return utils.tree.treeMap(menus, (menu: any) => {
+        return {
+          ...menu,
+          name: menu.title,
+          meta: {
+            title: menu.title,
+            icon: menu.icon,
+            link: menu.path,
+            order: 99999
+          }
+        };
+      });
     },
     isSuiteEnabled(): boolean {
       // @ts-ignore
