@@ -18,7 +18,8 @@
 
       <div class="flex-o mt-5">
         <span class="label">支付方式：</span>
-        <fs-dict-select v-model:value="formRef.payType" :dict="paymentsDictRef" style="width: 200px"> </fs-dict-select>
+        <div v-if="durationSelected.price === 0">免费</div>
+        <fs-dict-select v-else v-model:value="formRef.payType" :dict="paymentsDictRef" style="width: 200px"> </fs-dict-select>
       </div>
     </div>
   </a-modal>
@@ -34,6 +35,7 @@ import { Modal, notification } from "ant-design-vue";
 import DurationValue from "/@/views/sys/suite/product/duration-value.vue";
 import { useRouter } from "vue-router";
 import qrcode from "qrcode";
+import * as api from "/@/views/certd/suite/api";
 const openRef = ref(false);
 
 const product = ref<any>(null);
@@ -63,6 +65,21 @@ const paymentsDictRef = dict({
 const router = useRouter();
 
 async function orderCreate() {
+  if (durationSelected.value.price === 0) {
+    //如果是0，直接请求创建订单
+    await api.TradeCreateFree({
+      productId: formRef.value.productId,
+      duration: formRef.value.duration,
+      num: formRef.value.num ?? 1,
+      payType: "free"
+    });
+    notification.success({
+      message: "套餐购买成功"
+    });
+    openRef.value = false;
+    return;
+  }
+
   if (!formRef.value.payType) {
     notification.error({
       message: "请选择支付方式"

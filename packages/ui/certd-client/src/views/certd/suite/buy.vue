@@ -49,20 +49,6 @@ async function loadProducts() {
 loadProducts();
 const orderModalRef = ref<any>(null);
 async function doOrder(req: any) {
-  if (req.price === 0) {
-    //如果是0，直接请求创建订单
-    await api.TradeCreateFree({
-      productId: req.productId,
-      duration: req.duration,
-      num: 1,
-      payType: "free"
-    });
-    notification.success({
-      message: "套餐购买成功"
-    });
-    return;
-  }
-
   await orderModalRef.value.open({
     ...req
   });

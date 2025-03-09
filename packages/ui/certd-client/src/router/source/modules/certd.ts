@@ -145,6 +145,7 @@ export const certdResources = [
         title: "套餐",
         name: "SuiteProduct",
         path: "/certd/suite",
+        redirect: "/certd/suite/mine",
         meta: {
           show: () => {
             const settingStore = useSettingStore();
