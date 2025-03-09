@@ -36,12 +36,6 @@ export class SiteInfoService extends BaseService<SiteInfoEntity> {
       throw new Error('userId is required');
     }
 
-    if (!isPlus()) {
-      const count = await this.getUserMonitorCount(data.userId);
-      if (count >= 1) {
-        throw new NeedVIPException('站点监控数量已达上限，请升级专业版');
-      }
-    }
     if (isComm()) {
       const suiteSetting = await this.userSuiteService.getSuiteSetting();
       if (suiteSetting.enabled) {
@@ -50,7 +44,14 @@ export class SiteInfoService extends BaseService<SiteInfoEntity> {
           throw new NeedSuiteException('站点监控数量已达上限，请购买或升级套餐');
         }
       }
+    }else if (!isPlus()) {
+        const count = await this.getUserMonitorCount(data.userId);
+        if (count >= 1) {
+          throw new NeedVIPException('站点监控数量已达上限，请升级专业版');
+        }
     }
+
+
 
     data.disabled = false;
     return await super.add(data);

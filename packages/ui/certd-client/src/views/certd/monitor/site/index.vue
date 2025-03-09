@@ -1,9 +1,12 @@
 <template>
   <fs-page>
     <template #header>
-      <div class="title">
+      <div class="title flex items-center">
         站点证书监控
-        <span class="sub">每天0点，检查网站证书的过期时间，并发出提醒</span>
+        <div class="sub flex-1">
+          <div>每天0点，检查网站证书的过期时间，并发出提醒;</div>
+          <div class="flex items-center">基础版限制1条，专业版无限制，当前<vip-button class="ml-5" mode="nav"></vip-button>，点击升级</div>
+        </div>
       </div>
       <div class="more">
         <a-button type="primary" @click="checkAll">检查全部</a-button>
@@ -19,11 +22,12 @@ import { useFs } from "@fast-crud/fast-crud";
 import createCrudOptions from "./crud";
 import { siteInfoApi } from "./api";
 import { Modal, notification } from "ant-design-vue";
+import { useSettingStore } from "/@/store/modules/settings";
 defineOptions({
   name: "SiteCertMonitor"
 });
 const { crudBinding, crudRef, crudExpose } = useFs({ createCrudOptions, context: {} });
-
+const settingStore = useSettingStore();
 function checkAll() {
   Modal.confirm({
     title: "确认",
