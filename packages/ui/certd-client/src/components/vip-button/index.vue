@@ -238,7 +238,7 @@ function openUpgrade() {
       title: "专业版",
       desc: "开源需要您的赞助支持",
       type: "plus",
-      privilege: ["可加VIP群，您的需求将优先实现", "站点证书监控无限制", "更多通知方式", "更多强大的部署插件，宝塔、群晖、1Panel等"],
+      privilege: ["可加VIP群，您的需求将优先实现", "站点证书监控无限制", "更多通知方式", "插件全开放，更多强大的部署插件，宝塔、群晖、1Panel等"],
       trial: {
         title: "点击获取7天试用",
         click: () => {

@@ -10,11 +10,7 @@
         </template>
       </div>
       <div>
-        <fs-icon
-          class="icon-button"
-          :icon="fullscreen ? 'material-symbols:fullscreen-exit' : 'material-symbols:fullscreen'"
-          @click="fullscreen = !fullscreen"
-        ></fs-icon>
+        <fs-icon class="icon-button" :icon="fullscreen ? 'material-symbols:fullscreen-exit' : 'material-symbols:fullscreen'" @click="fullscreen = !fullscreen"></fs-icon>
       </div>
     </template>
     <template v-if="currentStep">
@@ -117,6 +113,7 @@ import { compute, useCompute } from "@fast-crud/fast-crud";
 import { useReference } from "/@/use/use-refrence";
 import { useSettingStore } from "/@/store/modules/settings";
 import * as pluginApi from "../../../api.plugin";
+import { mitter } from "/@/utils/util.mitt";
 export default {
   name: "PiStepForm",
   // eslint-disable-next-line vue/no-unused-components
@@ -156,6 +153,7 @@ export default {
       const stepTypeSelected = (item: any) => {
         if (item.needPlus && !settingStore.isPlus) {
           message.warn("此插件需要开通专业版才能使用");
+          mitter.emit("openVipModal");
           throw new Error("此插件需要开通专业版才能使用");
         }
         currentStep.value.type = item.name;
@@ -321,9 +319,7 @@ export default {
         if (pluginSearch.value.keyword) {
           const keyword = pluginSearch.value.keyword.toLowerCase();
           const list = groups.all.plugins.filter((plugin) => {
-            return (
-              plugin.title?.toLowerCase().includes(keyword) || plugin.desc?.toLowerCase().includes(keyword) || plugin.name?.toLowerCase().includes(keyword)
-            );
+            return plugin.title?.toLowerCase().includes(keyword) || plugin.desc?.toLowerCase().includes(keyword) || plugin.name?.toLowerCase().includes(keyword);
           });
           return {
             search: { key: "search", title: "搜索结果", plugins: list }
