@@ -5,7 +5,7 @@ import { AddReq, compute, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, 
 import { useSettingStore } from "/@/store/modules/settings";
 import { cloneDeep, find, merge, remove } from "lodash-es";
 import { nanoid } from "nanoid";
-import { SettingsSave } from "../api";
+import { HeaderMenusSettingsSave, SettingsSave } from "../api";
 import { utils } from "/@/utils";
 
 export default function ({ crudExpose, context }: CreateCrudOptionsProps): CreateCrudOptionsRet {
@@ -16,7 +16,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
 
   async function saveMenus() {
     const menus = settingStore.headerMenus;
-    await SettingsSave("sys.header.menus", menus);
+    await HeaderMenusSettingsSave(menus);
   }
 
   const expandedRowKeys = ref<string[]>([]);

@@ -43,14 +43,7 @@
           <!--          </button>-->
           <fs-menu class="header-menu" mode="horizontal" :expand-selected="false" :selectable="false" :menus="settingStore.getHeaderMenus" />
 
-          <fs-menu
-            v-if="!settingStore?.isAgent && !settingStore.isComm"
-            class="header-menu"
-            mode="horizontal"
-            :expand-selected="false"
-            :selectable="false"
-            :menus="headerMenus"
-          />
+          <fs-menu v-if="!settingStore?.isAgent && !settingStore.isComm" class="header-menu" mode="horizontal" :expand-selected="false" :selectable="false" :menus="headerMenus" />
           <div class="header-btn">
             <fs-locale />
           </div>

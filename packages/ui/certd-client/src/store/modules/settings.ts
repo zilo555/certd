@@ -108,6 +108,7 @@ export const useSettingStore = defineStore({
         return {
           ...menu,
           name: menu.title,
+          path: menu.path ?? "/" + menu.title,
           meta: {
             title: menu.title,
             icon: menu.icon,

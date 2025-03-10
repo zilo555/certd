@@ -34,6 +34,14 @@ export async function SettingsSave(key: string, setting: any) {
   });
 }
 
+export async function HeaderMenusSettingsSave(setting: any) {
+  return await request({
+    url: apiPrefix + "/headerMenus/save",
+    method: "post",
+    data: setting
+  });
+}
+
 export async function EmailSettingsGet() {
   return await request({
     url: apiPrefix + "/getEmailSettings",
