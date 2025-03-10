@@ -166,15 +166,14 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           form: {
             rules: [
               {
-                required: false,
+                required: true,
                 message: "请输入链接"
               },
               {
                 type: "url",
                 message: "请输入正确的链接"
               }
-            ],
-            helper: "如果有子菜单，这里链接不要填"
+            ]
           }
         }
       }
