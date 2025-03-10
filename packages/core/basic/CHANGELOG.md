@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.31.0](https://github.com/certd/certd/compare/v1.30.6...v1.31.0) (2025-03-10)
+
+### Performance Improvements
+
+* 流水线同一个阶段任务优化为并行执行 ([efa9c74](https://github.com/certd/certd/commit/efa9c748c5c07fc950af3db742ef9310f1ac9a4b))
+* 支持易盾RCDN部署 ([065713c](https://github.com/certd/certd/commit/065713cdb6953d16df08585c316c1a7a8eaec437))
+
 ## [1.30.6](https://github.com/certd/certd/compare/v1.30.5...v1.30.6) (2025-02-24)
 
 ### Performance Improvements

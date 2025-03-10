@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.31.0](https://github.com/certd/certd/compare/v1.30.6...v1.31.0) (2025-03-10)
+
+### Bug Fixes
+
+* 修复CDN插件我爱云因更换接口导致部署失败的问题 ([5641c19](https://github.com/certd/certd/commit/5641c19502970f67af19709bddf8c781b1a25bdc))
+* 修复CDN插件我爱云因更换接口导致部署失败的问题 ([0110dfd](https://github.com/certd/certd/commit/0110dfdb70b12dfb0a7a067717f3773ed75aae7c))
+* 修复webhook headers value中带等号是解析错误的bug ([1fe3365](https://github.com/certd/certd/commit/1fe3365e10c464c4c60c82f424cf74fe35b883e0))
+* ProxmoxUploadCert 增加强制部署证书 ([441b15e](https://github.com/certd/certd/commit/441b15ed2fe5a143a5bd5508613b3816ddbff596))
+
+### Performance Improvements
+
+* 历史记录查看详情，可以切换到对应的历史记录日志上去 ([082802e](https://github.com/certd/certd/commit/082802e1197156837800f814728ee0f6b300b18c))
+* 流水线同一个阶段任务优化为并行执行 ([efa9c74](https://github.com/certd/certd/commit/efa9c748c5c07fc950af3db742ef9310f1ac9a4b))
+* 升级midwayjs版本 ([057b0b4](https://github.com/certd/certd/commit/057b0b4565e19bb93195633f767b2942e8e40e59))
+* 是否允许爬虫爬取增加ui设置选项 ([779db9d](https://github.com/certd/certd/commit/779db9da705d2dfef36fec21f52bd38af9fc5f2e))
+* 通知支持钉钉群聊机器人 ([fc8bef5](https://github.com/certd/certd/commit/fc8bef5aae522d75d408d8c3aa74543269da5398))
+* 易支付支持固定支付方式，适合没有收银台版本使用 ([81df96b](https://github.com/certd/certd/commit/81df96bf4542ce8d8ef4a428a4460dd554e4719a))
+* 支持易盾RCDN部署 ([065713c](https://github.com/certd/certd/commit/065713cdb6953d16df08585c316c1a7a8eaec437))
+
 ## [1.30.6](https://github.com/certd/certd/compare/v1.30.5...v1.30.6) (2025-02-24)
 
 ### Performance Improvements

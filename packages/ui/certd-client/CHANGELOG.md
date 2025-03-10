@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.31.0](https://github.com/certd/certd/compare/v1.30.6...v1.31.0) (2025-03-10)
+
+### Performance Improvements
+
+* 历史记录查看详情，可以切换到对应的历史记录日志上去 ([082802e](https://github.com/certd/certd/commit/082802e1197156837800f814728ee0f6b300b18c))
+* 是否允许爬虫爬取增加ui设置选项 ([779db9d](https://github.com/certd/certd/commit/779db9da705d2dfef36fec21f52bd38af9fc5f2e))
+* 易支付支持固定支付方式，适合没有收银台版本使用 ([81df96b](https://github.com/certd/certd/commit/81df96bf4542ce8d8ef4a428a4460dd554e4719a))
+* 支持易盾RCDN部署 ([065713c](https://github.com/certd/certd/commit/065713cdb6953d16df08585c316c1a7a8eaec437))
+
 ## [1.30.6](https://github.com/certd/certd/compare/v1.30.5...v1.30.6) (2025-02-24)
 
 **Note:** Version bump only for package @certd/ui-client

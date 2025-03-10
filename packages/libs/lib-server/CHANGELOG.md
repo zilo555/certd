@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.31.0](https://github.com/certd/certd/compare/v1.30.6...v1.31.0) (2025-03-10)
+
+### Performance Improvements
+
+* 升级midwayjs版本 ([057b0b4](https://github.com/certd/certd/commit/057b0b4565e19bb93195633f767b2942e8e40e59))
+* 是否允许爬虫爬取增加ui设置选项 ([779db9d](https://github.com/certd/certd/commit/779db9da705d2dfef36fec21f52bd38af9fc5f2e))
+
 ## [1.30.6](https://github.com/certd/certd/compare/v1.30.5...v1.30.6) (2025-02-24)
 
 **Note:** Version bump only for package @certd/lib-server

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.31.0](https://github.com/certd/certd/compare/v1.30.6...v1.31.0) (2025-03-10)
+
+### Performance Improvements
+
+* 升级midwayjs版本 ([057b0b4](https://github.com/certd/certd/commit/057b0b4565e19bb93195633f767b2942e8e40e59))
+
 ## [1.30.6](https://github.com/certd/certd/compare/v1.30.5...v1.30.6) (2025-02-24)
 
 **Note:** Version bump only for package @certd/midway-flyway-js
