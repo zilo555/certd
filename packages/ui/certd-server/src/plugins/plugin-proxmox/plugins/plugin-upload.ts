@@ -71,7 +71,7 @@ export class ProxmoxUploadCert extends AbstractPlusTaskPlugin {
 
     for (const node of this.nodes) {
       this.logger.info(`开始上传证书到节点：${node}`);
-      const res = await client.nodes.get(node).certificates.custom.uploadCustomCert(cert.crt, false, cert.key, true);
+      const res = await client.nodes.get(node).certificates.custom.uploadCustomCert(cert.crt, true, cert.key, true);
       this.logger.info(`上传结果：${JSON.stringify(res.response)}`);
     }
 
