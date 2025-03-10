@@ -28,7 +28,7 @@ packages:
 ### 安装依赖和初始化:
 ```shell
 # 安装pnpm，如果提示npm命令不存在，就需要先安装nodejs
-npm install -g pnpm@8.15.7 --registry=https://registry.npmmirror.com
+npm install -g pnpm--registry=https://registry.npmmirror.com
 
 # 使用国内镜像源，如果有代理，就不需要
 pnpm config set registry https://registry.npmmirror.com

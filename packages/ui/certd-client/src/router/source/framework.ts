@@ -3,7 +3,7 @@ import LayoutBasic from "/@/layout/layout-basic.vue";
 import type { RouteRecordRaw } from "vue-router";
 
 import { mergeRouteModules } from "/@/vben/utils";
-const dynamicRouteFiles = import.meta.glob("./modules/**/*.ts", {
+const dynamicRouteFiles = import.meta.glob("./modules/**/*.ts*", {
   eager: true
 });
 

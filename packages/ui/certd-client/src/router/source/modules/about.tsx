@@ -1,5 +1,6 @@
 import { IFrameView } from "/@/vben/layouts";
 import { useSettingStore } from "/@/store/modules/settings";
+import { computed } from "vue";
 
 export const aboutResource = [
   {

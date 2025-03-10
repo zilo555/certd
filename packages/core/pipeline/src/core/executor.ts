@@ -152,6 +152,10 @@ export class Executor {
         this.runtime.disabled(runnable);
         return resultType;
       }
+      if (resultType == ResultType.error) {
+        this.runtime.error(runnable, new Error("执行失败"));
+        return resultType;
+      }
       this.runtime.success(runnable);
       return ResultType.success;
     } catch (e: any) {
@@ -174,6 +178,9 @@ export class Executor {
       const res: ResultType = await this.runWithHistory(stage, "stage", async () => {
         return await this.runStage(stage);
       });
+      if (res === ResultType.error) {
+        return ResultType.error;
+      }
       resList.push(res);
     }
     return this.compositionResultType(resList);
@@ -200,10 +207,15 @@ export class Executor {
       }
       resList = await Promise.all(pList);
     } else {
-      //串行
+      //串行且报错继续
       for (let i = 0; i < runnerList.length; i++) {
         const runner = runnerList[i];
-        resList[i] = await runner();
+        try {
+          resList[i] = await runner();
+        } catch (e:any) {
+          this.logger.error("任务执行异常，继续执行后续任务:", e.message);
+          resList[i] = ResultType.error;
+        }
       }
     }
     return this.compositionResultType(resList);

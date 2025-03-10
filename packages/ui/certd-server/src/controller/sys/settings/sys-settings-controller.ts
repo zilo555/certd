@@ -1,6 +1,5 @@
 import { ALL, Body, Controller, Inject, Post, Provide, Query } from '@midwayjs/core';
 import { CrudController, SysPrivateSettings, SysPublicSettings, SysSettingsEntity, SysSettingsService } from '@certd/lib-server';
-import * as _ from 'lodash-es';
 import { merge } from 'lodash-es';
 import { PipelineService } from '../../../modules/pipeline/service/pipeline-service.js';
 import { UserSettingsService } from '../../../modules/mine/service/user-settings-service.js';
@@ -8,6 +7,7 @@ import { getEmailSettings } from '../../../modules/sys/settings/fix.js';
 import { http, logger, simpleNanoId } from '@certd/basic';
 import { CodeService } from '../../../modules/basic/service/code-service.js';
 import { SmsServiceFactory } from '../../../modules/basic/sms/factory.js';
+
 
 /**
  */
@@ -99,8 +99,8 @@ export class SysSettingsController extends CrudController<SysSettingsService> {
   async saveSysSettings(@Body(ALL) body: { public: SysPublicSettings; private: SysPrivateSettings }) {
     const publicSettings = await this.service.getPublicSettings();
     const privateSettings = await this.service.getPrivateSettings();
-    _.merge(publicSettings, body.public);
-    _.merge(privateSettings, body.private);
+    merge(publicSettings, body.public);
+    merge(privateSettings, body.private);
     await this.service.savePublicSettings(publicSettings);
     await this.service.savePrivateSettings(privateSettings);
     return this.ok({});

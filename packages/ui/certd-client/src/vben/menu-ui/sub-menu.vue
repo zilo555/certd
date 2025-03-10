@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import type { MenuRecordRaw } from '/@/vben/typings';
+import type { MenuRecordRaw } from "/@/vben/typings";
 
-import { computed } from 'vue';
+import { computed } from "vue";
 
-import { MenuBadge, MenuItem, SubMenu as SubMenuComp } from './components';
+import { MenuBadge, MenuItem, SubMenu as SubMenuComp } from "./components";
 // eslint-disable-next-line import/no-self-import
-import SubMenu from './sub-menu.vue';
+import SubMenu from "./sub-menu.vue";
+import { FsSlotRender } from "@fast-crud/fast-crud";
 
 interface Props {
   /**
@@ -15,7 +16,7 @@ interface Props {
 }
 
 defineOptions({
-  name: 'SubMenuUi',
+  name: "SubMenuUi"
 });
 
 const props = withDefaults(defineProps<Props>(), {});
@@ -25,9 +26,7 @@ const props = withDefaults(defineProps<Props>(), {});
  */
 const hasChildren = computed(() => {
   const { menu } = props;
-  return (
-    Reflect.has(menu, 'children') && !!menu.children && menu.children.length > 0
-  );
+  return Reflect.has(menu, "children") && !!menu.children && menu.children.length > 0;
 });
 </script>
 
@@ -41,25 +40,18 @@ const hasChildren = computed(() => {
     :badge-variants="menu.badgeVariants"
     :icon="menu.icon"
     :path="menu.path"
+    @click="menu.meta?.onClick"
   >
     <template #title>
       <span>{{ menu.name }}</span>
     </template>
+    <template v-if="menu.meta?.slot" #default>
+      <fs-render :render-func="menu.meta.slot" />
+    </template>
   </MenuItem>
-  <SubMenuComp
-    v-else
-    :key="`${menu.path}_sub`"
-    :active-icon="menu.activeIcon"
-    :icon="menu.icon"
-    :path="menu.path"
-  >
+  <SubMenuComp v-else :key="`${menu.path}_sub`" :active-icon="menu.activeIcon" :icon="menu.icon" :path="menu.path">
     <template #content>
-      <MenuBadge
-        :badge="menu.badge"
-        :badge-type="menu.badgeType"
-        :badge-variants="menu.badgeVariants"
-        class="right-6"
-      />
+      <MenuBadge :badge="menu.badge" :badge-type="menu.badgeType" :badge-variants="menu.badgeVariants" class="right-6" />
     </template>
     <template #title>
       <span>{{ menu.name }}</span>

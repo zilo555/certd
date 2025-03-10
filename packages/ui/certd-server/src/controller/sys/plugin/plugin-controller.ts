@@ -3,7 +3,6 @@ import { merge } from 'lodash-es';
 import { CrudController } from '@certd/lib-server';
 import { PluginService } from '../../../modules/plugin/service/plugin-service.js';
 import { CommPluginConfig, PluginConfigService } from '../../../modules/plugin/service/plugin-config-service.js';
-
 /**
  * 插件
  */

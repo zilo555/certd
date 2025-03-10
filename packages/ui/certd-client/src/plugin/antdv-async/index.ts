@@ -218,5 +218,9 @@ export default {
         return m.DescriptionsItem;
       })
     );
+    app.component(
+      "AResult",
+      defineAsyncComponent(() => import("ant-design-vue/es/result"))
+    );
   }
 };

@@ -1,4 +1,5 @@
 import { CreateRecordOptions, DnsProviderContext, DnsProviderDefine, IDnsProvider, RemoveRecordOptions } from "./api.js";
+//@ts-ignore
 import psl from "psl";
 import { dnsProviderRegistry } from "./registry.js";
 import { Decorator } from "@certd/pipeline";

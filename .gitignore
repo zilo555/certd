@@ -21,7 +21,7 @@ gen
 /packages/ui/*/.idea
 /packages/ui/*/node_modules
 /packages/*/node_modules
-/pnpm-lock.yaml
+#/pnpm-lock.yaml
 
 
 tsconfig.tsbuildinfo
