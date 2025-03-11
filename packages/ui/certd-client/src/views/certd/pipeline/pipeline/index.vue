@@ -221,12 +221,12 @@
         </div>
       </div>
 
-      <div class="layout-right">
-        <a-page-header title="运行历史" sub-title="点任务可查看日志" class="logs-block" :class="{ collapse: logsCollapse }" :ghost="false">
-          <div class="collapse-toggle" @click="toggleLogsCollapse">
-            1111
-            <fs-icon icon="ion:search"></fs-icon>
-          </div>
+      <div class="layout-right transition-all duration-300" :class="{ collapsed: logsCollapse }">
+        <div class="collapse-toggle bg-white dark:bg-black" @click="toggleLogsCollapse">
+          <fs-icon v-if="logsCollapse" icon="ion:chevron-back-outline"></fs-icon>
+          <fs-icon v-else icon="ion:chevron-forward-outline"></fs-icon>
+        </div>
+        <a-page-header title="运行历史" sub-title="点任务可查看日志" class="logs-block" :ghost="false">
           <a-timeline class="mt-10">
             <template v-for="item of histories" :key="item.id">
               <pi-history-timeline-item
@@ -796,6 +796,9 @@ export default defineComponent({
 .page-pipeline-edit {
   .fs-page-header {
     .title {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-wrap: nowrap;
       display: flex;
       .back {
         margin-right: 10px;
@@ -817,6 +820,7 @@ export default defineComponent({
     height: 100%;
     position: relative;
     display: flex;
+    overflow-x: hidden;
     .layout-left {
       flex: 1;
       height: 100%;
@@ -1015,30 +1019,38 @@ export default defineComponent({
     }
   }
 
-  .logs-block {
-    height: 100%;
-    overflow-y: auto;
-    max-width: 90vw;
-
-    .ant-page-header-content {
-      position: relative;
-    }
-
-    &.collapse{
-
+  .layout-right {
+    position: "relative";
+    &.collapsed {
+      margin-right: -350px;
     }
 
     .collapse-toggle {
       position: absolute;
-      right: 10px;
+      margin-left: -30px;
       top: 10px;
       cursor: pointer;
       font-size: 20px;
       color: #1890ff;
-      width: 80px;
-      height: 80px;
-      border: 1px solid #1890ff;
+      width: 30px;
+      height: 30px;
+      border: 1px solid #eee;
+      border-right: 0;
       z-index: 10000;
+      border-radius: 5px 0 0 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .logs-block {
+      height: 100%;
+      overflow-y: auto;
+      max-width: 90vw;
+
+      .ant-page-header-content {
+        position: relative;
+      }
     }
   }
 }

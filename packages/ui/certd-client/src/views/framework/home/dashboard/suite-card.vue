@@ -1,6 +1,6 @@
 <template>
   <div v-if="detail.enabled" class="my-suite-card">
-    <div class="flex-o">
+    <div class="flex-o flex-wrap">
       <a-popover>
         <template #content>
           <div>

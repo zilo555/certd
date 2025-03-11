@@ -1,14 +1,6 @@
 <template>
   <div class="sys-settings-form sys-settings-base">
-    <a-form
-      :model="formState"
-      name="basic"
-      :label-col="{ span: 8 }"
-      :wrapper-col="{ span: 16 }"
-      autocomplete="off"
-      @finish="onFinish"
-      @finish-failed="onFinishFailed"
-    >
+    <a-form :model="formState" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" @finish="onFinish" @finish-failed="onFinishFailed">
       <a-form-item label="ICP备案号" :name="['public', 'icpNo']">
         <a-input v-model:value="formState.public.icpNo" placeholder="粤ICP备xxxxxxx号" />
       </a-form-item>
@@ -41,12 +33,10 @@
 
       <a-form-item label="启用公共CNAME服务" :name="['private', 'commonCnameEnabled']">
         <a-switch v-model:checked="formState.private.commonCnameEnabled" />
-        <div class="helper">
-          是否可以使用公共CNAME服务，如果禁用，且没有设置<router-link to="/sys/cname/provider">自定义CNAME服务</router-link>，则无法使用CNAME代理方式申请证书
-        </div>
+        <div class="helper">是否可以使用公共CNAME服务，如果禁用，且没有设置<router-link to="/sys/cname/provider">自定义CNAME服务</router-link>，则无法使用CNAME代理方式申请证书</div>
       </a-form-item>
 
-      <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
+      <a-form-item label=" " :colon="false" :wrapper-col="{ span: 8 }">
         <a-button :loading="saveLoading" type="primary" html-type="submit">保存</a-button>
       </a-form-item>
     </a-form>

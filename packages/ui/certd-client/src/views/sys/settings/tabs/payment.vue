@@ -28,7 +28,7 @@
         <div class="helper">需要开通Native支付， <a href="https://certd.docmirror.cn/comm/payments/wxpay.html">微信配置帮助文档</a></div>
       </a-form-item>
 
-      <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
+      <a-form-item label=" " :colon="false" :wrapper-col="{ span: 16 }">
         <loading-button type="primary" html-type="button" :click="onClick">保存</loading-button>
       </a-form-item>
     </a-form>

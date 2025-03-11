@@ -4,15 +4,15 @@
       <span v-if="!settingStore.isComm">
         <span>Powered by</span>
         <a> handsfree.work </a>
+        <a-divider type="vertical" />
       </span>
 
       <template v-if="siteInfo.licenseTo">
-        <a-divider type="vertical" />
         <a :href="siteInfo.licenseToUrl || ''">{{ siteInfo.licenseTo }}</a>
+        <a-divider type="vertical" />
       </template>
 
       <template v-if="sysPublic.icpNo">
-        <a-divider type="vertical" />
         <span>
           <a href="https://beian.miit.gov.cn/" target="_blank">{{ sysPublic.icpNo }}</a>
         </span>

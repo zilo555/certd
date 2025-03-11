@@ -16,7 +16,7 @@ const slots = defineSlots();
 <template>
   <div class="tutorial-button pointer" @click="open">
     <template v-if="!slots.default">
-      <fs-icon v-if="showIcon" icon="ant-design:question-circle-outlined"></fs-icon>
+      <fs-icon v-if="showIcon === false" icon="ant-design:question-circle-outlined" class="mr-0.5"></fs-icon>
       <div class="hidden md:block">使用教程</div>
     </template>
     <slot></slot>

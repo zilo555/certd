@@ -18,23 +18,6 @@ export const aboutResource = [
         return !settingStore.isComm;
       }
     }
-  },
-  {
-    title: "教程",
-    name: "help",
-    path: "/help",
-    meta: {
-      icon: "lucide:copyright",
-      order: 9999,
-      show: () => {
-        const settingStore = useSettingStore();
-        return !settingStore.isComm;
-      },
-      slot() {
-        return <TutorialButton className="flex-center" show-icon={false} />;
-      },
-      click() {}
-    }
   }
 ];
 

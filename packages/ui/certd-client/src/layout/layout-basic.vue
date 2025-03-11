@@ -63,6 +63,9 @@ onMounted(async () => {
       <LockScreen :avatar @to-login="handleLogout" />
     </template>
     <template #header-right-0>
+      <div class="hover:bg-accent ml-1 mr-2 cursor-pointer rounded-full hidden md:block">
+        <tutorial-button v-if="!settingStore.isComm" class="flex-center header-btn" />
+      </div>
       <div class="hover:bg-accent ml-1 mr-2 cursor-pointer rounded-full">
         <vip-button class="flex-center header-btn" mode="nav" />
       </div>

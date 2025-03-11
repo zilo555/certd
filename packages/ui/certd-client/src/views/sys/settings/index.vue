@@ -3,7 +3,7 @@
     <!--    <template #header>-->
     <!--      <div class="title">系统设置</div>-->
     <!--    </template>-->
-    <div class="sys-settings-body">
+    <div class="sys-settings-body md:p-5">
       <a-tabs :active-key="activeKey" type="card" class="sys-settings-tabs" @update:active-key="onChange">
         <a-tab-pane key="" tab="基本设置">
           <SettingBase v-if="activeKey === ''" />
@@ -53,13 +53,13 @@ function onChange(value: string) {
 .page-sys-settings {
   .sys-settings-form {
     width: 500px;
-    margin: 20px;
+    max-width: 100%;
+    padding: 20px;
   }
 
   .sys-settings-body {
     height: 100%;
     padding-top: 20px;
-    padding-left: 20px;
     .sys-settings-tabs {
       height: 100%;
       display: flex;

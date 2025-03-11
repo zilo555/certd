@@ -13,12 +13,12 @@
             <div>
               <span>您好，{{ userInfo.nickName || userInfo.username }}， 欢迎使用 【{{ siteInfo.title }}】</span>
             </div>
-            <div class="flex-o">
-              <a-tag color="green" class="flex-inline pointer m-0"> <fs-icon icon="ion:time-outline"></fs-icon> {{ now }}</a-tag>
+            <div class="flex-o flex-wrap profile-badges">
+              <a-tag color="green" class="flex-inline pointer"> <fs-icon icon="ion:time-outline"></fs-icon> {{ now }}</a-tag>
               <template v-if="userStore.isAdmin">
                 <a-divider type="vertical" />
                 <a-badge :dot="hasNewVersion">
-                  <a-tag color="blue" class="flex-inline pointer m-0" :title="'最新版本:' + latestVersion" @click="openUpgradeUrl()">
+                  <a-tag color="blue" class="flex-inline pointer mr-0" :title="'最新版本:' + latestVersion" @click="openUpgradeUrl()">
                     <fs-icon icon="ion:rocket-outline" class="mr-5"></fs-icon>
                     v{{ version }}
                   </a-tag>
@@ -244,6 +244,12 @@ function openUpgradeUrl() {
     display: flex;
     align-items: center;
     padding: 20px;
+
+    .profile-badges {
+      > * {
+        margin: 4px;
+      }
+    }
 
     .avatar {
       margin-right: 10px;

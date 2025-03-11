@@ -1,18 +1,10 @@
 <template>
-  <fs-page class="page-sys-site">
+  <fs-page class="page-sys-settings page-sys-site">
     <template #header>
       <div class="title">站点个性化设置</div>
     </template>
-    <div class="sys-site-form">
-      <a-form
-        :model="formState"
-        name="basic"
-        :label-col="{ span: 8 }"
-        :wrapper-col="{ span: 16 }"
-        autocomplete="off"
-        @finish="onFinish"
-        @finish-failed="onFinishFailed"
-      >
+    <div class="sys-settings-form">
+      <a-form :model="formState" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" @finish="onFinish" @finish-failed="onFinishFailed">
         <a-form-item label="站点名称" name="title">
           <a-input v-model:value="formState.title" />
         </a-form-item>
@@ -20,22 +12,10 @@
           <a-input v-model:value="formState.slogan" />
         </a-form-item>
         <a-form-item label="Logo" name="logo">
-          <fs-cropper-uploader
-            v-model:model-value="formState.logo"
-            :cropper="cropperOptions"
-            value-type="key"
-            :uploader="uploaderConfig"
-            :build-url="buildUrl"
-          />
+          <fs-cropper-uploader v-model:model-value="formState.logo" :cropper="cropperOptions" value-type="key" :uploader="uploaderConfig" :build-url="buildUrl" />
         </a-form-item>
         <a-form-item label="登录页Logo" name="loginLogo">
-          <fs-cropper-uploader
-            v-model:model-value="formState.loginLogo"
-            :cropper="loginLogoCropperOptions"
-            value-type="key"
-            :uploader="uploaderConfig"
-            :build-url="buildUrl"
-          />
+          <fs-cropper-uploader v-model:model-value="formState.loginLogo" :cropper="loginLogoCropperOptions" value-type="key" :uploader="uploaderConfig" :build-url="buildUrl" />
         </a-form-item>
         <a-form-item label="你的主体名称" name="licenseTo">
           <a-input v-model:value="formState.licenseTo" />
@@ -44,7 +24,7 @@
         <a-form-item label="你的主体URL" name="licenseToUrl">
           <a-input v-model:value="formState.licenseToUrl" />
         </a-form-item>
-        <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
+        <a-form-item label=" " :colon="false" :wrapper-col="{ span: 8 }">
           <a-button :loading="saveLoading" type="primary" html-type="submit">保存</a-button>
         </a-form-item>
       </a-form>
@@ -122,7 +102,7 @@ function buildUrl(key: string) {
   return `/api/basic/file/download?&key=` + key;
 }
 
-function onFinishFailed(err) {
+function onFinishFailed(err: any) {
   console.log(err);
 }
 
@@ -139,12 +119,6 @@ const loginLogoCropperOptions = ref({
 </script>
 
 <style lang="less">
-.page-sys-site {
-  .sys-site-form {
-    width: 500px;
-    margin: 20px;
-  }
-}
 .fs-cropper-dialog__preview img {
   border-radius: 0 !important;
   margin-top: 0 !important;
