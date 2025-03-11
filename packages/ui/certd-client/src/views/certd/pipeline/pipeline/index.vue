@@ -222,7 +222,11 @@
       </div>
 
       <div class="layout-right">
-        <a-page-header title="运行历史" sub-title="点任务可查看日志" class="logs-block" :ghost="false">
+        <a-page-header title="运行历史" sub-title="点任务可查看日志" class="logs-block" :class="{ collapse: logsCollapse }" :ghost="false">
+          <div class="collapse-toggle" @click="toggleLogsCollapse">
+            1111
+            <fs-icon icon="ion:search"></fs-icon>
+          </div>
           <a-timeline class="mt-10">
             <template v-for="item of histories" :key="item.id">
               <pi-history-timeline-item
@@ -755,9 +759,15 @@ export default defineComponent({
         console.log("currentPipeline", pipeline);
       };
 
+      const logsCollapse = ref(false);
+      function toggleLogsCollapse() {
+        logsCollapse.value = !logsCollapse.value;
+      }
       return {
         historyView,
-        historyCancel
+        historyCancel,
+        logsCollapse,
+        toggleLogsCollapse
       };
     }
 
@@ -799,7 +809,9 @@ export default defineComponent({
   .pi-status-show {
     display: inline-flex;
   }
-
+  .fs-page-content {
+    overflow-x: auto;
+  }
   .layout {
     width: 100%;
     height: 100%;
@@ -1006,6 +1018,28 @@ export default defineComponent({
   .logs-block {
     height: 100%;
     overflow-y: auto;
+    max-width: 90vw;
+
+    .ant-page-header-content {
+      position: relative;
+    }
+
+    &.collapse{
+
+    }
+
+    .collapse-toggle {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      cursor: pointer;
+      font-size: 20px;
+      color: #1890ff;
+      width: 80px;
+      height: 80px;
+      border: 1px solid #1890ff;
+      z-index: 10000;
+    }
   }
 }
 </style>
