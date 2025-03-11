@@ -3,12 +3,12 @@
     <a-tabs v-model:active-key="activeKey" :tab-position="tabPosition" animated>
       <a-tab-pane v-for="item of detail.nodes" :key="item.node.id">
         <template #tab>
-          <div class="tab-title" :title="item.node.title">
-            <span class="tab-title-text flex items-center">
-              <fs-icon icon="ion:chevron-forward-circle" class="text-md mr-1"></fs-icon>
+          <div class="tab-title flex-between" :title="item.node.title">
+            <span class="tab-title-text flex items-center md:w-40">
+              <pi-status-show class="mr-1" :status="item.node.status?.result" type="icon"></pi-status-show>
+              <!--              <fs-icon icon="ion:chevron-forward-circle" class="text-md mr-1"></fs-icon>-->
               {{ item.node.title }}
             </span>
-            <pi-status-show :status="item.node.status?.result" type="icon"></pi-status-show>
           </div>
         </template>
         <div class="pi-task-view-logs" :class="'id-' + item.node.id" style="overflow: auto">
