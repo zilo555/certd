@@ -29,6 +29,17 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
 
   return {
     crudOptions: {
+      settings: {
+        plugins: {
+          mobile: {
+            props: {
+              rowHandle: {
+                width: 160
+              }
+            }
+          }
+        }
+      },
       request: {
         pageRequest,
         addRequest,

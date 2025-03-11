@@ -1,10 +1,13 @@
 <template>
   <a-modal v-model:open="taskModal.open" class="pi-task-view" title="任务日志" style="width: 80%" v-bind="taskModal">
-    <a-tabs v-model:active-key="activeKey" tab-position="left" animated>
+    <a-tabs v-model:active-key="activeKey" :tab-position="tabPosition" animated>
       <a-tab-pane v-for="item of detail.nodes" :key="item.node.id">
         <template #tab>
           <div class="tab-title" :title="item.node.title">
-            <span class="tab-title-text">【{{ item.type }}】 {{ item.node.title }}</span>
+            <span class="tab-title-text flex items-center">
+              <fs-icon icon="ion:chevron-forward-circle" class="text-md mr-1"></fs-icon>
+              {{ item.node.title }}
+            </span>
             <pi-status-show :status="item.node.status?.result" type="icon"></pi-status-show>
           </div>
         </template>
@@ -22,6 +25,7 @@
 import { computed, inject, nextTick, Ref, ref, watch } from "vue";
 import { RunHistory } from "../../type";
 import PiStatusShow from "/@/views/certd/pipeline/pipeline/component/status-show.vue";
+import { usePreferences } from "/@/vben/preferences";
 
 export default {
   name: "PiTaskView",
@@ -34,6 +38,13 @@ export default {
         taskViewClose();
       },
       cancelText: "关闭"
+    });
+    const { isMobile } = usePreferences();
+    const tabPosition = computed(() => {
+      if (isMobile.value) {
+        return "top";
+      }
+      return "left";
     });
 
     const detail = ref({ nodes: [] });
@@ -129,7 +140,8 @@ export default {
       taskModal,
       activeKey,
       taskViewOpen,
-      taskViewClose
+      taskViewClose,
+      tabPosition
     };
   }
 };
@@ -141,8 +153,8 @@ export default {
     display: flex;
 
     .tab-title-text {
-      display: inline-block;
-      width: 180px;
+      display: flex;
+      max-width: 180px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;

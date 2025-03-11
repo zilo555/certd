@@ -95,4 +95,12 @@ export class CertInfoController extends CrudController<CertInfoService> {
 
     return this.ok(res);
   }
+
+  @Post('/getCert', { summary: Constants.per.authOnly })
+  async getCert(@Query('id') id: number) {
+    await this.service.checkUserId(id, this.getUserId());
+    const certInfoEntity = await this.service.info(id);
+    const certInfo = JSON.parse(certInfoEntity.certInfo);
+    return this.ok(certInfo);
+  }
 }

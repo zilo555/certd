@@ -5,9 +5,11 @@
       <div class="flex-o mt-5"><span class="label">说明：</span>{{ product.intro }}</div>
       <div class="flex-o mt-5">
         <span class="label">规格：</span>
-        <span class="flex-o">流水线<suite-value class="ml-5" :model-value="product.content.maxPipelineCount" unit="条" />；</span>
-        <span class="flex-o">域名<suite-value class="ml-5" :model-value="product.content.maxDomainCount" unit="个" />；</span>
-        <span class="flex-o">部署次数<suite-value class="ml-5" :model-value="product.content.maxDeployCount" unit="次" />；</span>
+        <span class="flex-o flex-wrap">
+          <span class="flex-o">流水线<suite-value class="ml-5" :model-value="product.content.maxPipelineCount" unit="条" />；</span>
+          <span class="flex-o">域名<suite-value class="ml-5" :model-value="product.content.maxDomainCount" unit="个" />；</span>
+          <span class="flex-o">部署次数<suite-value class="ml-5" :model-value="product.content.maxDeployCount" unit="次" />；</span>
+        </span>
       </div>
 
       <div class="flex-o mt-5">
@@ -210,6 +212,7 @@ defineExpose({
     text-align: right;
     margin-right: 5px;
     color: #686868;
+    flex: none;
   }
 }
 

@@ -1036,7 +1036,6 @@ export default defineComponent({
       height: 30px;
       border: 1px solid #eee;
       border-right: 0;
-      z-index: 10000;
       border-radius: 5px 0 0 5px;
       display: flex;
       justify-content: center;

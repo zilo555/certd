@@ -1,4 +1,5 @@
 import { request } from "/src/api/service";
+import { CertInfo } from "/@/views/certd/pipeline/api";
 
 const apiPrefix = "/monitor/cert";
 export const certInfoApi = {
@@ -52,6 +53,13 @@ export const certInfoApi = {
       url: apiPrefix + "/upload",
       method: "post",
       data: body
+    });
+  },
+  async GetCert(id: number): Promise<CertInfo> {
+    return await request({
+      url: apiPrefix + "/getCert",
+      method: "post",
+      params: { id: id }
     });
   }
 };

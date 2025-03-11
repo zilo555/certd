@@ -1,12 +1,5 @@
 <template>
-  <a-drawer
-    v-model:open="notificationDrawerVisible"
-    placement="right"
-    :closable="true"
-    width="600px"
-    class="pi-notification-form"
-    @after-open-change="notificationDrawerOnAfterVisibleChange"
-  >
+  <a-drawer v-model:open="notificationDrawerVisible" placement="right" :closable="true" width="600px" class="pi-notification-form" @after-open-change="notificationDrawerOnAfterVisibleChange">
     <template #title>
       <div>
         编辑通知
@@ -59,11 +52,7 @@
               rules: [{ required: true, message: '此项必填' }]
             }"
           />
-          <pi-notification-form-email
-            v-if="currentNotification.type === 'email'"
-            ref="optionsRef"
-            v-model:options="currentNotification.options"
-          ></pi-notification-form-email>
+          <pi-notification-form-email v-if="currentNotification.type === 'email'" ref="optionsRef" v-model:options="currentNotification.options"></pi-notification-form-email>
 
           <fs-form-item
             v-else

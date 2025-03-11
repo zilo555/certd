@@ -5,6 +5,10 @@ import { certInfoApi } from "./api";
 import dayjs from "dayjs";
 import { useUserStore } from "/@/store/modules/user";
 import { useRouter } from "vue-router";
+import { useModal } from "/@/use/use-modal";
+import * as api from "/@/views/certd/pipeline/api";
+import { notification } from "ant-design-vue";
+import CertView from "/@/views/certd/pipeline/cert-view.vue";
 
 export default function ({ crudExpose, context }: CreateCrudOptionsProps): CreateCrudOptionsRet {
   const { t } = useI18n();
@@ -30,6 +34,26 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
   };
   const { openCrudFormDialog } = useFormWrapper();
   const router = useRouter();
+
+  const model = useModal();
+  const viewCert = async (row: any) => {
+    const cert = await api.GetCert(row.id);
+    if (!cert) {
+      notification.error({ message: "证书还未生成，请先运行流水线" });
+      return;
+    }
+
+    model.success({
+      title: "查看证书",
+      maskClosable: true,
+      okText: "关闭",
+      width: 800,
+      content: () => {
+        return <CertView cert={cert}></CertView>;
+      }
+    });
+  };
+
   return {
     crudOptions: {
       request: {
@@ -120,6 +144,15 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
         fixed: "right",
         buttons: {
           view: { show: false },
+          viewCert: {
+            order: 3,
+            title: "查看证书",
+            type: "link",
+            icon: "ph:certificate",
+            async click({ row }) {
+              await viewCert(row);
+            }
+          },
           copy: { show: false },
           edit: { show: false },
           remove: { show: false }
