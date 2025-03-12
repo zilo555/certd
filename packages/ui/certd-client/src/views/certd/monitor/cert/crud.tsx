@@ -140,7 +140,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
         }
       },
       rowHandle: {
-        width: 200,
+        width: 100,
         fixed: "right",
         buttons: {
           view: { show: false },
@@ -223,8 +223,8 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             show: false
           }
         },
-        expiresTime: {
-          title: "过期时间",
+        expiresLeft: {
+          title: "有效天数",
           search: {
             show: false
           },
@@ -234,7 +234,9 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           },
           column: {
             sorter: true,
-            cellRender({ value }) {
+            conditionalRender: false,
+            cellRender({ row }) {
+              const value = row.expiresTime;
               if (!value) {
                 return "-";
               }
@@ -244,6 +246,19 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
               const percent = (leftDays / 90) * 100;
               return <a-progress title={expireDate + "过期"} percent={percent} strokeColor={color} format={(percent: number) => `${leftDays}天`} />;
             }
+          }
+        },
+        expiresTime: {
+          title: "过期时间",
+          search: {
+            show: false
+          },
+          type: "datetime",
+          form: {
+            show: false
+          },
+          column: {
+            sorter: true
           }
         },
         certProvider: {
