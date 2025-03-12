@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.31.2](https://github.com/certd/certd/compare/v1.31.1...v1.31.2) (2025-03-12)
+
+### Bug Fixes
+
+* 修复cname记录查找bug ([95fb4e3](https://github.com/certd/certd/commit/95fb4e3e8be6ca13cc43b451f6141d62190ba453))
+
 ## [1.31.1](https://github.com/certd/certd/compare/v1.31.0...v1.31.1) (2025-03-11)
 
 **Note:** Version bump only for package @certd/ui-server
