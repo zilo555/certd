@@ -64,6 +64,18 @@ export class AliyunDeployCertToFC extends AbstractPlusTaskPlugin {
   })
   regionId!: string;
 
+
+  @TaskInput({
+    title: '阿里云账号id',
+    helper: '阿里云主账号ID，右上角头像下方获取',
+    component: {
+      name: 'a-input',
+      vModel:"value"
+    },
+    required: true,
+  })
+  accountId!: string;
+
   @TaskInput({
     title: 'Access授权',
     helper: '阿里云授权AccessKeyId、AccessKeySecret',
@@ -157,7 +169,7 @@ export class AliyunDeployCertToFC extends AbstractPlusTaskPlugin {
       accessKeySecret: access.accessKeySecret,
     });
     // Endpoint 请参考 https://api.aliyun.com/product/FC
-    config.endpoint = `1831228848739566.${this.regionId}.fc.aliyuncs.com`;
+    config.endpoint = `${this.accountId}.${this.regionId}.fc.aliyuncs.com`;
     return new $OpenApi.default.default(config);
   }
 
