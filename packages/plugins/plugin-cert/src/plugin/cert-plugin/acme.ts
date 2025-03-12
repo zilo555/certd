@@ -144,7 +144,7 @@ export class AcmeService {
       accountKey: conf.key,
       accountUrl: conf.accountUrl,
       externalAccountBinding: this.eab,
-      backoffAttempts: 15,
+      backoffAttempts: 20,
       backoffMin: 5000,
       backoffMax: 10000,
       urlMapping,
