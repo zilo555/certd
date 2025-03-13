@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.31.3](https://github.com/certd/certd/compare/v1.31.2...v1.31.3) (2025-03-13)
+
+### Bug Fixes
+
+* 修复阿里云fc获取不到列表的bug ([474b337](https://github.com/certd/certd/commit/474b3372d8ce98e6d45900bf8046bc0b3f220686))
+
+### Performance Improvements
+
+* 1panel支持 apikey方式授权 ([170b2af](https://github.com/certd/certd/commit/170b2afb0e3b125e4ed057f633fe895b5ac3ac22))
+* 套餐支持3天7天等选项 ([0d71a8e](https://github.com/certd/certd/commit/0d71a8ee501a0e5bb69decf07e8729026e9d85bf))
+* 证书仓库增加有效期显示 ([be87124](https://github.com/certd/certd/commit/be87124ada7a093f281ca29a45c86b4ea4644ead))
+* 支持部署到天翼云CDN ([82a72e0](https://github.com/certd/certd/commit/82a72e0b497efa043d342ad0e33c083a2de79a05))
+* 支持dns.la ([ee8af18](https://github.com/certd/certd/commit/ee8af18d0ac0af82544d6dda1e4b4c678b733041))
+* cf授权支持配置http代理 ([27386ea](https://github.com/certd/certd/commit/27386ea04d3c1a5aebe3cfdd7ac48185eaa76629))
+
 ## [1.31.2](https://github.com/certd/certd/compare/v1.31.1...v1.31.2) (2025-03-12)
 
 ### Bug Fixes

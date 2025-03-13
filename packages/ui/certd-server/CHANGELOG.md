@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.31.3](https://github.com/certd/certd/compare/v1.31.2...v1.31.3) (2025-03-13)
+
+### Bug Fixes
+
+* 修复阿里云fc获取不到列表的bug ([474b337](https://github.com/certd/certd/commit/474b3372d8ce98e6d45900bf8046bc0b3f220686))
+
+### Performance Improvements
+
+* 支持dns.la ([ee8af18](https://github.com/certd/certd/commit/ee8af18d0ac0af82544d6dda1e4b4c678b733041))
+* cf授权支持配置http代理 ([27386ea](https://github.com/certd/certd/commit/27386ea04d3c1a5aebe3cfdd7ac48185eaa76629))
+
 ## [1.31.2](https://github.com/certd/certd/compare/v1.31.1...v1.31.2) (2025-03-12)
 
 ### Bug Fixes

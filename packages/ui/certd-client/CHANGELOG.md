@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.31.3](https://github.com/certd/certd/compare/v1.31.2...v1.31.3) (2025-03-13)
+
+### Performance Improvements
+
+* 套餐支持3天7天等选项 ([0d71a8e](https://github.com/certd/certd/commit/0d71a8ee501a0e5bb69decf07e8729026e9d85bf))
+* 证书仓库增加有效期显示 ([be87124](https://github.com/certd/certd/commit/be87124ada7a093f281ca29a45c86b4ea4644ead))
+* 支持部署到天翼云CDN ([82a72e0](https://github.com/certd/certd/commit/82a72e0b497efa043d342ad0e33c083a2de79a05))
+
 ## [1.31.2](https://github.com/certd/certd/compare/v1.31.1...v1.31.2) (2025-03-12)
 
 **Note:** Version bump only for package @certd/ui-client

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.31.3](https://github.com/certd/certd/compare/v1.31.2...v1.31.3) (2025-03-13)
+
+### Performance Improvements
+
+* 支持部署到天翼云CDN ([82a72e0](https://github.com/certd/certd/commit/82a72e0b497efa043d342ad0e33c083a2de79a05))
+
 ## [1.31.2](https://github.com/certd/certd/compare/v1.31.1...v1.31.2) (2025-03-12)
 
 **Note:** Version bump only for package @certd/basic
