@@ -25,6 +25,18 @@ export class CloudflareAccess extends BaseAccess {
     encrypt: true,
   })
   apiToken = '';
+
+  @AccessInput({
+    title: 'HTTP代理',
+    component: {
+      placeholder: 'http://xxxx.xxx.xx:10811',
+    },
+    helper:
+      '是否使用http代理',
+    required: false,
+    encrypt: false,
+  })
+  proxy = '';
 }
 
 new CloudflareAccess();

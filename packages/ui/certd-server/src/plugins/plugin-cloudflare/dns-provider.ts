@@ -53,6 +53,7 @@ export class CloudflareDnsProvider extends AbstractDnsProvider<CloudflareRecord>
           Authorization: `Bearer ${this.access.apiToken}`,
         },
         data,
+        httpProxy: this.access.proxy,
       });
 
       if (!res.success) {
