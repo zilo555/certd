@@ -12,7 +12,7 @@ export class CtyunAccess extends BaseAccess {
     component: {
       placeholder: "accessKeyId",
     },
-    helper: "[天翼云AccessKey管理](https://iam.ctyun.cn/myAccessKey)",
+    helper: "[前往创建天翼云AccessKey](https://iam.ctyun.cn/myAccessKey)",
     required: true,
   })
   accessKeyId = "";

@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "35327761",
+      "name": "WAF-长亭-雷池",
+      "font_class": "WAF-changting-leichi",
+      "unicode": "e61d",
+      "unicode_decimal": 58909
+    },
+    {
+      "icon_id": "41854563",
+      "name": "ctyun",
+      "font_class": "ctyun",
+      "unicode": "e719",
+      "unicode_decimal": 59161
+    },
+    {
       "icon_id": "24164616",
       "name": "华为",
       "font_class": "huawei",
