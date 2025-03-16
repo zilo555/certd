@@ -76,8 +76,7 @@ export default function (certPlugins: any[], formWrapperRef: any): CreateCrudOpt
           dict: dict({
             data: [
               { value: "CertApply", label: "JS-ACME" },
-              { value: "CertApplyLego", label: "Lego-ACME" },
-              { value: "CertUpload", label: "上传自定义证书" }
+              { value: "CertApplyLego", label: "Lego-ACME" }
             ]
           }),
           form: {

@@ -21,10 +21,27 @@ export class SiteInfoController extends CrudController<SiteInfoService> {
   async page(@Body(ALL) body: any) {
     body.query = body.query ?? {};
     body.query.userId = this.getUserId();
+    const certDomains = body.query.certDomains;
+    const domain = body.query.domain;
+    const name = body.query.name;
+    delete body.query.certDomains;
+    delete body.query.domain;
+    delete body.query.name;
     const res = await this.service.page({
       query: body.query,
       page: body.page,
       sort: body.sort,
+      buildQuery: (bq) => {
+        if (domain) {
+          bq.andWhere('domain like :domain', { domain: `%${domain}%` });
+        }
+        if (certDomains) {
+          bq.andWhere('cert_domains like :cert_domains', { cert_domains: `%${certDomains}%` });
+        }
+        if (name) {
+          bq.andWhere('name like :name', { name: `%${name}%` });
+        }
+      }
     });
     return this.ok(res);
   }
