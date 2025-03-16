@@ -67,13 +67,24 @@ export const certdResources = [
         title: "设置",
         name: "MineSetting",
         path: "/certd/setting",
-        redirect: "/certd/cname/record",
+        redirect: "/certd/access",
         meta: {
           icon: "ion:settings-outline",
           auth: true,
           cache: true
         },
         children: [
+          {
+            title: "授权管理",
+            name: "AccessManager",
+            path: "/certd/access",
+            component: "/certd/access/index.vue",
+            meta: {
+              icon: "ion:disc-outline",
+              auth: true,
+              cache: true
+            }
+          },
           {
             title: "CNAME记录管理",
             name: "CnameRecord",
@@ -94,17 +105,7 @@ export const certdResources = [
               auth: true
             }
           },
-          {
-            title: "授权管理",
-            name: "AccessManager",
-            path: "/certd/access",
-            component: "/certd/access/index.vue",
-            meta: {
-              icon: "ion:disc-outline",
-              auth: true,
-              cache: true
-            }
-          },
+
           {
             title: "OpenKey",
             name: "OpenKey",

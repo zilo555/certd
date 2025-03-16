@@ -18,12 +18,12 @@
 
     <div class="layout">
       <div class="layout-left">
-        <div class="pipeline-container bg-neutral-100 dark:bg-black">
+        <div ref="pipelineContainer" class="pipeline-container bg-neutral-100 dark:bg-black">
           <div class="pipeline">
             <v-draggable v-model="pipeline.stages" class="stages" item-key="id" handle=".stage-move-handle" :disabled="!settingStore.isPlus">
               <template #header>
                 <div class="stage first-stage">
-                  <div class="title stage-move-handle">
+                  <div class="title">
                     <text-editable model-value="触发源" :disabled="true" />
                   </div>
                   <div class="tasks">
@@ -67,13 +67,13 @@
 
               <template #item="{ element: stage, index }">
                 <div :key="stage.id" class="stage" :class="{ 'last-stage': isLastStage(index), ['stage_' + index]: true }">
-                  <div class="title">
+                  <div class="title" @mousedown.stop>
                     <text-editable v-model="stage.title" :disabled="!editMode"></text-editable>
                     <div v-plus class="icon-box stage-move-handle">
                       <fs-icon v-if="editMode" title="拖动排序" icon="ion:move-outline"></fs-icon>
                     </div>
                   </div>
-                  <v-draggable v-model="stage.tasks" item-key="id" class="tasks" group="task" handle=".task-move-handle" :disabled="!settingStore.isPlus">
+                  <v-draggable v-model="stage.tasks" item-key="id" class="tasks" group="task" handle=".task-move-handle" :disabled="!settingStore.isPlus" @mousedown.stop>
                     <template #item="{ element: task, index: taskIndex }">
                       <div
                         class="task-container"
@@ -771,10 +771,51 @@ export default defineComponent({
       };
     }
 
+    function useScroll() {
+      const pipelineContainer = ref();
+      onMounted(() => {
+        if (pipelineContainer.value) {
+          const scrollableDiv = pipelineContainer.value;
+          let isDragging = false;
+          let startX: any = null;
+          let scrollLeft: any = null;
+
+          scrollableDiv.addEventListener("mousedown", (e: any) => {
+            isDragging = true;
+            startX = e.pageX - scrollableDiv.offsetLeft;
+            scrollLeft = scrollableDiv.scrollLeft;
+            scrollableDiv.style.cursor = "grabbing"; // 按住时变成抓手
+            e.stopPropagation();
+          });
+
+          scrollableDiv.addEventListener("mouseleave", () => {
+            isDragging = false;
+            scrollableDiv.style.cursor = "grab"; // 离开时恢复光标
+          });
+
+          scrollableDiv.addEventListener("mouseup", () => {
+            isDragging = false;
+            scrollableDiv.style.cursor = "grab"; // 松开时恢复光标
+          });
+
+          scrollableDiv.addEventListener("mousemove", (e: any) => {
+            if (!isDragging) return; // 如果没有按住鼠标，退出
+            e.preventDefault();
+            const x = e.pageX - scrollableDiv.offsetLeft;
+            const walk = (x - startX) * 2; // 移动的速度
+            scrollableDiv.scrollLeft = scrollLeft - walk; // 更新滚动位置
+          });
+        }
+      });
+
+      return { pipelineContainer };
+    }
+
     const useTaskRet = useTask();
     const useStageRet = useStage(useTaskRet);
     const settingStore = useSettingStore();
     const userStore = useUserStore();
+
     return {
       pipeline,
       currentHistory,
@@ -787,7 +828,8 @@ export default defineComponent({
       ...useTrigger(),
       ...useActions(),
       ...useHistory(),
-      ...useNotification()
+      ...useNotification(),
+      ...useScroll()
     };
   }
 });
