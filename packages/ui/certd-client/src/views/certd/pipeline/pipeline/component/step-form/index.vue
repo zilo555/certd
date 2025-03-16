@@ -1,5 +1,5 @@
 <template>
-  <a-drawer v-model:open="stepDrawerVisible" placement="right" :closable="true" width="760px" class="step-form-drawer" :class="{ fullscreen }">
+  <a-drawer v-model:open="stepDrawerVisible" :wrap-style="{ maxWidth: '100vw' }" placement="right" :closable="true" width="760px" class="step-form-drawer" :class="{ fullscreen }">
     <template #title>
       <div>
         编辑步骤
@@ -9,7 +9,7 @@
           </a-button>
         </template>
       </div>
-      <div>
+      <div class="hidden md:block">
         <fs-icon class="icon-button" :icon="fullscreen ? 'material-symbols:fullscreen-exit' : 'material-symbols:fullscreen'" @click="fullscreen = !fullscreen"></fs-icon>
       </div>
     </template>
@@ -31,7 +31,7 @@
                 </a-col>
               </a-row>
               <a-row v-else :gutter="10">
-                <a-col v-for="item of group.plugins" :key="item.key" class="step-plugin">
+                <a-col v-for="item of group.plugins" :key="item.key" class="step-plugin w-full md:w-[50%]">
                   <a-card
                     hoverable
                     :class="{ current: item.name === currentStep.type }"
@@ -413,6 +413,10 @@ export default {
 
 <style lang="less">
 .step-form-drawer {
+  max-width: 100%;
+  .ant-tabs-right > div > .ant-tabs-nav .ant-tabs-tab {
+    padding: 8px 10px;
+  }
   &.fullscreen {
     .pi-step-form {
       .body {
@@ -437,6 +441,10 @@ export default {
     }
   }
 
+  .ant-drawer-body {
+    padding: 10px;
+  }
+
   .pi-step-form {
     .bottom-button {
       padding: 20px;
@@ -456,7 +464,6 @@ export default {
       padding: 0px;
 
       .step-plugin {
-        width: 50%;
       }
 
       .ant-tabs-content {
