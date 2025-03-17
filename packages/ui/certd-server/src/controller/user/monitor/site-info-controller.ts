@@ -84,7 +84,7 @@ export class SiteInfoController extends CrudController<SiteInfoService> {
   @Post('/check', { summary: Constants.per.authOnly })
   async check(@Body('id') id: number) {
     await this.service.checkUserId(id, this.getUserId());
-    await this.service.check(id, false, 0);
+    await this.service.check(id, true, 0);
     return this.ok();
   }
 

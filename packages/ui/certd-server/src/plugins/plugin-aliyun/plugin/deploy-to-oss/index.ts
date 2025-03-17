@@ -69,6 +69,7 @@ export class DeployCertToAliyunOSS extends AbstractTaskPlugin {
   })
   domainName!: string;
 
+
   @TaskInput({
     title: '证书名称',
     helper: '上传后将以此名称作为前缀备注',
