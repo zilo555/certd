@@ -78,7 +78,7 @@ export class WebhookNotification extends BaseNotification {
     col: {
       span: 24,
     },
-    helper: `根据实际的webhook接口，构建一个json对象作为参数，支持变量：{title}、{content}、{url}，变量用{}包裹，字符串需要双引号\n如果是get方式，将作为query参数拼接到url上`,
+    helper: `根据对应的webhook接口文档，构建一个json对象作为参数（默认值只是一个示例，一般不是正确的参数）\n支持变量：{title}、{content}、{url}，变量用{}包裹\n字符串需要双引号，使用\\n换行\n如果是get方式，将作为query参数拼接到url上`,
     required: true,
   })
   template = '';
@@ -98,8 +98,10 @@ export class WebhookNotification extends BaseNotification {
     let bodyStr = target;
     const keys = Object.keys(body);
     for (const key of keys) {
-      const value = urlEncode ? encodeURIComponent(body[key]) : body[key];
+      let value = urlEncode ? encodeURIComponent(body[key]) : body[key];
+      value = value.replaceAll(`\n`, "\\n");
       bodyStr = bodyStr.replaceAll(`{${key}}`, value);
+
     }
     return bodyStr;
   }

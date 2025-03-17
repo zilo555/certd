@@ -173,9 +173,7 @@ export class SiteInfoService extends BaseService<SiteInfoEntity> {
         body: {
           url,
           title: `站点证书检查出错<${site.name}>`,
-          content: `站点名称： ${site.name} \n
-站点域名： ${site.domain} \n
-错误信息：${site.error}`,
+          content: `站点名称： ${site.name} \n站点域名： ${site.domain} \n错误信息：${site.error}`,
         },
       },
       site.userId
@@ -188,11 +186,7 @@ export class SiteInfoService extends BaseService<SiteInfoEntity> {
     const expires = site.certExpiresTime;
     const validDays = dayjs(expires).diff(dayjs(), 'day');
     const url = await this.notificationService.getBindUrl('#/monitor/site');
-    const content = `站点名称： ${site.name} \n
-站点域名： ${site.domain} \n
-证书域名： ${site.certDomains} \n
-证书颁发者： ${site.certProvider} \n
-过期时间： ${dayjs(site.certExpiresTime).format('YYYY-MM-DD')} \n`;
+    const content = `站点名称： ${site.name} \n站点域名： ${site.domain} \n证书域名： ${site.certDomains} \n证书颁发者： ${site.certProvider} \n过期时间： ${dayjs(site.certExpiresTime).format('YYYY-MM-DD')} \n`;
     if (validDays >= 0 && validDays < tipDays) {
       // 发通知
       await this.notificationService.send(

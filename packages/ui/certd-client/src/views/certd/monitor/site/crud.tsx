@@ -235,9 +235,10 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             show: false
           },
           column: {
-            width: 100,
+            width: 110,
             sorter: true,
-            show: false
+            show: true,
+            align: "center"
           }
         },
         certExpiresTime: {
