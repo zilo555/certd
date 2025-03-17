@@ -3,6 +3,9 @@ import { Constants, CrudController } from '@certd/lib-server';
 import { AuthService } from '../../../modules/sys/authority/service/auth-service.js';
 import { CertInfoService } from '../../../modules/monitor/index.js';
 import { PipelineService } from '../../../modules/pipeline/service/pipeline-service.js';
+import { SelectQueryBuilder } from "typeorm";
+import { CertUploadService } from "../../../modules/monitor/service/cert-upload-service.js";
+import { CertInfo } from "@certd/plugin-cert";
 
 /**
  */
@@ -13,6 +16,8 @@ export class CertInfoController extends CrudController<CertInfoService> {
   service: CertInfoService;
   @Inject()
   authService: AuthService;
+  @Inject()
+  certUploadService: CertUploadService;
   @Inject()
   pipelineService: PipelineService;
 
@@ -57,6 +62,31 @@ export class CertInfoController extends CrudController<CertInfoService> {
     return await super.list(body);
   }
 
+
+  @Post('/getOptionsByIds', { summary: Constants.per.authOnly })
+  async getOptionsByIds(@Body(ALL) body: {ids:any[]}) {
+
+    const list = await this.service.list({
+      query:{
+        userId: this.getUserId(),
+      },
+      buildQuery: (bq: SelectQueryBuilder<any>) => {
+        bq.andWhere('id in (:...ids)', { ids: body.ids });
+      }
+    })
+
+    const safeList =list.map((item:any) => {
+      const domainsArr = item.domains? item.domains.split(',') : [];
+      return {
+        id: item.id,
+        domain: item.domain,
+        domains:domainsArr,
+        userId: item.userId,
+      }
+    })
+    return this.ok(safeList);
+  }
+
   @Post('/add', { summary: Constants.per.authOnly })
   async add(@Body(ALL) bean: any) {
     bean.userId = this.getUserId();
@@ -92,18 +122,25 @@ export class CertInfoController extends CrudController<CertInfoService> {
   }
 
   @Post('/upload', { summary: Constants.per.authOnly })
-  async upload(@Body(ALL) body: any) {
+  async upload(@Body(ALL) body: {cert: CertInfo, pipeline: any, id?: number}) {
     if (body.id) {
       //修改
       await this.service.checkUserId(body.id, this.getUserId());
+      await this.certUploadService.updateCert({
+        id: body.id,
+        userId: this.getUserId(),
+        cert: body.cert,
+      });
     }else{
       //添加
-      body.userId = this.getUserId();
+      await this.certUploadService.createUploadCertPipeline({
+        userId: this.getUserId(),
+        cert: body.cert,
+      });
+
     }
 
-    const res = await this.service.upload(body);
-
-    return this.ok(res);
+    return this.ok();
   }
 
   @Post('/getCert', { summary: Constants.per.authOnly })

@@ -1,5 +1,5 @@
 import { AbstractTaskPlugin, IsTaskPlugin, pluginGroups, RunStrategy, TaskInput } from '@certd/pipeline';
-import { CertInfo } from '@certd/plugin-cert';
+import { CertInfo ,CertApplyPluginNames} from '@certd/plugin-cert';
 import { AliyunAccess, AliyunClient, AliyunSslClient, createCertDomainGetterInputDefine, createRemoteSelectInputDefine } from '@certd/plugin-lib';
 
 @IsTaskPlugin({
@@ -21,7 +21,7 @@ export class AliyunDeployCertToALB extends AbstractTaskPlugin {
     helper: '请选择证书申请任务输出的域名证书\n或者选择前置任务“上传证书到阿里云”任务的证书ID，可以减少上传到阿里云的证书数量',
     component: {
       name: 'output-selector',
-      from: ['CertApply', 'CertApplyLego', 'uploadCertToAliyun'],
+      from: [...CertApplyPluginNames, 'uploadCertToAliyun'],
     },
     required: true,
   })

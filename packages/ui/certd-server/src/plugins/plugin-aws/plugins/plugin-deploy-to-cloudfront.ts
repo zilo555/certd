@@ -5,7 +5,7 @@ import { AwsAcmClient } from '../libs/aws-acm-client.js';
 import { createCertDomainGetterInputDefine, createRemoteSelectInputDefine } from '@certd/plugin-lib';
 import { optionsUtils } from '@certd/basic/dist/utils/util.options.js';
 import { AbstractPlusTaskPlugin } from '@certd/plugin-plus';
-
+import { CertApplyPluginNames} from '@certd/plugin-cert';
 @IsTaskPlugin({
   name: 'AwsDeployToCloudFront',
   title: 'AWS-部署证书到CloudFront',
@@ -25,7 +25,7 @@ export class AwsDeployToCloudFront extends AbstractPlusTaskPlugin {
     helper: '请选择前置任务输出的域名证书',
     component: {
       name: 'output-selector',
-      from: ['CertApply', 'CertApplyLego', 'AwsUploadToACM'],
+      from: [...CertApplyPluginNames, 'AwsUploadToACM'],
     },
     required: true,
   })

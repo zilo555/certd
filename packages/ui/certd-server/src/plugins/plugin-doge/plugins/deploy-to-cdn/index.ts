@@ -2,7 +2,7 @@ import { AbstractTaskPlugin, IsTaskPlugin, pluginGroups, RunStrategy, TaskInput 
 import { CertInfo } from '@certd/plugin-cert';
 import { DogeClient } from '../../lib/index.js';
 import dayjs from 'dayjs';
-
+import { CertApplyPluginNames} from '@certd/plugin-cert';
 @IsTaskPlugin({
   name: 'DogeCloudDeployToCDN',
   title: '多吉云-部署到多吉云CDN',
@@ -27,7 +27,7 @@ export class DogeCloudDeployToCDNPlugin extends AbstractTaskPlugin {
     helper: '请选择前置任务输出的域名证书',
     component: {
       name: 'output-selector',
-      from: ['CertApply', 'CertApplyLego'],
+      from: [...CertApplyPluginNames],
     },
     required: true,
   })

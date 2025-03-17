@@ -1,6 +1,6 @@
-import { Config, Inject, Provide, Scope, ScopeEnum, sleep } from '@midwayjs/core';
-import { InjectEntityModel } from '@midwayjs/typeorm';
-import { In, MoreThan, Repository } from 'typeorm';
+import { Config, Inject, Provide, Scope, ScopeEnum, sleep } from "@midwayjs/core";
+import { InjectEntityModel } from "@midwayjs/typeorm";
+import { In, MoreThan, Repository } from "typeorm";
 import {
   AccessGetter,
   AccessService,
@@ -10,34 +10,36 @@ import {
   PageReq,
   SysPublicSettings,
   SysSettingsService,
-  SysSiteInfo,
-} from '@certd/lib-server';
-import { PipelineEntity } from '../entity/pipeline.js';
-import { PipelineDetail } from '../entity/vo/pipeline-detail.js';
-import { Executor, Pipeline, ResultType, RunHistory, RunnableCollection, SysInfo, UserInfo } from '@certd/pipeline';
-import { DbStorage } from './db-storage.js';
-import { StorageService } from './storage-service.js';
-import { Cron } from '../../cron/cron.js';
-import { HistoryService } from './history-service.js';
-import { HistoryEntity } from '../entity/history.js';
-import { HistoryLogEntity } from '../entity/history-log.js';
-import { HistoryLogService } from './history-log-service.js';
-import { EmailService } from '../../basic/service/email-service.js';
-import { UserService } from '../../sys/authority/service/user-service.js';
-import { CnameRecordService } from '../../cname/service/cname-record-service.js';
-import { CnameProxyService } from './cname-proxy-service.js';
-import { PluginConfigGetter } from '../../plugin/service/plugin-config-getter.js';
-import dayjs from 'dayjs';
-import { DbAdapter } from '../../db/index.js';
-import { isComm } from '@certd/plus-core';
-import { logger } from '@certd/basic';
-import { UrlService } from './url-service.js';
-import { NotificationService } from './notification-service.js';
-import { NotificationGetter } from './notification-getter.js';
-import { UserSuiteEntity, UserSuiteService } from '@certd/commercial-core';
-import { CertInfoService } from '../../monitor/service/cert-info-service.js';
+  SysSiteInfo
+} from "@certd/lib-server";
+import { PipelineEntity } from "../entity/pipeline.js";
+import { PipelineDetail } from "../entity/vo/pipeline-detail.js";
+import { Executor, Pipeline, ResultType, RunHistory, RunnableCollection, SysInfo, UserInfo } from "@certd/pipeline";
+import { DbStorage } from "./db-storage.js";
+import { StorageService } from "./storage-service.js";
+import { Cron } from "../../cron/cron.js";
+import { HistoryService } from "./history-service.js";
+import { HistoryEntity } from "../entity/history.js";
+import { HistoryLogEntity } from "../entity/history-log.js";
+import { HistoryLogService } from "./history-log-service.js";
+import { EmailService } from "../../basic/service/email-service.js";
+import { UserService } from "../../sys/authority/service/user-service.js";
+import { CnameRecordService } from "../../cname/service/cname-record-service.js";
+import { CnameProxyService } from "./cname-proxy-service.js";
+import { PluginConfigGetter } from "../../plugin/service/plugin-config-getter.js";
+import dayjs from "dayjs";
+import { DbAdapter } from "../../db/index.js";
+import { isComm } from "@certd/plus-core";
+import { logger } from "@certd/basic";
+import { UrlService } from "./url-service.js";
+import { NotificationService } from "./notification-service.js";
+import { NotificationGetter } from "./notification-getter.js";
+import { UserSuiteEntity, UserSuiteService } from "@certd/commercial-core";
+import { CertInfoService } from "../../monitor/service/cert-info-service.js";
 
 const runningTasks: Map<string | number, Executor> = new Map();
+
+
 
 /**
  * 证书申请
@@ -191,7 +193,10 @@ export class PipelineService extends BaseService<PipelineEntity> {
     await this.registerTriggerById(bean.id);
 
     //保存域名信息到certInfo表
-    await this.certInfoService.updateDomains(pipeline.id, pipeline.userId || bean.userId, domains);
+    if(bean.from !== 'cert_upload'){
+      await this.certInfoService.updateDomains(pipeline.id, pipeline.userId || bean.userId, domains);
+    }
+
     return bean;
   }
 
@@ -478,8 +483,10 @@ export class PipelineService extends BaseService<PipelineEntity> {
     const serviceContainer = {
       CertInfoService: this.certInfoService
     }
-    const serviceGetter = (name: string) => {
-      return serviceContainer[name]
+    const serviceGetter = {
+      get:(name: string) => {
+        return serviceContainer[name]
+      }
     }
     const executor = new Executor({
       user,
@@ -684,4 +691,7 @@ export class PipelineService extends BaseService<PipelineEntity> {
       },
     });
   }
+
+
+
 }

@@ -2,7 +2,7 @@ import { AbstractTaskPlugin, IsTaskPlugin, pluginGroups, RunStrategy, TaskInput,
 import { CertInfo, CertReader, CertReaderHandleContext } from '@certd/plugin-cert';
 import dayjs from 'dayjs';
 import { SshAccess, SshClient } from '@certd/plugin-lib';
-
+import { CertApplyPluginNames} from '@certd/plugin-cert';
 @IsTaskPlugin({
   name: 'uploadCertToHost',
   title: '主机-部署证书到SSH主机',
@@ -21,7 +21,7 @@ export class UploadCertToHostPlugin extends AbstractTaskPlugin {
     helper: '请选择前置任务输出的域名证书',
     component: {
       name: 'output-selector',
-      from: ['CertApply', 'CertApplyLego'],
+      from: [...CertApplyPluginNames],
     },
     required: true,
   })

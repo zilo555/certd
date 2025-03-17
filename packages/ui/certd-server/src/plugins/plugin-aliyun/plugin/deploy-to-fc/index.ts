@@ -2,7 +2,7 @@ import { IsTaskPlugin, pluginGroups, RunStrategy, TaskInput } from '@certd/pipel
 import { CertInfo } from '@certd/plugin-cert';
 import { AliyunAccess, createCertDomainGetterInputDefine, createRemoteSelectInputDefine } from '@certd/plugin-lib';
 import { AbstractPlusTaskPlugin } from '@certd/plugin-plus';
-
+import { CertApplyPluginNames} from '@certd/plugin-cert';
 @IsTaskPlugin({
   name: 'AliyunDeployCertToFC',
   title: '阿里云-部署至阿里云FC(3.0)',
@@ -22,7 +22,7 @@ export class AliyunDeployCertToFC extends AbstractPlusTaskPlugin {
     helper: '请选择证书申请任务输出的域名证书',
     component: {
       name: 'output-selector',
-      from: ['CertApply', 'CertApplyLego'],
+      from: [...CertApplyPluginNames],
     },
     required: true,
   })

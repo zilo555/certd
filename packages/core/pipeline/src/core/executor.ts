@@ -7,7 +7,7 @@ import { createAxiosService, hashUtils, HttpRequestConfig, ILogger, logger, util
 import { IAccessService } from "../access/index.js";
 import { RegistryItem } from "../registry/index.js";
 import { Decorator } from "../decorator/index.js";
-import { ICnameProxyService, IEmailService, IPluginConfigService, IUrlService } from "../service/index.js";
+import { ICnameProxyService, IEmailService, IPluginConfigService, IServiceGetter, IUrlService } from "../service/index.js";
 import { FileStore } from "./file-store.js";
 import { cloneDeep, forEach, merge } from "lodash-es";
 import { INotificationService } from "../notification/index.js";
@@ -33,7 +33,7 @@ export type ExecutorOptions = {
   user: UserInfo;
   baseURL?: string;
   sysInfo?: SysInfo;
-  serviceGetter: (name: string) => any;
+  serviceGetter: IServiceGetter;
 };
 
 export class Executor {
@@ -366,6 +366,7 @@ export class Executor {
         step,
         pipeline: this.pipeline,
       }),
+      serviceGetter: this.options.serviceGetter,
     };
     instance.setCtx(taskCtx);
 

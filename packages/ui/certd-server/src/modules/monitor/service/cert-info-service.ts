@@ -1,10 +1,10 @@
-import { Provide, Scope, ScopeEnum } from '@midwayjs/core';
-import { BaseService, CodeException, CommonException, Constants, PageReq } from '@certd/lib-server';
-import { InjectEntityModel } from '@midwayjs/typeorm';
-import { Repository } from 'typeorm';
-import { CertInfoEntity } from '../entity/cert-info.js';
-import { utils } from '@certd/basic';
-import { CertInfo, CertReader } from '@certd/plugin-cert';
+import { Provide, Scope, ScopeEnum } from "@midwayjs/core";
+import { BaseService, CodeException, Constants, PageReq } from "@certd/lib-server";
+import { InjectEntityModel } from "@midwayjs/typeorm";
+import { Repository } from "typeorm";
+import { CertInfoEntity } from "../entity/cert-info.js";
+import { utils } from "@certd/basic";
+import { CertInfo, CertReader } from "@certd/plugin-cert";
 
 export type UploadCertReq = {
   id?: number;
@@ -12,6 +12,7 @@ export type UploadCertReq = {
   fromType?: string;
   userId?: number;
 };
+
 
 @Provide("CertInfoService")
 @Scope(ScopeEnum.Request, { allowDowngrade: true })
@@ -168,17 +169,4 @@ export class CertInfoService extends BaseService<CertInfoEntity> {
     return bean;
   }
 
-  async upload(body: { id?: number; userId?:number ;cert: CertInfo }) {
-    const { id, userId, cert } = body;
-    if (!cert) {
-      throw new CommonException("cert can't be empty");
-    }
-    const res = await this.updateCert({
-      id,
-      certReader: new CertReader(cert),
-      fromType: 'upload',
-      userId
-    });
-    return res.id;
-  }
 }

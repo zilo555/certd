@@ -2,7 +2,7 @@ import { AbstractTaskPlugin, IsTaskPlugin, pluginGroups, RunStrategy, TaskInput,
 import { CertInfo } from '@certd/plugin-cert';
 import { AwsAccess, AwsRegions } from '../access.js';
 import { AwsAcmClient } from '../libs/aws-acm-client.js';
-
+import { CertApplyPluginNames} from '@certd/plugin-cert';
 @IsTaskPlugin({
   name: 'AwsUploadToACM',
   title: 'AWS-上传证书到ACM',
@@ -21,7 +21,7 @@ export class AwsUploadToACM extends AbstractTaskPlugin {
     helper: '请选择前置任务输出的域名证书',
     component: {
       name: 'output-selector',
-      from: ['CertApply', 'CertApplyLego'],
+      from: [...CertApplyPluginNames],
     },
     required: true,
   })

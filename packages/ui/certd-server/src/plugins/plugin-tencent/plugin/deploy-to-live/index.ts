@@ -2,7 +2,7 @@ import { IsTaskPlugin, pluginGroups, RunStrategy, TaskInput } from '@certd/pipel
 import { CertInfo } from '@certd/plugin-cert';
 import { createRemoteSelectInputDefine, TencentAccess, TencentSslClient } from '@certd/plugin-lib';
 import { AbstractPlusTaskPlugin } from '@certd/plugin-plus';
-
+import { CertApplyPluginNames} from '@certd/plugin-cert';
 @IsTaskPlugin({
   name: 'TencentDeployCertToLive',
   title: '腾讯云-部署到腾讯云直播',
@@ -43,7 +43,7 @@ export class TencentDeployCertToLive extends AbstractPlusTaskPlugin {
     helper: '请选择前置任务输出的域名证书，或者选择前置任务“上传证书到腾讯云”任务的证书ID',
     component: {
       name: 'output-selector',
-      from: ['CertApply', 'CertApplyLego', 'UploadCertToTencent'],
+      from: [...CertApplyPluginNames, 'UploadCertToTencent'],
     },
     required: true,
   })

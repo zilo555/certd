@@ -3,7 +3,7 @@ import { CertInfo, CertReader } from '@certd/plugin-cert';
 import * as fs from 'fs';
 import { Constants } from '@certd/lib-server';
 import path from 'path';
-
+import { CertApplyPluginNames} from '@certd/plugin-cert';
 @IsTaskPlugin({
   name: 'CopyToLocal',
   title: '主机-复制到本机',
@@ -22,7 +22,7 @@ export class CopyCertToLocalPlugin extends AbstractTaskPlugin {
     helper: '请选择前置任务输出的域名证书',
     component: {
       name: 'output-selector',
-      from: ['CertApply', 'CertApplyLego'],
+      from: [...CertApplyPluginNames],
     },
     required: true,
   })

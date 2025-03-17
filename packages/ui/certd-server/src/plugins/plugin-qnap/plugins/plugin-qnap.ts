@@ -4,7 +4,7 @@ import { AbstractPlusTaskPlugin } from '@certd/plugin-plus';
 import { tmpdir } from 'node:os';
 import fs from 'fs';
 import { SshAccess, SshClient } from '@certd/plugin-lib';
-
+import { CertApplyPluginNames} from '@certd/plugin-cert';
 @IsTaskPlugin({
   name: 'QnapDeploy',
   title: '威联通-部署证书到威联通',
@@ -25,7 +25,7 @@ export class QnapDeploy extends AbstractPlusTaskPlugin {
     helper: '请选择前置任务输出的域名证书',
     component: {
       name: 'output-selector',
-      from: ['CertApply', 'CertApplyLego'],
+      from: [...CertApplyPluginNames],
     },
     required: true,
   })

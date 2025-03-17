@@ -3,7 +3,7 @@ import { CertInfo } from '@certd/plugin-cert';
 import { AbstractPlusTaskPlugin } from '@certd/plugin-plus';
 import { ProxmoxAccess } from '../access.js';
 import { createRemoteSelectInputDefine } from '@certd/plugin-lib';
-
+import { CertApplyPluginNames} from '@certd/plugin-cert';
 @IsTaskPlugin({
   //命名规范，插件名称+功能（就是目录plugin-demo中的demo），大写字母开头，驼峰命名
   name: 'ProxmoxUploadCert',
@@ -27,7 +27,7 @@ export class ProxmoxUploadCert extends AbstractPlusTaskPlugin {
     helper: '请选择前置任务输出的域名证书',
     component: {
       name: 'output-selector',
-      from: ['CertApply', 'CertApplyLego'],
+      from: [...CertApplyPluginNames],
     },
     // required: true, // 必填
   })

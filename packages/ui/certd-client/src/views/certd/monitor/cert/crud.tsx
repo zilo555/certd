@@ -1,6 +1,17 @@
 // @ts-ignore
 import { useI18n } from "vue-i18n";
-import { AddReq, compute, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, EditReq, useFormWrapper, UserPageQuery, UserPageRes } from "@fast-crud/fast-crud";
+import {
+  AddReq,
+  compute,
+  CreateCrudOptionsProps,
+  CreateCrudOptionsRet,
+  DelReq,
+  dict,
+  EditReq,
+  useFormWrapper,
+  UserPageQuery,
+  UserPageRes
+} from "@fast-crud/fast-crud";
 import { certInfoApi } from "./api";
 import dayjs from "dayjs";
 import { useRouter } from "vue-router";
@@ -9,7 +20,6 @@ import { notification } from "ant-design-vue";
 import CertView from "/@/views/certd/pipeline/cert-view.vue";
 
 export default function ({ crudExpose, context }: CreateCrudOptionsProps): CreateCrudOptionsRet {
-  const { t } = useI18n();
   const api = certInfoApi;
   const pageRequest = async (query: UserPageQuery): Promise<UserPageRes> => {
     return await api.GetList(query);
@@ -48,7 +58,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
       width: 800,
       content: () => {
         return <CertView cert={cert}></CertView>;
-      }
+      },
     });
   };
 
@@ -69,35 +79,35 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
               title: "ID",
               type: "number",
               form: {
-                show: false
-              }
+                show: false,
+              },
             },
             "cert.crt": {
               title: "证书",
               type: "textarea",
               form: {
                 component: {
-                  rows: 4
+                  rows: 4,
                 },
                 rules: [{ required: true, message: "此项必填" }],
-                col: { span: 24 }
-              }
+                col: { span: 24 },
+              },
             },
             "cert.key": {
               title: "私钥",
               type: "textarea",
               form: {
                 component: {
-                  rows: 4
+                  rows: 4,
                 },
                 rules: [{ required: true, message: "此项必填" }],
-                col: { span: 24 }
-              }
-            }
+                col: { span: 24 },
+              },
+            },
           },
           form: {
             wrapper: {
-              title: "上传自定义证书"
+              title: "上传自定义证书",
             },
             async doSubmit({ form }: any) {
               if (!id) {
@@ -106,9 +116,9 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
                 form.id = id;
               }
               return await api.Upload(form);
-            }
-          }
-        }
+            },
+          },
+        },
       };
     }
     const { crudOptions } = createCrudOptions();
@@ -121,22 +131,22 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
         pageRequest,
         addRequest,
         editRequest,
-        delRequest
+        delRequest,
       },
       form: {
         labelCol: {
           //固定label宽度
           span: null,
           style: {
-            width: "100px"
-          }
+            width: "100px",
+          },
         },
         col: {
-          span: 22
+          span: 22,
         },
         wrapper: {
-          width: 600
-        }
+          width: 600,
+        },
       },
       actionbar: {
         show: true,
@@ -147,13 +157,13 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             show: true,
             async click() {
               await openUpload();
-            }
-          }
-        }
+            },
+          },
+        },
       },
       tabs: {
         name: "fromType",
-        show: true
+        show: true,
       },
       rowHandle: {
         width: 140,
@@ -167,7 +177,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             icon: "ph:certificate",
             async click({ row }) {
               await viewCert(row);
-            }
+            },
           },
           copy: { show: false },
           edit: { show: false },
@@ -181,15 +191,15 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             icon: "ph:upload",
             async click({ row }) {
               await openUpload(row.id);
-            }
+            },
           },
           remove: {
             order: 10,
             show: compute(({ row }) => {
               return row.fromType === "upload";
-            })
-          }
-        }
+            }),
+          },
+        },
       },
       columns: {
         id: {
@@ -197,85 +207,85 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           key: "id",
           type: "number",
           search: {
-            show: false
+            show: false,
           },
           column: {
             width: 100,
             editable: {
-              disabled: true
-            }
+              disabled: true,
+            },
           },
           form: {
-            show: false
-          }
+            show: false,
+          },
         },
         fromType: {
           title: "来源",
           search: {
-            show: true
+            show: true,
           },
           type: "dict-select",
           dict: dict({
             data: [
               { label: "流水线", value: "pipeline" },
-              { label: "手动上传", value: "upload" }
-            ]
+              { label: "手动上传", value: "upload" },
+            ],
           }),
           form: {
-            show: false
+            show: false,
           },
           column: {
             width: 100,
             sorter: true,
             component: {
-              color: "auto"
+              color: "auto",
             },
-            conditionalRender: false
+            conditionalRender: false,
           },
           valueBuilder({ value, row, key }) {
             if (!value) {
               row[key] = "pipeline";
             }
-          }
+          },
         },
         domains: {
           title: "域名",
           search: {
-            show: true
+            show: true,
           },
           type: "text",
           form: {
-            rules: [{ required: true, message: "请输入域名" }]
+            rules: [{ required: true, message: "请输入域名" }],
           },
           column: {
             width: 450,
             sorter: true,
             component: {
               name: "fs-values-format",
-              color: "auto"
-            }
-          }
+              color: "auto",
+            },
+          },
         },
         domainCount: {
           title: "域名数量",
           type: "number",
           form: {
-            show: false
+            show: false,
           },
           column: {
             width: 120,
             sorter: true,
-            show: false
-          }
+            show: false,
+          },
         },
         expiresLeft: {
           title: "有效天数",
           search: {
-            show: false
+            show: false,
           },
           type: "date",
           form: {
-            show: false
+            show: false,
           },
           column: {
             sorter: true,
@@ -290,54 +300,54 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
               const color = leftDays < 20 ? "red" : "#389e0d";
               const percent = (leftDays / 90) * 100;
               return <a-progress title={expireDate + "过期"} percent={percent} strokeColor={color} format={(percent: number) => `${leftDays}天`} />;
-            }
-          }
+            },
+          },
         },
         expiresTime: {
           title: "过期时间",
           search: {
-            show: false
+            show: false,
           },
           type: "datetime",
           form: {
-            show: false
+            show: false,
           },
           column: {
-            sorter: true
-          }
+            sorter: true,
+          },
         },
         certProvider: {
           title: "证书颁发机构",
           search: {
-            show: false
+            show: false,
           },
           type: "text",
           form: {
-            show: false
+            show: false,
           },
           column: {
-            width: 200
-          }
+            width: 200,
+          },
         },
         applyTime: {
           title: "申请时间",
           search: {
-            show: false
+            show: false,
           },
           type: "datetime",
           form: {
-            show: false
+            show: false,
           },
           column: {
-            sorter: true
-          }
+            sorter: true,
+          },
         },
         "pipeline.title": {
           title: "关联流水线",
           search: { show: false },
           type: "link",
           form: {
-            show: false
+            show: false,
           },
           column: {
             width: 350,
@@ -346,12 +356,12 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
               on: {
                 onClick({ row }) {
                   router.push({ path: "/certd/pipeline/detail", query: { id: row.pipelineId, editMode: "false" } });
-                }
-              }
-            }
-          }
-        }
-      }
-    }
+                },
+              },
+            },
+          },
+        },
+      },
+    },
   };
 }

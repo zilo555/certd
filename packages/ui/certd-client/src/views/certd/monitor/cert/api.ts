@@ -7,7 +7,7 @@ export const certInfoApi = {
     return await request({
       url: apiPrefix + "/page",
       method: "post",
-      data: query
+      data: query,
     });
   },
 
@@ -15,7 +15,7 @@ export const certInfoApi = {
     return await request({
       url: apiPrefix + "/add",
       method: "post",
-      data: obj
+      data: obj,
     });
   },
 
@@ -23,7 +23,7 @@ export const certInfoApi = {
     return await request({
       url: apiPrefix + "/update",
       method: "post",
-      data: obj
+      data: obj,
     });
   },
 
@@ -31,7 +31,7 @@ export const certInfoApi = {
     return await request({
       url: apiPrefix + "/delete",
       method: "post",
-      params: { id }
+      params: { id },
     });
   },
 
@@ -39,27 +39,35 @@ export const certInfoApi = {
     return await request({
       url: apiPrefix + "/info",
       method: "post",
-      params: { id }
+      params: { id },
     });
   },
   async ListAll() {
     return await request({
       url: apiPrefix + "/all",
-      method: "post"
+      method: "post",
     });
   },
   async Upload(body: { id?: number; cert: { crt: string; key: string } }) {
     return await request({
       url: apiPrefix + "/upload",
       method: "post",
-      data: body
+      data: body,
     });
   },
   async GetCert(id: number): Promise<CertInfo> {
     return await request({
       url: apiPrefix + "/getCert",
       method: "post",
-      params: { id: id }
+      params: { id: id },
     });
-  }
+  },
+
+  async GetOptionsByIds(ids: number[]): Promise<any[]> {
+    return await request({
+      url: apiPrefix + "/getOptionsByIds",
+      method: "post",
+      data: { ids },
+    });
+  },
 };

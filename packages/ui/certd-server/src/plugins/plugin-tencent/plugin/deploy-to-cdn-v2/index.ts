@@ -2,6 +2,7 @@ import { AbstractTaskPlugin, IsTaskPlugin, pluginGroups, RunStrategy, TaskInput 
 import { CertInfo } from '@certd/plugin-cert';
 import { createRemoteSelectInputDefine } from '@certd/plugin-lib';
 import { TencentAccess, TencentSslClient } from '@certd/plugin-lib';
+import { CertApplyPluginNames} from '@certd/plugin-cert';
 @IsTaskPlugin({
   name: 'TencentDeployCertToCDNv2',
   title: '腾讯云-部署到CDN-v2',
@@ -41,7 +42,7 @@ export class TencentDeployCertToCDNv2 extends AbstractTaskPlugin {
     helper: '请选择前置任务输出的域名证书，或者选择前置任务“上传证书到腾讯云”任务的证书ID',
     component: {
       name: 'output-selector',
-      from: ['CertApply', 'CertApplyLego', 'UploadCertToTencent'],
+      from: [...CertApplyPluginNames, 'UploadCertToTencent'],
     },
     required: true,
   })

@@ -1,6 +1,5 @@
 import { AbstractTaskPlugin, IsTaskPlugin, pluginGroups, RunStrategy, TaskInput } from '@certd/pipeline';
 import { SshClient } from '@certd/plugin-lib';
-
 @IsTaskPlugin({
   name: 'hostShellExecute',
   title: '主机-执行远程主机脚本命令',

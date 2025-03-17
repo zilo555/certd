@@ -3,7 +3,7 @@ import { HuaweiAccess } from '../../access/index.js';
 import { CertInfo } from '@certd/plugin-cert';
 import { createCertDomainGetterInputDefine, createRemoteSelectInputDefine } from '@certd/plugin-lib';
 import { resetLogConfigure } from '@certd/basic';
-
+import { CertApplyPluginNames} from '@certd/plugin-cert';
 @IsTaskPlugin({
   name: 'HauweiDeployCertToCDN',
   title: '华为云-部署证书至CDN',
@@ -22,7 +22,7 @@ export class HauweiDeployCertToCDN extends AbstractTaskPlugin {
     helper: '请选择前置任务输出的域名证书',
     component: {
       name: 'output-selector',
-      from: ['CertApply', 'CertApplyLego'],
+      from: [...CertApplyPluginNames],
     },
     required: true,
   })

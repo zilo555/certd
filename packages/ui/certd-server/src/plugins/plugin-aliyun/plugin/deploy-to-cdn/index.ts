@@ -1,7 +1,7 @@
 import { AbstractTaskPlugin, IsTaskPlugin, pluginGroups, RunStrategy, TaskInput } from '@certd/pipeline';
 import { AliyunAccess, AliyunClient, AliyunSslClient, createCertDomainGetterInputDefine, createRemoteSelectInputDefine } from '@certd/plugin-lib';
 import { optionsUtils } from '@certd/basic/dist/utils/util.options.js';
-
+import { CertApplyPluginNames} from '@certd/plugin-cert';
 @IsTaskPlugin({
   name: 'DeployCertToAliyunCDN',
   title: '阿里云-部署证书至CDN',
@@ -36,7 +36,7 @@ export class DeployCertToAliyunCDN extends AbstractTaskPlugin {
     helper: '请选择前置任务输出的域名证书',
     component: {
       name: 'output-selector',
-      from: ['CertApply', 'CertApplyLego', 'uploadCertToAliyun'],
+      from: [...CertApplyPluginNames, 'uploadCertToAliyun'],
     },
     required: true,
   })

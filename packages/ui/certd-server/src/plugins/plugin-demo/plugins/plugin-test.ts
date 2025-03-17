@@ -2,7 +2,7 @@ import { AbstractTaskPlugin, IsTaskPlugin, pluginGroups, RunStrategy, TaskInput 
 import { CertInfo, CertReader } from '@certd/plugin-cert';
 import { createCertDomainGetterInputDefine, createRemoteSelectInputDefine } from '@certd/plugin-lib';
 import { optionsUtils } from '@certd/basic/dist/utils/util.options.js';
-
+import { CertApplyPluginNames} from '@certd/plugin-cert';
 @IsTaskPlugin({
   //命名规范，插件名称+功能（就是目录plugin-demo中的demo），大写字母开头，驼峰命名
   name: 'DemoTest',
@@ -97,7 +97,7 @@ export class DemoTest extends AbstractTaskPlugin {
     helper: '请选择前置任务输出的域名证书',
     component: {
       name: 'output-selector',
-      from: ['CertApply', 'CertApplyLego'],
+      from: [...CertApplyPluginNames],
     },
     // required: true, // 必填
   })

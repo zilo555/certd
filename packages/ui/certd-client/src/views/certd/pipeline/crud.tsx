@@ -76,7 +76,7 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
   const addRequest = async ({ form }: AddReq) => {
     if (form.content == null) {
       form.content = JSON.stringify({
-        title: form.title
+        title: form.title,
       });
     } else {
       //复制的流水线
@@ -106,7 +106,7 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
       const max = suiteDetail.pipelineCount.max;
       if (max != -1 && max <= suiteDetail.pipelineCount.used) {
         notification.error({
-          message: `对不起，您最多只能创建${max}条流水线，请购买或升级套餐`
+          message: `对不起，您最多只能创建${max}条流水线，请购买或升级套餐`,
         });
         return;
       }
@@ -124,7 +124,7 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
           type: "custom",
           when: ["error", "turnToSuccess", "success"],
           notificationId: form.notification,
-          title: form.notificationTarget?.name || "自定义通知"
+          title: form.notificationTarget?.name || "自定义通知",
         });
       }
       let pipeline = {
@@ -145,20 +145,20 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
                     runnableType: "step",
                     input: {
                       renewDays: 35,
-                      ...form
+                      ...form,
                     },
                     strategy: {
-                      runStrategy: 0 // 正常执行
+                      runStrategy: 0, // 正常执行
                     },
-                    type: form.certApplyPlugin
-                  }
-                ]
-              }
-            ]
-          }
+                    type: form.certApplyPlugin,
+                  },
+                ],
+              },
+            ],
+          },
         ],
         triggers,
-        notifications
+        notifications,
       };
       pipeline = setRunnableIds(pipeline);
 
@@ -173,7 +173,7 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
         content: JSON.stringify(pipeline),
         keepHistoryCount: 30,
         type: "cert",
-        from: "custom"
+        from: "custom",
       });
       message.success("创建成功,请添加证书部署任务");
       router.push({ path: "/certd/pipeline/detail", query: { id, editMode: "true" } });
@@ -195,7 +195,7 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
       width: 800,
       content: () => {
         return <CertView cert={cert}></CertView>;
-      }
+      },
     });
   };
 
@@ -230,7 +230,7 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
             <div> {children}</div>
           </div>
         );
-      }
+      },
     });
   };
   const userStore = useUserStore();
@@ -242,7 +242,7 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
         pageRequest,
         addRequest,
         editRequest,
-        delRequest
+        delRequest,
       },
       settings: {
         plugins: {
@@ -259,16 +259,16 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
               selectedRowKeys,
               onSelectedChanged(selected) {
                 console.log("已选择变化：", selected);
-              }
-            }
-          }
-        }
+              },
+            },
+          },
+        },
       },
       actionbar: {
         buttons: {
           add: {
             order: 5,
-            text: "自定义流水线"
+            text: "自定义流水线",
           },
           addCertd: {
             order: 1,
@@ -276,29 +276,29 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
             type: "primary",
             click() {
               addCertdPipeline();
-            }
-          }
-        }
+            },
+          },
+        },
       },
       form: {
         afterSubmit({ form, res, mode }) {
           if (mode === "add") {
             router.push({ path: "/certd/pipeline/detail", query: { id: res.id, editMode: "true" } });
           }
-        }
+        },
       },
       table: {
-        scroll: { x: 1500 }
+        scroll: { x: 1500 },
       },
       tabs: {
         name: "groupId",
-        show: true
+        show: true,
       },
       rowHandle: {
         width: 200,
         fixed: "right",
         dropdown: {
-          show: true
+          show: true,
         },
         buttons: {
           play: {
@@ -313,18 +313,18 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
                 async onOk() {
                   await api.Trigger(row.id);
                   notification.success({ message: "管道已经开始运行" });
-                }
+                },
               });
-            }
+            },
           },
           view: {
             show: false,
             click({ row }) {
               router.push({ path: "/certd/pipeline/detail", query: { id: row.id, editMode: "false" } });
-            }
+            },
           },
           copy: {
-            click: async (context) => {
+            click: async context => {
               settingStore.checkPlus();
               const { ui } = useUi();
               // @ts-ignore
@@ -333,10 +333,10 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
               row.title = row.title + "_copy";
               await crudExpose.openCopy({
                 row: row,
-                index: context.index
+                index: context.index,
               });
             },
-            class: "need-plus"
+            class: "need-plus",
           },
           config: {
             order: 1,
@@ -346,13 +346,13 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
             icon: "ant-design:edit-outlined",
             click({ row }) {
               router.push({ path: "/certd/pipeline/detail", query: { id: row.id, editMode: "true" } });
-            }
+            },
           },
           edit: {
             order: 2,
             title: "修改配置/分组",
             icon: "ant-design:setting-outlined",
-            dropdown: true
+            dropdown: true,
           },
           viewCert: {
             order: 3,
@@ -361,7 +361,7 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
             icon: "ph:certificate",
             async click({ row }) {
               await viewCert(row);
-            }
+            },
           },
           download: {
             order: 4,
@@ -370,13 +370,13 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
             icon: "ant-design:download-outlined",
             async click({ row }) {
               await downloadCert(row);
-            }
+            },
           },
           remove: {
             order: 5,
-            dropdown: true
-          }
-        }
+            dropdown: true,
+          },
+        },
       },
       columns: {
         id: {
@@ -384,14 +384,14 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
           key: "id",
           type: "number",
           search: {
-            show: true
+            show: true,
           },
           column: {
-            width: 100
+            width: 100,
           },
           form: {
-            show: false
-          }
+            show: false,
+          },
         },
         userId: {
           title: "用户Id",
@@ -399,17 +399,17 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
           search: {
             show: computed(() => {
               return userStore.isAdmin && settingStore.sysPublic.managerOtherUserPipeline;
-            })
+            }),
           },
           form: {
-            show: false
+            show: false,
           },
           column: {
             show: computed(() => {
               return userStore.isAdmin && settingStore.sysPublic.managerOtherUserPipeline;
             }),
-            width: 100
-          }
+            width: 100,
+          },
         },
         title: {
           title: "流水线名称",
@@ -418,11 +418,11 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
             show: true,
             title: "关键字",
             component: {
-              name: "a-input"
-            }
+              name: "a-input",
+            },
           },
           form: {
-            rules: [{ required: true, message: "此项必填" }]
+            rules: [{ required: true, message: "此项必填" }],
           },
           column: {
             width: 350,
@@ -432,16 +432,16 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
                 // 注意：必须要on前缀
                 onClick({ row }) {
                   router.push({ path: "/certd/pipeline/detail", query: { id: row.id, editMode: "false" } });
-                }
-              }
-            }
-          }
+                },
+              },
+            },
+          },
         },
         content: {
           title: "流水线内容",
           form: { show: false },
           column: {
-            show: false
+            show: false,
           },
           valueBuilder({ row }) {
             if (row.content) {
@@ -463,18 +463,18 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
             if (row.content) {
               row.content = JSON.stringify(row.content);
             }
-          }
+          },
         },
         _triggerCount: {
           title: "定时任务数",
           type: "number",
           column: {
             align: "center",
-            width: 100
+            width: 100,
           },
           form: {
-            show: false
-          }
+            show: false,
+          },
         },
         _stepCount: {
           title: "部署任务数",
@@ -482,14 +482,14 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
           form: { show: false },
           column: {
             align: "center",
-            width: 100
-          }
+            width: 100,
+          },
         },
         lastVars: {
           title: "到期剩余",
           type: "number",
           form: {
-            show: false
+            show: false,
           },
           column: {
             cellRender({ row }) {
@@ -501,52 +501,52 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
               const percent = (leftDays / 90) * 100;
               return <a-progress percent={percent} strokeColor={color} format={(percent: number) => `${leftDays} 天`} />;
             },
-            width: 150
-          }
+            width: 150,
+          },
         },
         "lastVars.certExpiresTime": {
           title: "过期时间",
           search: {
-            show: false
+            show: false,
           },
           type: "datetime",
           form: {
-            show: false
+            show: false,
           },
           column: {
             sorter: true,
-            align: "center"
-          }
+            align: "center",
+          },
         },
         status: {
           title: "状态",
           type: "dict-select",
           search: {
-            show: true
+            show: true,
           },
           dict: dict({
-            data: statusUtil.getOptions()
+            data: statusUtil.getOptions(),
           }),
           form: {
-            show: false
+            show: false,
           },
           column: {
             sorter: true,
             width: 120,
-            align: "center"
-          }
+            align: "center",
+          },
         },
         lastHistoryTime: {
           title: "最后运行",
           type: "datetime",
           form: {
-            show: false
+            show: false,
           },
           column: {
             sorter: true,
             width: 150,
-            align: "center"
-          }
+            align: "center",
+          },
         },
         disabled: {
           title: "启用",
@@ -554,12 +554,12 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
           dict: dict({
             data: [
               { value: false, label: "启用" },
-              { value: true, label: "禁用" }
-            ]
+              { value: true, label: "禁用" },
+            ],
           }),
           form: {
             value: false,
-            show: false
+            show: false,
           },
           column: {
             sorter: true,
@@ -567,30 +567,30 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
             align: "center",
             component: {
               name: "fs-dict-switch",
-              vModel: "checked"
+              vModel: "checked",
             },
             async valueChange({ row, key, value }) {
               return await api.UpdateObj({
                 id: row.id,
-                disabled: row[key]
+                disabled: row[key],
               });
-            }
-          }
+            },
+          },
         },
         groupId: {
           title: "分组",
           type: "dict-select",
           search: {
-            show: true
+            show: true,
           },
           dict: groupDictRef,
           column: {
             width: 130,
             align: "center",
             component: {
-              color: "auto"
-            }
-          }
+              color: "auto",
+            },
+          },
         },
         order: {
           title: "排序号",
@@ -598,48 +598,48 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
           column: {
             sorter: true,
             align: "center",
-            width: 80
+            width: 80,
           },
           form: {
-            value: 0
-          }
+            value: 0,
+          },
         },
         keepHistoryCount: {
           title: "历史记录保持数",
           type: "number",
           form: {
             value: 20,
-            helper: "历史记录保持条数，多余的会被删除"
+            helper: "历史记录保持条数，多余的会被删除",
           },
           column: {
             width: 130,
-            show: false
-          }
+            show: false,
+          },
         },
         createTime: {
           title: "创建时间",
           type: "datetime",
           form: {
-            show: false
+            show: false,
           },
           column: {
             sorter: true,
             width: 155,
-            align: "center"
-          }
+            align: "center",
+          },
         },
         updateTime: {
           title: "更新时间",
           type: "datetime",
           form: {
-            show: false
+            show: false,
           },
           column: {
             width: 125,
-            show: false
-          }
-        }
-      }
-    }
+            show: false,
+          },
+        },
+      },
+    },
   };
 }

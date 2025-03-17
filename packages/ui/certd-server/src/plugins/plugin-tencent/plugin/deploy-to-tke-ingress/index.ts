@@ -3,7 +3,7 @@ import { utils } from '@certd/basic';
 
 import dayjs from 'dayjs';
 import { AbstractPlusTaskPlugin } from '@certd/plugin-plus';
-
+import { CertApplyPluginNames} from '@certd/plugin-cert';
 @IsTaskPlugin({
   name: 'DeployCertToTencentTKEIngress',
   title: '腾讯云-部署到TKE-ingress',
@@ -95,7 +95,7 @@ export class DeployCertToTencentTKEIngressPlugin extends AbstractPlusTaskPlugin 
     helper: '请选择前置任务输出的域名证书',
     component: {
       name: 'output-selector',
-      from: ['CertApply', 'CertApplyLego'],
+      from: [...CertApplyPluginNames],
     },
     mergeScript: `
       return {

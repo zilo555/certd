@@ -1,6 +1,6 @@
 import { AbstractTaskPlugin, IsTaskPlugin, pluginGroups, RunStrategy, TaskInput, TaskInstanceContext } from '@certd/pipeline';
 import { CertInfo, CertReader } from '@certd/plugin-cert';
-
+import { CertApplyPluginNames} from '@certd/plugin-cert';
 export type CustomScriptContext = {
   CertReader: typeof CertReader;
   self: CustomScriptPlugin;
@@ -37,7 +37,7 @@ export class CustomScriptPlugin extends AbstractTaskPlugin {
     helper: '请选择前置任务输出的域名证书',
     component: {
       name: 'output-selector',
-      from: ['CertApply', 'CertApplyLego'],
+      from: [...CertApplyPluginNames],
     },
     required: false,
   })

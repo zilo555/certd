@@ -1,37 +1,52 @@
-import { IsTaskPlugin, pluginGroups, RunStrategy, Step, TaskInput } from "@certd/pipeline";
+import { IsTaskPlugin, pluginGroups, RunStrategy, Step, TaskInput, TaskOutput } from "@certd/pipeline";
 import type { CertInfo } from "../acme.js";
 import { CertReader } from "../cert-reader.js";
-import { CertApplyBasePlugin } from "../base.js";
+import { CertApplyBaseConvertPlugin } from "../base-convert.js";
+import dayjs from "dayjs";
 
 export { CertReader };
 export type { CertInfo };
 
 @IsTaskPlugin({
-  name: "CertUpload",
+  name: "CertApplyUpload",
   icon: "ph:certificate",
   title: "证书手动上传",
   group: pluginGroups.cert.key,
   desc: "在证书仓库手动上传后触发部署证书",
   default: {
-    input: {
-      renewDays: 35,
-      forceUpdate: false,
-    },
     strategy: {
       runStrategy: RunStrategy.AlwaysRun,
     },
   },
 })
-export class CertUploadPlugin extends CertApplyBasePlugin {
+export class CertApplyUploadPlugin extends CertApplyBaseConvertPlugin {
   @TaskInput({
     title: "证书仓库ID",
     component: {
-      name: "a-cert-select",
-      vModel: "value",
+      name: "cert-info-selector",
+      vModel: "modelValue",
     },
+    order: -9999,
     required: true,
+    mergeScript: `
+    return {
+      component:{
+        on:{
+          selectedChange(scope){
+          console.log(scope)
+            scope.form.input.domains = scope.$event?.domains
+          }
+        }
+      }
+    }
+    `,
   })
   certInfoId!: string;
+
+  @TaskOutput({
+    title: "证书MD5",
+  })
+  certMd5?: string;
 
   async onInstance() {
     this.accessService = this.ctx.accessService;
@@ -41,21 +56,45 @@ export class CertUploadPlugin extends CertApplyBasePlugin {
   }
   async onInit(): Promise<void> {}
 
-  async doCertApply() {
-    const siteInfoService = this.ctx.serviceContainer["CertInfoService"];
+  async getCertFromStore() {
+    const siteInfoService = await this.ctx.serviceGetter.get("CertInfoService");
 
     const certInfo = await siteInfoService.getCertInfo({
       certId: this.certInfoId,
-      userid: this.pipeline.userId,
+      userId: this.pipeline.userId,
     });
 
     const certReader = new CertReader(certInfo);
     if (!certReader.expires && certReader.expires < new Date().getTime()) {
-      throw new Error("证书已过期，停止部署");
+      throw new Error("证书已过期，停止部署，请重新上传证书");
     }
 
     return certReader;
   }
+
+  async execute(): Promise<string | void> {
+    const certReader = await this.getCertFromStore();
+    const crtMd5 = this.ctx.utils.hash.md5(certReader.cert.crt);
+
+    const leftDays = dayjs(certReader.expires).diff(dayjs(), "day");
+    this.logger.info(`证书过期时间${dayjs(certReader.expires).format("YYYY-MM-DD HH:mm:ss")},剩余${leftDays}天`);
+    const lastCrtMd5 = this.lastStatus.status.output?.certMd5;
+    this.logger.info("证书MD5", crtMd5);
+    this.logger.info("上次证书MD5", lastCrtMd5);
+    if (lastCrtMd5 === crtMd5) {
+      this.logger.info("证书无变化，跳过");
+      //输出证书MD5
+      this.certMd5 = crtMd5;
+      await this.output(certReader, false);
+      return "skip";
+    }
+    this.logger.info("证书有变化，重新部署");
+    this.clearLastStatus();
+    //输出证书MD5
+    this.certMd5 = crtMd5;
+    await this.output(certReader, true);
+    return;
+  }
 }
 
-new CertUploadPlugin();
+new CertApplyUploadPlugin();

@@ -1,16 +1,7 @@
 <template>
   <div class="notification-selector">
     <div class="flex-o w-100">
-      <fs-dict-select
-        class="flex-1"
-        :value="modelValue"
-        :dict="optionsDictRef"
-        :disabled="disabled"
-        :render-label="renderLabel"
-        :slots="selectSlots"
-        :allow-clear="true"
-        @update:value="onChange"
-      />
+      <fs-dict-select class="flex-1" :value="modelValue" :dict="optionsDictRef" :disabled="disabled" :render-label="renderLabel" :slots="selectSlots" :allow-clear="true" @update:value="onChange" />
       <fs-table-select
         ref="tableSelectRef"
         class="flex-0"
@@ -18,12 +9,12 @@
         :dict="optionsDictRef"
         :create-crud-options="createCrudOptions"
         :crud-options-override="{
-          search: { show: false },
+          search: { show: false, initialForm: { fromType: 'upload' } },
           table: {
             scroll: {
-              x: 540
-            }
-          }
+              x: 540,
+            },
+          },
         }"
         :show-current="false"
         :show-select="false"
@@ -50,7 +41,7 @@ import createCrudOptions from "../crud";
 import { notificationProvide } from "/@/views/certd/notification/common";
 
 defineOptions({
-  name: "NotificationSelector"
+  name: "NotificationSelector",
 });
 
 const props = defineProps<{
@@ -89,12 +80,12 @@ const optionsDictRef = dict({
       {
         id: 0,
         name: "使用默认通知",
-        icon: "ion:notifications"
+        icon: "ion:notifications",
       },
-      ...dict.data
+      ...dict.data,
     ];
     dict.setData(data);
-  }
+  },
 });
 const renderLabel = (option: any) => {
   return <span>{option.name}</span>;
@@ -115,7 +106,7 @@ const selectSlots = ref({
     // res.push(<a-space style="padding: 4px 8px" />);
     // res.push(<fs-button class="w-100" type="text" icon="plus-outlined" text="新建通知渠道" onClick={openTableSelectDialog}></fs-button>);
     return res;
-  }
+  },
 });
 
 const target: Ref<any> = ref({});
@@ -141,13 +132,13 @@ watch(
   () => {
     return props.modelValue;
   },
-  async (value) => {
+  async value => {
     await optionsDictRef.loadDict();
     target.value = optionsDictRef.dataMap[value];
     emit("selectedChange", target.value);
   },
   {
-    immediate: true
+    immediate: true,
   }
 );
 

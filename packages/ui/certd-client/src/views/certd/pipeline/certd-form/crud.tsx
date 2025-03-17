@@ -27,7 +27,7 @@ export default function (certPlugins: any[], formWrapperRef: any): CreateCrudOpt
         title: inputDefine.title,
         form: {
           ...inputDefine,
-          show: compute((ctx) => {
+          show: compute(ctx => {
             const form = formWrapperRef.value.getFormData();
             if (!form) {
               return false;
@@ -43,8 +43,8 @@ export default function (certPlugins: any[], formWrapperRef: any): CreateCrudOpt
               }
             }
             return form?.certApplyPlugin === plugin.name && inputDefineShow;
-          })
-        }
+          }),
+        },
       };
     }
   }
@@ -57,17 +57,17 @@ export default function (certPlugins: any[], formWrapperRef: any): CreateCrudOpt
         wrapper: {
           width: 1350,
           saveRemind: false,
-          title: "创建证书流水线"
+          title: "创建证书流水线",
         },
         group: {
           groups: {
             more: {
               header: "更多参数",
               columns: moreParams,
-              collapsed: true
-            }
-          }
-        }
+              collapsed: true,
+            },
+          },
+        },
       },
       columns: {
         certApplyPlugin: {
@@ -76,8 +76,8 @@ export default function (certPlugins: any[], formWrapperRef: any): CreateCrudOpt
           dict: dict({
             data: [
               { value: "CertApply", label: "JS-ACME" },
-              { value: "CertApplyLego", label: "Lego-ACME" }
-            ]
+              { value: "CertApplyLego", label: "Lego-ACME" },
+            ],
           }),
           form: {
             order: 0,
@@ -90,21 +90,21 @@ export default function (certPlugins: any[], formWrapperRef: any): CreateCrudOpt
                     <li>Lego-ACME：基于Lego实现，支持海量DNS提供商，熟悉LEGO的用户可以使用</li>
                   </ul>
                 );
-              }
+              },
             },
             valueChange: {
               handle: async ({ form, value }) => {
                 const config = await api.GetPluginConfig({
                   name: value,
-                  type: "builtIn"
+                  type: "builtIn",
                 });
                 if (config.sysSetting?.input) {
                   merge(form, config.sysSetting.input);
                 }
               },
-              immediate: true
-            }
-          }
+              immediate: true,
+            },
+          },
         },
         ...inputs,
         triggerCron: {
@@ -115,11 +115,11 @@ export default function (certPlugins: any[], formWrapperRef: any): CreateCrudOpt
             component: {
               name: "cron-editor",
               vModel: "modelValue",
-              placeholder: "0 0 4 * * *"
+              placeholder: "0 0 4 * * *",
             },
             helper: "点击上面的按钮，选择每天几点定时执行。\n建议设置为每天触发一次，证书未到期之前任务会跳过，不会重复执行",
-            order: 100
-          }
+            order: 100,
+          },
         },
         notification: {
           title: "失败通知",
@@ -132,14 +132,14 @@ export default function (certPlugins: any[], formWrapperRef: any): CreateCrudOpt
               on: {
                 selectedChange({ $event, form }) {
                   form.notificationTarget = $event;
-                }
-              }
+                },
+              },
             },
             order: 101,
-            helper: "任务执行失败实时提醒"
-          }
-        }
-      }
-    }
+            helper: "任务执行失败实时提醒",
+          },
+        },
+      },
+    },
   };
 }

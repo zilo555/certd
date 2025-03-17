@@ -2,7 +2,7 @@ import { Registrable } from "../registry/index.js";
 import { FileItem, FormItemProps, Pipeline, Runnable, Step } from "../dt/index.js";
 import { FileStore } from "../core/file-store.js";
 import { IAccessService } from "../access/index.js";
-import { ICnameProxyService, IEmailService, IUrlService } from "../service/index.js";
+import { ICnameProxyService, IEmailService, IServiceGetter, IUrlService } from "../service/index.js";
 import { CancelError, IContext, RunHistory, RunnableCollection } from "../core/index.js";
 import { HttpRequestConfig, ILogger, logger, utils } from "@certd/basic";
 import { HttpClient } from "@certd/basic";
@@ -116,7 +116,7 @@ export type TaskInstanceContext = {
   emitter: TaskEmitter;
 
   //service 容器
-  serviceContainer?: Record<string, any>;
+  serviceGetter?: IServiceGetter;
 };
 
 export abstract class AbstractTaskPlugin implements ITaskPlugin {
@@ -224,7 +224,7 @@ export abstract class AbstractTaskPlugin implements ITaskPlugin {
 
   getStepFromPipeline(stepId: string) {
     let found: any = null;
-    RunnableCollection.each(this.ctx.pipeline.stages, (step) => {
+    RunnableCollection.each(this.ctx.pipeline.stages, step => {
       if (step.id === stepId) {
         found = step;
         return;
