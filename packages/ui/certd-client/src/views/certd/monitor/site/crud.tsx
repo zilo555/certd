@@ -36,7 +36,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
 
   const checkStatusDict = dict({
     data: [
-      { label: "正常", value: "ok", color: "green" },
+      { label: "成功", value: "ok", color: "green" },
       { label: "检查中", value: "checking", color: "blue" },
       { label: "异常", value: "error", color: "red" }
     ]
@@ -184,7 +184,8 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           },
           column: {
             align: "center",
-            width: 110
+            width: 110,
+            show: false
           }
         },
         certDomains: {
@@ -210,7 +211,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           }
         },
         certProvider: {
-          title: "证书颁发者",
+          title: "颁发机构",
           search: {
             show: false
           },
@@ -368,7 +369,8 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           },
           column: {
             width: 110,
-            sorter: true
+            sorter: true,
+            align: "center"
           }
         }
       }
