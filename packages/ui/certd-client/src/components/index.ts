@@ -10,10 +10,12 @@ import Plugins from "./plugins/index";
 import LoadingButton from "./loading-button.vue";
 import IconSelect from "./icon-select.vue";
 import ExpiresTimeText from "./expires-time-text.vue";
+import FileInput from "./file-input.vue";
 export default {
   install(app: any) {
     app.component("PiContainer", PiContainer);
     app.component("TextEditable", TextEditable);
+    app.component("FileInput", FileInput);
 
     app.component("CronLight", CronLight);
     app.component("CronEditor", CronEditor);
@@ -29,5 +31,5 @@ export default {
     app.component("ExpiresTimeText", ExpiresTimeText);
     app.use(vip);
     app.use(Plugins);
-  }
+  },
 };

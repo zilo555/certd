@@ -6,8 +6,8 @@ const apiPrefix = "/pi/plugin";
 const defaultInputDefine = {
   component: {
     name: "a-input",
-    vModel: "modelValue"
-  }
+    vModel: "modelValue",
+  },
 };
 
 function initPlugins(plugins: any) {
@@ -35,7 +35,7 @@ export async function GetList(query: any) {
   const plugins = await request({
     url: apiPrefix + "/list",
     method: "post",
-    params: query
+    params: query,
   });
   initPlugins(plugins);
   return plugins;
@@ -45,7 +45,7 @@ export async function GetGroups(query: any) {
   const groups = await request({
     url: apiPrefix + "/groups",
     method: "post",
-    params: query
+    params: query,
   });
   const plugins: any = [];
   for (const groupKey in groups) {
@@ -60,8 +60,8 @@ export async function GetPluginDefine(type: string) {
     url: apiPrefix + "/getDefineByType",
     method: "post",
     data: {
-      type
-    }
+      type,
+    },
   });
   initPlugins([define]);
   return define;
@@ -71,6 +71,6 @@ export async function GetPluginConfig(req: { id?: number; name: string; type: st
   return await request({
     url: apiPrefix + "/config",
     method: "post",
-    data: req
+    data: req,
   });
 }

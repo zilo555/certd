@@ -11,7 +11,6 @@ export async function emitCertApplySuccess(emitter: TaskEmitter, cert: CertReade
 }
 
 export abstract class CertApplyBasePlugin extends CertApplyBaseConvertPlugin {
-
   @TaskInput({
     title: "邮箱",
     component: {

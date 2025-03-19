@@ -121,6 +121,16 @@ export class CertInfoController extends CrudController<CertInfoService> {
     return this.ok(list);
   }
 
+
+
+  @Post('/getCert', { summary: Constants.per.authOnly })
+  async getCert(@Query('id') id: number) {
+    await this.service.checkUserId(id, this.getUserId());
+    const certInfoEntity = await this.service.info(id);
+    const certInfo = JSON.parse(certInfoEntity.certInfo);
+    return this.ok(certInfo);
+  }
+
   @Post('/upload', { summary: Constants.per.authOnly })
   async upload(@Body(ALL) body: {cert: CertInfo, pipeline: any, id?: number}) {
     if (body.id) {
@@ -131,23 +141,16 @@ export class CertInfoController extends CrudController<CertInfoService> {
         userId: this.getUserId(),
         cert: body.cert,
       });
+      return this.ok();
     }else{
       //添加
-      await this.certUploadService.createUploadCertPipeline({
+     const res =  await this.certUploadService.createUploadCertPipeline({
         userId: this.getUserId(),
         cert: body.cert,
+        pipeline: body.pipeline,
       });
-
+      return this.ok(res)
     }
 
-    return this.ok();
-  }
-
-  @Post('/getCert', { summary: Constants.per.authOnly })
-  async getCert(@Query('id') id: number) {
-    await this.service.checkUserId(id, this.getUserId());
-    const certInfoEntity = await this.service.info(id);
-    const certInfo = JSON.parse(certInfoEntity.certInfo);
-    return this.ok(certInfo);
   }
 }

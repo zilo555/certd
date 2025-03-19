@@ -4,62 +4,26 @@ import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { AddReq, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, EditReq, UserPageQuery, UserPageRes, useUi } from "@fast-crud/fast-crud";
 import { statusUtil } from "/@/views/certd/pipeline/pipeline/utils/util.status";
-import { nanoid } from "nanoid";
-import { message, Modal, notification } from "ant-design-vue";
+import { Modal, notification } from "ant-design-vue";
 import { env } from "/@/utils/util.env";
 import { useUserStore } from "/@/store/modules/user";
 import dayjs from "dayjs";
 import { useSettingStore } from "/@/store/modules/settings";
-import * as _ from "lodash-es";
+import { cloneDeep } from "lodash-es";
 import { useModal } from "/@/use/use-modal";
 import CertView from "./cert-view.vue";
 import { eachStages } from "./utils";
-import { createNotificationApi as createNotificationApi } from "../notification/api";
-import { mySuiteApi } from "/@/views/certd/suite/mine/api";
+import { setRunnableIds, useCertd } from "/@/views/certd/pipeline/certd-form/use";
+import { useCertUpload } from "/@/views/certd/pipeline/cert-upload/use";
+
 export default function ({ crudExpose, context: { certdFormRef, groupDictRef, selectedRowKeys } }: CreateCrudOptionsProps): CreateCrudOptionsRet {
   const router = useRouter();
   const { t } = useI18n();
   const lastResRef = ref();
 
-  function setRunnableIds(pipeline: any) {
-    const idMap: any = {};
-    function createId(oldId: any) {
-      if (oldId == null) {
-        return nanoid();
-      }
-      const newId = nanoid();
-      idMap[oldId] = newId;
-      return newId;
-    }
-    if (pipeline.stages) {
-      for (const stage of pipeline.stages) {
-        stage.id = createId(stage.id);
-        if (stage.tasks) {
-          for (const task of stage.tasks) {
-            task.id = createId(task.id);
-            if (task.steps) {
-              for (const step of task.steps) {
-                step.id = createId(step.id);
-              }
-            }
-          }
-        }
-      }
-    }
+  const { openAddCertdPipelineDialog } = useCertd(certdFormRef);
+  const { openUploadCreateDialog } = useCertUpload();
 
-    for (const trigger of pipeline.triggers) {
-      trigger.id = nanoid();
-    }
-    for (const notification of pipeline.notifications) {
-      notification.id = nanoid();
-    }
-
-    let content = JSON.stringify(pipeline);
-    for (const key in idMap) {
-      content = content.replaceAll(key, idMap[key]);
-    }
-    return JSON.parse(content);
-  }
   const pageRequest = async (query: UserPageQuery): Promise<UserPageRes> => {
     return await api.GetList(query);
   };
@@ -95,90 +59,6 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
     lastResRef.value = res;
     return res;
   };
-
-  const settingsStore = useSettingStore();
-  async function addCertdPipeline() {
-    //检查是否流水线数量超出限制
-    if (settingsStore.isComm && settingsStore.suiteSetting.enabled) {
-      //检查数量是否超限
-
-      const suiteDetail = await mySuiteApi.SuiteDetailGet();
-      const max = suiteDetail.pipelineCount.max;
-      if (max != -1 && max <= suiteDetail.pipelineCount.used) {
-        notification.error({
-          message: `对不起，您最多只能创建${max}条流水线，请购买或升级套餐`,
-        });
-        return;
-      }
-    }
-
-    certdFormRef.value.open(async ({ form }: any) => {
-      // 添加certd pipeline
-      const triggers = [];
-      if (form.triggerCron) {
-        triggers.push({ title: "定时触发", type: "timer", props: { cron: form.triggerCron } });
-      }
-      const notifications = [];
-      if (form.notification != null) {
-        notifications.push({
-          type: "custom",
-          when: ["error", "turnToSuccess", "success"],
-          notificationId: form.notification,
-          title: form.notificationTarget?.name || "自定义通知",
-        });
-      }
-      let pipeline = {
-        title: form.domains[0] + "证书自动化",
-        runnableType: "pipeline",
-        stages: [
-          {
-            title: "证书申请阶段",
-            maxTaskCount: 1,
-            runnableType: "stage",
-            tasks: [
-              {
-                title: "证书申请任务",
-                runnableType: "task",
-                steps: [
-                  {
-                    title: "申请证书",
-                    runnableType: "step",
-                    input: {
-                      renewDays: 35,
-                      ...form,
-                    },
-                    strategy: {
-                      runStrategy: 0, // 正常执行
-                    },
-                    type: form.certApplyPlugin,
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-        triggers,
-        notifications,
-      };
-      pipeline = setRunnableIds(pipeline);
-
-      /**
-       *  // cert: 证书; backup: 备份; custom:自定义;
-       *   type: string;
-       *   // custom: 自定义; monitor: 监控;
-       *   from: string;
-       */
-      const id = await api.Save({
-        title: pipeline.title,
-        content: JSON.stringify(pipeline),
-        keepHistoryCount: 30,
-        type: "cert",
-        from: "custom",
-      });
-      message.success("创建成功,请添加证书部署任务");
-      router.push({ path: "/certd/pipeline/detail", query: { id, editMode: "true" } });
-    });
-  }
 
   const model = useModal();
   const viewCert = async (row: any) => {
@@ -268,14 +148,25 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
         buttons: {
           add: {
             order: 5,
+            icon: "ion:ios-add-circle-outline",
             text: "自定义流水线",
           },
           addCertd: {
             order: 1,
             text: "创建证书流水线",
             type: "primary",
+            icon: "ion:ios-add-circle-outline",
             click() {
-              addCertdPipeline();
+              openAddCertdPipelineDialog();
+            },
+          },
+          uploadCert: {
+            order: 2,
+            text: "上传证书部署",
+            type: "primary",
+            icon: "ion:cloud-upload-outline",
+            click() {
+              openUploadCreateDialog();
             },
           },
         },
@@ -329,7 +220,7 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
               const { ui } = useUi();
               // @ts-ignore
               let row = context[ui.tableColumn.row];
-              row = _.cloneDeep(row);
+              row = cloneDeep(row);
               row.title = row.title + "_copy";
               await crudExpose.openCopy({
                 row: row,

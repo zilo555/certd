@@ -11,11 +11,13 @@ function attachProperty(target: any, propertyKey: string | symbol) {
 }
 
 function getClassProperties(target: any) {
-  //获取父类
+  //获取父类, 向上追溯三层
   const parent = Object.getPrototypeOf(target);
+  const pParent = Object.getPrototypeOf(parent);
+  const pParentMap = propertyMap[pParent] || {};
   const parentMap = propertyMap[parent] || {};
   const current = propertyMap[target] || {};
-  return _.merge({}, parentMap, current);
+  return _.merge({}, pParentMap, parentMap, current);
 }
 
 function target(target: any, propertyKey?: string | symbol) {

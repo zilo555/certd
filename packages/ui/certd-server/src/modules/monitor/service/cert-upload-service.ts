@@ -26,6 +26,10 @@ export type UpdateCertReq = {
 export type CreateUploadPipelineReq = {
   cert: CertInfo;
   userId: number;
+  pipeline?:{
+    input?:any;
+    notifications?:any[]
+  }
 };
 
 @Provide("CertUploadService")
@@ -86,13 +90,16 @@ export class CertUploadService extends BaseService<CertInfoEntity> {
       });
 
       const pipelineTitle = certReader.getAllDomains()[0] +"上传证书自动部署";
-      const notifications = [];
-      notifications.push({
-        type: "custom",
-        when: ["error", "turnToSuccess", "success"],
-        notificationId: 0,
-        title: "默认通知",
-      });
+      const notifications = body.pipeline?.notifications ||[];
+      if(notifications.length === 0){
+        notifications.push({
+          type: "custom",
+          when: ["error", "turnToSuccess", "success"],
+          notificationId: 0,
+          title: "默认通知",
+        });
+      }
+
       let pipeline = {
         title: pipelineTitle,
         runnableType: "pipeline",
@@ -115,6 +122,7 @@ export class CertUploadService extends BaseService<CertInfoEntity> {
                     input: {
                       certInfoId: newCertInfo.id,
                       domains: newCertInfo.domains.split(','),
+                      ...body.pipeline?.input
                     },
                     strategy: {
                       runStrategy: 0, // 正常执行
@@ -144,7 +152,10 @@ export class CertUploadService extends BaseService<CertInfoEntity> {
         pipelineId: newPipeline.id
       });
 
-      return newCertInfo.id
+      return {
+        id:newCertInfo.id,
+        pipelineId: newPipeline.id
+      }
 
     })
 

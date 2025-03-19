@@ -31,14 +31,14 @@ export abstract class CertApplyBaseConvertPlugin extends AbstractTaskPlugin {
   domains!: string[];
 
   @TaskInput({
-    title: "证书密码",
+    title: "证书加密密码",
     component: {
       name: "input-password",
       vModel: "value",
     },
     required: false,
     order: 100,
-    helper: "PFX、jks格式证书是否加密\njks必须设置密码，不传则默认123456\npfx不传则为空密码",
+    helper: "转换成PFX、jks格式证书是否需要加密\njks必须设置密码，不传则默认123456\npfx不传则为空密码",
   })
   pfxPassword!: string;
 

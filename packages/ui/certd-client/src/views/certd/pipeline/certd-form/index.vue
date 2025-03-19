@@ -44,8 +44,8 @@ export default {
                 const notificationApi = createNotificationApi();
                 await notificationApi.GetOrCreateDefault({ email: form.email });
               }
-            }
-          }
+            },
+          },
         }) as any
       );
 
@@ -60,9 +60,9 @@ export default {
     return {
       formWrapperRef,
       open,
-      formWrapperOptions
+      formWrapperOptions,
     };
-  }
+  },
 };
 </script>
 

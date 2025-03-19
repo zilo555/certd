@@ -14,7 +14,7 @@ export default function (certPlugins: any[], formWrapperRef: any): CreateCrudOpt
   for (const plugin of certPlugins) {
     for (const inputKey in plugin.input) {
       if (inputs[inputKey]) {
-        inputs[inputKey].form.show = true;
+        // inputs[inputKey].form.show = true;
         continue;
       }
       const inputDefine = _.cloneDeep(plugin.input[inputKey]);
