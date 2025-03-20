@@ -61,7 +61,17 @@ export class AsyncSsh2Client {
             this.conn = conn;
             resolve(this.conn);
           })
-          .connect(this.connConf);
+          .connect({
+            ...this.connConf,
+            algorithms: {
+              kex: [
+                "ecdh-sha2-nistp256",
+                "diffie-hellman-group1-sha1",
+                "diffie-hellman-group14-sha1", // 示例：添加服务器支持的旧算法
+                "diffie-hellman-group-exchange-sha256",
+              ],
+            },
+          });
       } catch (e) {
         reject(e);
       }

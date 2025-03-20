@@ -113,7 +113,6 @@ export function useCertd(certdFormRef: any) {
         content: JSON.stringify(pipeline),
         keepHistoryCount: 30,
         type: "cert",
-        from: "custom",
       });
       message.success("创建成功,请添加证书部署任务");
       router.push({ path: "/certd/pipeline/detail", query: { id, editMode: "true" } });

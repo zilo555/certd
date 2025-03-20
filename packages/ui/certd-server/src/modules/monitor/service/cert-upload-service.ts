@@ -112,12 +112,12 @@ export class CertUploadService extends BaseService<CertInfoEntity> {
             tasks: [
               {
                 id: nanoid(10),
-                title: "上传证书解析任务",
+                title: "上传证书解析转换",
                 runnableType: "task",
                 steps: [
                   {
                     id: nanoid(10),
-                    title: "上传证书解析",
+                    title: "上传证书解析转换",
                     runnableType: "step",
                     input: {
                       certInfoId: newCertInfo.id,
@@ -140,8 +140,7 @@ export class CertUploadService extends BaseService<CertInfoEntity> {
       const newPipeline = await tx.getRepository(PipelineEntity).save({
         userId,
         title: pipelineTitle,
-        type:"cert",
-        from:"cert_upload",
+        type:"cert_upload",
         content: JSON.stringify(pipeline),
         keepHistory:20,
       })

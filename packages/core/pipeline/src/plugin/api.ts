@@ -55,6 +55,14 @@ export type PluginDefine = Registrable & {
     [key: string]: any;
   };
 
+  shortcut?: {
+    [key: string]: {
+      title: string;
+      icon: string;
+      action: string;
+      form: any;
+    };
+  };
   needPlus?: boolean;
 };
 

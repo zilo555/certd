@@ -1,17 +1,6 @@
 // @ts-ignore
 import { useI18n } from "vue-i18n";
-import {
-  AddReq,
-  compute,
-  CreateCrudOptionsProps,
-  CreateCrudOptionsRet,
-  DelReq,
-  dict,
-  EditReq,
-  useFormWrapper,
-  UserPageQuery,
-  UserPageRes
-} from "@fast-crud/fast-crud";
+import { AddReq, compute, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, EditReq, useFormWrapper, UserPageQuery, UserPageRes } from "@fast-crud/fast-crud";
 import { certInfoApi } from "./api";
 import dayjs from "dayjs";
 import { useRouter } from "vue-router";
@@ -166,7 +155,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
         show: true,
       },
       rowHandle: {
-        width: 140,
+        width: 100,
         fixed: "right",
         buttons: {
           view: { show: false },
@@ -195,9 +184,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           },
           remove: {
             order: 10,
-            show: compute(({ row }) => {
-              return row.fromType === "upload";
-            }),
+            show: false,
           },
         },
       },

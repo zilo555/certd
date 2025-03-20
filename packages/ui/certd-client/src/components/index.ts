@@ -11,11 +11,13 @@ import LoadingButton from "./loading-button.vue";
 import IconSelect from "./icon-select.vue";
 import ExpiresTimeText from "./expires-time-text.vue";
 import FileInput from "./file-input.vue";
+import PemInput from "./pem-input.vue";
 export default {
   install(app: any) {
     app.component("PiContainer", PiContainer);
     app.component("TextEditable", TextEditable);
     app.component("FileInput", FileInput);
+    app.component("PemInput", PemInput);
 
     app.component("CronLight", CronLight);
     app.component("CronEditor", CronEditor);

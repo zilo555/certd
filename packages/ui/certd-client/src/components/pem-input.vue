@@ -1,0 +1,59 @@
+<template>
+  <div class="pem-selector">
+    <file-input v-bind="fileInput" class="mb-5" type="primary" text="选择文件" @change="onChange" />
+    <a-textarea v-bind="textarea" v-model:value="textRef"></a-textarea>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { notification } from "ant-design-vue";
+import { ref, watch, defineEmits } from "vue";
+
+const props = defineProps<{
+  modelValue?: string;
+  textarea?: any;
+  fileInput?: any;
+}>();
+
+const emit = defineEmits(["update:modelValue"]);
+const textRef = ref();
+
+function emitValue(value: string) {
+  emit("update:modelValue", value);
+}
+
+function onChange(e: any) {
+  const file = e.target.files[0];
+  const size = file.size;
+  if (size > 100 * 1024) {
+    notification.error({
+      message: "文件超过100k，请选择正确的证书文件",
+    });
+    return;
+  }
+  const fileReader = new FileReader();
+  fileReader.onload = function (e: any) {
+    const value = e.target.result;
+    emitValue(value);
+  };
+  fileReader.readAsText(file); // 以文本形式读取文件
+}
+
+watch(
+  () => props.modelValue,
+  value => {
+    textRef.value = value;
+  },
+  {
+    immediate: true,
+  }
+);
+</script>
+
+<style lang="less">
+.pem-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+</style>

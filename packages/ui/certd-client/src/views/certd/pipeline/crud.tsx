@@ -406,6 +406,7 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
           },
           column: {
             sorter: true,
+            width: 150,
             align: "center",
           },
         },
@@ -481,6 +482,34 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
             component: {
               color: "auto",
             },
+            sorter: true,
+          },
+        },
+        type: {
+          title: "类型",
+          type: "dict-select",
+          search: {
+            show: true,
+          },
+          dict: dict({
+            data: [
+              { value: "cert", label: "证书申请" },
+              { value: "cert_upload", label: "证书上传" },
+              { value: "custom", label: "自定义" },
+            ],
+          }),
+          form: {
+            show: false,
+            value: "custom",
+          },
+          column: {
+            sorter: true,
+            width: 90,
+            align: "center",
+            show: true,
+            component: {
+              color: "auto",
+            },
           },
         },
         order: {
@@ -505,6 +534,7 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
           column: {
             width: 130,
             show: false,
+            sorter: true,
           },
         },
         createTime: {
@@ -528,6 +558,7 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
           column: {
             width: 125,
             show: false,
+            sorter: true,
           },
         },
       },

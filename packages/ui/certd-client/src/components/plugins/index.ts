@@ -23,5 +23,5 @@ export default {
     app.component("RemoteSelect", RemoteSelect);
     app.component("CertDomainsGetter", CertDomainsGetter);
     app.component("InputPassword", InputPassword);
-  }
+  },
 };

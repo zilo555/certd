@@ -79,7 +79,7 @@
                         class="task-container"
                         :class="{
                           'first-task': taskIndex === 0,
-                          'validate-error': hasValidateError(task.id)
+                          'validate-error': hasValidateError(task.id),
                         }"
                       >
                         <div class="line line-left">
@@ -113,6 +113,9 @@
                           </div>
                           <div v-plus class="icon-box task-move-handle action drag">
                             <fs-icon v-if="editMode" title="拖动排序" icon="ion:move-outline"></fs-icon>
+                          </div>
+                          <div class="shortcut">
+                            <TaskShortcuts :task="task" />
                           </div>
                         </div>
                       </div>
@@ -269,29 +272,30 @@ import PiHistoryTimelineItem from "/@/views/certd/pipeline/pipeline/component/hi
 import { FsIcon } from "@fast-crud/fast-crud";
 import { useSettingStore } from "/@/store/modules/settings";
 import { useUserStore } from "/@/store/modules/user";
+import TaskShortcuts from "./component/shortcut/task-shortcuts.vue";
 export default defineComponent({
   name: "PipelineEdit",
   // eslint-disable-next-line vue/no-unused-components
-  components: { FsIcon, PiHistoryTimelineItem, PiTaskForm, PiTriggerForm, PiTaskView, PiStatusShow, PiNotificationForm, VDraggable },
+  components: { FsIcon, PiHistoryTimelineItem, PiTaskForm, PiTriggerForm, PiTaskView, PiStatusShow, PiNotificationForm, VDraggable, TaskShortcuts },
   props: {
     pipelineId: {
       type: [Number, String],
-      default: 0
+      default: 0,
     },
     historyId: {
       type: [Number, String],
-      default: 0
+      default: 0,
     },
     editMode: {
       type: Boolean,
-      default: false
+      default: false,
     },
     options: {
       type: Object as PropType<PipelineOptions>,
       default() {
         return {};
-      }
-    }
+      },
+    },
   },
   emits: ["update:modelValue", "update:editMode"],
   setup(props, ctx) {
@@ -341,8 +345,9 @@ export default defineComponent({
       histories.value = historyList;
 
       if (historyList.length > 0) {
+        //@ts-ignore
         if (props.historyId > 0) {
-          const found = historyList.find((item) => {
+          const found = historyList.find(item => {
             //字符串==int
             return item.id == props.historyId;
           });
@@ -383,7 +388,7 @@ export default defineComponent({
       () => {
         return props.editMode;
       },
-      (editMode) => {
+      editMode => {
         if (editMode) {
           changeCurrentHistory();
         } else if (histories.value.length > 0) {
@@ -407,7 +412,7 @@ export default defineComponent({
         await loadHistoryList(true);
       },
       {
-        immediate: true
+        immediate: true,
       }
     );
 
@@ -438,7 +443,7 @@ export default defineComponent({
         };
         return {
           taskViewOpen,
-          taskViewRef
+          taskViewRef,
         };
       }
 
@@ -503,7 +508,7 @@ export default defineComponent({
           id: nanoid(),
           title: "新阶段",
           tasks: [],
-          status: null
+          status: null,
         };
         //stage: any, stageIndex: number, onSuccess
         useTaskRet.taskAdd(stage, stageIndex, () => {
@@ -519,7 +524,7 @@ export default defineComponent({
       }
       return {
         stageAdd,
-        isLastStage
+        isLastStage,
       };
     }
 
@@ -551,7 +556,7 @@ export default defineComponent({
       return {
         triggerAdd,
         triggerEdit,
-        triggerFormRef
+        triggerFormRef,
       };
     }
 
@@ -586,7 +591,7 @@ export default defineComponent({
       return {
         notificationAdd,
         notificationEdit,
-        notificationFormRef
+        notificationFormRef,
       };
     }
 
@@ -604,7 +609,7 @@ export default defineComponent({
               },
               onCancel() {
                 resolve(false);
-              }
+              },
             });
           });
           if (!res) {
@@ -628,7 +633,7 @@ export default defineComponent({
             watchNewHistoryList();
             await props.options.doTrigger({ pipelineId: pipeline.value.id, stepId: stepId });
             notification.success({ message: "管道已经开始运行" });
-          }
+          },
         });
       };
 
@@ -684,10 +689,10 @@ export default defineComponent({
                 hasError = true;
                 const message = `任务${step.title}的前置输出步骤${paramName}不存在，请重新修改此任务`;
                 addValidateError(task.id, {
-                  message
+                  message,
                 });
                 addValidateError(step.id, {
-                  message
+                  message,
                 });
                 errorMessage += message + "；";
               }
@@ -744,7 +749,7 @@ export default defineComponent({
         edit,
         cancel,
         saveLoading,
-        hasValidateError
+        hasValidateError,
       };
     }
 
@@ -767,7 +772,7 @@ export default defineComponent({
         historyView,
         historyCancel,
         logsCollapse,
-        toggleLogsCollapse
+        toggleLogsCollapse,
       };
     }
 
@@ -829,9 +834,9 @@ export default defineComponent({
       ...useActions(),
       ...useHistory(),
       ...useNotification(),
-      ...useScroll()
+      ...useScroll(),
     };
-  }
+  },
 });
 </script>
 <style lang="less">
@@ -1034,8 +1039,8 @@ export default defineComponent({
 
               .action {
                 position: absolute;
-                right: 60px;
-                top: 18px;
+                right: 10px;
+                top: 17px;
                 //font-size: 18px;
                 cursor: pointer;
                 z-index: 10;
@@ -1043,16 +1048,23 @@ export default defineComponent({
                   color: #1890ff;
                 }
                 &.copy {
-                  right: 80px;
+                  right: 30px;
                 }
                 &.drag {
-                  right: 60px;
+                  right: 10px;
                   cursor: move;
                 }
               }
 
               .ant-btn {
                 width: 200px;
+              }
+
+              position: relative;
+              .shortcut {
+                position: absolute;
+                bottom: -15px;
+                left: 20px;
               }
             }
           }

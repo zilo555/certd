@@ -18,6 +18,47 @@ export type { CertInfo };
       runStrategy: RunStrategy.AlwaysRun,
     },
   },
+  shortcut: {
+    certUpdate: {
+      title: "上传证书",
+      icon: "ph:upload",
+      action: "onCertUpdate",
+      form: {
+        columns: {
+          crt: {
+            title: "证书",
+            type: "textarea",
+            form: {
+              component: {
+                name: "pem-input",
+                vModel: "modelValue",
+                textarea: {
+                  row: 4,
+                },
+              },
+              rules: [{ required: true, message: "此项必填" }],
+              col: { span: 24 },
+            },
+          },
+          key: {
+            title: "私钥",
+            type: "textarea",
+            form: {
+              component: {
+                name: "pem-input",
+                vModel: "modelValue",
+                textarea: {
+                  row: 4,
+                },
+              },
+              rules: [{ required: true, message: "此项必填" }],
+              col: { span: 24 },
+            },
+          },
+        },
+      },
+    },
+  },
 })
 export class CertApplyUploadPlugin extends CertApplyBaseConvertPlugin {
   @TaskInput({
@@ -95,6 +136,8 @@ export class CertApplyUploadPlugin extends CertApplyBaseConvertPlugin {
     await this.output(certReader, true);
     return;
   }
+
+  async onCertUpdate(data: any) {}
 }
 
 new CertApplyUploadPlugin();

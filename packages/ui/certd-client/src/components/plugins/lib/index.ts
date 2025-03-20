@@ -24,9 +24,9 @@ export async function doRequest(req: RequestHandleReq, opts: any = {}) {
       typeName,
       action,
       data,
-      input
+      input,
     },
-    ...opts
+    ...opts,
   });
   return res;
 }

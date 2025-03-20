@@ -29,12 +29,12 @@ export class PipelineEntity {
   @Column({ comment: '启用/禁用', nullable: true, default: false })
   disabled: boolean;
 
-  // cert: 证书; backup: 备份; custom:自定义;
+  // cert_apply: 证书申请；cert_upload: 证书上传; backup: 备份; custom:自定义;
   @Column({ comment: '类型', nullable: true, default: 'cert' })
   type: string;
 
   // custom: 自定义; monitor: 监控;
-  @Column({ comment: '来源', nullable: true, default: 'custom' })
+  @Column({ comment: '来源', nullable: true, default: '' })
   from: string;
 
   @Column({
