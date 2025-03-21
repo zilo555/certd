@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.31.4](https://github.com/certd/certd/compare/v1.31.3...v1.31.4) (2025-03-21)
+
+### Bug Fixes
+
+* 修复站点监控通知通过webhook发送失败的bug ([9be1ecc](https://github.com/certd/certd/commit/9be1ecc8aab3ea23dd0dc2dab3688f4edb90ef2c))
+* 修复dns.la域名申请失败的bug ([1de8eee](https://github.com/certd/certd/commit/1de8eee6ea8307f3c11626af75303d3cc104bb95))
+
+### Performance Improvements
+
+* 宝塔支持doker站点证书部署 ([589a373](https://github.com/certd/certd/commit/589a373142ef7f50d64d3aa767a90b1f4b64da93))
+* 保存调整后的列宽 ([873f2b6](https://github.com/certd/certd/commit/873f2b618b9d7320045baf69d6da83afe48a780f))
+* 创建证书流水线时，支持更多参数展开 ([36aa7f8](https://github.com/certd/certd/commit/36aa7f82b078a053a102331b3c6f132fb9d492f9))
+* 流水线页面可以鼠标按住左右拖动 ([d85a02f](https://github.com/certd/certd/commit/d85a02feeb3183c5abd6c1ea790d5923a32d7271))
+* 流水线增加上传证书快捷方式 ([425bba6](https://github.com/certd/certd/commit/425bba67c539b734e2a85a83a4f9ecc9b2434fb4))
+* 手动上传证书部署流水线 ([fbb66f3](https://github.com/certd/certd/commit/fbb66f3c4389489aa8a43b194d82bc8cf391607b))
+* 优化选择任务时手机版展示效果 ([d01004d](https://github.com/certd/certd/commit/d01004d53071a75ac91ee21cc96bde9369f77ff3))
+* 站点监控，手动测试也发通知 ([729b19c](https://github.com/certd/certd/commit/729b19c8da60d5efb5baef7cf8df0518e7f6b471))
+* 站点证书监控支持模糊查询 ([0069c0e](https://github.com/certd/certd/commit/0069c0e3992946a8dd6410f299d4fc974ef0e76b))
+* 支持飞书通知 ([b82e1dc](https://github.com/certd/certd/commit/b82e1dcd6217b09a7d7e21cd648bb31de320cadf))
+* 支持手动上传证书并部署 ([a9fffa5](https://github.com/certd/certd/commit/a9fffa5180c83da27b35886aa2e858a92a2c5f94))
+
 ## [1.31.3](https://github.com/certd/certd/compare/v1.31.2...v1.31.3) (2025-03-13)
 
 ### Bug Fixes
