@@ -60,6 +60,7 @@ type AcmeServiceOptions = {
   reverseProxy?: string;
   privateKeyType?: PrivateKeyType;
   signal?: AbortSignal;
+  maxCheckRetryCount?: number;
 };
 
 export class AcmeService {
@@ -144,7 +145,7 @@ export class AcmeService {
       accountKey: conf.key,
       accountUrl: conf.accountUrl,
       externalAccountBinding: this.eab,
-      backoffAttempts: 20,
+      backoffAttempts: this.options.maxCheckRetryCount || 20,
       backoffMin: 5000,
       backoffMax: 10000,
       urlMapping,
@@ -282,15 +283,7 @@ export class AcmeService {
    * @returns {Promise}
    */
 
-  async challengeRemoveFn(
-    authz: any,
-    challenge: any,
-    keyAuthorization: string,
-    recordReq: any,
-    recordRes: any,
-    dnsProvider?: IDnsProvider,
-    httpUploader?: HttpChallengeUploader
-  ) {
+  async challengeRemoveFn(authz: any, challenge: any, keyAuthorization: string, recordReq: any, recordRes: any, dnsProvider?: IDnsProvider, httpUploader?: HttpChallengeUploader) {
     this.logger.info("执行清理");
 
     /* http-01 */
@@ -387,14 +380,7 @@ export class AcmeService {
       ): Promise<{ recordReq?: any; recordRes?: any; dnsProvider?: any; challenge: Challenge; keyAuthorization: string }> => {
         return await this.challengeCreateFn(authz, keyAuthorizationGetter, providers);
       },
-      challengeRemoveFn: async (
-        authz: acme.Authorization,
-        challenge: Challenge,
-        keyAuthorization: string,
-        recordReq: any,
-        recordRes: any,
-        dnsProvider: IDnsProvider
-      ): Promise<any> => {
+      challengeRemoveFn: async (authz: acme.Authorization, challenge: Challenge, keyAuthorization: string, recordReq: any, recordRes: any, dnsProvider: IDnsProvider): Promise<any> => {
         return await this.challengeRemoveFn(authz, challenge, keyAuthorization, recordReq, recordRes, dnsProvider, httpUploader);
       },
       signal: this.options.signal,

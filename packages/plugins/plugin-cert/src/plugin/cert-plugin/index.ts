@@ -203,8 +203,7 @@ HTTP文件验证：不支持泛域名，需要配置网站文件上传`,
     },
     maybeNeed: true,
     required: false,
-    helper:
-      "google服务账号授权与EAB授权选填其中一个，[服务账号授权获取方法](https://certd.docmirror.cn/guide/use/google/)\n服务账号授权需要配置代理或者服务器本身在海外",
+    helper: "google服务账号授权与EAB授权选填其中一个，[服务账号授权获取方法](https://certd.docmirror.cn/guide/use/google/)\n服务账号授权需要配置代理或者服务器本身在海外",
     mergeScript: `
     return {
         show: ctx.compute(({form})=>{
@@ -268,6 +267,17 @@ HTTP文件验证：不支持泛域名，需要配置网站文件上传`,
   })
   skipLocalVerify = false;
 
+  @TaskInput({
+    title: "检查解析重试次数",
+    value: 20,
+    component: {
+      name: "a-input-number",
+      vModel: "value",
+    },
+    helper: "检查域名验证解析记录重试次数，如果你的域名服务商解析生效速度慢，可以适当增加此值",
+  })
+  maxCheckRetryCount = 20;
+
   acme!: AcmeService;
 
   eab!: EabAccess;
@@ -314,6 +324,7 @@ HTTP文件验证：不支持泛域名，需要配置网站文件上传`,
       reverseProxy: this.reverseProxy,
       privateKeyType: this.privateKeyType,
       signal: this.ctx.signal,
+      maxCheckRetryCount: this.maxCheckRetryCount,
       // cnameProxyService: this.ctx.cnameProxyService,
       // dnsProviderCreator: this.createDnsProvider.bind(this),
     });

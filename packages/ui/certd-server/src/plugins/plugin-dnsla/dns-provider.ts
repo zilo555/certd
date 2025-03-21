@@ -130,12 +130,23 @@ export class DnslaDnsProvider extends AbstractDnsProvider<DnslaRecord> {
      * }
      */
     const url = `/api/record`;
+    /**
+     * A	1
+     * NS	2
+     * CNAME	5
+     * MX	15
+     * TXT	16
+     * AAAA	28
+     * SRV	33
+     * CAA	257
+     * URL转发	256
+     */
     const res = await this.doRequestApi(url, {
       domainId: domainId,
-      type: type,
+      type: 16,
       host: fullRecord,
       data: value,
-      ttl: 60,
+      ttl: 300,
     });
 
     return res.data;
