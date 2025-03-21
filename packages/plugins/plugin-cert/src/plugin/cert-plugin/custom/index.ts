@@ -2,11 +2,12 @@ import { IsTaskPlugin, pluginGroups, RunStrategy, Step, TaskInput, TaskOutput } 
 import type { CertInfo } from "../acme.js";
 import { CertReader } from "../cert-reader.js";
 import { CertApplyBaseConvertPlugin } from "../base-convert.js";
-import dayjs from "dayjs";
+export * from "./d.js";
 
+import dayjs from "dayjs";
+import { ICertApplyUploadService } from "./d";
 export { CertReader };
 export type { CertInfo };
-
 @IsTaskPlugin({
   name: "CertApplyUpload",
   icon: "ph:certificate",
@@ -20,20 +21,21 @@ export type { CertInfo };
   },
   shortcut: {
     certUpdate: {
-      title: "上传证书",
+      title: "更新证书",
       icon: "ph:upload",
       action: "onCertUpdate",
       form: {
         columns: {
           crt: {
             title: "证书",
-            type: "textarea",
+            type: "text",
             form: {
               component: {
                 name: "pem-input",
                 vModel: "modelValue",
                 textarea: {
-                  row: 4,
+                  rows: 4,
+                  placeholder: "-----BEGIN CERTIFICATE-----\n...\n...\n-----END CERTIFICATE-----",
                 },
               },
               rules: [{ required: true, message: "此项必填" }],
@@ -42,13 +44,14 @@ export type { CertInfo };
           },
           key: {
             title: "私钥",
-            type: "textarea",
+            type: "text",
             form: {
               component: {
                 name: "pem-input",
                 vModel: "modelValue",
                 textarea: {
-                  row: 4,
+                  rows: 4,
+                  placeholder: "-----BEGIN PRIVATE KEY-----\n...\n...\n-----END PRIVATE KEY----- ",
                 },
               },
               rules: [{ required: true, message: "此项必填" }],
@@ -67,6 +70,7 @@ export class CertApplyUploadPlugin extends CertApplyBaseConvertPlugin {
       name: "cert-info-selector",
       vModel: "modelValue",
     },
+    helper: "请不要随意修改",
     order: -9999,
     required: true,
     mergeScript: `
@@ -98,10 +102,10 @@ export class CertApplyUploadPlugin extends CertApplyBaseConvertPlugin {
   async onInit(): Promise<void> {}
 
   async getCertFromStore() {
-    const siteInfoService = await this.ctx.serviceGetter.get("CertInfoService");
+    const certApplyUploadService: ICertApplyUploadService = await this.ctx.serviceGetter.get("CertApplyUploadService");
 
-    const certInfo = await siteInfoService.getCertInfo({
-      certId: this.certInfoId,
+    const certInfo = await certApplyUploadService.getCertInfo({
+      certId: Number(this.certInfoId),
       userId: this.pipeline.userId,
     });
 
@@ -137,7 +141,18 @@ export class CertApplyUploadPlugin extends CertApplyBaseConvertPlugin {
     return;
   }
 
-  async onCertUpdate(data: any) {}
+  async onCertUpdate(data: any) {
+    const certApplyUploadService = await this.ctx.serviceGetter.get("CertApplyUploadService");
+
+    await certApplyUploadService.updateCert({
+      certId: this.certInfoId,
+      userId: this.ctx.user.id,
+      cert: {
+        crt: data.crt,
+        key: data.key,
+      },
+    });
+  }
 }
 
 new CertApplyUploadPlugin();

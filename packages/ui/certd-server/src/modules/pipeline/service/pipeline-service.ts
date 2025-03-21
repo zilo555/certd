@@ -36,6 +36,7 @@ import { NotificationService } from "./notification-service.js";
 import { NotificationGetter } from "./notification-getter.js";
 import { UserSuiteEntity, UserSuiteService } from "@certd/commercial-core";
 import { CertInfoService } from "../../monitor/service/cert-info-service.js";
+import {CertApplyUploadService} from "./cert-apply-upload-service.js";
 
 const runningTasks: Map<string | number, Executor> = new Map();
 
@@ -92,6 +93,8 @@ export class PipelineService extends BaseService<PipelineEntity> {
   @Inject()
   certInfoService: CertInfoService;
 
+  @Inject()
+  certApplyUploadService: CertApplyUploadService;
   //@ts-ignore
   getRepository() {
     return this.repository;
@@ -481,7 +484,7 @@ export class PipelineService extends BaseService<PipelineEntity> {
       sysInfo.title = siteInfo.title;
     }
     const serviceContainer = {
-      CertInfoService: this.certInfoService
+      CertApplyUploadService: this.certApplyUploadService
     }
     const serviceGetter = {
       get:(name: string) => {

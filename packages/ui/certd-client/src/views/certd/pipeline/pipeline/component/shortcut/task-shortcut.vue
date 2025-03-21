@@ -9,6 +9,7 @@
 import { doRequest } from "/@/components/plugins/lib";
 import { ref, useAttrs } from "vue";
 import { useFormWrapper } from "@fast-crud/fast-crud";
+import { notification } from "ant-design-vue";
 
 defineOptions({
   name: "TaskShortcut",
@@ -36,6 +37,9 @@ async function openDialog() {
           wrapper: {
             title: props.title,
             saveRemind: false,
+          },
+          afterSubmit() {
+            notification.success({ message: "操作成功" });
           },
           async doSubmit({ form }: any) {
             return await doPluginFormSubmit(form);

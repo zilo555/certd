@@ -1,6 +1,6 @@
 <template>
-  <div class="pem-selector">
-    <file-input v-bind="fileInput" class="mb-5" type="primary" text="选择文件" @change="onChange" />
+  <div class="pem-input">
+    <FileInput v-bind="fileInput" class="mb-5" type="primary" text="选择文件" @change="onChange" />
     <a-textarea v-bind="textarea" v-model:value="textRef"></a-textarea>
   </div>
 </template>
@@ -8,6 +8,7 @@
 <script setup lang="ts">
 import { notification } from "ant-design-vue";
 import { ref, watch, defineEmits } from "vue";
+import FileInput from "/@/components/file-input.vue";
 
 const props = defineProps<{
   modelValue?: string;
@@ -51,7 +52,7 @@ watch(
 </script>
 
 <style lang="less">
-.pem-selector {
+.pem-input {
   display: flex;
   flex-direction: column;
   gap: 5px;

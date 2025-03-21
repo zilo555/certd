@@ -1,5 +1,5 @@
-import { ALL, Body, Controller, Inject, Post, Provide } from '@midwayjs/core';
-import { BaseController, Constants } from '@certd/lib-server';
+import {ALL, Body, Controller, Inject, Post, Provide} from '@midwayjs/core';
+import {AccessGetter, AccessService, BaseController, Constants} from '@certd/lib-server';
 import {
   AccessRequestHandleReq,
   ITaskPlugin,
@@ -10,10 +10,10 @@ import {
   PluginRequestHandleReq,
   TaskInstanceContext,
 } from '@certd/pipeline';
-import { AccessService, AccessGetter } from '@certd/lib-server';
-import { EmailService } from '../../../modules/basic/service/email-service.js';
-import { http, HttpRequestConfig, logger, mergeUtils, utils } from '@certd/basic';
-import { NotificationService } from '../../../modules/pipeline/service/notification-service.js';
+import {EmailService} from '../../../modules/basic/service/email-service.js';
+import {http, HttpRequestConfig, logger, mergeUtils, utils} from '@certd/basic';
+import {NotificationService} from '../../../modules/pipeline/service/notification-service.js';
+import {CertApplyUploadService} from "../../../modules/pipeline/service/cert-apply-upload-service.js";
 
 @Provide()
 @Controller('/api/pi/handle')
@@ -23,6 +23,9 @@ export class HandleController extends BaseController {
 
   @Inject()
   emailService: EmailService;
+
+  @Inject()
+  certApplyUploadService: CertApplyUploadService;
 
   @Inject()
   notificationService: NotificationService;
@@ -92,6 +95,15 @@ export class HandleController extends BaseController {
         savePath,
       });
     };
+
+    const serviceContainer:any = {
+      CertApplyUploadService:this.certApplyUploadService
+    }
+    const serviceGetter =  {
+      get:(name: string) => {
+        return serviceContainer[name]
+      }
+    }
     //@ts-ignore
     const taskCtx: TaskInstanceContext = {
       pipeline: undefined,
@@ -107,6 +119,7 @@ export class HandleController extends BaseController {
       userContext: undefined,
       fileStore: undefined,
       signal: undefined,
+      user: {id:userId,role:"user"},
       // pipelineContext: this.pipelineContext,
       // userContext: this.contextFactory.getContext('user', this.options.userId),
       // fileStore: new FileStore({
@@ -116,6 +129,7 @@ export class HandleController extends BaseController {
       // }),
       // signal: this.abort.signal,
       utils,
+      serviceGetter
     };
     instance.setCtx(taskCtx);
     mergeUtils.merge(plugin, body.input);
