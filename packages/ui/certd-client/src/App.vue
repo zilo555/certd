@@ -1,7 +1,7 @@
 <template>
   <AConfigProvider :locale="locale" :theme="tokenTheme">
-    <contextHolder />
     <fs-form-provider>
+      <contextHolder />
       <router-view />
     </fs-form-provider>
   </AConfigProvider>
@@ -21,7 +21,7 @@ import AConfigProvider from "ant-design-vue/es/config-provider";
 import { Modal } from "ant-design-vue";
 
 defineOptions({
-  name: "App"
+  name: "App",
 });
 const [modal, contextHolder] = Modal.useModal();
 provide("modal", modal);
@@ -59,7 +59,7 @@ const tokenTheme = computed(() => {
 
   return {
     algorithm,
-    token: tokens
+    token: tokens,
   };
 });
 //其他初始化

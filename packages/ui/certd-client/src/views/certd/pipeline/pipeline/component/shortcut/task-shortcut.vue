@@ -7,10 +7,10 @@
 </template>
 <script setup lang="ts">
 import { doRequest } from "/@/components/plugins/lib";
-import { ref, useAttrs } from "vue";
+import { ref, useAttrs, inject } from "vue";
 import { useFormWrapper } from "@fast-crud/fast-crud";
 import { notification } from "ant-design-vue";
-
+import { merge } from "lodash-es";
 defineOptions({
   name: "TaskShortcut",
 });
@@ -32,7 +32,22 @@ async function openDialog() {
   function createCrudOptions() {
     return {
       crudOptions: {
-        columns: props.form.columns,
+        columns: {
+          ...props.form.columns,
+          immediateRun: {
+            title: "立即运行",
+            type: "switch",
+            span: 24,
+            form: {
+              value: true,
+              component: {
+                name: "a-switch",
+                vModel: "checked",
+              },
+              helper: "保存后是否立即触发运行流水线",
+            },
+          },
+        },
         form: {
           wrapper: {
             title: props.title,
@@ -52,6 +67,7 @@ async function openDialog() {
   await openCrudFormDialog({ crudOptions });
 }
 
+const getPipelineScope: any = inject("getPipelineScope");
 const doPluginFormSubmit = async (formData: any) => {
   if (loading.value) {
     return;
@@ -66,6 +82,27 @@ const doPluginFormSubmit = async (formData: any) => {
       input: props.input,
       data: formData,
     });
+
+    if (res.input) {
+      const { save, findStep } = getPipelineScope();
+      const step = findStep(res.input);
+      if (step) {
+        // 数组覆盖合并
+        mergeWith(step.input, res.input, (objValue, srcValue) => {
+          if (isArray(objValue)) {
+            return srcValue;
+          }
+        });
+        //保存，但不改变当前编辑状态
+        save(false);
+      }
+    }
+
+    if (formData.immediateRun) {
+      const { run } = getPipelineScope();
+      run();
+    }
+
     return res;
   } finally {
     loading.value = false;

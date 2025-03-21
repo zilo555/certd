@@ -3,7 +3,6 @@ import type { CertInfo } from "../acme.js";
 import { CertReader } from "../cert-reader.js";
 import { CertApplyBaseConvertPlugin } from "../base-convert.js";
 export * from "./d.js";
-
 import dayjs from "dayjs";
 import { ICertApplyUploadService } from "./d";
 export { CertReader };
@@ -22,7 +21,7 @@ export type { CertInfo };
   shortcut: {
     certUpdate: {
       title: "更新证书",
-      icon: "ph:upload",
+      icon: "ion:upload",
       action: "onCertUpdate",
       form: {
         columns: {
@@ -65,20 +64,19 @@ export type { CertInfo };
 })
 export class CertApplyUploadPlugin extends CertApplyBaseConvertPlugin {
   @TaskInput({
-    title: "证书仓库ID",
+    title: "手动上传证书",
     component: {
-      name: "cert-info-selector",
+      name: "cert-info-updater",
       vModel: "modelValue",
     },
-    helper: "请不要随意修改",
+    helper: "手动上传证书",
     order: -9999,
     required: true,
     mergeScript: `
     return {
       component:{
         on:{
-          selectedChange(scope){
-          console.log(scope)
+          updated(scope){
             scope.form.input.domains = scope.$event?.domains
           }
         }
@@ -144,7 +142,7 @@ export class CertApplyUploadPlugin extends CertApplyBaseConvertPlugin {
   async onCertUpdate(data: any) {
     const certApplyUploadService = await this.ctx.serviceGetter.get("CertApplyUploadService");
 
-    await certApplyUploadService.updateCert({
+    const res = await certApplyUploadService.updateCert({
       certId: this.certInfoId,
       userId: this.ctx.user.id,
       cert: {
@@ -152,6 +150,12 @@ export class CertApplyUploadPlugin extends CertApplyBaseConvertPlugin {
         key: data.key,
       },
     });
+
+    return {
+      input: {
+        domains: res.domains,
+      },
+    };
   }
 }
 

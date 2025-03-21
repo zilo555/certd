@@ -7,6 +7,7 @@ import { useRouter } from "vue-router";
 import { useModal } from "/@/use/use-modal";
 import { notification } from "ant-design-vue";
 import CertView from "/@/views/certd/pipeline/cert-view.vue";
+import { useCertUpload } from "/@/views/certd/pipeline/cert-upload/use";
 
 export default function ({ crudExpose, context }: CreateCrudOptionsProps): CreateCrudOptionsRet {
   const api = certInfoApi;
@@ -51,69 +52,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
     });
   };
 
-  async function openUpload(id?: any) {
-    function createCrudOptions() {
-      return {
-        crudOptions: {
-          request: {
-            // addRequest: async (form: any) => {
-            //   return await api.Upload(form);
-            // },
-            // editRequest: async (form: any) => {
-            //   return await api.Upload(form);
-            // }
-          },
-          columns: {
-            id: {
-              title: "ID",
-              type: "number",
-              form: {
-                show: false,
-              },
-            },
-            "cert.crt": {
-              title: "证书",
-              type: "textarea",
-              form: {
-                component: {
-                  rows: 4,
-                },
-                rules: [{ required: true, message: "此项必填" }],
-                col: { span: 24 },
-              },
-            },
-            "cert.key": {
-              title: "私钥",
-              type: "textarea",
-              form: {
-                component: {
-                  rows: 4,
-                },
-                rules: [{ required: true, message: "此项必填" }],
-                col: { span: 24 },
-              },
-            },
-          },
-          form: {
-            wrapper: {
-              title: "上传自定义证书",
-            },
-            async doSubmit({ form }: any) {
-              if (!id) {
-                delete form.id;
-              } else {
-                form.id = id;
-              }
-              return await api.Upload(form);
-            },
-          },
-        },
-      };
-    }
-    const { crudOptions } = createCrudOptions();
-    const wrapperRef = await openCrudFormDialog({ crudOptions });
-  }
-
+  const { openUploadCreateDialog, openUpdateCertDialog } = useCertUpload();
   return {
     crudOptions: {
       request: {
@@ -145,7 +84,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             type: "primary",
             show: true,
             async click() {
-              await openUpload();
+              await openUploadCreateDialog();
             },
           },
         },
@@ -179,7 +118,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             type: "link",
             icon: "ph:upload",
             async click({ row }) {
-              await openUpload(row.id);
+              await openUpdateCertDialog(row.id);
             },
           },
           remove: {

@@ -48,25 +48,6 @@ export function useCertUpload() {
     }
     return inputs;
   }
-  function topRender({ form, key }: any) {
-    function onChange(e: any) {
-      const file = e.target.files[0];
-      const size = file.size;
-      if (size > 100 * 1024) {
-        notification.error({
-          message: "文件超过100k，请选择正确的证书文件",
-        });
-        return;
-      }
-      const fileReader = new FileReader();
-      fileReader.onload = function (e: any) {
-        const value = e.target.result;
-        set(form, key, value);
-      };
-      fileReader.readAsText(file); // 以文本形式读取文件
-    }
-    return <file-input class="mb-5" type="primary" text={"选择文件"} onChange={onChange} />;
-  }
 
   async function openUploadCreateDialog() {
     //检查是否流水线数量超出限制
@@ -87,32 +68,38 @@ export function useCertUpload() {
           columns: {
             "cert.crt": {
               title: "证书",
-              type: "textarea",
+              type: "text",
               form: {
                 component: {
-                  rows: 4,
-                  placeholder: "-----BEGIN CERTIFICATE-----\n...\n...\n-----END CERTIFICATE-----",
+                  name: "pem-input",
+                  vModel: "modelValue",
+                  textarea: {
+                    rows: 4,
+                    placeholder: "-----BEGIN CERTIFICATE-----\n...\n...\n-----END CERTIFICATE-----",
+                  },
                 },
                 helper: "选择pem格式证书文件，或者粘贴到此",
                 rules: [{ required: true, message: "此项必填" }],
                 col: { span: 24 },
                 order: -9999,
-                topRender,
               },
             },
             "cert.key": {
               title: "证书私钥",
-              type: "textarea",
+              type: "text",
               form: {
                 component: {
-                  rows: 4,
-                  placeholder: "-----BEGIN PRIVATE KEY-----\n...\n...\n-----END PRIVATE KEY----- ",
+                  name: "pem-input",
+                  vModel: "modelValue",
+                  textarea: {
+                    rows: 4,
+                    placeholder: "-----BEGIN PRIVATE KEY-----\n...\n...\n-----END PRIVATE KEY----- ",
+                  },
                 },
                 helper: "选择pem格式证书私钥文件，或者粘贴到此",
                 rules: [{ required: true, message: "此项必填" }],
                 col: { span: 24 },
                 order: -9999,
-                topRender,
               },
             },
             ...inputs,
@@ -174,17 +161,22 @@ export function useCertUpload() {
     wrapperRef.value = wrapper;
   }
 
-  async function openUpdateCertDialog(id: any) {
+  async function openUpdateCertDialog(id: any, onSubmit?: any) {
     function createCrudOptions() {
       return {
         crudOptions: {
           columns: {
             "cert.crt": {
               title: "证书",
-              type: "textarea",
+              type: "text",
               form: {
                 component: {
-                  rows: 4,
+                  name: "pem-input",
+                  vModel: "modelValue",
+                  textarea: {
+                    rows: 4,
+                    placeholder: "-----BEGIN CERTIFICATE-----\n...\n...\n-----END CERTIFICATE-----",
+                  },
                 },
                 rules: [{ required: true, message: "此项必填" }],
                 col: { span: 24 },
@@ -195,7 +187,12 @@ export function useCertUpload() {
               type: "textarea",
               form: {
                 component: {
-                  rows: 4,
+                  name: "pem-input",
+                  vModel: "modelValue",
+                  textarea: {
+                    rows: 4,
+                    placeholder: "-----BEGIN PRIVATE KEY-----\n...\n...\n-----END PRIVATE KEY----- ",
+                  },
                 },
                 rules: [{ required: true, message: "此项必填" }],
                 col: { span: 24 },
@@ -212,7 +209,10 @@ export function useCertUpload() {
                 id: id,
                 cert: form.cert,
               };
-              return await api.UploadCert(form);
+              const res = await api.UploadCert(req);
+              if (onSubmit) {
+                await onSubmit(res);
+              }
             },
           },
         },

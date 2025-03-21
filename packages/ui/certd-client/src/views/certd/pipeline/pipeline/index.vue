@@ -647,31 +647,34 @@ export default defineComponent({
         validateErrors.value[taskId] = errors;
         errors.push(error);
       }
-      function doValidate() {
-        validateErrors.value = {};
 
-        const stepIds: string[] = [];
-        //校验output id是否正确
-        const pp = pipeline.value;
-        function eachSteps(callback: any) {
-          if (pp.stages) {
-            for (const stage of pp.stages) {
-              if (stage.tasks) {
-                for (const task of stage.tasks) {
-                  if (task.steps) {
-                    for (const step of task.steps) {
-                      callback(step, task, stage);
-                    }
+      function eachSteps(pp: any, callback: any) {
+        if (pp.stages) {
+          for (const stage of pp.stages) {
+            if (stage.tasks) {
+              for (const task of stage.tasks) {
+                if (task.steps) {
+                  for (const step of task.steps) {
+                    callback(step, task, stage);
                   }
                 }
               }
             }
           }
         }
+      }
+
+      function doValidate() {
+        validateErrors.value = {};
+
+        const stepIds: string[] = [];
+        //校验output id是否正确
+        const pp = pipeline.value;
+
         //检查输出的stepid是否存在
         let hasError = false;
         let errorMessage = "";
-        eachSteps((step: any, task: any, stage: any) => {
+        eachSteps(pp, (step: any, task: any, stage: any) => {
           stepIds.push(step.id);
           if (step.input) {
             for (const key in step.input) {
@@ -709,7 +712,7 @@ export default defineComponent({
       function hasValidateError(taskId: string) {
         return validateErrors.value[taskId] != null;
       }
-      const save = async () => {
+      const save = async (offEdit = true) => {
         doValidate();
 
         saveLoading.value = true;
@@ -728,7 +731,9 @@ export default defineComponent({
 
             await props.options.doSave(pipeline.value);
           }
-          toggleEditMode(false);
+          if (offEdit) {
+            toggleEditMode(false);
+          }
         } finally {
           saveLoading.value = false;
         }
@@ -743,6 +748,17 @@ export default defineComponent({
         toggleEditMode(false);
       };
 
+      function findStep(id: string) {
+        let found = null;
+        const pp = pipeline.value;
+        eachSteps(pp, (step: any, task: any, stage: any) => {
+          if (step.id === id) {
+            found = step;
+          }
+        });
+        return found;
+      }
+
       return {
         run,
         save,
@@ -750,6 +766,7 @@ export default defineComponent({
         cancel,
         saveLoading,
         hasValidateError,
+        findStep,
       };
     }
 
@@ -821,6 +838,17 @@ export default defineComponent({
     const settingStore = useSettingStore();
     const userStore = useUserStore();
 
+    const actions = useActions();
+    const trigger = useTrigger();
+    provide("getPipelineScope", () => {
+      return {
+        run: actions.run,
+        pipeline: pipeline,
+        save: actions.save,
+        findStep: actions.findStep,
+      };
+    });
+
     return {
       pipeline,
       currentHistory,
@@ -830,8 +858,8 @@ export default defineComponent({
       settingStore,
       ...useTaskRet,
       ...useStageRet,
-      ...useTrigger(),
-      ...useActions(),
+      ...trigger,
+      ...actions,
       ...useHistory(),
       ...useNotification(),
       ...useScroll(),

@@ -3,7 +3,6 @@ import { BaseService, CommonException } from "@certd/lib-server";
 import { InjectEntityModel } from "@midwayjs/typeorm";
 import { EntityManager, Repository } from "typeorm";
 import { CertInfoEntity } from "../entity/cert-info.js";
-import { logger } from "@certd/basic";
 import { CertInfo, CertReader } from "@certd/plugin-cert";
 import { PipelineService } from "../../pipeline/service/pipeline-service.js";
 import { CertInfoService } from "./cert-info-service.js";
@@ -69,9 +68,12 @@ export class CertUploadService extends BaseService<CertInfoEntity> {
       certReader: new CertReader(req.cert)
     })
 
-    if (certInfoEntity.pipelineId) {
-      logger.info( `触发流水线部署：${certInfoEntity.pipelineId}`)
-      await this.pipelineService.trigger(certInfoEntity.pipelineId)
+    return {
+      id: certInfoEntity.id,
+      domains: certInfoEntity.domains.split(','),
+      pipelineId: certInfoEntity.pipelineId,
+      fromType: certInfoEntity.fromType,
+      updateTime: certInfoEntity.updateTime,
     }
   }
 
@@ -153,7 +155,10 @@ export class CertUploadService extends BaseService<CertInfoEntity> {
 
       return {
         id:newCertInfo.id,
-        pipelineId: newPipeline.id
+        pipelineId: newPipeline.id,
+        domains: newCertInfo.domains.split(','),
+        fromType: newCertInfo.fromType,
+        updateTime: newCertInfo.updateTime,
       }
 
     })

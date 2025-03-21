@@ -9,7 +9,7 @@ export type DnslaRecord = {
 // 这里通过IsDnsProvider注册一个dnsProvider
 @IsDnsProvider({
   name: 'dnsla',
-  title: 'dnsla',
+  title: 'dns.la',
   desc: 'dns.la',
   icon: 'arcticons:dns-changer-3',
   // 这里是对应的 cloudflare的access类型名称
@@ -146,7 +146,7 @@ export class DnslaDnsProvider extends AbstractDnsProvider<DnslaRecord> {
       type: 16,
       host: fullRecord,
       data: value,
-      ttl: 300,
+      ttl: 1,
     });
 
     return res.data;
