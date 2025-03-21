@@ -109,23 +109,22 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           },
           copy: { show: false },
           edit: { show: false },
-          upload: {
-            show: compute(({ row }) => {
-              return row.fromType === "upload";
-            }),
-            order: 4,
-            title: "更新证书",
-            type: "link",
-            icon: "ion:upload",
-            async click({ row }) {
-              await openUpdateCertDialog({
-                id: row.id,
-              });
-            },
-          },
           remove: {
             order: 10,
             show: false,
+          },
+          download: {
+            order: 9,
+            title: "下载证书",
+            type: "link",
+            icon: "ant-design:download-outlined",
+            async click({ row }) {
+              if (!row.certFile) {
+                notification.error({ message: "证书还未生成，请先运行流水线" });
+                return;
+              }
+              window.open("/api/monitor/cert/download?id=" + row.id);
+            },
           },
         },
       },

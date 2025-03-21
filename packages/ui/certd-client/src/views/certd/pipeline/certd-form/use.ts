@@ -1,4 +1,4 @@
-import { checkPipelineLimit } from "/@/views/certd/pipeline/utils";
+import { checkPipelineLimit, readCertDetail } from "/@/views/certd/pipeline/utils";
 import { omit } from "lodash-es";
 import * as api from "/@/views/certd/pipeline/api";
 import { message } from "ant-design-vue";
@@ -52,6 +52,7 @@ export function useCertd(certdFormRef: any) {
     await checkPipelineLimit();
 
     certdFormRef.value.open(async ({ form }: any) => {
+      const certDetail = readCertDetail(form.cert.crt);
       // 添加certd pipeline
       const triggers = [];
       if (form.triggerCron) {

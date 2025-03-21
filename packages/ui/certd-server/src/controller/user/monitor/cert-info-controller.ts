@@ -1,11 +1,11 @@
-import { ALL, Body, Controller, Inject, Post, Provide, Query } from '@midwayjs/core';
-import { Constants, CrudController } from '@certd/lib-server';
-import { AuthService } from '../../../modules/sys/authority/service/auth-service.js';
-import { CertInfoService } from '../../../modules/monitor/index.js';
-import { PipelineService } from '../../../modules/pipeline/service/pipeline-service.js';
+import { ALL, Body, Controller, Get, Inject, Post, Provide, Query } from "@midwayjs/core";
+import { CommonException, Constants, CrudController } from "@certd/lib-server";
+import { AuthService } from "../../../modules/sys/authority/service/auth-service.js";
+import { CertInfoService } from "../../../modules/monitor/index.js";
+import { PipelineService } from "../../../modules/pipeline/service/pipeline-service.js";
 import { SelectQueryBuilder } from "typeorm";
-import { CertUploadService } from "../../../modules/monitor/service/cert-upload-service.js";
-import { CertInfo } from "@certd/plugin-cert";
+import { logger } from "@certd/basic";
+import fs from "fs";
 
 /**
  */
@@ -16,8 +16,6 @@ export class CertInfoController extends CrudController<CertInfoService> {
   service: CertInfoService;
   @Inject()
   authService: AuthService;
-  @Inject()
-  certUploadService: CertUploadService;
   @Inject()
   pipelineService: PipelineService;
 
@@ -131,26 +129,28 @@ export class CertInfoController extends CrudController<CertInfoService> {
     return this.ok(certInfo);
   }
 
-  @Post('/upload', { summary: Constants.per.authOnly })
-  async upload(@Body(ALL) body: {cert: CertInfo, pipeline: any, id?: number}) {
-    if (body.id) {
-      //修改
-      await this.service.checkUserId(body.id, this.getUserId());
-      await this.certUploadService.updateCert({
-        id: body.id,
-        userId: this.getUserId(),
-        cert: body.cert,
-      });
-      return this.ok();
-    }else{
-      //添加
-     const res =  await this.certUploadService.createUploadCertPipeline({
-        userId: this.getUserId(),
-        cert: body.cert,
-        pipeline: body.pipeline,
-      });
-      return this.ok(res)
+  @Get('/download', { summary: Constants.per.authOnly })
+  async download(@Query('id') id: number) {
+    const certInfo = await this.service.info(id)
+    if (certInfo == null) {
+      throw new CommonException('file not found');
     }
+    if (certInfo.userId !== this.getUserId()) {
+      throw new CommonException('file not found');
+    }
+    // koa send file
+    // 下载文件的名称
+    // const filename = file.filename;
+    // 要下载的文件的完整路径
+    const path = certInfo.certFile;
+    if (!path) {
+      throw new CommonException('file not found');
+    }
+    logger.info(`download:${path}`);
+    // 以流的形式下载文件
+    this.ctx.attachment(path);
+    this.ctx.set('Content-Type', 'application/octet-stream');
 
+    return fs.createReadStream(path);
   }
 }

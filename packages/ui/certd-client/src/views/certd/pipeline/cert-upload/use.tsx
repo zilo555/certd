@@ -1,23 +1,62 @@
 import { compute, useFormWrapper } from "@fast-crud/fast-crud";
 import NotificationSelector from "/@/views/certd/notification/notification-selector/index.vue";
-import * as api from "./api";
-import { omit, cloneDeep, set } from "lodash-es";
+import { cloneDeep, omit } from "lodash-es";
 import { useReference } from "/@/use/use-refrence";
 import { ref } from "vue";
 import * as pluginApi from "../api.plugin";
-import { checkPipelineLimit } from "/@/views/certd/pipeline/utils";
-import { notification } from "ant-design-vue";
+import * as api from "../api";
+import { checkPipelineLimit, getAllDomainsFromCrt } from "/@/views/certd/pipeline/utils";
 import { useRouter } from "vue-router";
+import { nanoid } from "nanoid";
 
 export function useCertUpload() {
   const { openCrudFormDialog } = useFormWrapper();
   const router = useRouter();
 
+  const certInputs = {
+    "uploadCert.crt": {
+      title: "证书",
+      type: "text",
+      form: {
+        component: {
+          name: "pem-input",
+          vModel: "modelValue",
+          textarea: {
+            rows: 4,
+            placeholder: "-----BEGIN CERTIFICATE-----\n...\n...\n-----END CERTIFICATE-----",
+          },
+        },
+        helper: "选择pem格式证书文件，或者粘贴到此",
+        rules: [{ required: true, message: "此项必填" }],
+        col: { span: 24 },
+        order: -9999,
+      },
+    },
+    "uploadCert.key": {
+      title: "证书私钥",
+      type: "text",
+      form: {
+        component: {
+          name: "pem-input",
+          vModel: "modelValue",
+          textarea: {
+            rows: 4,
+            placeholder: "-----BEGIN PRIVATE KEY-----\n...\n...\n-----END PRIVATE KEY----- ",
+          },
+        },
+        helper: "选择pem格式证书私钥文件，或者粘贴到此",
+        rules: [{ required: true, message: "此项必填" }],
+        col: { span: 24 },
+        order: -9999,
+      },
+    },
+  };
+
   async function buildUploadCertPluginInputs(getFormData: any) {
     const plugin: any = await pluginApi.GetPluginDefine("CertApplyUpload");
     const inputs: any = {};
     for (const inputKey in plugin.input) {
-      if (inputKey === "certInfoId" || inputKey === "domains") {
+      if (inputKey === "uploadCert" || inputKey === "domains") {
         continue;
       }
       const inputDefine = cloneDeep(plugin.input[inputKey]);
@@ -66,42 +105,7 @@ export function useCertUpload() {
       return {
         crudOptions: {
           columns: {
-            "cert.crt": {
-              title: "证书",
-              type: "text",
-              form: {
-                component: {
-                  name: "pem-input",
-                  vModel: "modelValue",
-                  textarea: {
-                    rows: 4,
-                    placeholder: "-----BEGIN CERTIFICATE-----\n...\n...\n-----END CERTIFICATE-----",
-                  },
-                },
-                helper: "选择pem格式证书文件，或者粘贴到此",
-                rules: [{ required: true, message: "此项必填" }],
-                col: { span: 24 },
-                order: -9999,
-              },
-            },
-            "cert.key": {
-              title: "证书私钥",
-              type: "text",
-              form: {
-                component: {
-                  name: "pem-input",
-                  vModel: "modelValue",
-                  textarea: {
-                    rows: 4,
-                    placeholder: "-----BEGIN PRIVATE KEY-----\n...\n...\n-----END PRIVATE KEY----- ",
-                  },
-                },
-                helper: "选择pem格式证书私钥文件，或者粘贴到此",
-                rules: [{ required: true, message: "此项必填" }],
-                col: { span: 24 },
-                order: -9999,
-              },
-            },
+            ...cloneDeep(certInputs),
             ...inputs,
             notification: {
               title: "失败通知",
@@ -128,6 +132,9 @@ export function useCertUpload() {
               saveRemind: false,
             },
             async doSubmit({ form }: any) {
+              const cert = form.uploadCert;
+              const domains = getAllDomainsFromCrt(cert.crt);
+
               const notifications = [];
               if (form.notification != null) {
                 notifications.push({
@@ -138,18 +145,54 @@ export function useCertUpload() {
                 });
               }
 
-              const req = {
-                id: form.id,
-                cert: form.cert,
-                pipeline: {
-                  input: omit(form, ["id", "cert", "notification", "notificationTarget"]),
-                  notifications,
-                },
+              const pipelineTitle = domains[0] + "上传证书部署";
+              const input = omit(form, ["id", "cert", "notification", "notificationTarget"]);
+              const pipeline = {
+                title: pipelineTitle,
+                runnableType: "pipeline",
+                stages: [
+                  {
+                    id: nanoid(10),
+                    title: "上传证书解析阶段",
+                    maxTaskCount: 1,
+                    runnableType: "stage",
+                    tasks: [
+                      {
+                        id: nanoid(10),
+                        title: "上传证书解析转换",
+                        runnableType: "task",
+                        steps: [
+                          {
+                            id: nanoid(10),
+                            title: "上传证书解析转换",
+                            runnableType: "step",
+                            input: {
+                              cert: cert,
+                              domains: domains,
+                              ...input,
+                            },
+                            strategy: {
+                              runStrategy: 0, // 正常执行
+                            },
+                            type: "CertApplyUpload",
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+                notifications,
               };
-              const res = await api.UploadCert(req);
+
+              const id = await api.Save({
+                title: pipeline.title,
+                content: JSON.stringify(pipeline),
+                keepHistoryCount: 30,
+                type: "cert_upload",
+              });
               router.push({
                 path: "/certd/pipeline/detail",
-                query: { id: res.pipelineId, editMode: "true" },
+                query: { id: id, editMode: "true" },
               });
             },
           },
@@ -161,61 +204,22 @@ export function useCertUpload() {
     wrapperRef.value = wrapper;
   }
 
-  async function openUpdateCertDialog(opts: { id?: any; onSubmit?: any; pipelineId?: any }) {
+  async function openUpdateCertDialog(opts: { onSubmit?: any }) {
     function createCrudOptions() {
       return {
         crudOptions: {
           columns: {
-            "cert.crt": {
-              title: "证书",
-              type: "text",
-              form: {
-                component: {
-                  name: "pem-input",
-                  vModel: "modelValue",
-                  textarea: {
-                    rows: 4,
-                    placeholder: "-----BEGIN CERTIFICATE-----\n...\n...\n-----END CERTIFICATE-----",
-                  },
-                },
-                rules: [{ required: true, message: "此项必填" }],
-                col: { span: 24 },
-              },
-            },
-            "cert.key": {
-              title: "私钥",
-              type: "textarea",
-              form: {
-                component: {
-                  name: "pem-input",
-                  vModel: "modelValue",
-                  textarea: {
-                    rows: 4,
-                    placeholder: "-----BEGIN PRIVATE KEY-----\n...\n...\n-----END PRIVATE KEY----- ",
-                  },
-                },
-                rules: [{ required: true, message: "此项必填" }],
-                col: { span: 24 },
-              },
-            },
+            ...cloneDeep(certInputs),
           },
           form: {
             wrapper: {
-              title: "更新证书",
+              title: "手动上传证书",
               saveRemind: false,
             },
-            async afterSubmit() {
-              notification.success({ message: "更新成功" });
-            },
+            async afterSubmit() {},
             async doSubmit({ form }: any) {
-              const req = {
-                id: opts.id,
-                pipelineId: opts.pipelineId,
-                cert: form.cert,
-              };
-              const res = await api.UploadCert(req);
               if (opts.onSubmit) {
-                await opts.onSubmit(res);
+                await opts.onSubmit(form);
               }
             },
           },

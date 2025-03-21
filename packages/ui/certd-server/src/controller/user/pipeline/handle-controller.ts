@@ -13,7 +13,6 @@ import {
 import {EmailService} from '../../../modules/basic/service/email-service.js';
 import {http, HttpRequestConfig, logger, mergeUtils, utils} from '@certd/basic';
 import {NotificationService} from '../../../modules/pipeline/service/notification-service.js';
-import {CertApplyUploadService} from "../../../modules/pipeline/service/cert-apply-upload-service.js";
 
 @Provide()
 @Controller('/api/pi/handle')
@@ -24,8 +23,6 @@ export class HandleController extends BaseController {
   @Inject()
   emailService: EmailService;
 
-  @Inject()
-  certApplyUploadService: CertApplyUploadService;
 
   @Inject()
   notificationService: NotificationService;
@@ -97,7 +94,6 @@ export class HandleController extends BaseController {
     };
 
     const serviceContainer:any = {
-      CertApplyUploadService:this.certApplyUploadService
     }
     const serviceGetter =  {
       get:(name: string) => {

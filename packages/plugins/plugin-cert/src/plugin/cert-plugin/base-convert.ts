@@ -4,6 +4,7 @@ import type { CertInfo } from "./acme.js";
 import { CertReader } from "./cert-reader.js";
 import JSZip from "jszip";
 import { CertConverter } from "./convert.js";
+export const EVENT_CERT_APPLY_SUCCESS = "CertApply.success";
 
 export abstract class CertApplyBaseConvertPlugin extends AbstractTaskPlugin {
   @TaskInput({
@@ -75,6 +76,16 @@ export abstract class CertApplyBaseConvertPlugin extends AbstractTaskPlugin {
   }
 
   abstract onInit(): Promise<void>;
+
+  //必须output之后执行
+  async emitCertApplySuccess() {
+    const emitter = this.ctx.emitter;
+    const value = {
+      cert: this.cert,
+      file: this._result.files[0].path,
+    };
+    await emitter.emit(EVENT_CERT_APPLY_SUCCESS, value);
+  }
 
   async output(certReader: CertReader, isNew: boolean) {
     const cert: CertInfo = certReader.toCertInfo();

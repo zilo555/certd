@@ -36,7 +36,6 @@ import { NotificationService } from "./notification-service.js";
 import { NotificationGetter } from "./notification-getter.js";
 import { UserSuiteEntity, UserSuiteService } from "@certd/commercial-core";
 import { CertInfoService } from "../../monitor/service/cert-info-service.js";
-import {CertApplyUploadService} from "./cert-apply-upload-service.js";
 
 const runningTasks: Map<string | number, Executor> = new Map();
 
@@ -93,8 +92,6 @@ export class PipelineService extends BaseService<PipelineEntity> {
   @Inject()
   certInfoService: CertInfoService;
 
-  @Inject()
-  certApplyUploadService: CertApplyUploadService;
   //@ts-ignore
   getRepository() {
     return this.repository;
@@ -196,10 +193,11 @@ export class PipelineService extends BaseService<PipelineEntity> {
     await this.registerTriggerById(bean.id);
 
     //保存域名信息到certInfo表
-    if(bean.from !== 'cert_upload'){
-      await this.certInfoService.updateDomains(pipeline.id, pipeline.userId || bean.userId, domains);
+    let fromType = 'pipeline';
+    if(bean.type === 'cert_upload') {
+      fromType = 'upload';
     }
-
+    await this.certInfoService.updateDomains(pipeline.id, pipeline.userId || bean.userId, domains,fromType);
     return bean;
   }
 
@@ -483,9 +481,7 @@ export class PipelineService extends BaseService<PipelineEntity> {
       const siteInfo = await this.sysSettingsService.getSetting<SysSiteInfo>(SysSiteInfo);
       sysInfo.title = siteInfo.title;
     }
-    const serviceContainer = {
-      CertApplyUploadService: this.certApplyUploadService
-    }
+    const serviceContainer = {}
     const serviceGetter = {
       get:(name: string) => {
         return serviceContainer[name]

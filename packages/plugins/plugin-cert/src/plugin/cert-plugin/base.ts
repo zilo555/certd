@@ -1,14 +1,8 @@
-import { NotificationBody, Step, TaskEmitter, TaskInput } from "@certd/pipeline";
+import { NotificationBody, Step, TaskInput } from "@certd/pipeline";
 import dayjs from "dayjs";
 import { CertReader } from "./cert-reader.js";
 import { pick } from "lodash-es";
 import { CertApplyBaseConvertPlugin } from "./base-convert.js";
-
-export const EVENT_CERT_APPLY_SUCCESS = "CertApply.success";
-
-export async function emitCertApplySuccess(emitter: TaskEmitter, cert: CertReader) {
-  await emitter.emit(EVENT_CERT_APPLY_SUCCESS, cert);
-}
 
 export abstract class CertApplyBasePlugin extends CertApplyBaseConvertPlugin {
   @TaskInput({
@@ -75,7 +69,7 @@ export abstract class CertApplyBasePlugin extends CertApplyBaseConvertPlugin {
     if (cert != null) {
       await this.output(cert, true);
 
-      await emitCertApplySuccess(this.ctx.emitter, cert);
+      await this.emitCertApplySuccess();
       //清空后续任务的状态，让后续任务能够重新执行
       this.clearLastStatus();
 

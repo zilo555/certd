@@ -2,9 +2,8 @@ import { IsTaskPlugin, pluginGroups, RunStrategy, Step, TaskInput, TaskOutput } 
 import type { CertInfo } from "../acme.js";
 import { CertReader } from "../cert-reader.js";
 import { CertApplyBaseConvertPlugin } from "../base-convert.js";
-export * from "./d.js";
 import dayjs from "dayjs";
-import { ICertApplyUploadService } from "./d";
+
 export { CertReader };
 export type { CertInfo };
 @IsTaskPlugin({
@@ -84,7 +83,7 @@ export class CertApplyUploadPlugin extends CertApplyBaseConvertPlugin {
     }
     `,
   })
-  certInfoId!: string;
+  uploadCert!: CertInfo;
 
   @TaskOutput({
     title: "证书MD5",
@@ -100,14 +99,7 @@ export class CertApplyUploadPlugin extends CertApplyBaseConvertPlugin {
   async onInit(): Promise<void> {}
 
   async getCertFromStore() {
-    const certApplyUploadService: ICertApplyUploadService = await this.ctx.serviceGetter.get("CertApplyUploadService");
-
-    const certInfo = await certApplyUploadService.getCertInfo({
-      certId: Number(this.certInfoId),
-      userId: this.pipeline.userId,
-    });
-
-    const certReader = new CertReader(certInfo);
+    const certReader = new CertReader(this.uploadCert);
     if (!certReader.expires && certReader.expires < new Date().getTime()) {
       throw new Error("证书已过期，停止部署，请重新上传证书");
     }
@@ -121,39 +113,43 @@ export class CertApplyUploadPlugin extends CertApplyBaseConvertPlugin {
 
     const leftDays = dayjs(certReader.expires).diff(dayjs(), "day");
     this.logger.info(`证书过期时间${dayjs(certReader.expires).format("YYYY-MM-DD HH:mm:ss")},剩余${leftDays}天`);
-    const lastCrtMd5 = this.lastStatus?.status?.output?.certMd5;
-    this.logger.info("证书MD5", crtMd5);
-    this.logger.info("上次证书MD5", lastCrtMd5);
-    if (lastCrtMd5 === crtMd5) {
-      this.logger.info("证书无变化，跳过");
-      //输出证书MD5
-      this.certMd5 = crtMd5;
-      await this.output(certReader, false);
-      return "skip";
+
+    if (!this.ctx.inputChanged) {
+      this.logger.info("输入参数无变化");
+      const lastCrtMd5 = this.lastStatus?.status?.output?.certMd5;
+      this.logger.info("证书MD5", crtMd5);
+      this.logger.info("上次证书MD5", lastCrtMd5);
+      if (lastCrtMd5 === crtMd5) {
+        this.logger.info("证书无变化，跳过");
+        //输出证书MD5
+        this.certMd5 = crtMd5;
+        await this.output(certReader, false);
+        return "skip";
+      }
+      this.logger.info("证书有变化，重新部署");
+    } else {
+      this.logger.info("输入参数有变化，重新部署");
     }
-    this.logger.info("证书有变化，重新部署");
+
     this.clearLastStatus();
     //输出证书MD5
     this.certMd5 = crtMd5;
     await this.output(certReader, true);
+
+    //必须output之后执行
+    await this.emitCertApplySuccess();
     return;
   }
 
   async onCertUpdate(data: any) {
-    const certApplyUploadService = await this.ctx.serviceGetter.get("CertApplyUploadService");
-
-    const res = await certApplyUploadService.updateCert({
-      certId: this.certInfoId,
-      userId: this.ctx.user.id,
-      cert: {
-        crt: data.crt,
-        key: data.key,
-      },
-    });
-
+    const certReader = new CertReader(data);
     return {
       input: {
-        domains: res.domains,
+        uploadCert: {
+          crt: data.crt,
+          key: data.key,
+        },
+        domains: certReader.getAllDomains(),
       },
     };
   }

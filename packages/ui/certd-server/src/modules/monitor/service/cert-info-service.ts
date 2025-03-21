@@ -11,6 +11,7 @@ export type UploadCertReq = {
   certReader: CertReader;
   fromType?: string;
   userId?: number;
+  file?:any
 };
 
 
@@ -38,7 +39,7 @@ export class CertInfoService extends BaseService<CertInfoEntity> {
     });
   }
 
-  async updateDomains(pipelineId: number, userId: number, domains: string[]) {
+  async updateDomains(pipelineId: number, userId: number, domains: string[],fromType?:string) {
     const found = await this.repository.findOne({
       where: {
         pipelineId,
@@ -53,6 +54,7 @@ export class CertInfoService extends BaseService<CertInfoEntity> {
       //create
       bean.pipelineId = pipelineId;
       bean.userId = userId;
+      bean.fromType = fromType
       if (!domains || domains.length === 0) {
         return;
       }
@@ -133,7 +135,7 @@ export class CertInfoService extends BaseService<CertInfoEntity> {
     return certReader.toCertInfo();
   }
 
-  async updateCertByPipelineId(pipelineId: number, certReader: CertReader, fromType = 'pipeline') {
+  async updateCertByPipelineId(pipelineId: number, cert: CertInfo,file?:string,fromType = 'pipeline') {
     const found = await this.repository.findOne({
       where: {
         pipelineId,
@@ -141,8 +143,9 @@ export class CertInfoService extends BaseService<CertInfoEntity> {
     });
     const bean = await this.updateCert({
       id: found?.id,
-      certReader,
+      certReader: new CertReader(cert),
       fromType,
+      file
     });
     return bean;
   }
@@ -165,6 +168,9 @@ export class CertInfoService extends BaseService<CertInfoEntity> {
     bean.expiresTime = certReader.expires;
     bean.certProvider = certReader.detail.issuer.commonName;
     bean.userId = userId
+    if(req.file){
+      bean.certFile = req.file
+    }
     await this.addOrUpdate(bean);
     return bean;
   }

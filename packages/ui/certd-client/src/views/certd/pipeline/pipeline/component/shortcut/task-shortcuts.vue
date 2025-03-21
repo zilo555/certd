@@ -41,6 +41,7 @@ async function init() {
           ...shortcut,
           pluginName: stepType,
           input: step.input,
+          stepId: step.id,
         });
       }
     }

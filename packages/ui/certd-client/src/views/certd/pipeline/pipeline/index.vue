@@ -104,7 +104,7 @@
                               </template>
                               <span class="flex-o w-100">
                                 <span class="ellipsis flex-1 task-title" :class="{ 'in-edit': editMode, deleted: task.disabled }">{{ task.title }}</span>
-                                <pi-status-show :status="task.status?.result"></pi-status-show>
+                                <pi-status-show v-if="!editMode" :status="task.status?.result"></pi-status-show>
                               </span>
                             </a-popover>
                           </a-button>
@@ -273,6 +273,7 @@ import { FsIcon } from "@fast-crud/fast-crud";
 import { useSettingStore } from "/@/store/modules/settings";
 import { useUserStore } from "/@/store/modules/user";
 import TaskShortcuts from "./component/shortcut/task-shortcuts.vue";
+import { eachSteps, findStep } from "../utils";
 export default defineComponent({
   name: "PipelineEdit",
   // eslint-disable-next-line vue/no-unused-components
@@ -648,22 +649,6 @@ export default defineComponent({
         errors.push(error);
       }
 
-      function eachSteps(pp: any, callback: any) {
-        if (pp.stages) {
-          for (const stage of pp.stages) {
-            if (stage.tasks) {
-              for (const task of stage.tasks) {
-                if (task.steps) {
-                  for (const step of task.steps) {
-                    callback(step, task, stage);
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-
       function doValidate() {
         validateErrors.value = {};
 
@@ -748,15 +733,8 @@ export default defineComponent({
         toggleEditMode(false);
       };
 
-      function findStep(id: string) {
-        let found = null;
-        const pp = pipeline.value;
-        eachSteps(pp, (step: any, task: any, stage: any) => {
-          if (step.id === id) {
-            found = step;
-          }
-        });
-        return found;
+      function fundStepFromPipeline(id: string) {
+        return findStep(pipeline.value, id);
       }
 
       return {
@@ -766,7 +744,7 @@ export default defineComponent({
         cancel,
         saveLoading,
         hasValidateError,
-        findStep,
+        findStep: fundStepFromPipeline,
       };
     }
 

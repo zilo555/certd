@@ -22,6 +22,7 @@ const props = defineProps<{
   form: any;
   input: any;
   pluginName: string;
+  stepId: string;
 }>();
 
 const attrs = useAttrs();
@@ -85,7 +86,7 @@ const doPluginFormSubmit = async (formData: any) => {
 
     if (res.input) {
       const { save, findStep } = getPipelineScope();
-      const step = findStep(res.input);
+      const step = findStep(props.stepId);
       if (step) {
         // 数组覆盖合并
         mergeWith(step.input, res.input, (objValue, srcValue) => {
