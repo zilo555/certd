@@ -52,7 +52,7 @@ export function useCertd(certdFormRef: any) {
     await checkPipelineLimit();
 
     certdFormRef.value.open(async ({ form }: any) => {
-      const certDetail = readCertDetail(form.cert.crt);
+      // const certDetail = readCertDetail(form.cert.crt);
       // 添加certd pipeline
       const triggers = [];
       if (form.triggerCron) {
