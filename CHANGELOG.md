@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.31.5](https://github.com/certd/certd/compare/v1.31.4...v1.31.5) (2025-03-22)
+
+### Bug Fixes
+
+* 修复通知选择器无法选择的bug ([f7b88f9](https://github.com/certd/certd/commit/f7b88f9e3b7d9d9122e4fd2003a20c555bd50c7d))
+* 修复证书流水线创建失败的bug ([736fe03](https://github.com/certd/certd/commit/736fe038ebda56648bcc4c12884a700341d2c049))
+
 ## [1.31.4](https://github.com/certd/certd/compare/v1.31.3...v1.31.4) (2025-03-21)
 
 ### Bug Fixes
