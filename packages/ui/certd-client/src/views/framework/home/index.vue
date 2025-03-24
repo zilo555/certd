@@ -22,10 +22,10 @@ onMounted(() => {
       content: "为了您的账户安全，请立即修改密码",
       onOk: () => {
         changePasswordButtonRef.value.open({
-          password: "123456"
+          password: "123456",
         });
       },
-      okText: "立即修改"
+      okText: "立即修改",
     });
   }
 });

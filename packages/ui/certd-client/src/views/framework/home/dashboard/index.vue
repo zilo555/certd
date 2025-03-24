@@ -14,7 +14,12 @@
               <span>您好，{{ userInfo.nickName || userInfo.username }}， 欢迎使用 【{{ siteInfo.title }}】</span>
             </div>
             <div class="flex-o flex-wrap profile-badges">
-              <a-tag color="green" class="flex-inline pointer"> <fs-icon icon="ion:time-outline"></fs-icon> {{ now }}</a-tag>
+              <a-tooltip :title="deltaTimeTip">
+                <a-badge :dot="deltaTimeWarning">
+                  <a-tag :color="deltaTimeWarning ? 'red' : 'green'" class="flex-inline pointer"> <fs-icon icon="ion:time-outline"></fs-icon> {{ now }}</a-tag>
+                </a-badge>
+              </a-tooltip>
+
               <template v-if="userStore.isAdmin">
                 <a-divider type="vertical" />
                 <a-badge :dot="hasNewVersion">
@@ -138,11 +143,11 @@ import { GetStatisticCount } from "/@/views/framework/home/dashboard/api";
 import { useRouter } from "vue-router";
 import * as api from "./api";
 defineOptions({
-  name: "DashboardUser"
+  name: "DashboardUser",
 });
 
 const version = ref(import.meta.env.VITE_APP_VERSION);
-const latestVersion = ref();
+const latestVersion = ref("");
 const hasNewVersion = computed(() => {
   if (!latestVersion.value) {
     return false;
@@ -174,7 +179,16 @@ const userInfo: ComputedRef<UserInfoRes> = computed(() => {
   return userStore.getUserInfo;
 });
 const now = computed(() => {
-  return dayjs().format("YYYY-MM-DD HH:mm:ss");
+  const serverTime = settingStore.app.deltaTime + Date.now();
+  return dayjs(serverTime).format("YYYY-MM-DD HH:mm:ss");
+});
+
+const deltaTimeWarning = computed(() => {
+  return Math.abs(settingStore.app.deltaTime) > 1000 * 60 * 4;
+});
+const deltaTimeTip = computed(() => {
+  const deltaMin = (Math.abs(settingStore.app.deltaTime) / 1000 / 60).toFixed(2);
+  return `服务器时间相差:${deltaMin}分钟${deltaTimeWarning.value ? "，请检查服务器时间是否正确" : ""}`;
 });
 const router = useRouter();
 function goPipeline() {
@@ -189,7 +203,7 @@ function transformStatusCount() {
     { name: "start", label: "运行中" },
     { name: "error", label: "失败" },
     { name: "canceled", label: "已取消" },
-    { name: null, label: "未执行" }
+    { name: null, label: "未执行" },
   ];
   const result = [];
   for (const item of sorted) {
@@ -208,7 +222,7 @@ async function loadCount() {
   count.value.historyCountPerDay = count.value.historyCountPerDay.map((item: any) => {
     return {
       name: item.date,
-      value: item.count
+      value: item.count,
     };
   });
 }
