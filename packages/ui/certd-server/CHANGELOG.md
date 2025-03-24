@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.31.7](https://github.com/certd/certd/compare/v1.31.6...v1.31.7) (2025-03-24)
+
+### Performance Improvements
+
+* 支持部署到lucky ([e18e399](https://github.com/certd/certd/commit/e18e399ce6529e8c7e36b56c5f674cfdbbd3d3d1))
+
 ## [1.31.6](https://github.com/certd/certd/compare/v1.31.5...v1.31.6) (2025-03-24)
 
 ### Bug Fixes
