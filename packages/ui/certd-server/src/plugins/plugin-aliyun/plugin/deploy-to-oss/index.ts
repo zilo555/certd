@@ -5,7 +5,7 @@ import { CertApplyPluginNames} from '@certd/plugin-cert';
 @IsTaskPlugin({
   name: 'DeployCertToAliyunOSS',
   title: '阿里云-部署证书至OSS',
-  icon: 'ant-design:aliyun-outlined',
+  icon: 'svg:icon-aliyun',
   group: pluginGroups.aliyun.key,
   desc: '自动部署域名证书至阿里云OSS',
   default: {

@@ -180,6 +180,21 @@ export class UploadCertToHostPlugin extends AbstractTaskPlugin {
   accessId!: string;
 
   @TaskInput({
+    title: '上传方式',
+    helper: '选择上传方式，sftp或者scp',
+    value:"sftp",
+    component: {
+      name: 'a-select',
+      options: [
+        { value: 'sftp', label: 'sftp' },
+        { value: 'scp', label: 'scp' },
+      ],
+    },
+    required: true,
+  })
+  uploadType: string = 'sftp';
+
+  @TaskInput({
     title: '自动创建远程目录',
     helper: '是否自动创建远程目录,如果关闭则你需要自己确保远程目录存在',
     value: true,
@@ -249,18 +264,7 @@ export class UploadCertToHostPlugin extends AbstractTaskPlugin {
 
   async onInstance() {}
 
-  // copyFile(srcFile: string, destFile: string) {
-  //   if (!srcFile || !destFile) {
-  //     this.logger.warn(`srcFile:${srcFile} 或 destFile:${destFile} 为空，不复制`);
-  //     return;
-  //   }
-  //   const dir = destFile.substring(0, destFile.lastIndexOf('/'));
-  //   if (!fs.existsSync(dir)) {
-  //     fs.mkdirSync(dir, { recursive: true });
-  //   }
-  //   fs.copyFileSync(srcFile, destFile);
-  //   this.logger.info(`复制文件：${srcFile} => ${destFile}`);
-  // }
+
   async execute(): Promise<void> {
     const { cert, accessId } = this;
     let { crtPath, keyPath, icPath, pfxPath, derPath, jksPath, onePath } = this;
@@ -268,16 +272,6 @@ export class UploadCertToHostPlugin extends AbstractTaskPlugin {
 
     const handle = async (opts: CertReaderHandleContext) => {
       const { tmpCrtPath, tmpKeyPath, tmpDerPath, tmpJksPath, tmpPfxPath, tmpIcPath, tmpOnePath } = opts;
-      // if (this.copyToThisHost) {
-      //   this.logger.info('复制到目标路径');
-      //   this.copyFile(tmpCrtPath, crtPath);
-      //   this.copyFile(tmpKeyPath, keyPath);
-      //   this.copyFile(tmpIcPath, this.icPath);
-      //   this.copyFile(tmpPfxPath, this.pfxPath);
-      //   this.copyFile(tmpDerPath, this.derPath);
-      //   this.logger.warn('复制到当前主机功能已迁移到 “复制到本机”插件，请尽快换成复制到本机插件');
-      //   return;
-      // }
 
       if (accessId == null) {
         this.logger.error('复制到当前主机功能已迁移到 “复制到本机”插件，请换成复制到本机插件');
@@ -355,7 +349,9 @@ export class UploadCertToHostPlugin extends AbstractTaskPlugin {
         connectConf,
         transports,
         mkdirs: this.mkdirs,
+        uploadType: this.uploadType,
       });
+
       this.logger.info('上传文件到服务器成功');
       //输出
       this.hostCrtPath = crtPath;

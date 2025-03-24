@@ -7,6 +7,8 @@ import { SshAccess } from "./ssh-access.js";
 import stripAnsi from "strip-ansi";
 import { SocksClient } from "socks";
 import { SocksProxy, SocksProxyType } from "socks/typings/common/constants.js";
+import fs from "fs";
+
 export type TransportItem = { localPath: string; remotePath: string };
 
 export class AsyncSsh2Client {
@@ -265,15 +267,15 @@ export class SshClient {
          }
    * @param options
    */
-  async uploadFiles(options: { connectConf: SshAccess; transports: TransportItem[]; mkdirs: boolean; opts?: { mode?: string } }) {
+  async uploadFiles(options: { connectConf: SshAccess; transports: TransportItem[]; mkdirs: boolean; opts?: { mode?: string }; uploadType?: string }) {
     const { connectConf, transports, mkdirs, opts } = options;
     await this._call({
       connectConf,
       callable: async (conn: AsyncSsh2Client) => {
-        const sftp = await conn.getSftp();
         this.logger.info("开始上传");
-        for (const transport of transports) {
-          if (mkdirs !== false) {
+        if (mkdirs !== false) {
+          this.logger.info("初始化父目录");
+          for (const transport of transports) {
             const filePath = path.dirname(transport.remotePath);
             let mkdirCmd = `mkdir -p ${filePath} `;
             if (conn.windows) {
@@ -291,10 +293,57 @@ export class SshClient {
             }
             await conn.exec(mkdirCmd);
           }
-          await conn.fastPut({ sftp, ...transport, opts });
         }
+
+        if (options.uploadType === "sftp") {
+          const sftp = await conn.getSftp();
+          for (const transport of transports) {
+            await conn.fastPut({ sftp, ...transport, opts });
+          }
+        } else {
+          //scp
+          for (const transport of transports) {
+            await this.scpUpload({ conn, ...transport, opts });
+          }
+        }
+
         this.logger.info("文件全部上传成功");
       },
+    });
+  }
+
+  async scpUpload(options: { conn: any; localPath: string; remotePath: string; opts?: { mode?: string } }) {
+    const { conn, localPath, remotePath } = options;
+    return new Promise((resolve, reject) => {
+      // 关键步骤：构造 SCP 命令
+      try {
+        this.logger.info(`开始上传：${localPath} => ${remotePath}`);
+        conn.conn.exec(
+          `scp -t ${remotePath}`, // -t 表示目标模式
+          (err, stream) => {
+            if (err) {
+              return reject(err);
+            }
+            // 准备 SCP 协议头
+            const fileStats = fs.statSync(localPath);
+            const fileName = path.basename(localPath);
+
+            // SCP 协议格式：C[权限] [文件大小] [文件名]\n
+            stream.write(`C0644 ${fileStats.size} ${fileName}\n`);
+
+            // 通过管道传输文件
+            fs.createReadStream(localPath)
+              .pipe(stream)
+              .on("finish", () => {
+                this.logger.info(`上传文件成功：${localPath} => ${remotePath}`);
+                resolve(true);
+              })
+              .on("error", reject);
+          }
+        );
+      } catch (e) {
+        reject(e);
+      }
     });
   }
 

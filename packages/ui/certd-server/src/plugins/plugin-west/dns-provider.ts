@@ -17,7 +17,7 @@ type westRecord = {
   name: 'west',
   title: '西部数码',
   desc: 'west dns provider',
-  icon: 'tabler:map-west',
+  icon: 'svg:icon-xibushuma',
   // 这里是对应的云平台的access类型名称
   accessType: 'west',
 })

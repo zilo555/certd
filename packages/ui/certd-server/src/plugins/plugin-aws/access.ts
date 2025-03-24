@@ -37,7 +37,7 @@ export const AwsRegions = [
   name: 'aws',
   title: '亚马逊云aws授权',
   desc: '',
-  icon: 'ant-design:aws-outlined',
+  icon: 'svg:icon-aws',
 })
 export class AwsAccess extends BaseAccess {
   @AccessInput({

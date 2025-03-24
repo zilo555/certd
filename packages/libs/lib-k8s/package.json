@@ -1,7 +1,7 @@
 {
   "name": "@certd/lib-k8s",
   "private": false,
-  "version": "1.31.5",
+  "version": "1.31.6",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -16,7 +16,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@certd/basic": "^1.31.5",
+    "@certd/basic": "^1.31.6",
     "@kubernetes/client-node": "0.21.0"
   },
   "devDependencies": {
@@ -31,5 +31,5 @@
     "tslib": "^2.8.1",
     "typescript": "^5.4.2"
   },
-  "gitHead": "92446cb048e1bd7c57f36992d9ba376e9f4e7d3b"
+  "gitHead": "86ca35ce3381b98b455538b11219d9856be5d0d6"
 }
