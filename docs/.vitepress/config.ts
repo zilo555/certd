@@ -5,7 +5,7 @@ import lightbox from "vitepress-plugin-lightbox";
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "Certd",
-  titleTemplate: "开源SSL证书管理工具，自动化证书申请部署，让你的网站证书永不过期",
+  titleTemplate: "开源SSL证书管理工具，证书自动化申请部署，让你的网站证书永不过期",
   description: "Certd帮助文档,Certd是一款开源免费的全自动SSL证书管理工具；证书自动化申请部署流水线；自动证书申请、更新、续期；通配符证书，泛域名证书申请；证书自动化部署到阿里云、腾讯云、主机、群晖、宝塔。",
   markdown: {
     config: (md) => {
