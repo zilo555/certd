@@ -144,11 +144,9 @@ export class DnslaDnsProvider extends AbstractDnsProvider<DnslaRecord> {
     const res = await this.doRequestApi(url, {
       domainId: domainId,
       type: 16,
-      host: fullRecord,
+      host: fullRecord.replace(`.${domain}`, ''),
       data: value,
       ttl: 60,
-      weight:1,
-      preference:1,
     });
 
     return res.data;
