@@ -7,8 +7,8 @@ import { SshAccess } from "./ssh-access.js";
 import stripAnsi from "strip-ansi";
 import { SocksClient } from "socks";
 import { SocksProxy, SocksProxyType } from "socks/typings/common/constants.js";
-import { ScpClient } from "../scp/index.js";
 import fs from "fs";
+
 export type TransportItem = { localPath: string; remotePath: string };
 
 export class AsyncSsh2Client {
@@ -313,7 +313,7 @@ export class SshClient {
   }
 
   async scpUpload(options: { conn: any; localPath: string; remotePath: string; opts?: { mode?: string } }) {
-    const { conn, localPath, remotePath, opts } = options;
+    const { conn, localPath, remotePath } = options;
     return new Promise((resolve, reject) => {
       // 关键步骤：构造 SCP 命令
       try {
