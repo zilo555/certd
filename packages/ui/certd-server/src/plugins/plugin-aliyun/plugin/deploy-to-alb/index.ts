@@ -5,7 +5,7 @@ import { AliyunAccess, AliyunClient, AliyunSslClient, createCertDomainGetterInpu
 @IsTaskPlugin({
   name: 'AliyunDeployCertToALB',
   title: '阿里云-部署至ALB（应用负载均衡）',
-  icon: 'ant-design:aliyun-outlined',
+  icon: 'svg:icon-aliyun',
   group: pluginGroups.aliyun.key,
   desc: 'ALB,更新监听器的默认证书',
   needPlus: false,

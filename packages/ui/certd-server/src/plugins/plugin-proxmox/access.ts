@@ -8,7 +8,7 @@ import { IsAccess, AccessInput, BaseAccess } from '@certd/pipeline';
   name: 'proxmox',
   title: 'proxmox',
   desc: '',
-  icon: 'svg:icon-dogecloud',
+  icon: 'svg:icon-proxmox',
 })
 export class ProxmoxAccess extends BaseAccess {
   /**

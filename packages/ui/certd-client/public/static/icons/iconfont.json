@@ -6,11 +6,67 @@
   "description": "",
   "glyphs": [
     {
-      "icon_id": "35327761",
-      "name": "WAF-长亭-雷池",
-      "font_class": "WAF-changting-leichi",
-      "unicode": "e61d",
-      "unicode_decimal": 58909
+      "icon_id": "27272666",
+      "name": "plesk_",
+      "font_class": "plesk",
+      "unicode": "ecc0",
+      "unicode_decimal": 60608
+    },
+    {
+      "icon_id": "23930871",
+      "name": "易支付-01",
+      "font_class": "yizhifu",
+      "unicode": "e741",
+      "unicode_decimal": 59201
+    },
+    {
+      "icon_id": "40476533",
+      "name": "1Panel",
+      "font_class": "onepanel",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    },
+    {
+      "icon_id": "26435508",
+      "name": "西部数码",
+      "font_class": "xibushuma",
+      "unicode": "e73c",
+      "unicode_decimal": 59196
+    },
+    {
+      "icon_id": "27487624",
+      "name": "qnap",
+      "font_class": "qnap",
+      "unicode": "e607",
+      "unicode_decimal": 58887
+    },
+    {
+      "icon_id": "27268231",
+      "name": "proxmox",
+      "font_class": "proxmox",
+      "unicode": "e9cc",
+      "unicode_decimal": 59852
+    },
+    {
+      "icon_id": "31636255",
+      "name": "aws",
+      "font_class": "aws",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    },
+    {
+      "icon_id": "34071209",
+      "name": "uni-app",
+      "font_class": "uniapp",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
+      "icon_id": "3467975",
+      "name": "lucky",
+      "font_class": "lucky",
+      "unicode": "e752",
+      "unicode_decimal": 59218
     },
     {
       "icon_id": "41854563",
@@ -18,6 +74,13 @@
       "font_class": "ctyun",
       "unicode": "e719",
       "unicode_decimal": 59161
+    },
+    {
+      "icon_id": "43757703",
+      "name": "雷池",
+      "font_class": "safeline",
+      "unicode": "e748",
+      "unicode_decimal": 59208
     },
     {
       "icon_id": "24164616",

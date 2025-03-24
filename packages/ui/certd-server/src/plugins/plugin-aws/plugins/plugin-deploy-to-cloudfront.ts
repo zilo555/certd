@@ -10,7 +10,7 @@ import { CertApplyPluginNames} from '@certd/plugin-cert';
   name: 'AwsDeployToCloudFront',
   title: 'AWS-部署证书到CloudFront',
   desc: '部署证书到 AWS CloudFront',
-  icon: 'clarity:plugin-line',
+  icon: 'svg:icon-aws',
   group: pluginGroups.aws.key,
   needPlus: true,
   default: {

@@ -6,7 +6,7 @@ import { CertApplyPluginNames} from '@certd/plugin-cert';
 @IsTaskPlugin({
   name: 'AliyunDeployCertToFC',
   title: '阿里云-部署至阿里云FC(3.0)',
-  icon: 'ant-design:aliyun-outlined',
+  icon: 'svg:icon-aliyun',
   group: pluginGroups.aliyun.key,
   desc: '部署证书到阿里云函数计算（FC3.0）,【注意】证书的加密算法必须选择【pkcs1旧版】',
   needPlus: true,

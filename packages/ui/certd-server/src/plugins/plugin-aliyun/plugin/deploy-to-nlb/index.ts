@@ -5,7 +5,7 @@ import { CertApplyPluginNames} from '@certd/plugin-cert';
 @IsTaskPlugin({
   name: 'AliyunDeployCertToNLB',
   title: '阿里云-部署至NLB（网络负载均衡）',
-  icon: 'ant-design:aliyun-outlined',
+  icon: 'svg:icon-aliyun',
   group: pluginGroups.aliyun.key,
   desc: 'NLB,网络负载均衡,更新监听器的默认证书',
   needPlus: false,

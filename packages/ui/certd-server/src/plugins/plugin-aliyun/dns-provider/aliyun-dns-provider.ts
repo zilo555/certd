@@ -8,7 +8,7 @@ import { AliyunAccess, AliyunClient } from '@certd/plugin-lib';
   title: '阿里云',
   desc: '阿里云DNS解析提供商',
   accessType: 'aliyun',
-  icon: 'ant-design:aliyun-outlined',
+  icon: 'svg:icon-aliyun',
 })
 export class AliyunDnsProvider extends AbstractDnsProvider {
   client: any;

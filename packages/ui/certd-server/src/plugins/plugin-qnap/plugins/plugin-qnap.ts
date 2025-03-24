@@ -8,7 +8,7 @@ import { CertApplyPluginNames} from '@certd/plugin-cert';
 @IsTaskPlugin({
   name: 'QnapDeploy',
   title: '威联通-部署证书到威联通',
-  icon: 'simple-icons:qnap',
+  icon: 'svg:icon-qnap',
   group: pluginGroups.panel.key,
   desc: '部署证书到qnap',
   default: {

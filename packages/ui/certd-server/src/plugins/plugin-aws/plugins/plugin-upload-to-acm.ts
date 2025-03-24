@@ -7,7 +7,7 @@ import { CertApplyPluginNames} from '@certd/plugin-cert';
   name: 'AwsUploadToACM',
   title: 'AWS-上传证书到ACM',
   desc: '上传证书 AWS ACM',
-  icon: 'clarity:plugin-line',
+  icon: 'svg:icon-aws',
   group: pluginGroups.aws.key,
   default: {
     strategy: {

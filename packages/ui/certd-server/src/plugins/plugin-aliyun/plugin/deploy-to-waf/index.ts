@@ -6,7 +6,7 @@ import { CertApplyPluginNames} from '@certd/plugin-cert';
 @IsTaskPlugin({
   name: 'AliyunDeployCertToWaf',
   title: '阿里云-部署至阿里云WAF',
-  icon: 'ant-design:aliyun-outlined',
+  icon: 'svg:icon-aliyun',
   group: pluginGroups.aliyun.key,
   desc: '部署证书到阿里云WAF',
   needPlus: true,
