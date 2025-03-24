@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.31.6](https://github.com/certd/certd/compare/v1.31.5...v1.31.6) (2025-03-24)
+
+### Performance Improvements
+
+* 上传到主机支持scp方式 ([05b6159](https://github.com/certd/certd/commit/05b6159802b9e85b6a410361b60b5c28875b48e7))
+
 ## [1.31.5](https://github.com/certd/certd/compare/v1.31.4...v1.31.5) (2025-03-22)
 
 **Note:** Version bump only for package @certd/plugin-lib

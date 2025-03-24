@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.31.6](https://github.com/certd/certd/compare/v1.31.5...v1.31.6) (2025-03-24)
+
+### Bug Fixes
+
+* 修复dns.la无法申请证书的bug ([90b045a](https://github.com/certd/certd/commit/90b045af6d1a4f46986e4b118885c1f050df067c))
+
+### Performance Improvements
+
+* 上传到主机支持scp方式 ([05b6159](https://github.com/certd/certd/commit/05b6159802b9e85b6a410361b60b5c28875b48e7))
+* 优化图标 ([c56f48c](https://github.com/certd/certd/commit/c56f48c1e3c54c4e203fafb380d9091d75681b7e))
+
 ## [1.31.5](https://github.com/certd/certd/compare/v1.31.4...v1.31.5) (2025-03-22)
 
 ### Bug Fixes
