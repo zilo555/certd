@@ -179,11 +179,7 @@ export class CertApplyLegoPlugin extends CertApplyBasePlugin {
     if (this.acmeServer) {
       serverArgs = ` --server ${this.acmeServer}`;
     }
-    const cmds = [
-      `${legoPath} -a --email "${this.email}" --dns ${this.dnsType} ${keyType} ${domainArgs} ${serverArgs} ${eabArgs} ${savePathArgs}  ${
-        this.customArgs || ""
-      } run`,
-    ];
+    const cmds = [`${legoPath} -a --email "${this.email}" --dns ${this.dnsType} ${keyType} ${domainArgs} ${serverArgs} ${eabArgs} ${savePathArgs}  ${this.customArgs || ""} run`];
 
     await this.ctx.utils.sp.spawn({
       cmd: cmds,
