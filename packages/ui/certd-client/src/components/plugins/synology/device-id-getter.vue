@@ -15,7 +15,7 @@ import { Modal } from "ant-design-vue";
 import { ComponentPropsType, doRequest } from "/@/components/plugins/lib";
 
 defineOptions({
-  name: "DeviceIdGetter"
+  name: "DeviceIdGetter",
 });
 
 const props = defineProps<ComponentPropsType>();
@@ -38,9 +38,9 @@ async function loginWithOTPCode(otpCode: string) {
     typeName: form.type,
     action: "LoginWithOPTCode",
     data: {
-      otpCode
+      otpCode,
     },
-    input: form
+    input: form,
   });
 }
 
@@ -61,7 +61,7 @@ async function getDeviceId() {
       const res = await loginWithOTPCode(otpCodeRef.value);
       console.log("did返回", res);
       emit("update:value", res.did);
-    }
+    },
   });
 }
 </script>

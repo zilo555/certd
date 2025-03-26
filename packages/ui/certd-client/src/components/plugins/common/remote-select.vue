@@ -1,16 +1,7 @@
 <template>
   <div class="remote-select">
     <div class="flex flex-row">
-      <a-select
-        class="remote-select-input"
-        show-search
-        :filter-option="filterOption"
-        :options="optionsRef"
-        :value="value"
-        v-bind="attrs"
-        @click="onClick"
-        @update:value="emit('update:value', $event)"
-      />
+      <a-select class="remote-select-input" show-search :filter-option="filterOption" :options="optionsRef" :value="value" v-bind="attrs" @click="onClick" @update:value="emit('update:value', $event)" />
       <div class="ml-5">
         <fs-button :loading="loading" title="刷新选项" icon="ion:refresh-outline" @click="refreshOptions"></fs-button>
       </div>
@@ -26,7 +17,7 @@ import { inject, ref, useAttrs, watch } from "vue";
 import { PluginDefine } from "@certd/pipeline";
 
 defineOptions({
-  name: "RemoteSelect"
+  name: "RemoteSelect",
 });
 
 const props = defineProps<
@@ -87,14 +78,14 @@ const getOptions = async () => {
         type: pluginType,
         typeName: form.type,
         action: props.action,
-        input: pluginType === "plugin" ? form.input : form
+        input: pluginType === "plugin" ? form.input : form,
       },
       {
         onError(err: any) {
           hasError.value = true;
           message.value = `获取选项出错：${err.message}`;
         },
-        showErrorNotify: false
+        showErrorNotify: false,
       }
     );
     if (res && res.length > 0) {
@@ -129,14 +120,14 @@ watch(
     }
     return {
       form: props.form,
-      watched: values
+      watched: values,
     };
   },
   async () => {
     await getOptions();
   },
   {
-    immediate: true
+    immediate: true,
   }
 );
 </script>
