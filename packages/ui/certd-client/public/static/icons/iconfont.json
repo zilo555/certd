@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "5771134",
+      "name": "upyun",
+      "font_class": "upyun",
+      "unicode": "e62f",
+      "unicode_decimal": 58927
+    },
+    {
       "icon_id": "27272666",
       "name": "plesk_",
       "font_class": "plesk",

@@ -1,6 +1,6 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4688792 */
-  src: url('iconfont.svg?t=1742822771904#iconfont') format('svg');
+  src: url('iconfont.svg?t=1742952318857#iconfont') format('svg');
 }
 
 .iconfont {
@@ -9,6 +9,10 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-upyun:before {
+  content: "\e62f";
 }
 
 .icon-plesk:before {
