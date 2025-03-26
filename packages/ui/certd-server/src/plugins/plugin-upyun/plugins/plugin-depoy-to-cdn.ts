@@ -11,7 +11,7 @@ import {optionsUtils} from "@certd/basic/dist/utils/util.options.js";
   title: '又拍云-部署证书到CDN',
   icon: 'svg:icon-upyun',
   //插件分组
-  group: pluginGroups.other.key,
+  group: pluginGroups.cdn.key,
   needPlus: true,
   default: {
     //默认值配置照抄即可

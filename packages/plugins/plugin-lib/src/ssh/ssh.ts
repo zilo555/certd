@@ -304,6 +304,7 @@ export class SshClient {
           //scp
           for (const transport of transports) {
             await this.scpUpload({ conn, ...transport, opts });
+            await new Promise(resolve => setTimeout(resolve, 1000));
           }
         }
 
@@ -333,9 +334,13 @@ export class SshClient {
 
             // 通过管道传输文件
             fs.createReadStream(localPath)
+              .on("error", e => {
+                this.logger.info("read stream error", e);
+                reject(e);
+              })
               .pipe(stream)
-              .on("finish", () => {
-                this.logger.info(`上传文件成功：${localPath} => ${remotePath}`);
+              .on("finish", async () => {
+                this.logger.info(`上传完成：${localPath} => ${remotePath}`);
                 resolve(true);
               })
               .on("error", reject);
