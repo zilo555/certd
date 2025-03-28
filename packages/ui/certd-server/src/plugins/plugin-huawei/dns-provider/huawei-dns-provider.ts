@@ -24,7 +24,7 @@ export class HuaweiDnsProvider extends AbstractDnsProvider {
   dnsEndpoint = 'https://dns.cn-south-1.myhuaweicloud.com';
   async onInstance() {
     const access: any = this.access;
-    this.client = new HuaweiYunClient(access);
+    this.client = new HuaweiYunClient(access,this.logger);
   }
 
   async getDomainList() {

@@ -2,8 +2,10 @@ import { Signer, SigHttpRequest } from "./signer.js";
 import axios from "axios";
 export class HuaweiYunClient {
   access;
+  logger;
   constructor(access, logger) {
     this.access = access;
+    this.logger = logger
   }
   async request(options) {
     const sig = new Signer(this.access.accessKeyId, this.access.accessKeySecret);
