@@ -1,6 +1,6 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4688792 */
-  src: url('iconfont.svg?t=1742952318857#iconfont') format('svg');
+  src: url('iconfont.svg?t=1743171100316#iconfont') format('svg');
 }
 
 .iconfont {
@@ -9,6 +9,14 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-jdcloud:before {
+  content: "\e653";
+}
+
+.icon-volcengine:before {
+  content: "\e651";
 }
 
 .icon-upyun:before {

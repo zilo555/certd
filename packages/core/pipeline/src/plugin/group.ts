@@ -20,6 +20,7 @@ export const pluginGroups = {
   aliyun: new PluginGroup("aliyun", "阿里云", 2),
   huawei: new PluginGroup("huawei", "华为云", 3),
   tencent: new PluginGroup("tencent", "腾讯云", 4),
+  volcengine: new PluginGroup("volcengine", "火山引擎", 4),
   qiniu: new PluginGroup("qiniu", "七牛云", 5),
   aws: new PluginGroup("aws", "亚马逊云", 6),
   host: new PluginGroup("host", "主机", 7),

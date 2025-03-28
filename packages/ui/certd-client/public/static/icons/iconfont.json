@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "30950102",
+      "name": "京东云",
+      "font_class": "jdcloud",
+      "unicode": "e653",
+      "unicode_decimal": 58963
+    },
+    {
+      "icon_id": "43404901",
+      "name": "volcengine",
+      "font_class": "volcengine",
+      "unicode": "e651",
+      "unicode_decimal": 58961
+    },
+    {
       "icon_id": "5771134",
       "name": "upyun",
       "font_class": "upyun",

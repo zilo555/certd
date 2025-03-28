@@ -65,6 +65,7 @@
     "@midwayjs/typeorm": "~3.20.3",
     "@midwayjs/upload": "~3.20.3",
     "@midwayjs/validate": "~3.20.3",
+    "@volcengine/openapi": "^1.28.1",
     "ali-oss": "^6.21.0",
     "axios": "^1.7.2",
     "basic-ftp": "^5.0.5",

@@ -21,3 +21,4 @@ run/
 .env.pgpl.yaml
 tools/lego/*
 !tools/lego/readme.md
+test.mjs
