@@ -177,7 +177,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             },
           },
         },
-        port: {
+        httpsPort: {
           title: "HTTPS端口",
           search: {
             show: false,
