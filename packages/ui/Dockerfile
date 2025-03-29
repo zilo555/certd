@@ -18,7 +18,7 @@ RUN apk add --no-cache openjdk8
 WORKDIR /app/
 COPY --from=builder /workspace/certd-server/ /app/
 
-ENV LEGO_VERSION 4.19.2
+ENV LEGO_VERSION 4.22.2
 ENV LEGO_DOWNLOAD_DIR /app/tools/lego
 RUN mkdir -p $LEGO_DOWNLOAD_DIR
 
