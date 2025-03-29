@@ -34,7 +34,7 @@ export class HuaweiYunClient {
       return res.data;
     } catch (e) {
       this.logger.error("华为云接口请求出错：", e?.response?.data);
-      const error = new Error(e?.response?.data.message);
+      const error = new Error(JSON.stringify(e?.response?.data));
       error.code = e?.response?.code;
       throw error;
     }
