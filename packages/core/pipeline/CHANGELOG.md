@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.31.10](https://github.com/certd/certd/compare/v1.31.9...v1.31.10) (2025-03-29)
+
+### Performance Improvements
+
+*  tab增加图标显示 ([a03ae5a](https://github.com/certd/certd/commit/a03ae5a216a1df2c1d3da12ae18dcd0f089a92d3))
+
 ## [1.31.9](https://github.com/certd/certd/compare/v1.31.8...v1.31.9) (2025-03-28)
 
 ### Performance Improvements

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.31.10](https://github.com/certd/certd/compare/v1.31.9...v1.31.10) (2025-03-29)
+
+### Performance Improvements
+
+* 优化华为dns接口报错信息输出 ([bf30b7a](https://github.com/certd/certd/commit/bf30b7afaef623dd8126570344f1fcc2c06f1215))
+
 ## [1.31.9](https://github.com/certd/certd/compare/v1.31.8...v1.31.9) (2025-03-28)
 
 ### Bug Fixes

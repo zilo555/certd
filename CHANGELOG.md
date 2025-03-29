@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.31.10](https://github.com/certd/certd/compare/v1.31.9...v1.31.10) (2025-03-29)
+
+### Performance Improvements
+
+*  tab增加图标显示 ([a03ae5a](https://github.com/certd/certd/commit/a03ae5a216a1df2c1d3da12ae18dcd0f089a92d3))
+* 升级lego版本到4.22.2 ([4e15556](https://github.com/certd/certd/commit/4e15556e5e8100719497edb1729570d5a29668e1))
+* 优化华为dns接口报错信息输出 ([bf30b7a](https://github.com/certd/certd/commit/bf30b7afaef623dd8126570344f1fcc2c06f1215))
+
 ## [1.31.9](https://github.com/certd/certd/compare/v1.31.8...v1.31.9) (2025-03-28)
 
 ### Bug Fixes

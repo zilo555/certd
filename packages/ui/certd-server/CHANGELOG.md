@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.31.10](https://github.com/certd/certd/compare/v1.31.9...v1.31.10) (2025-03-29)
+
+### Performance Improvements
+
+* 升级lego版本到4.22.2 ([4e15556](https://github.com/certd/certd/commit/4e15556e5e8100719497edb1729570d5a29668e1))
+
 ## [1.31.9](https://github.com/certd/certd/compare/v1.31.8...v1.31.9) (2025-03-28)
 
 ### Bug Fixes
