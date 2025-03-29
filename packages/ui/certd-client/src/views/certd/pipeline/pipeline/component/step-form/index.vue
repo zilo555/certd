@@ -423,12 +423,10 @@ export default {
   display: flex;
   align-items: center;
   //width: 120px;
-  .fs-iconify.fs-icon {
+  .fs-icon {
     display: flex;
     align-items: center;
-    margin-top: -5px;
-  }
-  .fs-icon {
+    color: #00b7ff;
     svg {
       vertical-align: middle !important;
       display: flex;
@@ -444,9 +442,6 @@ export default {
   }
   .ant-tabs-nav .ant-tabs-tab {
     margin-top: 10px !important;
-    .fs-icon {
-      color: #00b7ff;
-    }
   }
   &.fullscreen {
     .pi-step-form {

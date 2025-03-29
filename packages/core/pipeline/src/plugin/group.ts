@@ -27,6 +27,6 @@ export const pluginGroups = {
   aws: new PluginGroup("aws", "亚马逊云", 6, "svg:icon-aws"),
   host: new PluginGroup("host", "主机", 7, "clarity:host-line"),
   cdn: new PluginGroup("cdn", "CDN", 8, "svg:icon-cdn"),
-  panel: new PluginGroup("panel", "面板", 9, "fluent:panel-left-header-24-filled"),
+  panel: new PluginGroup("panel", "面板", 9, "fluent:panel-left-header-32-filled"),
   other: new PluginGroup("other", "其他", 10, "clarity:plugin-line"),
 };
