@@ -24,7 +24,13 @@
         </template>
         <div class="flex-col h-100 w-100 overflow-hidden">
           <a-tabs v-model:active-key="pluginGroupActive" tab-position="left" class="flex-1 overflow-hidden">
-            <a-tab-pane v-for="group of computedPluginGroups" :key="group.key" :tab="group.title" class="scroll-y">
+            <a-tab-pane v-for="group of computedPluginGroups" :key="group.key" class="scroll-y">
+              <template #tab>
+                <div class="cd-step-form-tab-label">
+                  <fs-icon :icon="group.icon" class="mr-2" />
+                  <div>{{ group.title }}</div>
+                </div>
+              </template>
               <a-row v-if="!group.plugins || group.plugins.length === 0" :gutter="10">
                 <a-col class="flex-o">
                   <div class="flex-o m-10">没有找到插件</div>
@@ -412,10 +418,35 @@ export default {
 </script>
 
 <style lang="less">
+.cd-step-form-tab-label {
+  // 包括dropdown
+  display: flex;
+  align-items: center;
+  //width: 120px;
+  .fs-iconify.fs-icon {
+    display: flex;
+    align-items: center;
+    margin-top: -5px;
+  }
+  .fs-icon {
+    svg {
+      vertical-align: middle !important;
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+
 .step-form-drawer {
   max-width: 100%;
   .ant-tabs-right > div > .ant-tabs-nav .ant-tabs-tab {
     padding: 8px 10px;
+  }
+  .ant-tabs-nav .ant-tabs-tab {
+    margin-top: 10px !important;
+    .fs-icon {
+      color: #00b7ff;
+    }
   }
   &.fullscreen {
     .pi-step-form {
@@ -465,7 +496,6 @@ export default {
 
       .step-plugin {
       }
-
       .ant-tabs-content {
         height: 100%;
       }

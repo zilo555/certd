@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "13592652",
+      "name": "cdn",
+      "font_class": "cdn",
+      "unicode": "e6e4",
+      "unicode_decimal": 59108
+    },
+    {
       "icon_id": "30950102",
       "name": "京东云",
       "font_class": "jdcloud",

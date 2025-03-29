@@ -45,14 +45,15 @@ export class PluginGroups {
       key: "all",
       title: "全部",
       order: 0,
-      plugins: []
+      plugins: [],
+      icon: "material-symbols:border-all-rounded",
     };
     for (const key in groups) {
       all.plugins.push(...groups[key].plugins);
     }
     this.groups = {
       all,
-      ...groups
+      ...groups,
     };
   }
 
@@ -81,7 +82,7 @@ export class PluginGroups {
       currentStageIndex,
       currentTaskIndex,
       currentStepIndex,
-      currentTask
+      currentTask,
     });
     const options: any[] = [];
     for (const step of steps) {
@@ -90,7 +91,7 @@ export class PluginGroups {
         options.push({
           value: `step.${step.id}.${key}`,
           label: `${stepDefine.output[key].title}【from：${step.title}】`,
-          type: step.type
+          type: step.type,
         });
       }
     }

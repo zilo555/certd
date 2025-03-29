@@ -6,25 +6,27 @@ export class PluginGroup {
   desc?: string;
   order: number;
   plugins: PluginDefine[];
-  constructor(key: string, title: string, order = 0, desc = "") {
+  icon?: string;
+
+  constructor(key: string, title: string, order = 0, icon = "") {
     this.key = key;
     this.title = title;
     this.order = order;
-    this.desc = desc;
+    this.icon = icon;
     this.plugins = [];
   }
 }
 
 export const pluginGroups = {
-  cert: new PluginGroup("cert", "证书申请", 1),
-  aliyun: new PluginGroup("aliyun", "阿里云", 2),
-  huawei: new PluginGroup("huawei", "华为云", 3),
-  tencent: new PluginGroup("tencent", "腾讯云", 4),
-  volcengine: new PluginGroup("volcengine", "火山引擎", 4),
-  qiniu: new PluginGroup("qiniu", "七牛云", 5),
-  aws: new PluginGroup("aws", "亚马逊云", 6),
-  host: new PluginGroup("host", "主机", 7),
-  cdn: new PluginGroup("cdn", "CDN", 8),
-  panel: new PluginGroup("panel", "面板", 9),
-  other: new PluginGroup("other", "其他", 10),
+  cert: new PluginGroup("cert", "证书申请", 1, "ph:certificate"),
+  aliyun: new PluginGroup("aliyun", "阿里云", 2, "svg:icon-aliyun"),
+  huawei: new PluginGroup("huawei", "华为云", 3, "svg:icon-huawei"),
+  tencent: new PluginGroup("tencent", "腾讯云", 4, "svg:icon-tencentcloud"),
+  volcengine: new PluginGroup("volcengine", "火山引擎", 4, "svg:icon-volcengine"),
+  qiniu: new PluginGroup("qiniu", "七牛云", 5, "svg:icon-qiniuyun"),
+  aws: new PluginGroup("aws", "亚马逊云", 6, "svg:icon-aws"),
+  host: new PluginGroup("host", "主机", 7, "clarity:host-line"),
+  cdn: new PluginGroup("cdn", "CDN", 8, "svg:icon-cdn"),
+  panel: new PluginGroup("panel", "面板", 9, "fluent:panel-left-header-24-filled"),
+  other: new PluginGroup("other", "其他", 10, "clarity:plugin-line"),
 };
