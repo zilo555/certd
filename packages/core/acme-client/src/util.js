@@ -219,15 +219,15 @@ function formatResponseError(resp) {
 async function resolveDomainBySoaRecord(recordName) {
     try {
         await dns.resolveSoa(recordName);
-        log(`Found SOA record, considering domain to be: ${recordName}`);
+        log(`找到${recordName}的SOA记录`);
         return recordName;
     }
     catch (e) {
-        log(`Unable to locate SOA record for name: ${recordName}`);
+        log(`找不到${recordName}的SOA记录,继续往主域名查找`);
         const parentRecordName = recordName.split('.').slice(1).join('.');
 
         if (!parentRecordName.includes('.')) {
-            throw new Error('Unable to resolve domain by SOA record');
+            throw new Error('SOA record查找失败');
         }
 
         return resolveDomainBySoaRecord(parentRecordName);
@@ -242,7 +242,7 @@ async function resolveDomainBySoaRecord(recordName) {
  */
 
 async function getAuthoritativeDnsResolver(recordName) {
-    log(`Locating authoritative NS records for name: ${recordName} （获取域名的权威NS服务器）`);
+    log(`获取域名${recordName}的权威NS服务器: `);
     const resolver = new dns.Resolver();
 
     try {
@@ -250,7 +250,7 @@ async function getAuthoritativeDnsResolver(recordName) {
         const domain = await resolveDomainBySoaRecord(recordName);
 
         /* Resolve authoritative NS addresses */
-        log(`Looking up authoritative NS records for domain（获取域名的权威NS服务器）: ${domain}`);
+        log(`获取到权威NS服务器name: ${domain}`);
         const nsRecords = await dns.resolveNs(domain);
         log(`域名权威NS服务器：${nsRecords}`);
         const nsAddrArray = await Promise.all(nsRecords.map(async (r) => dns.resolve4(r)));

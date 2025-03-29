@@ -48,46 +48,57 @@ async function verifyHttpChallenge(authz, challenge, keyAuthorization, suffix = 
  * Walk DNS until TXT records are found
  */
 
-async function walkDnsChallengeRecord(recordName, resolver = dns) {
-    /* Resolve CNAME record first */
-    // try {
-    //     log(`Checking name for CNAME records: ${recordName}`);
-    //     const cnameRecords = await resolver.resolveCname(recordName);
-    //
-    //     if (cnameRecords.length) {
-    //         log(`CNAME record found at ${recordName}, new challenge record name: ${cnameRecords[0]}`);
-    //         return walkDnsChallengeRecord(cnameRecords[0]);
-    //     }
-    // }
-    // catch (e) {
-    //     log(`No CNAME records found for name: ${recordName}`);
-    // }
+async function walkDnsChallengeRecord(recordName, resolver = dns,deep = 0) {
+
+    let records = [];
 
     /* Resolve TXT records */
     try {
-        log(`Checking name for TXT records: ${recordName}`);
+        log(`检查域名 ${recordName} 的TXT记录`);
         const txtRecords = await resolver.resolveTxt(recordName);
 
         if (txtRecords && txtRecords.length) {
-            log(`Found ${txtRecords.length} TXT records at ${recordName}`);
+            log(`找到 ${txtRecords.length} 条 TXT记录（ ${recordName}）`);
             log(`TXT records: ${JSON.stringify(txtRecords)}`);
-            return [].concat(...txtRecords);
+            records = records.concat(...txtRecords);
         }
-        return [];
+    } catch (e) {
+        log(`解析 TXT 记录出错, ${recordName} :${e.message}`);
     }
-    catch (e) {
-        log(`Resolve TXT records error, ${recordName} :${e.message}`);
-        throw e;
+
+    /* Resolve CNAME record first */
+    try {
+        log(`检查是否存在CNAME映射: ${recordName}`);
+        const cnameRecords = await resolver.resolveCname(recordName);
+
+        if (cnameRecords.length) {
+            const cnameRecord = cnameRecords[0];
+            log(`已找到${recordName}的CNAME记录，将检查: ${cnameRecord}`);
+            let res= await  walkTxtRecord(cnameRecord,deep+1);
+            if (res && res.length) {
+                log(`从CNAME中找到TXT记录: ${JSON.stringify(res)}`);
+                records = records.concat(...res);
+            }
+        }else{
+            log(`没有CNAME映射（${recordName}）`);
+        }
+    } catch (e) {
+        log(`检查CNAME出错（${recordName}） :${e.message}`);
     }
+    return records
 }
 
-export async function walkTxtRecord(recordName) {
+export async function walkTxtRecord(recordName,deep = 0) {
+    if(deep >5){
+        log(`walkTxtRecord too deep (#${deep}) , skip walk`)
+        return []
+    }
 
     const txtRecords = []
     try {
         /* Default DNS resolver first */
         log('从本地DNS服务器获取TXT解析记录');
-        const res = await walkDnsChallengeRecord(recordName);
+        const res = await walkDnsChallengeRecord(recordName,null,deep);
         if (res && res.length > 0) {
             for (const item of res) {
                 txtRecords.push(item)
@@ -102,7 +113,7 @@ export async function walkTxtRecord(recordName) {
         /* Authoritative DNS resolver */
         log(`从域名权威服务器获取TXT解析记录`);
         const authoritativeResolver = await util.getAuthoritativeDnsResolver(recordName);
-        const res = await walkDnsChallengeRecord(recordName, authoritativeResolver);
+        const res = await walkDnsChallengeRecord(recordName, authoritativeResolver,deep);
         if (res && res.length > 0) {
             for (const item of res) {
                 txtRecords.push(item)
