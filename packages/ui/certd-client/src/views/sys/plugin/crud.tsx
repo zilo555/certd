@@ -45,23 +45,23 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             props: {
               multiple: true,
               crossPage: true,
-              selectedRowKeys
-            }
-          }
-        }
+              selectedRowKeys,
+            },
+          },
+        },
       },
       request: {
         pageRequest,
         addRequest,
         editRequest,
-        delRequest
+        delRequest,
       },
       actionbar: {
         buttons: {
           add: {
-            show: false
-          }
-        }
+            show: false,
+          },
+        },
       },
       rowHandle: {
         show: false,
@@ -69,18 +69,18 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
         fixed: "right",
         buttons: {
           edit: {
-            show: false
+            show: false,
           },
           copy: {
-            show: false
+            show: false,
           },
           remove: {
-            show: false
-          }
-        }
+            show: false,
+          },
+        },
       },
       table: {
-        rowKey: "name"
+        rowKey: "name",
       },
       columns: {
         // id: {
@@ -98,20 +98,20 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           title: "插件名称",
           type: "text",
           search: {
-            show: true
+            show: true,
           },
           form: {
-            show: false
+            show: false,
           },
           column: {
-            width: 200
-          }
+            width: 200,
+          },
         },
         icon: {
           title: "图标",
           type: "text",
           form: {
-            show: false
+            show: false,
           },
           column: {
             width: 100,
@@ -120,32 +120,32 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
               name: "fs-icon",
               vModel: "icon",
               style: {
-                fontSize: "22px"
-              }
-            }
-          }
+                fontSize: "22px",
+              },
+            },
+          },
         },
         title: {
           title: "标题",
           type: "text",
           column: {
-            width: 300
-          }
+            width: 300,
+          },
         },
         desc: {
           title: "描述",
           type: "text",
           column: {
-            width: 300
-          }
+            width: 300,
+          },
         },
         group: {
           title: "分组",
           type: "text",
           column: {
             width: 100,
-            align: "center"
-          }
+            align: "center",
+          },
         },
         disabled: {
           title: "点击禁用/启用",
@@ -153,11 +153,11 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           dict: dict({
             data: [
               { label: "启用", value: false, color: "success" },
-              { label: "禁用", value: true, color: "error" }
-            ]
+              { label: "禁用", value: true, color: "error" },
+            ],
           }),
           form: {
-            value: false
+            value: false,
           },
           column: {
             width: 120,
@@ -174,39 +174,39 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
                         id: row.id,
                         name: row.name,
                         type: row.type,
-                        disabled: !value
+                        disabled: !value,
                       });
                       await crudExpose.doRefresh();
-                    }
+                    },
                   });
-                }
-              }
-            }
-          }
+                },
+              },
+            },
+          },
         },
         createTime: {
           title: "创建时间",
           type: "datetime",
           form: {
-            show: false
+            show: false,
           },
           column: {
             sorter: true,
             width: 160,
-            align: "center"
-          }
+            align: "center",
+          },
         },
         updateTime: {
           title: "更新时间",
           type: "datetime",
           form: {
-            show: false
+            show: false,
           },
           column: {
-            show: true
-          }
-        }
-      }
-    }
+            show: true,
+          },
+        },
+      },
+    },
   };
 }

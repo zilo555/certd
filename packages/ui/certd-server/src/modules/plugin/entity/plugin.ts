@@ -30,10 +30,23 @@ export class PluginEntity {
   content: string;
 
   @Column({ comment: '类型', length: 100, nullable: true })
-  type: string; // builtIn | custom
+  type: string; // builtIn | local | download
 
   @Column({ comment: '启用/禁用', default: false })
   disabled: boolean;
+
+  @Column({ comment: '版本', length: 100, nullable: true })
+  version: string;
+
+  @Column({ comment: '插件类型', length: 100, nullable: true })
+  pluginType: string;
+
+  @Column({ comment: '元数据', length: 40960, nullable: true })
+  metadata: string;
+
+  @Column({ comment: '作者', length: 100, nullable: true })
+  author: string;
+
 
   @Column({
     name: 'create_time',

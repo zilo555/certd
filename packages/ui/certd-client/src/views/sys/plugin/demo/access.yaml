@@ -1,0 +1,30 @@
+name: AliyunAccess
+version: 1.0.0
+title: 阿里云授权
+desc: 阿里云授权
+icon: fa-cloud
+author:
+  id:
+  name:
+  email:
+link:
+type: access
+input:
+  accessKeyId:
+    title: AccessKeyId
+    type: string
+    component:
+      name: a-input
+    required: true
+    helper: 访问密钥ID
+  accessKeySecret:
+    type: string
+    title: AccessKeySecret
+    encrypt: true
+
+script: |
+  import { AccessInput, BaseAccess, IsAccess } from '@certd/pipeline';
+  class AliyunAccess extends BaseAccess {
+    accessKeyId = '';
+    secretAccessKey = '';
+  }
