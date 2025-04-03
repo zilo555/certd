@@ -1,5 +1,7 @@
 // @ts-ignore
 import ssh2, { ConnectConfig, ExecOptions } from "ssh2";
+
+import ssh2Constants from "ssh2/lib/protocol/constants.js";
 import path from "path";
 import * as _ from "lodash-es";
 import { ILogger } from "@certd/basic";
@@ -50,6 +52,8 @@ export class AsyncSsh2Client {
       this.logger.info("代理连接成功");
       this.connConf.sock = info.socket;
     }
+
+    const { SUPPORTED_KEX, SUPPORTED_SERVER_HOST_KEY, SUPPORTED_CIPHER, SUPPORTED_MAC } = ssh2Constants;
     return new Promise((resolve, reject) => {
       try {
         const conn = new ssh2.Client();
@@ -63,15 +67,23 @@ export class AsyncSsh2Client {
             this.conn = conn;
             resolve(this.conn);
           })
+          .on("keyboard-interactive", (name, descr, lang, prompts, finish) => {
+            // For illustration purposes only! It's not safe to do this!
+            // You can read it from process.stdin or whatever else...
+            const password = this.connConf.password;
+            return finish([password]);
+
+            // And remember, server may trigger this event multiple times
+            // and for different purposes (not only auth)
+          })
           .connect({
             ...this.connConf,
+            tryKeyboard: true,
             algorithms: {
-              kex: [
-                "ecdh-sha2-nistp256",
-                "diffie-hellman-group1-sha1",
-                "diffie-hellman-group14-sha1", // 示例：添加服务器支持的旧算法
-                "diffie-hellman-group-exchange-sha256",
-              ],
+              serverHostKey: SUPPORTED_SERVER_HOST_KEY,
+              cipher: SUPPORTED_CIPHER,
+              hmac: SUPPORTED_MAC,
+              kex: SUPPORTED_KEX,
             },
           });
       } catch (e) {

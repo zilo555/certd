@@ -7,7 +7,7 @@ import { cloneDeep } from 'lodash-es';
 export class BuiltInPluginService {
   getList() {
     const collection = pluginRegistry.storage;
-    const list = [];
+    let list = [];
     for (const key in collection) {
       const Plugin = collection[key];
       if (Plugin?.define?.deprecated) {
@@ -15,11 +15,21 @@ export class BuiltInPluginService {
       }
       list.push({ ...Plugin.define, key });
     }
+    list = list.sort((a, b) => {
+      return (a.order ?? 10 )- (b.order ?? 10);
+    });
     return list;
   }
 
   getGroups() {
-    return cloneDeep(pluginGroups);
+    const groups:any = cloneDeep(pluginGroups);
+    for (const key in groups) {
+      const group = groups[key];
+      group.plugins = group.plugins.sort((a, b) => {
+        return (a.order ?? 10 )- (b.order ?? 10);
+      });
+    }
+    return groups;
   }
 
   getByType(type: string) {

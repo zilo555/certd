@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.31.11](https://github.com/certd/certd/compare/v1.31.10...v1.31.11) (2025-04-02)
+
+### Performance Improvements
+
+* 支持部署到京东云cdn ([6f17c70](https://github.com/certd/certd/commit/6f17c700b84965baa01b40fe2abaa0a91bcbaffd))
+
 ## [1.31.10](https://github.com/certd/certd/compare/v1.31.9...v1.31.10) (2025-03-29)
 
 ### Performance Improvements

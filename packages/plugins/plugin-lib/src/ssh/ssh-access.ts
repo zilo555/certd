@@ -1,5 +1,6 @@
 import { AccessInput, BaseAccess, IsAccess } from "@certd/pipeline";
 import { ConnectConfig } from "ssh2";
+import { SshClient } from "./ssh.js";
 
 @IsAccess({
   name: "ssh",
@@ -101,6 +102,37 @@ export class SshAccess extends BaseAccess implements ConnectConfig {
     },
   })
   encoding: string;
+
+  @AccessInput({
+    title: "测试",
+    component: {
+      name: "api-test",
+      type: "access",
+      typeName: "ssh",
+      action: "TestRequest",
+    },
+    mergeScript: `
+         return {
+            component:{
+              form: ctx.compute(({form})=>{
+                return form
+              })
+            },
+         }
+        `,
+    helper: "点击测试",
+  })
+  testRequest = true;
+
+  async onTestRequest() {
+    const client = new SshClient(this.ctx.logger);
+
+    await client.exec({
+      connectConf: this,
+      script: "echo hello",
+    });
+    return "ok";
+  }
 }
 
 new SshAccess();

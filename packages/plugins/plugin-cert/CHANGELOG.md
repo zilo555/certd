@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.31.11](https://github.com/certd/certd/compare/v1.31.10...v1.31.11) (2025-04-02)
+
+### Performance Improvements
+
+* 支持京东云dns申请证书 ([04d79f9](https://github.com/certd/certd/commit/04d79f9117670be504960b018fd49ae3bf7c1c11))
+
 ## [1.31.10](https://github.com/certd/certd/compare/v1.31.9...v1.31.10) (2025-03-29)
 
 **Note:** Version bump only for package @certd/plugin-cert

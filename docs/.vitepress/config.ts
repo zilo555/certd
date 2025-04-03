@@ -124,6 +124,14 @@ export default defineConfig({
           ]
         }
       ],
+      "/deploy/":[
+        {
+          text: "部署任务",
+          items: [
+            { text: "部署到ESXi", link: "/deploy/ESXi/index.md" },
+          ]
+        }
+      ],
       "/comm/": [
         {
           text: "商业版",

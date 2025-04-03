@@ -6,6 +6,7 @@ export type Registrable = {
   desc?: string;
   group?: string;
   deprecated?: string;
+  order?: number;
 };
 
 export type RegistryItem<T> = {

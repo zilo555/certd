@@ -34,7 +34,7 @@ export class CopyCertToLocalPlugin extends AbstractTaskPlugin {
     component: {
       name: 'a-select',
       options: [
-        { value: 'pem', label: 'pem，用于Nginx等大部分应用' },
+        { value: 'pem', label: 'pem(crt)，用于Nginx等大部分应用' },
         { value: 'pfx', label: 'pfx，一般用于IIS' },
         { value: 'der', label: 'der，一般用于Apache' },
         { value: 'jks', label: 'jks，一般用于JAVA应用' },

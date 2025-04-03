@@ -17,3 +17,4 @@ export * from './plugin-aws/index.js';
 export * from './plugin-dnsla/index.js';
 export * from './plugin-upyun/index.js';
 export * from './plugin-volcengine/index.js'
+export * from './plugin-jdcloud/index.js'

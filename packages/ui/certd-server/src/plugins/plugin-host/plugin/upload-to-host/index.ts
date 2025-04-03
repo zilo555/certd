@@ -9,6 +9,7 @@ import { CertApplyPluginNames} from '@certd/plugin-cert';
   icon: 'line-md:uploading-loop',
   group: pluginGroups.host.key,
   desc: 'SFTP上传证书到主机，然后SSH执行部署脚本命令',
+  order: 1,
   default: {
     strategy: {
       runStrategy: RunStrategy.SkipWhenSucceed,
@@ -33,7 +34,7 @@ export class UploadCertToHostPlugin extends AbstractTaskPlugin {
     component: {
       name: 'a-select',
       options: [
-        { value: 'pem', label: 'pem，Nginx等大部分应用' },
+        { value: 'pem', label: 'pem（crt），Nginx等大部分应用' },
         { value: 'pfx', label: 'pfx，一般用于IIS' },
         { value: 'der', label: 'der，一般用于Apache' },
         { value: 'jks', label: 'jks，一般用于JAVA应用' },

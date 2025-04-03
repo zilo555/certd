@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.31.11](https://github.com/certd/certd/compare/v1.31.10...v1.31.11) (2025-04-02)
+
+### Bug Fixes
+
+* 修复ssh支持键盘事件登录 ([8145808](https://github.com/certd/certd/commit/8145808c4370364377b4ffe3ae88ff465b49f20b))
+
 ## [1.31.10](https://github.com/certd/certd/compare/v1.31.9...v1.31.10) (2025-03-29)
 
 **Note:** Version bump only for package @certd/plugin-lib

@@ -10,7 +10,7 @@ import { CertApplyPluginNames} from '@certd/plugin-cert';
   title: 'Proxmox-上传证书到Proxmox',
   icon: 'svg:icon-proxmox',
   //插件分组
-  group: pluginGroups.other.key,
+  group: pluginGroups.panel.key,
   needPlus: true,
   default: {
     //默认值配置照抄即可
