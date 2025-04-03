@@ -58,6 +58,7 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
     if (param.domain.startsWith('*.')) {
       param.domain = param.domain.substring(2);
     }
+    param.domain = param.domain.trim()
     const info = await this.getRepository().findOne({ where: { domain: param.domain,userId: param.userId } });
     if (info) {
       return info;
