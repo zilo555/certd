@@ -98,7 +98,7 @@ export async function walkTxtRecord(recordName,deep = 0) {
     try {
         /* Default DNS resolver first */
         log('从本地DNS服务器获取TXT解析记录');
-        const res = await walkDnsChallengeRecord(recordName,null,deep);
+        const res = await walkDnsChallengeRecord(recordName,dns,deep);
         if (res && res.length > 0) {
             for (const item of res) {
                 txtRecords.push(item)
