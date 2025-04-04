@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.32.0](https://github.com/certd/certd/compare/v1.31.11...v1.32.0) (2025-04-04)
+
+### Performance Improvements
+
+* 优化华为dns解析记录创建和删除问题 ([0948c5b](https://github.com/certd/certd/commit/0948c5bc691d2ee6eb47c72a85da1b7453361878))
+
 ## [1.31.11](https://github.com/certd/certd/compare/v1.31.10...v1.31.11) (2025-04-02)
 
 **Note:** Version bump only for package @certd/ui-client

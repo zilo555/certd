@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.32.0](https://github.com/certd/certd/compare/v1.31.11...v1.32.0) (2025-04-04)
+
+### Bug Fixes
+
+* 创建cname记录移除域名两端的空格 ([903a413](https://github.com/certd/certd/commit/903a4131ab5f42c8286cd2150ed1032d486fda2f))
+
+### Performance Improvements
+
+* 优化华为dns解析记录创建和删除问题 ([0948c5b](https://github.com/certd/certd/commit/0948c5bc691d2ee6eb47c72a85da1b7453361878))
+* 又拍云支持云存储 ([9339b78](https://github.com/certd/certd/commit/9339b78f801d193472c0af25749e8e7a27ffb7af))
+* 又拍云支持云存储 ([8449f85](https://github.com/certd/certd/commit/8449f8580da90c1f6b5d02d07c3236ebaf6cf161))
+
 ## [1.31.11](https://github.com/certd/certd/compare/v1.31.10...v1.31.11) (2025-04-02)
 
 ### Performance Improvements

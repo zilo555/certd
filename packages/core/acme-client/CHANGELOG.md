@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.32.0](https://github.com/publishlab/node-acme-client/compare/v1.31.11...v1.32.0) (2025-04-04)
+
+### Bug Fixes
+
+* 修复从本地dns获取记录报错的bug ([c39b1bf](https://github.com/publishlab/node-acme-client/commit/c39b1bf823ddc6216bed2049e4c87e6107def08a))
+
+### Features
+
+* 优化证书申请速度，修复某些情况下letsencrypt 校验失败的问题 ([857589b](https://github.com/publishlab/node-acme-client/commit/857589b365c6f709e0ae67914d2f50ce182e6dd6))
+
+### Performance Improvements
+
+* 优化华为dns解析记录创建和删除问题 ([0948c5b](https://github.com/publishlab/node-acme-client/commit/0948c5bc691d2ee6eb47c72a85da1b7453361878))
+
 ## [1.31.11](https://github.com/publishlab/node-acme-client/compare/v1.31.10...v1.31.11) (2025-04-02)
 
 **Note:** Version bump only for package @certd/acme-client
