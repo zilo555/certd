@@ -554,9 +554,9 @@ class AcmeClient {
      * ```
      */
 
-    async waitForValidStatus(item) {
+    async waitForValidStatus(item,d) {
         if (!item.url) {
-            throw new Error('Unable to verify status of item, URL not found');
+            throw new Error(`[${d}] Unable to verify status of item, URL not found`);
         }
 
         const verifyFn = async (abort) => {
@@ -568,23 +568,23 @@ class AcmeClient {
             const resp = await this.api.apiRequest(item.url, null, [200]);
 
             /* Verify status */
-            log(`Item has status（挑战状态）: ${resp.data.status}`);
+            log(`[${d}] Item has status（挑战状态）: ${resp.data.status}`);
 
             if (invalidStates.includes(resp.data.status)) {
                 abort();
                 throw new Error(util.formatResponseError(resp));
             }
             else if (pendingStates.includes(resp.data.status)) {
-                throw new Error('Operation is pending or processing（当前仍然在等待状态）');
+                throw new Error(`[${d}] Operation is pending or processing（当前仍然在等待状态）`);
             }
             else if (validStates.includes(resp.data.status)) {
                 return resp.data;
             }
 
-            throw new Error(`Unexpected item status: ${resp.data.status}`);
+            throw new Error(`[${d}] Unexpected item status: ${resp.data.status}`);
         };
 
-        log(`Waiting for valid status （等待valid状态）: ${item.url}`, this.backoffOpts);
+        log(`[${d}] Waiting for valid status （等待valid状态）: ${item.url}`, this.backoffOpts);
         return util.retry(verifyFn, this.backoffOpts);
     }
 

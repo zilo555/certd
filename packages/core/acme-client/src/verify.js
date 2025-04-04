@@ -98,7 +98,7 @@ export async function walkTxtRecord(recordName,deep = 0) {
     try {
         /* Default DNS resolver first */
         log('从本地DNS服务器获取TXT解析记录');
-        const res = await walkDnsChallengeRecord(recordName,null,deep);
+        const res = await walkDnsChallengeRecord(recordName,dns,deep);
         if (res && res.length > 0) {
             for (const item of res) {
                 txtRecords.push(item)
@@ -147,12 +147,12 @@ async function verifyDnsChallenge(authz, challenge, keyAuthorization, prefix = '
     let recordValues = await walkTxtRecord(recordName);
     //去重
     recordValues = [...new Set(recordValues)];
-    log(`DNS查询成功, 找到 ${recordValues.length} 条TXT记录`);
+    log(`DNS查询成功, 找到 ${recordValues.length} 条TXT记录：${recordValues}`);
     if (!recordValues.length || !recordValues.includes(keyAuthorization)) {
         throw new Error(`没有找到需要的DNS TXT记录: ${recordName}，期望:${keyAuthorization},结果:${recordValues}`);
     }
 
-    log(`关键授权匹配成功（${challenge.type}/${recordName}）,校验成功, ACME challenge verified`);
+    log(`关键授权匹配成功（${challenge.type}/${recordName}）:${keyAuthorization}，校验成功， ACME challenge verified`);
     return true;
 }
 

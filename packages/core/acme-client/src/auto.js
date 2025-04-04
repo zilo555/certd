@@ -1,10 +1,10 @@
 /**
  * ACME auto helper
  */
-import { readCsrDomains } from './crypto/index.js';
-import { log } from './logger.js';
-import { wait } from './wait.js';
-import { CancelError } from './error.js';
+import { readCsrDomains } from "./crypto/index.js";
+import { log } from "./logger.js";
+import { wait } from "./wait.js";
+import { CancelError } from "./error.js";
 
 
 const defaultOpts = {
@@ -13,13 +13,13 @@ const defaultOpts = {
     preferredChain: null,
     termsOfServiceAgreed: false,
     skipChallengeVerification: false,
-    challengePriority: ['http-01', 'dns-01'],
+    challengePriority: ["http-01", "dns-01"],
     challengeCreateFn: async () => {
-        throw new Error('Missing challengeCreateFn()');
+        throw new Error("Missing challengeCreateFn()");
     },
     challengeRemoveFn: async () => {
-        throw new Error('Missing challengeRemoveFn()');
-    },
+        throw new Error("Missing challengeRemoveFn()");
+    }
 };
 
 /**
@@ -30,7 +30,7 @@ const defaultOpts = {
  * @returns {Promise<buffer>} Certificate
  */
 
-export default  async (client, userOpts) => {
+export default async (client, userOpts) => {
     const opts = { ...defaultOpts, ...userOpts };
     const accountPayload = { termsOfServiceAgreed: opts.termsOfServiceAgreed };
 
@@ -49,14 +49,13 @@ export default  async (client, userOpts) => {
      * Register account
      */
 
-    log('[auto] Checking account');
+    log("[auto] Checking account");
 
     try {
         client.getAccountUrl();
-        log('[auto] Account URL already exists, skipping account registration（ 证书申请账户已存在，跳过注册 ）');
-    }
-    catch (e) {
-        log('[auto] Registering account （注册证书申请账户）');
+        log("[auto] Account URL already exists, skipping account registration（ 证书申请账户已存在，跳过注册 ）");
+    } catch (e) {
+        log("[auto] Registering account （注册证书申请账户）");
         await client.createAccount(accountPayload);
     }
 
@@ -64,7 +63,7 @@ export default  async (client, userOpts) => {
      * Parse domains from CSR
      */
 
-    log('[auto] Parsing domains from Certificate Signing Request ');
+    log("[auto] Parsing domains from Certificate Signing Request ");
     const { commonName, altNames } = readCsrDomains(opts.csr);
     const uniqueDomains = Array.from(new Set([commonName].concat(altNames).filter((d) => d)));
 
@@ -74,8 +73,8 @@ export default  async (client, userOpts) => {
      * Place order
      */
 
-    log('[auto] Placing new certificate order with ACME provider');
-    const orderPayload = { identifiers: uniqueDomains.map((d) => ({ type: 'dns', value: d })) };
+    log("[auto] Placing new certificate order with ACME provider");
+    const orderPayload = { identifiers: uniqueDomains.map((d) => ({ type: "dns", value: d })) };
     const order = await client.createOrder(orderPayload);
     const authorizations = await client.getAuthorizations(order);
 
@@ -85,82 +84,81 @@ export default  async (client, userOpts) => {
      * Resolve and satisfy challenges
      */
 
-    log('[auto] Resolving and satisfying authorization challenges');
+    log("[auto] Resolving and satisfying authorization challenges");
 
     const clearTasks = [];
+    const localVerifyTasks = [];
+    const completeChallengeTasks = [];
 
     const challengeFunc = async (authz) => {
         const d = authz.identifier.value;
         let challengeCompleted = false;
 
         /* Skip authz that already has valid status */
-        if (authz.status === 'valid') {
+        if (authz.status === "valid") {
             log(`[auto] [${d}] Authorization already has valid status, no need to complete challenges`);
             return;
         }
 
         const keyAuthorizationGetter = async (challenge) => {
             return await client.getChallengeKeyAuthorization(challenge);
-        }
+        };
 
-        try {
-            log(`[auto] [${d}] Trigger challengeCreateFn()`);
+        async function deactivateAuth(e) {
+            log(`[auto] [${d}] Unable to complete challenge: ${e.message}`);
             try {
-                const { recordReq, recordRes, dnsProvider,challenge ,keyAuthorization} = await opts.challengeCreateFn(authz, keyAuthorizationGetter);
-                clearTasks.push(async () => {
-                    /* Trigger challengeRemoveFn(), suppress errors */
-                    log(`[auto] [${d}] Trigger challengeRemoveFn()`);
-                    try {
-                        await opts.challengeRemoveFn(authz, challenge, keyAuthorization, recordReq, recordRes, dnsProvider);
-                    }
-                    catch (e) {
-                        log(`[auto] [${d}] challengeRemoveFn threw error: ${e.message}`);
-                    }
-                });
-                // throw new Error('测试异常');
-                /* Challenge verification */
-                if (opts.skipChallengeVerification === true) {
-                    log(`[auto] [${d}] 跳过本地验证（skipChallengeVerification=true），等待 60s`);
-                    await wait(60 * 1000);
-                }
-                else {
-                    log(`[auto] [${d}] 开始本地验证, type = ${challenge.type}`);
-                    try {
-                        await client.verifyChallenge(authz, challenge);
-                    }
-                    catch (e) {
-                        log(`[auto] [${d}] 本地验证失败，尝试请求ACME提供商获取状态: ${e.message}`);
-                    }
-                }
-                /* Complete challenge and wait for valid status */
-                log(`[auto] [${d}] 请求ACME提供商完成验证，等待返回valid状态`);
-                await client.completeChallenge(challenge);
-                challengeCompleted = true;
-
-                await client.waitForValidStatus(challenge);
-            }
-            catch (e) {
-                log(`[auto] [${d}] challengeCreateFn threw error: ${e.message}`);
-                throw e;
+                log(`[auto] [${d}] Deactivating failed authorization`);
+                await client.deactivateAuthorization(authz);
+            } catch (f) {
+                /* Suppress deactivateAuthorization() errors */
+                log(`[auto] [${d}] Authorization deactivation threw error: ${f.message}`);
             }
         }
-        catch (e) {
-            /* Deactivate pending authz when unable to complete challenge */
-            if (!challengeCompleted) {
-                log(`[auto] [${d}] Unable to complete challenge: ${e.message}`);
 
+        log(`[auto] [${d}] Trigger challengeCreateFn()`);
+        try {
+            const { recordReq, recordRes, dnsProvider, challenge, keyAuthorization } = await opts.challengeCreateFn(authz, keyAuthorizationGetter);
+            clearTasks.push(async () => {
+                /* Trigger challengeRemoveFn(), suppress errors */
+                log(`[auto] [${d}] Trigger challengeRemoveFn()`);
                 try {
-                    log(`[auto] [${d}] Deactivating failed authorization`);
-                    await client.deactivateAuthorization(authz);
+                    await opts.challengeRemoveFn(authz, challenge, keyAuthorization, recordReq, recordRes, dnsProvider);
+                } catch (e) {
+                    log(`[auto] [${d}] challengeRemoveFn threw error: ${e.message}`);
                 }
-                catch (f) {
-                    /* Suppress deactivateAuthorization() errors */
-                    log(`[auto] [${d}] Authorization deactivation threw error: ${f.message}`);
-                }
-            }
+            });
 
+            localVerifyTasks.push(async () => {
+                /* Challenge verification */
+                log(`[auto] [${d}] 开始本地验证, type = ${challenge.type}`);
+                try {
+                    await client.verifyChallenge(authz, challenge);
+                } catch (e) {
+                    log(`[auto] [${d}] 本地验证失败，尝试请求ACME提供商获取状态: ${e.message}`);
+                }
+            });
+
+            completeChallengeTasks.push(async () => {
+                /* Complete challenge and wait for valid status */
+                log(`[auto] [${d}] 请求ACME提供商完成验证`);
+                try{
+                    await client.completeChallenge(challenge);
+                }catch (e) {
+                    await deactivateAuth(e);
+                    throw e;
+                }
+                challengeCompleted = true;
+                log(`[auto] [${d}] 等待返回valid状态`);
+                await client.waitForValidStatus(challenge,d);
+            });
+
+
+        } catch (e) {
+            log(`[auto] [${d}] challengeCreateFn threw error: ${e.message}`);
+            await deactivateAuth(e);
             throw e;
         }
+
     };
     const domainSets = [];
 
@@ -168,7 +166,7 @@ export default  async (client, userOpts) => {
         const d = authz.identifier.value;
         log(`authorization:domain = ${d}, value = ${JSON.stringify(authz)}`);
 
-        if (authz.status === 'valid') {
+        if (authz.status === "valid") {
             log(`[auto] [${d}] Authorization already has valid status, no need to complete challenges`);
             return;
         }
@@ -192,8 +190,9 @@ export default  async (client, userOpts) => {
 
     const allChallengePromises = [];
     // eslint-disable-next-line no-restricted-syntax
+    const challengePromises = [];
+    allChallengePromises.push(challengePromises);
     for (const domainSet of domainSets) {
-        const challengePromises = [];
         // eslint-disable-next-line guard-for-in,no-restricted-syntax
         for (const domain in domainSet) {
             const authz = domainSet[domain];
@@ -202,12 +201,11 @@ export default  async (client, userOpts) => {
                 await challengeFunc(authz);
             });
         }
-        allChallengePromises.push(challengePromises);
     }
 
     log(`[auto] challengeGroups:${allChallengePromises.length}`);
 
-    function runAllPromise(tasks) {
+    async function runAllPromise(tasks) {
         let promise = Promise.resolve();
         tasks.forEach((task) => {
             promise = promise.then(task);
@@ -215,73 +213,60 @@ export default  async (client, userOpts) => {
         return promise;
     }
 
-    async function runPromisePa(tasks) {
+    async function runPromisePa(tasks, waitTime = 5000) {
         const results = [];
         // eslint-disable-next-line no-await-in-loop,no-restricted-syntax
         for (const task of tasks) {
             results.push(task());
             // eslint-disable-next-line no-await-in-loop
-            await wait(10000);
+            await wait(waitTime);
         }
         return Promise.all(results);
     }
 
-    try {
-        log(`开始challenge，共${allChallengePromises.length}组`);
-        let i = 0;
-        // eslint-disable-next-line no-restricted-syntax
-        for (const challengePromises of allChallengePromises) {
-            i += 1;
-            log(`开始第${i}组`);
-            if (opts.signal && opts.signal.aborted) {
-                throw new CancelError('用户取消');
+    log(`开始challenge，共${allChallengePromises.length}组`);
+    let i = 0;
+    // eslint-disable-next-line no-restricted-syntax
+    for (const challengePromises of allChallengePromises) {
+        i += 1;
+        log(`开始第${i}组`);
+        if (opts.signal && opts.signal.aborted) {
+            throw new CancelError("用户取消");
+        }
+
+        try {
+            // eslint-disable-next-line no-await-in-loop
+            await runPromisePa(challengePromises);
+            if (opts.skipChallengeVerification === true) {
+                log(`跳过本地验证（skipChallengeVerification=true），等待 60s`);
+                await wait(60 * 1000);
+            } else {
+                await runPromisePa(localVerifyTasks, 1000);
+                log("本地校验完成，等待30s")
+                await wait(30 * 1000)
             }
 
-            try {
-                // eslint-disable-next-line no-await-in-loop
-                await runPromisePa(challengePromises);
-            }
-            catch (e) {
-                log(`证书申请失败${e.message}`);
-                throw e;
-            }
-            finally {
-                if (client.opts.sslProvider !== 'google') {
-                    // letsencrypt 如果同时检出两个TXT记录，会以第一个为准，就会校验失败，所以需要提前删除
-                    // zerossl 此方式测试无问题
-                    log(`清理challenge痕迹，length:${clearTasks.length}`);
-                    try {
-                        // eslint-disable-next-line no-await-in-loop
-                        await runAllPromise(clearTasks);
-                    }
-                    catch (e) {
-                        log('清理challenge失败');
-                        log(e);
-                    }
-                }
-            }
-        }
-    }
-    finally {
-        if (client.opts.sslProvider === 'google') {
-            // google 相同的域名txt记录是一样的，不能提前删除，否则校验失败，报错如下
-            //  Error: The TXT record retrieved from _acme-challenge.bbc.handsfree.work.
-            //  at the time the challenge was validated did not contain JshHVu7dt_DT6uYILWhokHefFVad2Q6Mw1L-fNZFcq8
-            //  (the base64url-encoded SHA-256 digest of RlJZNBR0LWnxNK_xd2zqtYVvCiNJOKJ3J1NmCjU_9BjaUJgL3k-qSpIhQ-uF4FBS.NRyqT8fRiq6THzzrvkgzgR5Xai2LsA2SyGLAq_wT3qc).
-            //  See https://tools.ietf.org/html/rfc8555#section-8.4 for more information.
+            log("开始向提供商请求挑战验证");
+            await runPromisePa(completeChallengeTasks, 1000);
+        } catch (e) {
+            log(`证书申请失败${e.message}`);
+            throw e;
+        } finally {
+            // letsencrypt 如果同时检出两个TXT记录，会以第一个为准，就会校验失败，所以需要提前删除
+            // zerossl 此方式测试无问题
             log(`清理challenge痕迹，length:${clearTasks.length}`);
             try {
-            // eslint-disable-next-line no-await-in-loop
+                // eslint-disable-next-line no-await-in-loop
                 await runAllPromise(clearTasks);
-            }
-            catch (e) {
-                log('清理challenge失败');
+            } catch (e) {
+                log("清理challenge失败");
                 log(e);
             }
         }
     }
 
-    log('challenge结束');
+
+    log("challenge结束");
 
     // log('[auto] Waiting for challenge valid status');
     // await Promise.all(challengePromises);
@@ -289,7 +274,7 @@ export default  async (client, userOpts) => {
      * Finalize order and download certificate
      */
 
-    log('[auto] Finalizing order and downloading certificate');
+    log("[auto] Finalizing order and downloading certificate");
     const finalized = await client.finalizeOrder(order, opts.csr);
     const res = await client.getCertificate(finalized, opts.preferredChain);
     return res;
