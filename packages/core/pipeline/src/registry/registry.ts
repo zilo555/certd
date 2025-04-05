@@ -8,10 +8,10 @@ export type Registrable = {
   deprecated?: string;
   order?: number;
 };
-
+export type TargetGetter<T> = () => Promise<T>;
 export type RegistryItem<T> = {
   define: Registrable;
-  target: T;
+  target: T | TargetGetter<T>;
 };
 
 export type OnRegisterContext<T> = {

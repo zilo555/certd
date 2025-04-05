@@ -6,7 +6,8 @@ title: 阿里云授权
 desc: 阿里云授权
 icon: fa-cloud
 type: access
-
+dependentPlugins:
+  - greper/AliyunSdk
 metadata:
   dependencies:
     - "@alicloud/pop-core": "^1.7.10"

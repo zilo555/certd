@@ -1,6 +1,6 @@
 import { ConcurrencyStrategy, NotificationWhen, Pipeline, ResultType, Runnable, RunStrategy, Stage, Step, Task, ResultError } from "../dt/index.js";
 import { RunHistory, RunnableCollection } from "./run-history.js";
-import { AbstractTaskPlugin, PluginDefine, pluginRegistry, TaskInstanceContext, UserInfo } from "../plugin/index.js";
+import { AbstractTaskPlugin, ITaskPlugin, PluginDefine, pluginRegistry, TaskInstanceContext, UserInfo } from "../plugin/index.js";
 import { ContextFactory, IContext } from "./context.js";
 import { IStorage } from "./storage.js";
 import { createAxiosService, hashUtils, HttpRequestConfig, ILogger, logger, utils } from "@certd/basic";
@@ -261,6 +261,7 @@ export class Executor {
     const resList: ResultType[] = [];
     for (const step of task.steps) {
       step.runnableType = "step";
+      // @ts-ignore
       const res: ResultType = await this.runWithHistory(step, "step", async () => {
         return await this.runStep(step);
       });
@@ -276,8 +277,22 @@ export class Executor {
     //执行任务
     const plugin: RegistryItem<AbstractTaskPlugin> = pluginRegistry.get(step.type);
 
-    // @ts-ignore
-    const instance: ITaskPlugin = new plugin.target();
+    //@ts-ignore
+    let instance: ITaskPlugin = null;
+    try {
+      //@ts-ignore
+      if (plugin.target.define) {
+        //@ts-ignore
+        instance = new plugin.target();
+      } else {
+        //@ts-ignore
+        instance = await plugin.target();
+      }
+    } catch (e: any) {
+      currentLogger.error(`实例化插件失败:${e.message}`);
+      throw new Error(`实例化插件失败`, e);
+    }
+
     // @ts-ignore
     const define: PluginDefine = plugin.define;
     const pluginName = define.name;
