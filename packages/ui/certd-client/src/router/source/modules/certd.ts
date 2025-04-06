@@ -10,7 +10,7 @@ export const certdResources = [
     meta: {
       icon: "ion:key-outline",
       auth: true,
-      order: 0
+      order: 0,
     },
     children: [
       {
@@ -20,8 +20,8 @@ export const certdResources = [
         component: "/certd/pipeline/index.vue",
         meta: {
           icon: "ion:analytics-sharp",
-          cache: true
-        }
+          cache: true,
+        },
       },
       {
         title: "编辑流水线",
@@ -29,8 +29,8 @@ export const certdResources = [
         path: "/certd/pipeline/detail",
         component: "/certd/pipeline/detail.vue",
         meta: {
-          isMenu: false
-        }
+          isMenu: false,
+        },
       },
       {
         title: "执行历史记录",
@@ -39,8 +39,8 @@ export const certdResources = [
         component: "/certd/history/index.vue",
         meta: {
           icon: "ion:timer-outline",
-          cache: true
-        }
+          cache: true,
+        },
       },
       {
         title: "证书仓库",
@@ -50,8 +50,8 @@ export const certdResources = [
         meta: {
           icon: "ion:shield-checkmark-outline",
           auth: true,
-          isMenu: true
-        }
+          isMenu: true,
+        },
       },
       {
         title: "站点证书监控",
@@ -60,8 +60,8 @@ export const certdResources = [
         component: "/certd/monitor/site/index.vue",
         meta: {
           icon: "ion:videocam-outline",
-          auth: true
-        }
+          auth: true,
+        },
       },
       {
         title: "设置",
@@ -71,7 +71,7 @@ export const certdResources = [
         meta: {
           icon: "ion:settings-outline",
           auth: true,
-          cache: true
+          cache: true,
         },
         children: [
           {
@@ -82,8 +82,8 @@ export const certdResources = [
             meta: {
               icon: "ion:disc-outline",
               auth: true,
-              cache: true
-            }
+              cache: true,
+            },
           },
           {
             title: "CNAME记录管理",
@@ -92,8 +92,8 @@ export const certdResources = [
             component: "/certd/cname/record/index.vue",
             meta: {
               icon: "ion:link-outline",
-              auth: true
-            }
+              auth: true,
+            },
           },
           {
             title: "流水线分组管理",
@@ -102,8 +102,8 @@ export const certdResources = [
             component: "/certd/pipeline/group/index.vue",
             meta: {
               icon: "mdi:format-list-group",
-              auth: true
-            }
+              auth: true,
+            },
           },
 
           {
@@ -114,8 +114,8 @@ export const certdResources = [
             meta: {
               icon: "hugeicons:api",
               auth: true,
-              cache: true
-            }
+              cache: true,
+            },
           },
           {
             title: "通知设置",
@@ -125,8 +125,8 @@ export const certdResources = [
             meta: {
               icon: "ion:megaphone-outline",
               auth: true,
-              cache: true
-            }
+              cache: true,
+            },
           },
           {
             title: "账号信息",
@@ -136,10 +136,10 @@ export const certdResources = [
             meta: {
               icon: "ion:person-outline",
               auth: true,
-              isMenu: false
-            }
-          }
-        ]
+              isMenu: false,
+            },
+          },
+        ],
       },
 
       {
@@ -153,7 +153,7 @@ export const certdResources = [
             return settingStore.isComm && settingStore.isSuiteEnabled;
           },
           icon: "ion:cart-outline",
-          auth: true
+          auth: true,
         },
         children: [
           {
@@ -167,8 +167,8 @@ export const certdResources = [
                 return settingStore.isComm;
               },
               icon: "ion:gift-outline",
-              auth: true
-            }
+              auth: true,
+            },
           },
           {
             title: "套餐购买",
@@ -181,8 +181,8 @@ export const certdResources = [
                 return settingStore.isComm;
               },
               icon: "ion:cart-outline",
-              auth: true
-            }
+              auth: true,
+            },
           },
           {
             title: "我的订单",
@@ -195,8 +195,8 @@ export const certdResources = [
                 return settingStore.isComm;
               },
               icon: "ion:bag-check-outline",
-              auth: true
-            }
+              auth: true,
+            },
           },
           {
             title: "支付返回",
@@ -206,11 +206,11 @@ export const certdResources = [
             meta: {
               icon: "ant-design:pay-circle-outlined",
               auth: false,
-              isMenu: false
-            }
-          }
-        ]
-      }
+              isMenu: false,
+            },
+          },
+        ],
+      },
 
       // {
       //   title: "邮箱设置",
@@ -222,8 +222,8 @@ export const certdResources = [
       //     auth: true
       //   }
       // },
-    ]
-  }
+    ],
+  },
 ];
 
 export default certdResources;

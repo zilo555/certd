@@ -2,6 +2,7 @@ import { ALL, Body, Controller, Inject, Post, Provide, Query } from '@midwayjs/c
 import { BaseController, Constants } from '@certd/lib-server';
 import { PluginService } from '../../../modules/plugin/service/plugin-service.js';
 import { PluginConfigService } from '../../../modules/plugin/service/plugin-config-service.js';
+import {pluginGroups} from "@certd/pipeline";
 
 /**
  * 插件
@@ -27,6 +28,21 @@ export class PluginController extends BaseController {
     query.userId = this.getUserId();
     const group = await this.service.getEnabledBuildInGroup();
     return this.ok(group);
+  }
+
+  @Post('/groupsList', { summary: Constants.per.authOnly })
+  async groupsList(@Query(ALL) query: any) {
+    query.userId = this.getUserId();
+    const groups = pluginGroups
+    const groupsList:any = []
+    for (const key in groups) {
+      const group = {
+        ...groups[key]
+      }
+      delete group.plugins
+      groupsList.push(group)
+    }
+    return this.ok(groupsList);
   }
 
   @Post('/getDefineByType', { summary: Constants.per.authOnly })

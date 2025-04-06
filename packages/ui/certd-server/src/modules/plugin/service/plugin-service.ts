@@ -26,6 +26,11 @@ export class PluginService extends BaseService<PluginEntity> {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async page(pageReq: PageReq<PluginEntity>) {
+
+    if(pageReq.query.type && pageReq.query.type !=='builtIn'){
+      return await super.page(pageReq);
+    }
+
     const builtInList = await this.getBuiltInEntityList();
     return {
       records: builtInList,

@@ -11,7 +11,7 @@ export const sysResources = [
     meta: {
       icon: "ion:settings-outline",
       permission: "sys:settings:view",
-      order: 10
+      order: 10,
     },
     children: [
       {
@@ -25,8 +25,8 @@ export const sysResources = [
             return settingStore.isComm;
           },
           icon: "ion:speedometer-outline",
-          permission: "sys:auth:user:view"
-        }
+          permission: "sys:auth:user:view",
+        },
       },
 
       {
@@ -36,8 +36,8 @@ export const sysResources = [
         component: "/sys/settings/index.vue",
         meta: {
           icon: "ion:settings-outline",
-          permission: "sys:settings:view"
-        }
+          permission: "sys:settings:view",
+        },
       },
       {
         title: "CNAME服务设置",
@@ -46,8 +46,8 @@ export const sysResources = [
         component: "/sys/cname/provider/index.vue",
         meta: {
           icon: "ion:earth-outline",
-          permission: "sys:settings:view"
-        }
+          permission: "sys:settings:view",
+        },
       },
       {
         title: "邮件服务器设置",
@@ -57,8 +57,8 @@ export const sysResources = [
         meta: {
           permission: "sys:settings:view",
           icon: "ion:mail-outline",
-          auth: true
-        }
+          auth: true,
+        },
       },
       {
         title: "站点个性化",
@@ -71,8 +71,8 @@ export const sysResources = [
             return settingStore.isComm;
           },
           icon: "ion:document-text-outline",
-          permission: "sys:settings:view"
-        }
+          permission: "sys:settings:view",
+        },
       },
       {
         title: "顶部菜单设置",
@@ -85,8 +85,8 @@ export const sysResources = [
             return settingStore.isComm;
           },
           icon: "ion:menu",
-          permission: "sys:settings:view"
-        }
+          permission: "sys:settings:view",
+        },
       },
       {
         title: "系统级授权",
@@ -99,8 +99,8 @@ export const sysResources = [
             return settingStore.isComm;
           },
           icon: "ion:disc-outline",
-          permission: "sys:settings:view"
-        }
+          permission: "sys:settings:view",
+        },
       },
       {
         title: "插件管理",
@@ -108,13 +108,20 @@ export const sysResources = [
         path: "/sys/plugin",
         component: "/sys/plugin/index.vue",
         meta: {
-          show: () => {
-            const settingStore = useSettingStore();
-            return settingStore.isComm;
-          },
           icon: "ion:extension-puzzle-outline",
-          permission: "sys:settings:view"
-        }
+          permission: "sys:settings:view",
+        },
+      },
+      {
+        title: "编辑插件",
+        name: "SysPluginEdit",
+        path: "/sys/plugin/edit",
+        component: "/sys/plugin/edit.vue",
+        meta: {
+          isMenu: false,
+          icon: "ion:extension-puzzle",
+          permission: "sys:settings:view",
+        },
       },
       {
         title: "证书插件配置",
@@ -127,8 +134,8 @@ export const sysResources = [
             return settingStore.isComm;
           },
           icon: "ion:extension-puzzle",
-          permission: "sys:settings:view"
-        }
+          permission: "sys:settings:view",
+        },
       },
       {
         title: "账号绑定",
@@ -137,8 +144,8 @@ export const sysResources = [
         component: "/sys/account/index.vue",
         meta: {
           icon: "ion:golf-outline",
-          permission: "sys:settings:view"
-        }
+          permission: "sys:settings:view",
+        },
       },
       {
         title: "权限管理",
@@ -148,8 +155,8 @@ export const sysResources = [
         meta: {
           icon: "ion:list-outline",
           //需要校验权限
-          permission: "sys:auth:per:view"
-        }
+          permission: "sys:auth:per:view",
+        },
       },
       {
         title: "角色管理",
@@ -158,8 +165,8 @@ export const sysResources = [
         component: "/sys/authority/role/index.vue",
         meta: {
           icon: "ion:people-outline",
-          permission: "sys:auth:role:view"
-        }
+          permission: "sys:auth:role:view",
+        },
       },
       {
         title: "用户管理",
@@ -168,8 +175,8 @@ export const sysResources = [
         component: "/sys/authority/user/index.vue",
         meta: {
           icon: "ion:person-outline",
-          permission: "sys:auth:user:view"
-        }
+          permission: "sys:auth:user:view",
+        },
       },
 
       {
@@ -183,7 +190,7 @@ export const sysResources = [
           show: () => {
             const settingStore = useSettingStore();
             return settingStore.isComm;
-          }
+          },
         },
         children: [
           {
@@ -197,8 +204,8 @@ export const sysResources = [
                 return settingStore.isComm;
               },
               icon: "ion:cart",
-              permission: "sys:settings:edit"
-            }
+              permission: "sys:settings:edit",
+            },
           },
           {
             title: "订单管理",
@@ -211,8 +218,8 @@ export const sysResources = [
                 return settingStore.isComm;
               },
               icon: "ion:bag-check",
-              permission: "sys:settings:edit"
-            }
+              permission: "sys:settings:edit",
+            },
           },
           {
             title: "用户套餐",
@@ -225,13 +232,13 @@ export const sysResources = [
                 return settingStore.isComm;
               },
               icon: "ion:gift-outline",
-              auth: true
-            }
-          }
-        ]
-      }
-    ]
-  }
+              auth: true,
+            },
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 export default sysResources;

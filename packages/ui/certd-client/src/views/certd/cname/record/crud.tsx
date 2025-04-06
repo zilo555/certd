@@ -45,24 +45,24 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             props: {
               multiple: true,
               crossPage: true,
-              selectedRowKeys
-            }
-          }
-        }
+              selectedRowKeys,
+            },
+          },
+        },
       },
       request: {
         pageRequest,
         addRequest,
         editRequest,
-        delRequest
+        delRequest,
       },
       tabs: {
         name: "status",
-        show: true
+        show: true,
       },
       rowHandle: {
         minWidth: 200,
-        fixed: "right"
+        fixed: "right",
       },
       columns: {
         id: {
@@ -70,46 +70,46 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           key: "id",
           type: "number",
           column: {
-            width: 80
+            width: 80,
           },
           form: {
-            show: false
-          }
+            show: false,
+          },
         },
         domain: {
           title: "被代理域名",
           type: "text",
           search: {
-            show: true
+            show: true,
           },
           editForm: {
             component: {
-              disabled: true
-            }
-          }
+              disabled: true,
+            },
+          },
         },
         hostRecord: {
           title: "主机记录",
           type: "text",
           form: {
-            show: false
+            show: false,
           },
           column: {
             width: 250,
             cellRender: ({ value }) => {
               return <fs-copyable v-model={value} />;
-            }
-          }
+            },
+          },
         },
         recordValue: {
           title: "请设置CNAME",
           type: "copyable",
           form: {
-            show: false
+            show: false,
           },
           column: {
-            width: 500
-          }
+            width: 500,
+          },
         },
         cnameProviderId: {
           title: "CNAME服务",
@@ -117,7 +117,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           dict: dict({
             url: "/cname/provider/list",
             value: "id",
-            label: "domain"
+            label: "domain",
           }),
           form: {
             component: {
@@ -141,7 +141,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
                 } else {
                   return item.domain;
                 }
-              }
+              },
             },
             helper: {
               render() {
@@ -156,8 +156,8 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
                     </router-link>
                   </div>
                 );
-              }
-            }
+              },
+            },
           },
           column: {
             width: 120,
@@ -168,8 +168,8 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
               } else {
                 return <a-tag color={"blue"}>自定义CNAME</a-tag>;
               }
-            }
-          }
+            },
+          },
         },
         status: {
           title: "状态",
@@ -180,22 +180,22 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
               { label: "验证中", value: "validating", color: "blue" },
               { label: "验证成功", value: "valid", color: "green" },
               { label: "验证失败", value: "failed", color: "red" },
-              { label: "验证超时", value: "timeout", color: "red" }
-            ]
+              { label: "验证超时", value: "timeout", color: "red" },
+            ],
           }),
           addForm: {
-            show: false
+            show: false,
           },
           column: {
             width: 120,
-            align: "center"
-          }
+            align: "center",
+          },
         },
         triggerValidate: {
           title: "验证",
           type: "text",
           form: {
-            show: false
+            show: false,
           },
           column: {
             conditionalRenderDisabled: true,
@@ -235,32 +235,32 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
                   <CnameTip record={row} />
                 </div>
               );
-            }
-          }
+            },
+          },
         },
         createTime: {
           title: "创建时间",
           type: "datetime",
           form: {
-            show: false
+            show: false,
           },
           column: {
             sorter: true,
             width: 160,
-            align: "center"
-          }
+            align: "center",
+          },
         },
         updateTime: {
           title: "更新时间",
           type: "datetime",
           form: {
-            show: false
+            show: false,
           },
           column: {
-            show: true
-          }
-        }
-      }
-    }
+            show: true,
+          },
+        },
+      },
+    },
   };
 }

@@ -2,7 +2,7 @@ import * as api from "./api";
 import { useI18n } from "vue-i18n";
 import { computed, Ref, ref } from "vue";
 import { useRouter } from "vue-router";
-import { AddReq, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, EditReq, UserPageQuery, UserPageRes, utils } from "@fast-crud/fast-crud";
+import { AddReq, compute, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, EditReq, UserPageQuery, UserPageRes, utils } from "@fast-crud/fast-crud";
 import { useUserStore } from "/src/store/modules/user";
 import { useSettingStore } from "/src/store/modules/settings";
 import { Modal } from "ant-design-vue";
@@ -59,28 +59,42 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
       actionbar: {
         buttons: {
           add: {
-            show: false,
+            show: true,
+            text: "自定义插件",
           },
         },
       },
       rowHandle: {
-        show: false,
+        show: true,
         minWidth: 200,
         fixed: "right",
         buttons: {
           edit: {
-            show: false,
+            show: compute(({ row }) => {
+              return row.type === "custom";
+            }),
           },
           copy: {
-            show: false,
+            show: compute(({ row }) => {
+              return row.type === "custom";
+            }),
           },
           remove: {
-            show: false,
+            show: compute(({ row }) => {
+              return row.type === "custom";
+            }),
           },
         },
       },
       table: {
         rowKey: "name",
+      },
+      tabs: {
+        name: "type",
+        show: true,
+        defaultOption: {
+          show: false,
+        },
       },
       columns: {
         // id: {
@@ -101,20 +115,47 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             show: true,
           },
           form: {
-            show: false,
+            show: true,
+            order: 0,
+            helper: "必须为英文，驼峰命名，类型作为前缀\n例如AliyunDeployToCDN",
+            rules: [{ required: true }],
+          },
+          column: {
+            width: 250,
+            cellRender({ row }) {
+              if (row.author) {
+                return <fs-copyable model-value={`${row.author}/${row.name}`} />;
+              } else {
+                return <fs-copyable model-value={row.name} />;
+              }
+            },
+          },
+        },
+        author: {
+          title: "作者",
+          type: "text",
+          search: {
+            show: true,
+          },
+          form: {
+            show: true,
+            order: 0,
+            helper: "上传到应用商店时，将作为插件名称前缀,例如：greper/pluginName",
+            rules: [{ required: true }],
           },
           column: {
             width: 200,
+            show: false,
           },
         },
         icon: {
           title: "图标",
-          type: "text",
+          type: "icon",
           form: {
-            show: false,
+            rules: [{ required: true }],
           },
           column: {
-            width: 100,
+            width: 70,
             align: "center",
             component: {
               name: "fs-icon",
@@ -125,26 +166,102 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             },
           },
         },
+
         title: {
           title: "标题",
           type: "text",
+          form: {
+            order: 0,
+            helper: "插件中文名称",
+            rules: [{ required: true }],
+          },
           column: {
             width: 300,
+            cellRender({ row }) {
+              if (row.type === "custom") {
+                return <router-link to={`/sys/plugin/edit?id=${row.id}`}>{row.title}</router-link>;
+              }
+              return <div>{row.title}</div>;
+            },
           },
         },
         desc: {
           title: "描述",
           type: "text",
+          helper: "插件的描述",
           column: {
             width: 300,
+            show: false,
+          },
+        },
+        type: {
+          title: "来源",
+          type: "dict-select",
+          search: {
+            show: true,
+          },
+          form: {
+            value: "custom",
+            component: {
+              disabled: true,
+            },
+          },
+          dict: dict({
+            data: [
+              { label: "内置", value: "builtIn" },
+              { label: "自建", value: "custom" },
+              { label: "商店", value: "store" },
+            ],
+          }),
+          column: {
+            width: 70,
+            align: "center",
+            component: {
+              color: "auto",
+            },
+          },
+        },
+        pluginType: {
+          title: "插件类型",
+          type: "dict-select",
+          search: {
+            show: true,
+          },
+          form: {
+            rules: [{ required: true }],
+          },
+          dict: dict({
+            data: [
+              { label: "授权", value: "access" },
+              { label: "DNS", value: "dnsProvider" },
+              { label: "部署插件", value: "plugin" },
+            ],
+          }),
+          column: {
+            width: 100,
+            align: "center",
+            component: {
+              color: "auto",
+            },
           },
         },
         group: {
           title: "分组",
-          type: "text",
+          type: "dict-select",
+          dict: dict({
+            url: "/pi/plugin/groupsList",
+            label: "title",
+            value: "key",
+          }),
+          form: {
+            rules: [{ required: true }],
+          },
           column: {
             width: 100,
-            align: "center",
+            align: "left",
+            component: {
+              color: "auto",
+            },
           },
         },
         disabled: {

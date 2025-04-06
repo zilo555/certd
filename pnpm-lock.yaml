@@ -46,7 +46,7 @@ importers:
   packages/core/acme-client:
     dependencies:
       '@certd/basic':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../basic
       '@peculiar/x509':
         specifier: ^1.11.0
@@ -204,10 +204,10 @@ importers:
   packages/core/pipeline:
     dependencies:
       '@certd/basic':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../basic
       '@certd/plus-core':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../pro/plus-core
       dayjs:
         specifier: ^1.11.7
@@ -412,7 +412,7 @@ importers:
   packages/libs/lib-k8s:
     dependencies:
       '@certd/basic':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../core/basic
       '@kubernetes/client-node':
         specifier: 0.21.0
@@ -452,16 +452,16 @@ importers:
   packages/libs/lib-server:
     dependencies:
       '@certd/acme-client':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../core/acme-client
       '@certd/basic':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../core/basic
       '@certd/pipeline':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../core/pipeline
       '@certd/plus-core':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../pro/plus-core
       '@midwayjs/cache':
         specifier: ~3.14.0
@@ -604,16 +604,16 @@ importers:
   packages/plugins/plugin-cert:
     dependencies:
       '@certd/acme-client':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../core/acme-client
       '@certd/basic':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../core/basic
       '@certd/pipeline':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../core/pipeline
       '@certd/plugin-lib':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../plugin-lib
       '@google-cloud/publicca':
         specifier: ^1.3.0
@@ -680,10 +680,10 @@ importers:
         specifier: ^1.7.10
         version: 1.8.0
       '@certd/basic':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../core/basic
       '@certd/pipeline':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../core/pipeline
       '@kubernetes/client-node':
         specifier: 0.21.0
@@ -771,19 +771,19 @@ importers:
   packages/pro/commercial-core:
     dependencies:
       '@certd/basic':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../core/basic
       '@certd/lib-server':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../libs/lib-server
       '@certd/pipeline':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../core/pipeline
       '@certd/plugin-plus':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../plugin-plus
       '@certd/plus-core':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../plus-core
       '@midwayjs/core':
         specifier: ~3.20.3
@@ -868,22 +868,22 @@ importers:
         specifier: ^1.0.2
         version: 1.0.2
       '@certd/basic':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../core/basic
       '@certd/lib-k8s':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../libs/lib-k8s
       '@certd/pipeline':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../core/pipeline
       '@certd/plugin-cert':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../plugins/plugin-cert
       '@certd/plugin-lib':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../plugins/plugin-lib
       '@certd/plus-core':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../plus-core
       ali-oss:
         specifier: ^6.21.0
@@ -980,7 +980,7 @@ importers:
   packages/pro/plus-core:
     dependencies:
       '@certd/basic':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../core/basic
       dayjs:
         specifier: ^1.11.7
@@ -1059,17 +1059,17 @@ importers:
         specifier: ^4.1.0
         version: 4.1.0
       '@fast-crud/fast-crud':
-        specifier: ^1.25.4
-        version: 1.25.4(vue@3.5.13(typescript@5.8.2))
+        specifier: ^1.25.7
+        version: 1.25.7(vue@3.5.13(typescript@5.8.2))
       '@fast-crud/fast-extends':
-        specifier: ^1.25.4
-        version: 1.25.4(aws-crt@1.25.3)(vue@3.5.13(typescript@5.8.2))
+        specifier: ^1.25.7
+        version: 1.25.7(aws-crt@1.25.3)(vue@3.5.13(typescript@5.8.2))
       '@fast-crud/ui-antdv4':
-        specifier: ^1.25.4
-        version: 1.25.4
+        specifier: ^1.25.7
+        version: 1.25.7
       '@fast-crud/ui-interface':
-        specifier: ^1.25.4
-        version: 1.25.4
+        specifier: ^1.25.7
+        version: 1.25.7
       '@iconify/tailwind':
         specifier: ^1.2.0
         version: 1.2.0
@@ -1169,6 +1169,12 @@ importers:
       mitt:
         specifier: ^3.0.1
         version: 3.0.1
+      monaco-editor:
+        specifier: ^0.52.2
+        version: 0.52.2
+      monaco-yaml:
+        specifier: ^5.3.1
+        version: 5.3.1(monaco-editor@0.52.2)
       nanoid:
         specifier: ^4.0.0
         version: 4.0.2
@@ -1255,10 +1261,10 @@ importers:
         version: 0.1.3(zod@3.24.2)
     devDependencies:
       '@certd/lib-iframe':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../libs/lib-iframe
       '@certd/pipeline':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../core/pipeline
       '@rollup/plugin-commonjs':
         specifier: ^25.0.7
@@ -1438,43 +1444,43 @@ importers:
         specifier: ^3.705.0
         version: 3.758.0(aws-crt@1.25.3)
       '@certd/acme-client':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../core/acme-client
       '@certd/basic':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../core/basic
       '@certd/commercial-core':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../pro/commercial-core
       '@certd/jdcloud':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../libs/lib-jdcloud
       '@certd/lib-huawei':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../libs/lib-huawei
       '@certd/lib-k8s':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../libs/lib-k8s
       '@certd/lib-server':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../libs/lib-server
       '@certd/midway-flyway-js':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../libs/midway-flyway-js
       '@certd/pipeline':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../core/pipeline
       '@certd/plugin-cert':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../plugins/plugin-cert
       '@certd/plugin-lib':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../plugins/plugin-lib
       '@certd/plugin-plus':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../pro/plugin-plus
       '@certd/plus-core':
-        specifier: ^1.31.10
+        specifier: ^1.32.0
         version: link:../../pro/plus-core
       '@corsinvest/cv4pve-api-javascript':
         specifier: ^8.3.0
@@ -3241,17 +3247,17 @@ packages:
     resolution: {integrity: sha512-Ys+3g2TaW7gADOJzPt83SJtCDhMjndcDMFVQ/Tj9iA1BfJzFKD9mAUXT3OenpuPHbI6P/myECxRJrofUsDx/5g==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
 
-  '@fast-crud/fast-crud@1.25.4':
-    resolution: {integrity: sha512-j68rVoBLiiLRcZ/gSRz+hK9W1XHaQk9onqwHcxZxdIwH1QBTkLygTWZC0DuItWGWdkNbCF518WX5l/cllltorg==}
+  '@fast-crud/fast-crud@1.25.7':
+    resolution: {integrity: sha512-dq5ijw6PU/FQBTP+ZwBezMHqAEZDbAoShHGNIkCK9a0vOqL5MhBnOzq5DPRz6yFUNnJEFX8kYB7N7A00Qnw5Zg==}
 
-  '@fast-crud/fast-extends@1.25.4':
-    resolution: {integrity: sha512-WQVkvEbPucHCvQqafTfDXIzSplA5hdgUFCUBZkdjvFkK+qVrRcj8kYnwya3Ac5AeqBiNQGGeSmV4bLlp/NxbVg==}
+  '@fast-crud/fast-extends@1.25.7':
+    resolution: {integrity: sha512-vZu6CGXvacgnZI4d78qEc0X1xrdylJjABapU1O60xwwDx+CIcJfH6N+Q4ku/12YdTTeJAsYDnsSFzNEDtzQpwQ==}
 
-  '@fast-crud/ui-antdv4@1.25.4':
-    resolution: {integrity: sha512-g6gX5XE7/CTyvHXZai9KdGhkjDG4clrGQkJhHNWcONSWWIrOt0ydiT+D9ecu/nAY7hB1vX7GWtoMpGEmCpmyOQ==}
+  '@fast-crud/ui-antdv4@1.25.7':
+    resolution: {integrity: sha512-T95LiMO2WV6XcnLyALLRB59xmi43eWHxIeABeZBeDD5Y2nmXR3ceQj63VBo4SJMDNEu49MKabQpOa/A2X6Rmwg==}
 
-  '@fast-crud/ui-interface@1.25.4':
-    resolution: {integrity: sha512-sGNrgEDaZ5AGvG7U9YDlfQhB3HZyVofSZK8/GtEezfUR5BziycdF895/JJP06o/bL/xZ8Zn1xeBGHCd9ESnUYA==}
+  '@fast-crud/ui-interface@1.25.7':
+    resolution: {integrity: sha512-JrP2/dm1Sco0UdSYhIMkf9tdynYURHlO1qyDHmssF1lqo9+PrU1kwuizaK1soG+myHiYznbBiXo1+GIly/MU+A==}
 
   '@fidm/asn1@1.0.4':
     resolution: {integrity: sha512-esd1jyNvRb2HVaQGq2Gg8Z0kbQPXzV9Tq5Z14KNIov6KfFD6PTaRIO8UpcsYiTNzOqJpmyzWgVTrUwFV3UF4TQ==}
@@ -8724,6 +8730,9 @@ packages:
     engines: {node: '>=6'}
     hasBin: true
 
+  jsonc-parser@3.3.1:
+    resolution: {integrity: sha512-HUgH65KyejrUFPvHFPbqOY0rsFip3Bo5wb4ngvdi1EpCYWUQDC5V+Y7mZws+DLkr4M//zQJoanu1SP+87Dv1oQ==}
+
   jsoneditor@9.10.5:
     resolution: {integrity: sha512-fVZ0NMt+zm4rqTKBv2x7zPdLeaRyKo1EjJkaR1QjK4gEM1rMwICILYSW1OPxSc1qqyAoDaA/eeNrluKoxOocCA==}
 
@@ -9430,6 +9439,25 @@ packages:
 
   monaco-editor@0.52.2:
     resolution: {integrity: sha512-GEQWEZmfkOGLdd3XK8ryrfWz3AIP8YymVXiPHEdewrUq7mh0qrKrfHLNCXcbB6sTnMLnOZ3ztSiKcciFUkIJwQ==}
+
+  monaco-languageserver-types@0.4.0:
+    resolution: {integrity: sha512-QQ3BZiU5LYkJElGncSNb5AKoJ/LCs6YBMCJMAz9EA7v+JaOdn3kx2cXpPTcZfKA5AEsR0vc97sAw+5mdNhVBmw==}
+
+  monaco-marker-data-provider@1.2.4:
+    resolution: {integrity: sha512-4DsPgsAqpTyUDs3humXRBPUJoihTv+L6v9aupQWD80X2YXaCXUd11mWYeSCYHuPgdUmjFaNWCEOjQ6ewf/QA1Q==}
+
+  monaco-types@0.1.0:
+    resolution: {integrity: sha512-aWK7SN9hAqNYi0WosPoMjenMeXJjwCxDibOqWffyQ/qXdzB/86xshGQobRferfmNz7BSNQ8GB0MD0oby9/5fTQ==}
+
+  monaco-worker-manager@2.0.1:
+    resolution: {integrity: sha512-kdPL0yvg5qjhKPNVjJoym331PY/5JC11aPJXtCZNwWRvBr6jhkIamvYAyiY5P1AWFmNOy0aRDRoMdZfa71h8kg==}
+    peerDependencies:
+      monaco-editor: '>=0.30.0'
+
+  monaco-yaml@5.3.1:
+    resolution: {integrity: sha512-1MN8i1Tnc8d8RugQGqv5jp+Ce2xtNhrnbm0ZZbe5ceExj9C2PkKZfHJhY9kbdUS4G7xSVwKlVdMTmLlStepOtw==}
+    peerDependencies:
+      monaco-editor: '>=0.36'
 
   mqtt-packet@6.10.0:
     resolution: {integrity: sha512-ja8+mFKIHdB1Tpl6vac+sktqy3gA8t9Mduom1BA75cI+R9AHnZOiaBQwpGiWnaVJLDGRdNhQmFaAqd7tkKSMGA==}
@@ -12693,6 +12721,22 @@ packages:
       webdriverio:
         optional: true
 
+  vscode-jsonrpc@8.2.0:
+    resolution: {integrity: sha512-C+r0eKJUIfiDIfwJhria30+TYWPtuHJXHtI7J0YlOmKAo7ogxP20T0zxB7HZQIFhIyvoBPwWskjxrvAtfjyZfA==}
+    engines: {node: '>=14.0.0'}
+
+  vscode-languageserver-protocol@3.17.5:
+    resolution: {integrity: sha512-mb1bvRJN8SVznADSGWM9u/b07H7Ecg0I3OgXDuLdn307rl/J3A9YD6/eYOssqhecL27hK1IPZAsaqh00i/Jljg==}
+
+  vscode-languageserver-textdocument@1.0.12:
+    resolution: {integrity: sha512-cxWNPesCnQCcMPeenjKKsOCKQZ/L6Tv19DTRIGuLWe32lyzWhihGVJ/rcckZXJxfdKCFvRLS3fpBIsV/ZGX4zA==}
+
+  vscode-languageserver-types@3.17.5:
+    resolution: {integrity: sha512-Ld1VelNuX9pdF39h2Hgaeb5hEZM2Z3jUrrMgWQAu82jMtZp7p3vJT3BzToKtZI7NgQssZje5o0zryOrhQvzQAg==}
+
+  vscode-uri@3.1.0:
+    resolution: {integrity: sha512-/BpdSx+yCQGnCvecbyXdxHDkuk55/G3xwnC0GqY4gmQ3j+A+g8kzzgB4Nk/SINjqn6+waqw3EgbVF2QKExkRxQ==}
+
   vue-component-type-helpers@2.2.8:
     resolution: {integrity: sha512-4bjIsC284coDO9om4HPA62M7wfsTvcmZyzdfR0aUlFXqq4tXxM1APyXpNVxPC8QazKw9OhmZNHBVDA6ODaZsrA==}
 
@@ -15227,7 +15271,7 @@ snapshots:
 
   '@eslint/js@8.57.0': {}
 
-  '@fast-crud/fast-crud@1.25.4(vue@3.5.13(typescript@5.8.2))':
+  '@fast-crud/fast-crud@1.25.7(vue@3.5.13(typescript@5.8.2))':
     dependencies:
       '@iconify/types': 2.0.0
       file-saver: 2.0.5
@@ -15237,7 +15281,7 @@ snapshots:
     transitivePeerDependencies:
       - vue
 
-  '@fast-crud/fast-extends@1.25.4(aws-crt@1.25.3)(vue@3.5.13(typescript@5.8.2))':
+  '@fast-crud/fast-extends@1.25.7(aws-crt@1.25.3)(vue@3.5.13(typescript@5.8.2))':
     dependencies:
       '@aws-sdk/client-s3': 3.758.0(aws-crt@1.25.3)
       '@aws-sdk/s3-request-presigner': 3.758.0
@@ -15251,9 +15295,11 @@ snapshots:
       dayjs: 1.11.13
       glob: 10.4.5
       humanize-duration: 3.32.1
+      js-yaml: 4.1.0
       jsoneditor: 9.10.5
       lodash-es: 4.17.21
       monaco-editor: 0.52.2
+      monaco-yaml: 5.3.1(monaco-editor@0.52.2)
       object-assign: 4.1.1
       qiniu-js: 3.4.1
       quill: 1.3.7
@@ -15267,9 +15313,9 @@ snapshots:
       - utf-8-validate
       - vue
 
-  '@fast-crud/ui-antdv4@1.25.4': {}
+  '@fast-crud/ui-antdv4@1.25.7': {}
 
-  '@fast-crud/ui-interface@1.25.4':
+  '@fast-crud/ui-interface@1.25.7':
     dependencies:
       lodash-es: 4.17.21
 
@@ -22334,6 +22380,8 @@ snapshots:
 
   json5@2.2.3: {}
 
+  jsonc-parser@3.3.1: {}
+
   jsoneditor@9.10.5:
     dependencies:
       ace-builds: 1.39.0
@@ -23158,6 +23206,37 @@ snapshots:
   moment@2.30.1: {}
 
   monaco-editor@0.52.2: {}
+
+  monaco-languageserver-types@0.4.0:
+    dependencies:
+      monaco-types: 0.1.0
+      vscode-languageserver-protocol: 3.17.5
+      vscode-uri: 3.1.0
+
+  monaco-marker-data-provider@1.2.4:
+    dependencies:
+      monaco-types: 0.1.0
+
+  monaco-types@0.1.0: {}
+
+  monaco-worker-manager@2.0.1(monaco-editor@0.52.2):
+    dependencies:
+      monaco-editor: 0.52.2
+
+  monaco-yaml@5.3.1(monaco-editor@0.52.2):
+    dependencies:
+      jsonc-parser: 3.3.1
+      monaco-editor: 0.52.2
+      monaco-languageserver-types: 0.4.0
+      monaco-marker-data-provider: 1.2.4
+      monaco-types: 0.1.0
+      monaco-worker-manager: 2.0.1(monaco-editor@0.52.2)
+      path-browserify: 1.0.1
+      prettier: 3.3.3
+      vscode-languageserver-textdocument: 1.0.12
+      vscode-languageserver-types: 3.17.5
+      vscode-uri: 3.1.0
+      yaml: 2.7.0
 
   mqtt-packet@6.10.0:
     dependencies:
@@ -26861,6 +26940,19 @@ snapshots:
       - sugarss
       - supports-color
       - terser
+
+  vscode-jsonrpc@8.2.0: {}
+
+  vscode-languageserver-protocol@3.17.5:
+    dependencies:
+      vscode-jsonrpc: 8.2.0
+      vscode-languageserver-types: 3.17.5
+
+  vscode-languageserver-textdocument@1.0.12: {}
+
+  vscode-languageserver-types@3.17.5: {}
+
+  vscode-uri@3.1.0: {}
 
   vue-component-type-helpers@2.2.8: {}
 

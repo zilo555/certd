@@ -33,32 +33,32 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
         pageRequest,
         addRequest,
         editRequest,
-        delRequest
+        delRequest,
       },
       search: {
-        show: false
+        show: false,
       },
       form: {
         labelCol: {
           //固定label宽度
           span: null,
           style: {
-            width: "100px"
-          }
+            width: "100px",
+          },
         },
         col: {
-          span: 22
+          span: 22,
         },
         wrapper: {
-          width: 600
-        }
+          width: 600,
+        },
       },
       actionbar: {
         buttons: {
           add: {
-            text: "生成新的Key"
-          }
-        }
+            text: "生成新的Key",
+          },
+        },
       },
       rowHandle: {
         width: 300,
@@ -96,11 +96,11 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
                       </div>
                     </div>
                   );
-                }
+                },
               });
-            }
-          }
-        }
+            },
+          },
+        },
       },
       columns: {
         id: {
@@ -108,42 +108,42 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           key: "id",
           type: "number",
           search: {
-            show: false
+            show: false,
           },
           column: {
             width: 100,
             editable: {
-              disabled: true
-            }
+              disabled: true,
+            },
           },
           form: {
-            show: false
-          }
+            show: false,
+          },
         },
         keyId: {
           title: "KeyId",
           type: ["text", "copyable"],
           search: {
-            show: true
+            show: true,
           },
           form: {
-            show: false
+            show: false,
           },
           column: {
             width: 250,
-            sorter: true
-          }
+            sorter: true,
+          },
         },
         keySecret: {
           title: "KeySecret",
           type: ["text", "copyable"],
           form: {
-            show: false
+            show: false,
           },
           column: {
             width: 580,
-            sorter: true
-          }
+            sorter: true,
+          },
         },
         scope: {
           title: "权限范围",
@@ -151,8 +151,8 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           dict: dict({
             data: [
               { label: "仅开放接口", value: "open", color: "blue" },
-              { label: "账户所有权限", value: "user", color: "red" }
-            ]
+              { label: "账户所有权限", value: "user", color: "red" },
+            ],
           }),
           form: {
             value: "open",
@@ -160,26 +160,26 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             rules: [{ required: true, message: "此项必填" }],
             helper: "仅开放接口只可以访问开放接口，账户所有权限可以访问所有接口",
             component: {
-              vModel: "value"
-            }
+              vModel: "value",
+            },
           },
           column: {
             width: 120,
             align: "center",
-            sorter: true
-          }
+            sorter: true,
+          },
         },
         createTime: {
           title: "创建时间",
           type: "datetime",
           search: {
-            show: false
+            show: false,
           },
           form: {
-            show: false
-          }
-        }
-      }
-    }
+            show: false,
+          },
+        },
+      },
+    },
   };
 }
