@@ -1,9 +1,9 @@
 <template>
   <AConfigProvider :locale="locale" :theme="tokenTheme">
-    <fs-form-provider>
+    <FsFormProvider>
       <contextHolder />
       <router-view />
-    </fs-form-provider>
+    </FsFormProvider>
   </AConfigProvider>
 </template>
 

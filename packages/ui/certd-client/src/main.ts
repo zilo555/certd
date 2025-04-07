@@ -13,6 +13,7 @@ import plugin from "./plugin/";
 import { setupVben } from "./vben";
 import { util } from "/@/utils";
 import { initPreferences } from "/@/vben/preferences";
+// import "./components/code-editor/import-works";
 // @ts-ignore
 async function bootstrap() {
   const app = createApp(App);
@@ -33,9 +34,9 @@ async function bootstrap() {
     namespace,
     overrides: {
       app: {
-        name: import.meta.env.VITE_APP_TITLE
-      }
-    }
+        name: import.meta.env.VITE_APP_TITLE,
+      },
+    },
   });
 
   app.mount("#app");

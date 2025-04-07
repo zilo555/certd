@@ -25,8 +25,11 @@
               <a-form-item label="必填">
                 <a-switch v-model:checked="item.required" />
               </a-form-item>
-              <a-form-item label="组件配置">
-                <fs-editor-code v-model:model-value="item.component" language="yaml" />
+              <a-form-item label="组件名称">
+                <a-input v-model:value="item.component.name" />
+              </a-form-item>
+              <a-form-item label="组件vModel">
+                <a-input v-model:value="item.component.vModel" />
               </a-form-item>
             </a-form>
           </a-collapse-panel>
@@ -39,7 +42,7 @@
 <script lang="ts" setup>
 import { ref, Ref, inject, toRef } from "vue";
 import { useFormWrapper } from "@fast-crud/fast-crud";
-
+import yaml from "js-yaml";
 const activeKey = ref([]);
 
 const getPlugin: any = inject("get:plugin");
@@ -49,52 +52,63 @@ if (!inputs.value) {
   inputs.value = {};
 }
 function addNewField() {
-  const { openCrudFormDialog } = useFormWrapper();
-
-  openCrudFormDialog({
-    crudOptions: {
-      form: {
-        labelCol: { style: { width: "80px" } },
-        wrapperCol: { span: 18 },
-        wrapper: {
-          title: "添加输入",
-        },
-        doSubmit({ form }: any) {
-          debugger;
-          const key = form.key;
-          const title = form.title;
-          inputs.value[key] = {
-            key,
-            title,
-            component: `
-  name: a-input
-    
-    `,
-            helper: "",
-            value: undefined,
-            required: false,
-          };
-        },
-      },
-      columns: {
-        key: {
-          title: "字段名称",
-          type: "text",
-          form: {
-            helper: "英文字段名称",
-          },
-        },
-        title: {
-          title: "字段标题",
-          type: "text",
-          form: {
-            helper: "字段标题",
-          },
-        },
-      },
-    },
+  inputs.value.push({
+    key: "newKey",
+    title: "字段名",
   });
+  // const { openCrudFormDialog } = useFormWrapper();
+  //
+  // openCrudFormDialog({
+  //   crudOptions: {
+  //     form: {
+  //       labelCol: { style: { width: "80px" } },
+  //       wrapperCol: { span: 18 },
+  //       wrapper: {
+  //         title: "添加输入",
+  //       },
+  //       doSubmit({ form }: any) {
+  //         const key = form.key;
+  //         const title = form.title;
+  //         inputs.value[key] = {
+  //           key,
+  //           title,
+  //           component: {
+  //             name: "a-input",
+  //             vModel: "value",
+  //           },
+  //           helper: "",
+  //           value: undefined,
+  //           required: false,
+  //         };
+  //       },
+  //     },
+  //     columns: {
+  //       key: {
+  //         title: "字段名称",
+  //         type: "text",
+  //         form: {
+  //           helper: "英文字段名称",
+  //         },
+  //       },
+  //       title: {
+  //         title: "字段标题",
+  //         type: "text",
+  //         form: {
+  //           helper: "字段标题",
+  //         },
+  //       },
+  //     },
+  //   },
+  // });
 }
+
+// function onComponentChange(item: any, value: any) {
+//   if (!item) {
+//     item.component = {};
+//     return;
+//   }
+//   item.component = yaml.load(value);
+// }
 </script>
 
 <style lang="less">

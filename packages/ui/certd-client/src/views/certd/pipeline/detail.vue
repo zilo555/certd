@@ -18,7 +18,7 @@ import { LocalStorage } from "/@/utils/util.storage";
 import { useUserStore } from "/@/store/modules/user";
 
 defineOptions({
-  name: "PipelineDetail"
+  name: "PipelineDetail",
 });
 const route = useRoute();
 const pipelineId: Ref = ref(route.query.id);
@@ -33,8 +33,8 @@ const pipelineOptions: PipelineOptions = {
         userId: detail.pipeline.userId,
         stages: [],
         triggers: [],
-        ...JSON.parse(detail.pipeline.content || "{}")
-      }
+        ...JSON.parse(detail.pipeline.content || "{}"),
+      },
     } as PipelineDetail;
   },
 
@@ -56,13 +56,13 @@ const pipelineOptions: PipelineOptions = {
   async doSave(pipelineConfig: any) {
     await api.Save({
       id: pipelineConfig.id,
-      content: JSON.stringify(pipelineConfig)
+      content: JSON.stringify(pipelineConfig),
     });
   },
   async doTrigger(options: { pipelineId: number; stepId?: string }) {
     const { pipelineId, stepId } = options;
     await api.Trigger(pipelineId, stepId);
-  }
+  },
 };
 
 const pipelineOptionsRef: Ref<PipelineOptions> = ref(pipelineOptions);
@@ -83,7 +83,7 @@ function useTour() {
     onFinish: () => {
       tour.value.open = false;
       LocalStorage.set("tour-off", true, 999999999);
-    }
+    },
   });
 
   const tourHandleOpen = (val: boolean): void => {
@@ -99,28 +99,28 @@ function useTour() {
         description: "这里就是我们刚创建的证书任务，点击可以修改证书申请参数",
         target: () => {
           return document.querySelector(".pipeline .stages .stage_0 .task");
-        }
+        },
       },
       {
         title: "添加部署证书任务",
         description: "证书申请成功之后还需要部署证书，点击这里可以添加证书部署任务",
         target: () => {
           return document.querySelector(".pipeline .stages .last-stage .tasks .task");
-        }
+        },
       },
       {
         title: "手动运行流水线",
         description: "点击此处可以手动运行流水线",
         target: () => {
           return document.querySelector(".pipeline .stages .first-stage .tasks .task");
-        }
-      }
+        },
+      },
     ];
   }
 
   return {
     tour,
-    tourHandleOpen
+    tourHandleOpen,
   };
 }
 

@@ -12,12 +12,18 @@ import IconSelect from "./icon-select.vue";
 import ExpiresTimeText from "./expires-time-text.vue";
 import FileInput from "./file-input.vue";
 import PemInput from "./pem-input.vue";
+import { defineAsyncComponent } from "vue";
 export default {
   install(app: any) {
+    app.component(
+      "CodeEditor",
+      defineAsyncComponent(() => import("./code-editor/index.vue"))
+    );
     app.component("PiContainer", PiContainer);
     app.component("TextEditable", TextEditable);
     app.component("FileInput", FileInput);
     app.component("PemInput", PemInput);
+    // app.component("CodeEditor", CodeEditor);
 
     app.component("CronLight", CronLight);
     app.component("CronEditor", CronEditor);

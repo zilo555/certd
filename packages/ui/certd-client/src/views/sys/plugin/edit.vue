@@ -7,44 +7,35 @@
           <span class="name">{{ plugin.title }} 【{{ plugin.author }}/{{ plugin.name }}】 </span>
         </span>
       </div>
+      <div class="more">
+        <a-button type="primary" :loading="saveLoading" @click="doSave">保存</a-button>
+      </div>
     </template>
     <div class="pi-plugin-editor">
       <div class="metadata">
-        <a-tabs v-model:active-key="metadataActive" type="card">
+        <a-tabs type="card">
           <a-tab-pane key="editor" tab="元数据"> </a-tab-pane>
-          <a-tab-pane key="source" tab="yaml"> </a-tab-pane>
         </a-tabs>
         <div class="metadata-body">
-          <a-tabs v-if="metadataActive === 'editor'" class="metadata-editor" tab-position="left" type="card">
-            <a-tab-pane key="input" tab="输入">
-              <plugin-input></plugin-input>
-            </a-tab-pane>
-            <a-tab-pane key="output" tab="输出"></a-tab-pane>
-            <a-tab-pane key="dependLibs" tab="第三方依赖"></a-tab-pane>
-            <a-tab-pane key="dependPlugins" tab="插件依赖"></a-tab-pane>
-          </a-tabs>
-
-          <div v-if="metadataActive === 'source'" class="metadata-source">
-            <fs-editor-code :model-value="metadataStr" language="yaml" @update:model-value="onMetadataStrUpdate"></fs-editor-code>
-          </div>
+          <code-editor id="metadata" v-model:model-value="plugin.metadata" language="yaml"></code-editor>
         </div>
       </div>
       <div class="script">
         <a-tabs type="card">
           <a-tab-pane key="script" tab="脚本"> </a-tab-pane>
         </a-tabs>
-        <fs-editor-code v-model="plugin.content" language="javascript"></fs-editor-code>
+        <code-editor id="content" v-model:model-value="plugin.content" language="javascript"></code-editor>
       </div>
     </div>
   </fs-page>
 </template>
 <script lang="ts" setup>
-import { onMounted, ref, watch, provide } from "vue";
+import { onMounted, provide, ref } from "vue";
 import { useRoute } from "vue-router";
 import * as api from "./api";
 import yaml from "js-yaml";
-import PluginInput from "/@/views/sys/plugin/components/plugin-input.vue";
-import { merge } from "lodash-es";
+
+const CertApplyPluginNames = ["CertApply", "CertApplyLego", "CertApplyUpload"];
 defineOptions({
   name: "SysPluginEdit",
 });
@@ -52,30 +43,44 @@ const route = useRoute();
 
 const plugin = ref<any>({});
 
-const metadataStr = ref("");
-function onMetadataStrUpdate(value: string) {
-  metadataStr.value = value;
-}
-const metadataActive = ref("editor");
 async function getPlugin() {
   const id = route.query.id;
   const pluginObj = await api.GetObj(id);
   if (!pluginObj.metadata) {
-    pluginObj.metadata = {
-      input: {},
-      output: {},
-    };
+    pluginObj.metadata = yaml.dump({
+      input: [
+        {
+          key: "cert",
+          title: "前置任务生成的证书",
+          component: {
+            name: "output-selector",
+            from: [...CertApplyPluginNames],
+          },
+        },
+      ],
+      output: [],
+    });
+  } else {
+    pluginObj.metadata = "";
   }
   plugin.value = pluginObj;
 }
-
-onMounted(async () => {
-  await getPlugin();
-});
+getPlugin();
+onMounted(async () => {});
 
 provide("get:plugin", () => {
   return plugin;
 });
+
+const saveLoading = ref(false);
+function doSave() {
+  saveLoading.value = true;
+  try {
+    // api.Save(plugin.value);
+  } finally {
+    saveLoading.value = false;
+  }
+}
 </script>
 
 <style lang="less">
@@ -89,11 +94,11 @@ provide("get:plugin", () => {
     .fs-editor-code {
       height: 100%;
       flex: 1;
-      overflow-y: hidden;
     }
 
     .metadata {
-      width: 500px;
+      width: 600px;
+      max-width: 50%;
       margin-right: 20px;
       display: flex;
       flex-direction: column;
@@ -101,13 +106,11 @@ provide("get:plugin", () => {
       .metadata-body {
         height: 100%;
         flex: 1;
-        overflow-y: hidden;
       }
 
       .metadata-editor {
         height: 100%;
         flex: 1;
-        overflow-y: hidden;
         .ant-tabs-content {
           height: 100%;
         }
