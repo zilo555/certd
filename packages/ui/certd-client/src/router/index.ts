@@ -65,7 +65,7 @@ export default router;
 //   // 多页控制 打开新的页面
 //   const pageStore = usePageStore();
 //   // for (const item of to.matched) {
-//   //   pageStore.cachePush(item.name);
+//   //   pageStore.keepAlivePush(item.name);
 //   // }
 //   pageStore.open(to);
 //   // 更改标题

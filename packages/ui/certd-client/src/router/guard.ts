@@ -22,7 +22,7 @@ function buildAccessedMenus(menus: any) {
       }
     }
     const item: any = {
-      ...sub
+      ...sub,
     };
 
     list.push(item);
@@ -40,7 +40,7 @@ export function setupCommonGuard(router: Router) {
   // 记录已经加载的页面
   const loadedPaths = new Set<string>();
 
-  router.beforeEach(async (to) => {
+  router.beforeEach(async to => {
     const settingStore = useSettingStore();
     await settingStore.initOnce();
 
@@ -53,7 +53,7 @@ export function setupCommonGuard(router: Router) {
     return true;
   });
 
-  router.afterEach((to) => {
+  router.afterEach(to => {
     // 记录页面是否加载,如果已经加载，后续的页面切换动画等效果不在重复执行
 
     loadedPaths.add(to.path);
@@ -71,6 +71,10 @@ export function setupCommonGuard(router: Router) {
  */
 function setupAccessGuard(router: Router) {
   router.beforeEach(async (to, from) => {
+    if (to.matched && to.matched.length > 2) {
+      to.matched.splice(1, to.matched.length - 2);
+    }
+
     const accessStore = useAccessStore();
     // 是否已经生成过动态路由
     if (!accessStore.isAccessChecked) {
@@ -93,7 +97,7 @@ function setupAccessGuard(router: Router) {
     }
 
     // 基本路由，这些路由不需要进入权限拦截
-    const needAuth = to.matched.some((r) => {
+    const needAuth = to.matched.some(r => {
       return r.meta?.auth || r.meta?.permission;
     });
 
@@ -108,7 +112,7 @@ function setupAccessGuard(router: Router) {
           // 如不需要，直接删除 query
           query: to.fullPath === DEFAULT_HOME_PATH ? {} : { redirect: encodeURIComponent(to.fullPath) },
           // 携带当前跳转的页面，登录后重新跳转该页面
-          replace: true
+          replace: true,
         };
       }
       return true;

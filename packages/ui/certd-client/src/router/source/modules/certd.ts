@@ -20,7 +20,7 @@ export const certdResources = [
         component: "/certd/pipeline/index.vue",
         meta: {
           icon: "ion:analytics-sharp",
-          cache: true,
+          keepAlive: true,
         },
       },
       {
@@ -39,7 +39,7 @@ export const certdResources = [
         component: "/certd/history/index.vue",
         meta: {
           icon: "ion:timer-outline",
-          cache: true,
+          keepAlive: true,
         },
       },
       {
@@ -51,6 +51,7 @@ export const certdResources = [
           icon: "ion:shield-checkmark-outline",
           auth: true,
           isMenu: true,
+          keepAlive: true,
         },
       },
       {
@@ -61,6 +62,7 @@ export const certdResources = [
         meta: {
           icon: "ion:videocam-outline",
           auth: true,
+          keepAlive: true,
         },
       },
       {
@@ -71,7 +73,7 @@ export const certdResources = [
         meta: {
           icon: "ion:settings-outline",
           auth: true,
-          cache: true,
+          keepAlive: true,
         },
         children: [
           {
@@ -82,7 +84,7 @@ export const certdResources = [
             meta: {
               icon: "ion:disc-outline",
               auth: true,
-              cache: true,
+              keepAlive: true,
             },
           },
           {
@@ -114,7 +116,7 @@ export const certdResources = [
             meta: {
               icon: "hugeicons:api",
               auth: true,
-              cache: true,
+              keepAlive: true,
             },
           },
           {
@@ -125,7 +127,7 @@ export const certdResources = [
             meta: {
               icon: "ion:megaphone-outline",
               auth: true,
-              cache: true,
+              keepAlive: true,
             },
           },
           {
