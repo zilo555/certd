@@ -139,6 +139,7 @@ export class AsyncSsh2Client {
     script: string,
     opts: {
       throwOnStdErr?: boolean;
+      env?: any;
     } = {}
   ): Promise<string> {
     if (!script) {
@@ -153,7 +154,7 @@ export class AsyncSsh2Client {
     // }
     return new Promise((resolve, reject) => {
       this.logger.info(`执行命令：[${this.connConf.host}][exec]: \n` + script);
-      this.conn.exec(script, (err: Error, stream: any) => {
+      this.conn.exec(script, { pty: true, env: opts.env }, (err: Error, stream: any) => {
         if (err) {
           reject(err);
           return;
@@ -456,7 +457,7 @@ export class SshClient {
             script = envScripts.join(newLine) + newLine + script;
           }
         }
-        return await conn.exec(script as string);
+        return await conn.exec(script as string, { env: options.env });
       },
     });
   }

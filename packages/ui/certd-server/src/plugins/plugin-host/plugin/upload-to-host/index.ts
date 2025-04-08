@@ -381,7 +381,8 @@ export class UploadCertToHostPlugin extends AbstractTaskPlugin {
         for (let i = 0; i < domains.length; i++) {
           env[`CERT_DOMAIN_${i}`] = domains[i];
         }
-        env['CERT_EXPIRES'] = dayjs(certReader.getCrtDetail().expires).unix();
+        //环境变量必须是string
+        env['CERT_EXPIRES'] = ""+dayjs(certReader.getCrtDetail().expires).unix();
 
         env['HOST_CRT_PATH'] = this.hostCrtPath || '';
         env['HOST_KEY_PATH'] = this.hostKeyPath || '';
