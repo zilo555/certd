@@ -117,7 +117,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           form: {
             show: true,
             order: 0,
-            helper: "必须为英文，驼峰命名，类型作为前缀\n例如AliyunDeployToCDN",
+            helper: "必须为英文，驼峰命名，类型作为前缀\n例如AliyunDeployToCDN\n插件一旦被使用，不要修改名称",
             rules: [{ required: true }],
           },
           column: {
@@ -140,7 +140,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           form: {
             show: true,
             order: 0,
-            helper: "上传到应用商店时，将作为插件名称前缀,例如：greper/pluginName",
+            helper: "上传到插件商店时，将作为插件名称前缀,例如：greper/pluginName",
             rules: [{ required: true }],
           },
           column: {
@@ -187,7 +187,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
         },
         desc: {
           title: "描述",
-          type: "text",
+          type: "textarea",
           helper: "插件的描述",
           column: {
             width: 300,
@@ -230,6 +230,11 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           form: {
             rules: [{ required: true }],
           },
+          editForm: {
+            component: {
+              disabled: true,
+            },
+          },
           dict: dict({
             data: [
               { label: "授权", value: "access" },
@@ -243,6 +248,14 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             component: {
               color: "auto",
             },
+          },
+        },
+        version: {
+          title: "版本",
+          type: "text",
+          column: {
+            width: 100,
+            align: "center",
           },
         },
         group: {
@@ -264,6 +277,29 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             },
           },
         },
+        "default.strategy.runStrategy": {
+          title: "运行策略",
+          type: "dict-select",
+
+          dict: dict({
+            data: [
+              { value: 0, label: "正常运行" },
+              { value: 1, label: "成功后跳过（部署任务）" },
+            ],
+          }),
+          form: {
+            value: 1,
+            rules: [{ required: true }],
+            helper: "默认运行策略",
+          },
+          column: {
+            width: 100,
+            align: "left",
+            component: {
+              color: "auto",
+            },
+          },
+        },
         disabled: {
           title: "点击禁用/启用",
           type: "dict-switch",
@@ -274,6 +310,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             ],
           }),
           form: {
+            title: "禁用/启用",
             value: false,
           },
           column: {

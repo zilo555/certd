@@ -10,6 +10,7 @@ import { accessRegistry, pluginRegistry } from "@certd/pipeline";
 import { dnsProviderRegistry } from "@certd/plugin-cert";
 import { logger } from "@certd/basic";
 import yaml from "js-yaml";
+import { getDefaultAccessPlugin, getDefaultDeployPlugin, getDefaultDnsPlugin } from "./default-plugin.js";
 
 
 @Provide()
@@ -141,6 +142,40 @@ export class PluginService extends BaseService<PluginEntity> {
 
   async getDefineByType(type: string) {
     return this.builtInPluginService.getByType(type);
+  }
+
+  /**
+   * 新增
+   * @param param 数据
+   */
+  async add(param: any) {
+
+    const old = await this.repository.findOne({
+      where: {
+        name: param.name,
+        author: param.author
+      }
+    })
+
+    if (old) {
+      throw new Error(`插件${param.author}/${param.name}已存在`);
+    }
+
+    let plugin:any = {}
+    if (param.pluginType === "access") {
+      plugin = getDefaultAccessPlugin()
+    }else if (param.pluginType === "deploy") {
+      plugin = getDefaultDeployPlugin()
+    }else if (param.pluginType === "dnsProvider") {
+      plugin = getDefaultDnsPlugin()
+    }else{
+      throw new Error(`插件类型${param.pluginType}不支持`);
+    }
+
+    return  await super.add({
+      ...param,
+      ...plugin
+    });
   }
 
   async compile(code: string) {

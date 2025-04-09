@@ -77,7 +77,7 @@ onUnmounted(() => {
   disposeEditor();
 });
 
-const emits = defineEmits(["update:modelValue", "change", "ready"]);
+const emits = defineEmits(["update:modelValue", "change", "ready", "save"]);
 
 const emitValue = lodashDebounce((value: any) => {
   emits("update:modelValue", value);
@@ -91,6 +91,10 @@ async function createEditor(ctx: EditorCodeCtx) {
     language: ctx.language,
     theme: "vs-dark",
     minimap: { enabled: false },
+    insertSpaces: true,
+    tabSize: 2,
+    autoIndent: true, // 自动布局
+    renderWhitespace: true,
     readOnly: props.readonly || props.disabled,
     hover: {
       enabled: true,
@@ -113,6 +117,20 @@ async function createEditor(ctx: EditorCodeCtx) {
   if (props.modelValue) {
     instanceRef.setValue(props.modelValue);
   }
+
+  instance.addAction({
+    id: "custom_save",
+    label: "save",
+    contextMenuOrder: 1, // 菜单项的排序权重 越小，越靠前
+    contextMenuGroupId: "customCommand", // 菜单项的分组
+    keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS],
+    run: async () => {
+      await instanceRef.getAction("editor.action.formatDocument").run();
+      emits("save", {
+        value: props.modelValue,
+      });
+    }, //方法
+  });
   return instance;
 }
 
@@ -128,7 +146,7 @@ async function initJson(ctx: EditorCodeCtx) {
   const schemas = [];
   if (ctx.schema) {
     schemas.push({
-      // uri: "http://myserver/foo-schema.json", // id of the first schema
+      uri: "http://myserver/foo-schema.json", // id of the first schema
       fileMatch: ["*"], // associate with our model
       schema: {
         ...ctx.schema,
@@ -147,7 +165,8 @@ async function initYaml(ctx: EditorCodeCtx) {
   await importYamlContribution();
   const { configureMonacoYaml } = await importMonacoYaml();
   monaco.languages.register({ id: "yaml" });
-
+  const id = `fs-editor-code-yaml-${props.id || ""}.yaml`;
+  const uri = monaco.Uri.parse(id);
   const schemas = [];
   if (ctx.schema) {
     schemas.push({
@@ -155,7 +174,7 @@ async function initYaml(ctx: EditorCodeCtx) {
       schema: {
         ...ctx.schema,
       },
-      uri: "http://myserver/foo-schema.json",
+      uri: id,
     });
   }
   configureMonacoYaml(monaco, {
@@ -167,7 +186,7 @@ async function initYaml(ctx: EditorCodeCtx) {
     isKubernetes: false,
     enableSchemaRequest: false,
   });
-  const uri = monaco.Uri.parse(`fs-editor-code-yaml-${props.id || ""}.yaml`);
+
   const oldModel = monaco.editor.getModel(uri);
   if (oldModel) {
     oldModel.dispose();

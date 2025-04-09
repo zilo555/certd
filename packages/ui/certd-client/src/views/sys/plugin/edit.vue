@@ -13,29 +13,39 @@
       </div>
     </template>
     <div class="pi-plugin-editor">
+      <div class="base">
+        <a-tabs type="card">
+          <a-tab-pane key="base" tab="插件信息"> </a-tab-pane>
+        </a-tabs>
+        <div class="base-body">
+          <fs-form ref="baseFormRef" v-bind="formOptionsRef"></fs-form>
+        </div>
+      </div>
       <div class="metadata">
         <a-tabs type="card">
           <a-tab-pane key="editor" tab="元数据"> </a-tab-pane>
         </a-tabs>
         <div class="metadata-body">
-          <code-editor id="metadata" v-model:model-value="plugin.metadata" language="yaml"></code-editor>
+          <code-editor id="metadata" v-model:model-value="plugin.metadata" language="yaml" @save="doSave"></code-editor>
         </div>
       </div>
       <div class="script">
         <a-tabs type="card">
           <a-tab-pane key="script" tab="脚本"> </a-tab-pane>
         </a-tabs>
-        <code-editor id="content" v-model:model-value="plugin.content" language="javascript"></code-editor>
+        <code-editor id="content" v-model:model-value="plugin.content" language="javascript" @save="doSave"></code-editor>
       </div>
     </div>
   </fs-page>
 </template>
 <script lang="ts" setup>
-import { onMounted, provide, ref } from "vue";
+import { onMounted, provide, ref, Ref } from "vue";
 import { useRoute } from "vue-router";
 import * as api from "./api";
 import yaml from "js-yaml";
 import { notification } from "ant-design-vue";
+import createCrudOptions from "./crud";
+import { useColumns } from "@fast-crud/fast-crud";
 
 const CertApplyPluginNames = ["CertApply", "CertApplyLego", "CertApplyUpload"];
 defineOptions({
@@ -44,25 +54,49 @@ defineOptions({
 const route = useRoute();
 
 const plugin = ref<any>({});
+const formOptionsRef: Ref = ref();
+const baseFormRef: Ref = ref({});
+function initFormOptions() {
+  const formCrudOptions = createCrudOptions({
+    crudExpose: {},
+    context: {},
+  });
+
+  const { buildFormOptions } = useColumns();
+
+  const formOptions = buildFormOptions(formCrudOptions.crudOptions, {});
+
+  formOptions.col = {
+    span: 24,
+  };
+  formOptions.labelCol = {
+    style: {
+      width: "100px",
+    },
+  };
+  formOptionsRef.value = formOptions;
+}
+initFormOptions();
 
 async function getPlugin() {
   const id = route.query.id;
   const pluginObj = await api.GetObj(id);
-  if (!pluginObj.metadata) {
-    pluginObj.metadata = yaml.dump({
-      input: {
-        cert: {
-          title: "前置任务生成的证书",
-          component: {
-            name: "output-selector",
-            from: [...CertApplyPluginNames],
-          },
-        },
-      },
-      output: {},
+  if (pluginObj.metadata) {
+    const metadata = yaml.load(pluginObj.metadata);
+    pluginObj.default = metadata.default || {};
+    delete metadata.default;
+    pluginObj.metadata = yaml.dump(metadata, {
+      indent: 2,
     });
   }
   plugin.value = pluginObj;
+
+  const baseFrom = {
+    ...pluginObj,
+  };
+  delete baseFrom.metadata;
+  delete baseFrom.content;
+  baseFormRef.value.setFormData(baseFrom);
 }
 
 onMounted(async () => {
@@ -76,8 +110,16 @@ provide("get:plugin", () => {
 const saveLoading = ref(false);
 async function doSave() {
   saveLoading.value = true;
+  const baseForm = baseFormRef.value.getFormData();
+  const metadata = yaml.load(plugin.value.metadata);
+  metadata.default = baseForm.default;
+  const form = {
+    ...plugin.value,
+    ...baseForm,
+    metadata: yaml.dump(metadata, { indent: 2 }),
+  };
   try {
-    await api.UpdateObj(plugin.value);
+    await api.UpdateObj(form);
     notification.success({
       message: "保存成功",
     });
@@ -112,9 +154,18 @@ async function doTest() {
       flex: 1;
     }
 
+    .base {
+      width: 400px;
+      max-width: 30%;
+      margin-right: 20px;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
     .metadata {
       width: 600px;
-      max-width: 50%;
+      max-width: 30%;
       margin-right: 20px;
       display: flex;
       flex-direction: column;
