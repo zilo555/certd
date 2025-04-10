@@ -43,7 +43,7 @@ export class RoleService extends BaseService<RoleEntity> {
   async getByUserIds(ids: any) {
     return await this.userRoleService.find({
       where: {
-        userId: In(ids),
+        userId: In<number>(ids) as any,
       },
     });
   }
@@ -131,6 +131,7 @@ export class RoleService extends BaseService<RoleEntity> {
 
   async delete(id: any) {
     const idArr = this.resolveIdArr(id);
+    //@ts-ignore
     const urs = await this.userRoleService.find({ where: { roleId: In(idArr) } });
     if (urs.length > 0) {
       throw new Error('该角色已被用户使用，无法删除');
