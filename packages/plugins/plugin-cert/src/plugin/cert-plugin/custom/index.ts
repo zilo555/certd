@@ -9,9 +9,9 @@ export type { CertInfo };
 @IsTaskPlugin({
   name: "CertApplyUpload",
   icon: "ph:certificate",
-  title: "证书手动上传",
+  title: "商用证书托管",
   group: pluginGroups.cert.key,
-  desc: "在证书仓库手动上传后触发部署证书",
+  desc: "手动上传自定义证书后，自动部署（每次证书有更新，都需要手动上传一次）",
   default: {
     strategy: {
       runStrategy: RunStrategy.AlwaysRun,
