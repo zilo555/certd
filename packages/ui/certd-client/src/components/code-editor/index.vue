@@ -68,9 +68,9 @@ const monacoRef = ref();
 let instanceRef: any = null;
 
 function disposeEditor() {
-  // if (instanceRef.value) {
-  //   instanceRef.value.dispose(); //使用完成销毁实例
-  // }
+  if (instanceRef) {
+    instanceRef.dispose(); //使用完成销毁实例
+  }
 }
 
 onUnmounted(() => {
@@ -165,7 +165,7 @@ async function initYaml(ctx: EditorCodeCtx) {
   await importYamlContribution();
   const { configureMonacoYaml } = await importMonacoYaml();
   monaco.languages.register({ id: "yaml" });
-  const id = `fs-editor-code-yaml-${props.id || ""}.yaml`;
+  const id = `fs-editor-code-${props.id || ""}.yaml`;
   const uri = monaco.Uri.parse(id);
   const schemas = [];
   if (ctx.schema) {
