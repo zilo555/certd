@@ -1,5 +1,3 @@
-import { importWorks } from "./async-import";
-
 const WorkerBucket: any = {};
 
 /**

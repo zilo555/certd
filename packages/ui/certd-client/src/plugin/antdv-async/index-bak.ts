@@ -222,5 +222,5 @@ export default {
       "AResult",
       defineAsyncComponent(() => import("ant-design-vue/es/result"))
     );
-  }
+  },
 };

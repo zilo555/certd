@@ -4,7 +4,7 @@ import type { RouteRecordRaw } from "vue-router";
 
 import { mergeRouteModules } from "/@/vben/utils";
 const dynamicRouteFiles = import.meta.glob("./modules/**/*.ts*", {
-  eager: true
+  eager: true,
 });
 
 /** 动态路由 */
@@ -18,7 +18,7 @@ export const frameworkResource = [
     component: LayoutBasic,
     meta: {
       icon: "ion:accessibility",
-      hideInBreadcrumb: true
+      hideInBreadcrumb: true,
     },
     children: [
       {
@@ -30,13 +30,13 @@ export const frameworkResource = [
           fixedAside: true,
           showOnHeader: false,
           icon: "ion:home-outline",
-          auth: true
-        }
+          auth: true,
+        },
       },
       // @ts-ignore
 
-      ...dynamicRoutes
-    ]
-  }
+      ...dynamicRoutes,
+    ],
+  },
 ];
 console.assert(frameworkResource.length === 1, "frameworkResource数组长度只能为1，你只能配置framework路由的子路由");
