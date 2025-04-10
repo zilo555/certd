@@ -64,6 +64,7 @@ export type PluginDefine = Registrable & {
     };
   };
   needPlus?: boolean;
+  showRunStrategy?: boolean;
 };
 
 export type ITaskPlugin = {

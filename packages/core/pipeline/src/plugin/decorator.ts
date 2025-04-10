@@ -48,11 +48,21 @@ export function IsTaskPlugin(define: PluginDefine): ClassDecorator {
       inputMap[item[0]] = item[1];
     });
 
-    merge(define, { input: inputMap, autowire: autowires, output: outputs });
+    const defaultConfig = {
+      showRunStrategy: false,
+      default: {
+        strategy: {
+          runStrategy: 1, // 0:正常执行，1:成功后跳过
+        },
+      },
+    };
+
+    define = merge(defaultConfig, define, { input: inputMap, autowire: autowires, output: outputs });
 
     Reflect.defineMetadata(PLUGIN_CLASS_KEY, define, target);
 
     target.define = define;
+
     pluginRegistry.register(define.name, {
       define,
       target,
