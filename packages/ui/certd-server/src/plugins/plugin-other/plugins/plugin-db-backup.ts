@@ -15,6 +15,7 @@ const defaultFilePrefix = 'db-backup';
   icon: 'lucide:database-backup',
   desc: '仅支持备份SQLite数据库',
   group: pluginGroups.other.key,
+  showRunStrategy: true,
   default: {
     strategy: {
       runStrategy: RunStrategy.AlwaysRun,

@@ -6,6 +6,7 @@ import { AbstractTaskPlugin, IsTaskPlugin, pluginGroups, RunStrategy, TaskInput 
   icon: 'ri:rest-time-line',
   desc: '等待一段时间',
   group: pluginGroups.other.key,
+  showRunStrategy:true,
   default: {
     strategy: {
       runStrategy: RunStrategy.SkipWhenSucceed,

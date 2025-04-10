@@ -12,6 +12,7 @@ export type CustomScriptContext = {
   icon: 'ri:javascript-line',
   desc: '【仅管理员】运行自定义js脚本执行',
   group: pluginGroups.other.key,
+  showRunStrategy:true,
   default: {
     strategy: {
       runStrategy: RunStrategy.SkipWhenSucceed,

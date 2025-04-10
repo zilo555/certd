@@ -98,7 +98,7 @@
               <fs-form-item v-if="item.show !== false" v-model="currentStep.input[key]" :item="item" :get-context-fn="getScopeFunc" />
             </template>
 
-            <fs-form-item v-model="currentStep.strategy.runStrategy" :item="runStrategyProps" :get-context-fn="getScopeFunc" />
+            <fs-form-item v-if="currentPlugin.showRunStrategy" v-model="currentStep.strategy.runStrategy" :item="runStrategyProps" :get-context-fn="getScopeFunc" />
           </a-form>
         </div>
         <template #footer>
@@ -396,9 +396,9 @@ export default {
         render: () => {
           return (
             <div>
+              <div class="color-green">一般保持默认即可</div>
               <div>正常运行：每次都运行，证书任务需要每次都运行</div>
               <div>成功后跳过：该任务成功一次之后跳过，不重复执行（证书变化之后才会再次运行）</div>
-              <div class="green">保持默认即可</div>
             </div>
           );
         },
