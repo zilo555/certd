@@ -1,9 +1,4 @@
 import fs from 'fs';
-//删除references
-import { default as packageJson } from './tsconfig.json' assert { type: 'json' };
-delete packageJson.references;
-fs.writeFileSync('./tsconfig.json', JSON.stringify(packageJson, null, 2));
-
 //瘦身
 const filePath = './node_modules/typeorm/platform/PlatformTools.js';
 const find = `const cli_highlight_1 = require("cli-highlight");`;

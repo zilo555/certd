@@ -1,4 +1,4 @@
-FROM node:20-alpine AS builder
+FROM node:22-alpine AS builder
 WORKDIR /workspace/
 COPY . /workspace/
 # armv7 目前只能用node18， pnpm9不支持node18,所以pnpm只能用8.15.7版本
@@ -10,7 +10,7 @@ RUN cp /workspace/certd-client/dist/* /workspace/certd-server/public/ -rf
 RUN cd /workspace/certd-server && pnpm install && npm run build-on-docker
 
 
-FROM node:20-alpine
+FROM node:22-alpine
 EXPOSE 7001
 EXPOSE 7002
 RUN apk add --no-cache openssl
