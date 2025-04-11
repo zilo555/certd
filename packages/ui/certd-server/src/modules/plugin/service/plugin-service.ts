@@ -86,7 +86,9 @@ export class PluginService extends BaseService<PluginEntity> {
     });
     const disabledNames = list.map(it => it.name);
 
-    return builtInList.filter(it => !disabledNames.includes(it.name));
+    return builtInList.filter(it =>{
+      return !disabledNames.includes(it.name)
+    });
   }
 
   async getBuiltInEntityList() {
@@ -253,7 +255,7 @@ export class PluginService extends BaseService<PluginEntity> {
     let registry = null;
     if (item.pluginType === "access") {
       registry = accessRegistry;
-    } else if (item.pluginType === "plugin") {
+    } else if (item.pluginType === "deploy") {
       registry = pluginRegistry;
     } else if (item.pluginType === "dnsProvider") {
       registry = dnsProviderRegistry;

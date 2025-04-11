@@ -241,7 +241,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             data: [
               { label: "授权", value: "access" },
               { label: "DNS", value: "dnsProvider" },
-              { label: "部署插件", value: "plugin" },
+              { label: "部署插件", value: "deploy" },
             ],
           }),
           column: {
@@ -279,10 +279,60 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             },
           },
         },
+        "extra.dependLibs": {
+          title: "第三方依赖",
+          type: "text",
+          form: {
+            helper: "依赖的第三方库,package.dependencies的格式：name[:^version]",
+            component: {
+              name: "a-select",
+              mode: "tags",
+              allowClear: true,
+              open: false,
+            },
+          },
+          column: {
+            show: false,
+          },
+        },
+        "extra.dependPlugins": {
+          title: "插件依赖",
+          type: "text",
+          form: {
+            component: {
+              name: "a-select",
+              mode: "tags",
+              open: false,
+              allowClear: true,
+            },
+            helper: "安装时会先安装依赖的插件,格式：[author/]pluginName[:version]",
+          },
+          column: {
+            show: false,
+          },
+        },
+        "extra.showRunStrategy": {
+          title: "可修改运行策略",
+          type: "dict-switch",
+          dict: dict({
+            data: [
+              { value: false, label: "不可修改" },
+              { value: true, label: "可修改" },
+            ],
+          }),
+          form: {
+            value: false,
+            rules: [{ required: true }],
+          },
+          column: {
+            width: 100,
+            align: "left",
+            show: false,
+          },
+        },
         "extra.default.strategy.runStrategy": {
           title: "运行策略",
           type: "dict-select",
-
           dict: dict({
             data: [
               { value: 0, label: "正常运行" },
@@ -293,6 +343,9 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             value: 1,
             rules: [{ required: true }],
             helper: "默认运行策略",
+            show: compute(({ form }) => {
+              return form.extra.showRunStrategy;
+            }),
           },
           column: {
             width: 100,
@@ -300,6 +353,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             component: {
               color: "auto",
             },
+            show: false,
           },
           valueBuilder({ row }) {
             if (row.extra) {

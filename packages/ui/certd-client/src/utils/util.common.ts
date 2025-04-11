@@ -32,7 +32,7 @@ export default {
   },
 
   async sleep(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
+    return new Promise(resolve => setTimeout(resolve, ms));
   },
 
   maxLength(str?: string, length = 100) {
@@ -42,6 +42,9 @@ export default {
     return "";
   },
   transformLink(desc: string = "") {
+    if (!desc) {
+      return "";
+    }
     return desc.replace(/\[(.*)\]\((.*)\)/g, '<a href="$2" target="_blank">$1</a>');
-  }
+  },
 };

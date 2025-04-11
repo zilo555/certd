@@ -13,6 +13,10 @@ export class BuiltInPluginService {
       if (Plugin?.define?.deprecated) {
         continue;
       }
+      //@ts-ignore
+      if(Plugin.define?.type && Plugin.define?.type !== 'builtin'){
+        continue;
+      }
       list.push({ ...Plugin.define, key });
     }
     list = list.sort((a, b) => {

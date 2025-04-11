@@ -65,6 +65,8 @@ export type PluginDefine = Registrable & {
   };
   needPlus?: boolean;
   showRunStrategy?: boolean;
+  pluginType?: string; //类型
+  type?: string; //来源
 };
 
 export type ITaskPlugin = {
