@@ -137,6 +137,9 @@
     "type": "git",
     "url": ""
   },
+  "pnpm": {
+    "neverBuiltDependencies": []
+  },
   "author": "anonymous",
   "license": "MIT"
 }
