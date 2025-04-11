@@ -1,6 +1,7 @@
 import { request } from "/src/api/service";
 
 const apiPrefix = "/cname/record";
+const subDomainApiPrefix = "/pi/subDomain";
 
 export type CnameRecord = {
   id?: number;
@@ -18,7 +19,7 @@ export type DomainGroupItem = {
 export async function GetList() {
   return await request({
     url: apiPrefix + "/list",
-    method: "post"
+    method: "post",
   });
 }
 
@@ -28,8 +29,8 @@ export async function GetByDomain(domain: string) {
     method: "post",
     data: {
       domain,
-      createOnNotFound: true
-    }
+      createOnNotFound: true,
+    },
   });
 }
 
@@ -38,7 +39,17 @@ export async function DoVerify(id: number) {
     url: apiPrefix + "/verify",
     method: "post",
     data: {
-      id
-    }
+      id,
+    },
+  });
+}
+
+export async function ParseDomain(fullDomain: string) {
+  return await request({
+    url: subDomainApiPrefix + "/parseDomain",
+    method: "post",
+    data: {
+      fullDomain,
+    },
   });
 }

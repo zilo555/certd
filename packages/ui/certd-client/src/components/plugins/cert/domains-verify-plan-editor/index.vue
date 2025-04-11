@@ -32,26 +32,14 @@
                     <div class="form-item">
                       <span class="label">DNS类型：</span>
                       <span class="input">
-                        <fs-dict-select
-                          v-model:value="item.dnsProviderType"
-                          size="small"
-                          :dict="dnsProviderTypeDict"
-                          placeholder="DNS提供商"
-                          @change="onPlanChanged"
-                        ></fs-dict-select>
+                        <fs-dict-select v-model:value="item.dnsProviderType" size="small" :dict="dnsProviderTypeDict" placeholder="DNS提供商" @change="onPlanChanged"></fs-dict-select>
                       </span>
                     </div>
                     <a-divider type="vertical" />
                     <div class="form-item">
                       <span class="label">DNS授权：</span>
                       <span class="input">
-                        <access-selector
-                          v-model="item.dnsProviderAccessId"
-                          size="small"
-                          :type="item.dnsProviderType"
-                          placeholder="请选择"
-                          @change="onPlanChanged"
-                        ></access-selector>
+                        <access-selector v-model="item.dnsProviderAccessId" size="small" :type="item.dnsProviderType" placeholder="请选择" @change="onPlanChanged"></access-selector>
                       </span>
                     </div>
                   </div>
@@ -80,28 +68,27 @@ import { dict, FsDictSelect } from "@fast-crud/fast-crud";
 import AccessSelector from "/@/views/certd/access/access-selector/index.vue";
 import CnameVerifyPlan from "./cname-verify-plan.vue";
 import HttpVerifyPlan from "./http-verify-plan.vue";
-//@ts-ignore
-import psl from "psl";
 import { Form } from "ant-design-vue";
 import { DomainsVerifyPlanInput } from "./type";
-import { CnameRecord, DomainGroupItem } from "./api";
+import { DomainGroupItem, ParseDomain } from "./api";
+
 defineOptions({
-  name: "DomainsVerifyPlanEditor"
+  name: "DomainsVerifyPlanEditor",
 });
 
 const challengeTypeOptions = ref<any[]>([
   {
     label: "DNS验证",
-    value: "dns"
+    value: "dns",
   },
   {
     label: "CNAME验证",
-    value: "cname"
+    value: "cname",
   },
   {
     label: "HTTP验证",
-    value: "http"
-  }
+    value: "http",
+  },
 ]);
 
 const props = defineProps<{
@@ -122,7 +109,7 @@ function fullscreenExit() {
 }
 const planRef = ref<DomainsVerifyPlanInput>(props.modelValue || {});
 const dnsProviderTypeDict = dict({
-  url: "pi/dnsProvider/dnsProviderTypeDict"
+  url: "pi/dnsProvider/dnsProviderTypeDict",
 });
 
 const formItemContext = Form.useInjectFormItemContext();
@@ -139,7 +126,7 @@ function showError(error: string) {
 
 type DomainGroup = Record<string, DomainGroupItem>;
 
-function onDomainsChanged(domains: string[]) {
+async function onDomainsChanged(domains: string[]) {
   if (domains == null) {
     return;
   }
@@ -147,12 +134,7 @@ function onDomainsChanged(domains: string[]) {
   const domainGroups: DomainGroup = {};
   for (let domain of domains) {
     const keyDomain = domain.replace("*.", "");
-    const parsed = psl.parse(keyDomain);
-    if (parsed.error) {
-      showError(`域名${domain}解析失败: ${JSON.stringify(parsed.error)}`);
-      continue;
-    }
-    const mainDomain = parsed.domain;
+    const mainDomain = await ParseDomain(keyDomain);
     if (mainDomain == null) {
       continue;
     }
@@ -161,7 +143,7 @@ function onDomainsChanged(domains: string[]) {
       group = {
         domain: mainDomain,
         domains: [],
-        keySubDomains: []
+        keySubDomains: [],
       } as DomainGroupItem;
       domainGroups[mainDomain] = group;
     }
@@ -180,7 +162,7 @@ function onDomainsChanged(domains: string[]) {
         //@ts-ignore
         cnameVerifyPlan: {},
         //@ts-ignore
-        httpVerifyPlan: {}
+        httpVerifyPlan: {},
       };
       planRef.value[domain] = planItem;
     }
@@ -196,7 +178,7 @@ function onDomainsChanged(domains: string[]) {
       if (!cnameOrigin[subDomain]) {
         //@ts-ignore
         planItem.cnameVerifyPlan[subDomain] = {
-          id: 0
+          id: 0,
         };
       } else {
         planItem.cnameVerifyPlan[subDomain] = cnameOrigin[subDomain];
@@ -205,14 +187,14 @@ function onDomainsChanged(domains: string[]) {
       if (!cnamePlan[subDomain]) {
         //@ts-ignore
         cnamePlan[subDomain] = {
-          id: 0
+          id: 0,
         };
       }
 
       if (!httpOrigin[subDomain]) {
         //@ts-ignore
         planItem.httpVerifyPlan[subDomain] = {
-          domain: subDomain
+          domain: subDomain,
         };
       } else {
         planItem.httpVerifyPlan[subDomain] = httpOrigin[subDomain];
@@ -221,7 +203,7 @@ function onDomainsChanged(domains: string[]) {
       if (!httpPlan[subDomain]) {
         //@ts-ignore
         httpPlan[subDomain] = {
-          domain: subDomain
+          domain: subDomain,
         };
       }
     }
@@ -255,7 +237,7 @@ watch(
   },
   {
     immediate: true,
-    deep: true
+    deep: true,
   }
 );
 </script>

@@ -1,18 +1,17 @@
-import { Inject, Provide, Scope, ScopeEnum } from '@midwayjs/core';
-import { InjectEntityModel } from '@midwayjs/typeorm';
-import { Repository } from 'typeorm';
-import { BaseService, PlusService, ValidateException } from '@certd/lib-server';
-import { CnameRecordEntity, CnameRecordStatusType } from '../entity/cname-record.js';
-import { createDnsProvider, IDnsProvider, parseDomain } from '@certd/plugin-cert';
-import { CnameProvider, CnameRecord } from '@certd/pipeline';
-import { cache, http, logger, utils } from '@certd/basic';
-
-import { AccessService } from '@certd/lib-server';
-import { isDev } from '@certd/basic';
-import { walkTxtRecord } from '@certd/acme-client';
-import { CnameProviderService } from './cname-provider-service.js';
-import { CnameProviderEntity } from '../entity/cname-provider.js';
-import { CommonDnsProvider } from './common-provider.js';
+import {Inject, Provide, Scope, ScopeEnum} from '@midwayjs/core';
+import {InjectEntityModel} from '@midwayjs/typeorm';
+import {Repository} from 'typeorm';
+import {AccessService, BaseService, PlusService, ValidateException} from '@certd/lib-server';
+import {CnameRecordEntity, CnameRecordStatusType} from '../entity/cname-record.js';
+import {createDnsProvider, IDnsProvider} from '@certd/plugin-cert';
+import {CnameProvider, CnameRecord} from '@certd/pipeline';
+import {cache, http, isDev, logger, utils} from '@certd/basic';
+import {walkTxtRecord} from '@certd/acme-client';
+import {CnameProviderService} from './cname-provider-service.js';
+import {CnameProviderEntity} from '../entity/cname-provider.js';
+import {CommonDnsProvider} from './common-provider.js';
+import {SubDomainService, SubDomainsGetter} from "../../pipeline/service/sub-domain-service.js";
+import {DomainParser} from "@certd/plugin-cert/dist/dns-provider/domain-parser.js";
 
 type CnameCheckCacheValue = {
   validating: boolean;
@@ -39,6 +38,9 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
 
   @Inject()
   plusService: PlusService;
+
+  @Inject()
+  subDomainService: SubDomainService;
 
   //@ts-ignore
   getRepository() {
@@ -74,17 +76,20 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
     } else {
       cnameProvider = await this.cnameProviderService.info(param.cnameProviderId);
     }
-    this.cnameProviderChanged(param, cnameProvider);
+    await this.cnameProviderChanged(param.userId,param, cnameProvider);
 
     param.status = 'cname';
     const { id } = await super.add(param);
     return await this.info(id);
   }
 
-  private cnameProviderChanged(param: any, cnameProvider: CnameProviderEntity) {
+  private async cnameProviderChanged(userId:number,param: any, cnameProvider: CnameProviderEntity) {
     param.cnameProviderId = cnameProvider.id;
 
-    const realDomain = parseDomain(param.domain);
+    const subDomainGetter =  new SubDomainsGetter(userId, this.subDomainService)
+    const domainParser = new DomainParser(subDomainGetter);
+
+    const realDomain = await domainParser.parse(param.domain);
     const prefix = param.domain.replace(realDomain, '');
     let hostRecord = `_acme-challenge.${prefix}`;
     if (hostRecord.endsWith('.')) {
@@ -111,7 +116,7 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
     }
     if (old.cnameProviderId !== param.cnameProviderId) {
       const cnameProvider = await this.cnameProviderService.info(param.cnameProviderId);
-      this.cnameProviderChanged(param, cnameProvider);
+      await this.cnameProviderChanged(old.userId,param, cnameProvider);
       param.status = 'cname';
     }
     return await super.update(param);
@@ -185,6 +190,9 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
       return true;
     }
 
+    const subDomainGetter =  new SubDomainsGetter(bean.userId, this.subDomainService)
+    const domainParser = new DomainParser(subDomainGetter);
+
     const cacheKey = `cname.record.verify.${bean.id}`;
 
     let value: CnameCheckCacheValue = cache.get(cacheKey);
@@ -219,7 +227,7 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
       }
 
       const access = await this.accessService.getById(cnameProvider.accessId, cnameProvider.userId);
-      const context = { access, logger, http, utils };
+      const context = { access, logger, http, utils,domainParser };
       const dnsProvider: IDnsProvider = await createDnsProvider({
         dnsProviderType: cnameProvider.dnsProviderType,
         context,
@@ -239,7 +247,8 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
         return false;
       }
 
-      const originDomain = parseDomain(bean.domain);
+
+      const originDomain = await domainParser.parse(bean.domain);
       const fullDomain = `${bean.hostRecord}.${originDomain}`;
 
       logger.info(`检查CNAME配置 ${fullDomain} ${testRecordValue}`);
@@ -285,7 +294,7 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
       ttl: ttl,
     });
 
-    const domain = parseDomain(bean.recordValue);
+    const domain = await domainParser.parse(bean.recordValue);
     const fullRecord = bean.recordValue;
     const hostRecord = fullRecord.replace(`.${domain}`, '');
     const req = {

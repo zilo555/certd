@@ -4,12 +4,13 @@ import { utils } from "@certd/basic";
 import type { CertInfo, CnameVerifyPlan, DomainsVerifyPlan, HttpVerifyPlan, PrivateKeyType, SSLProvider } from "./acme.js";
 import { AcmeService } from "./acme.js";
 import * as _ from "lodash-es";
-import { createDnsProvider, DnsProviderContext, IDnsProvider } from "../../dns-provider/index.js";
+import { createDnsProvider, DnsProviderContext, IDnsProvider, ISubDomainsGetter } from "../../dns-provider/index.js";
 import { CertReader } from "./cert-reader.js";
 import { CertApplyBasePlugin } from "./base.js";
 import { GoogleClient } from "../../libs/google.js";
 import { EabAccess } from "../../access";
 import { httpChallengeUploaderFactory } from "./uploads/factory.js";
+import { DomainParser } from "../../dns-provider/domain-parser.js";
 export * from "./base.js";
 export type { CertInfo };
 export * from "./cert-reader.js";
@@ -314,7 +315,10 @@ HTTP文件验证：不支持泛域名，需要配置网站文件上传`,
       }
     }
     this.eab = eab;
+    const subDomainsGetter = await this.ctx.serviceGetter.get<ISubDomainsGetter>("subDomainsGetter");
+    const domainParser = new DomainParser(subDomainsGetter);
     this.acme = new AcmeService({
+      userId: this.ctx.user.id,
       userContext: this.userContext,
       logger: this.logger,
       sslProvider: this.sslProvider,
@@ -325,8 +329,7 @@ HTTP文件验证：不支持泛域名，需要配置网站文件上传`,
       privateKeyType: this.privateKeyType,
       signal: this.ctx.signal,
       maxCheckRetryCount: this.maxCheckRetryCount,
-      // cnameProxyService: this.ctx.cnameProxyService,
-      // dnsProviderCreator: this.createDnsProvider.bind(this),
+      domainParser,
     });
   }
 
@@ -387,7 +390,8 @@ HTTP文件验证：不支持泛域名，需要配置网站文件上传`,
   }
 
   async createDnsProvider(dnsProviderType: string, dnsProviderAccess: any): Promise<IDnsProvider> {
-    const context: DnsProviderContext = { access: dnsProviderAccess, logger: this.logger, http: this.ctx.http, utils };
+    const domainParser = this.acme.options.domainParser;
+    const context: DnsProviderContext = { access: dnsProviderAccess, logger: this.logger, http: this.ctx.http, utils, domainParser };
     return await createDnsProvider({
       dnsProviderType,
       context,

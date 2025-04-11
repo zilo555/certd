@@ -217,4 +217,20 @@ export abstract class BaseService<T> {
     }
     throw new PermissionException('权限不足');
   }
+
+  async batchDelete(ids: number[], userId: number) {
+    if(userId >0){
+      const list = await this.getRepository().find({
+        where: {
+          // @ts-ignore
+          id: In(ids),
+          userId,
+        },
+      })
+      // @ts-ignore
+      ids = list.map(item => item.id)
+    }
+
+    await this.delete(ids);
+  }
 }

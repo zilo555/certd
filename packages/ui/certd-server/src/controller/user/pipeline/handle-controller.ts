@@ -1,7 +1,8 @@
 import {ALL, Body, Controller, Inject, Post, Provide} from '@midwayjs/core';
-import {AccessGetter, AccessService, BaseController, Constants} from '@certd/lib-server';
+import {AccessService, BaseController, Constants} from '@certd/lib-server';
 import {
   AccessRequestHandleReq,
+  IAccessService,
   ITaskPlugin,
   newAccess,
   newNotification,
@@ -13,6 +14,7 @@ import {
 import {EmailService} from '../../../modules/basic/service/email-service.js';
 import {http, HttpRequestConfig, logger, mergeUtils, utils} from '@certd/basic';
 import {NotificationService} from '../../../modules/pipeline/service/notification-service.js';
+import {TaskServiceBuilder} from "../../../modules/pipeline/service/task-service-getter.js";
 
 @Provide()
 @Controller('/api/pi/handle')
@@ -23,6 +25,8 @@ export class HandleController extends BaseController {
   @Inject()
   emailService: EmailService;
 
+  @Inject()
+  taskServiceBuilder: TaskServiceBuilder;
 
   @Inject()
   notificationService: NotificationService;
@@ -82,8 +86,6 @@ export class HandleController extends BaseController {
     //@ts-ignore
     const instance = plugin as ITaskPlugin;
 
-    const accessGetter = new AccessGetter(userId, this.accessService.getById.bind(this.accessService));
-
     const download = async (config: HttpRequestConfig, savePath: string) => {
       await utils.download({
         http,
@@ -93,13 +95,9 @@ export class HandleController extends BaseController {
       });
     };
 
-    const serviceContainer:any = {
-    }
-    const serviceGetter =  {
-      get:(name: string) => {
-        return serviceContainer[name]
-      }
-    }
+    const taskServiceGetter = this.taskServiceBuilder.create({userId})
+
+    const accessGetter = await taskServiceGetter.get<IAccessService>("accessService")
     //@ts-ignore
     const taskCtx: TaskInstanceContext = {
       pipeline: undefined,
@@ -125,7 +123,7 @@ export class HandleController extends BaseController {
       // }),
       // signal: this.abort.signal,
       utils,
-      serviceGetter
+      serviceGetter:taskServiceGetter
     };
     instance.setCtx(taskCtx);
     mergeUtils.merge(plugin, body.input);

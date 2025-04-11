@@ -99,6 +99,17 @@ export const certdResources = [
             },
           },
           {
+            title: "子域名托管设置",
+            name: "SubDomain",
+            path: "/certd/pipeline/subDomain",
+            component: "/certd/pipeline/sub-domain/index.vue",
+            meta: {
+              icon: "ion:link-outline",
+              auth: true,
+              keepAlive: true,
+            },
+          },
+          {
             title: "流水线分组管理",
             name: "PipelineGroupManager",
             path: "/certd/pipeline/group",

@@ -27,6 +27,7 @@ export type DnsProviderContext = {
   logger: ILogger;
   http: HttpClient;
   utils: typeof utils;
+  domainParser: IDomainParser;
 };
 
 export interface IDnsProvider<T = any> {
@@ -34,4 +35,12 @@ export interface IDnsProvider<T = any> {
   createRecord(options: CreateRecordOptions): Promise<T>;
   removeRecord(options: RemoveRecordOptions<T>): Promise<void>;
   setCtx(ctx: DnsProviderContext): void;
+}
+
+export interface ISubDomainsGetter {
+  getSubDomains(): Promise<string[]>;
+}
+
+export interface IDomainParser {
+  parse(fullDomain: string): Promise<string>;
 }

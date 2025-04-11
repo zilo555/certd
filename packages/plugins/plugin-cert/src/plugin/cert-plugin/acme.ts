@@ -5,8 +5,9 @@ import * as _ from "lodash-es";
 import { Challenge } from "@certd/acme-client/types/rfc8555";
 import { IContext } from "@certd/pipeline";
 import { ILogger, utils } from "@certd/basic";
-import { IDnsProvider, parseDomain } from "../../dns-provider/index.js";
+import { IDnsProvider, IDomainParser } from "../../dns-provider/index.js";
 import { HttpChallengeUploader } from "./uploads/api.js";
+
 export type CnameVerifyPlan = {
   type?: string;
   domain: string;
@@ -61,6 +62,8 @@ type AcmeServiceOptions = {
   privateKeyType?: PrivateKeyType;
   signal?: AbortSignal;
   maxCheckRetryCount?: number;
+  userId: number;
+  domainParser: IDomainParser;
 };
 
 export class AcmeService {
@@ -174,7 +177,7 @@ export class AcmeService {
     this.logger.info("Triggered challengeCreateFn()");
 
     const fullDomain = authz.identifier.value;
-    let domain = parseDomain(fullDomain);
+    let domain = await this.options.domainParser.parse(fullDomain);
     this.logger.info("主域名为：" + domain);
 
     const getChallenge = (type: string) => {
@@ -240,7 +243,7 @@ export class AcmeService {
             const cname = cnameVerifyPlan[fullDomain];
             if (cname) {
               dnsProvider = cname.dnsProvider;
-              domain = parseDomain(cname.domain);
+              domain = await this.options.domainParser.parse(cname.domain);
               fullRecord = cname.fullRecord;
             }
           } else {

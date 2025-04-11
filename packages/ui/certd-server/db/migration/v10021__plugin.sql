@@ -1,3 +1,19 @@
 ALTER TABLE pi_plugin ADD COLUMN "pluginType" varchar(100);
 ALTER TABLE pi_plugin ADD COLUMN "metadata" varchar(40960);
 ALTER TABLE pi_plugin ADD COLUMN "author" varchar(100);
+
+
+
+CREATE TABLE "pi_sub_domain"
+(
+  "id"          integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+  "user_id"     integer,
+  "domain"  varchar(100),
+  "disabled"    boolean  NOT NULL DEFAULT (false),
+  "create_time" datetime NOT NULL DEFAULT (CURRENT_TIMESTAMP),
+  "update_time" datetime NOT NULL DEFAULT (CURRENT_TIMESTAMP)
+);
+
+
+CREATE INDEX "index_sub_domain_user_id" ON "pi_sub_domain" ("user_id");
+CREATE INDEX "index_sub_domain_domain" ON "pi_sub_domain" ("domain");

@@ -4,5 +4,5 @@ export * from "./config.js";
 export * from "./url.js";
 export * from "./emit.js";
 export type IServiceGetter = {
-  get: (name: string) => Promise<any>;
+  get: <T>(name: string) => Promise<T>;
 };

@@ -1,8 +1,7 @@
-import { Config, Inject, Provide, Scope, ScopeEnum, sleep } from "@midwayjs/core";
-import { InjectEntityModel } from "@midwayjs/typeorm";
-import { In, MoreThan, Repository } from "typeorm";
+import {Config, Inject, Provide, Scope, ScopeEnum, sleep} from "@midwayjs/core";
+import {InjectEntityModel} from "@midwayjs/typeorm";
+import {In, MoreThan, Repository} from "typeorm";
 import {
-  AccessGetter,
   AccessService,
   BaseService,
   NeedSuiteException,
@@ -12,30 +11,40 @@ import {
   SysSettingsService,
   SysSiteInfo
 } from "@certd/lib-server";
-import { PipelineEntity } from "../entity/pipeline.js";
-import { PipelineDetail } from "../entity/vo/pipeline-detail.js";
-import { Executor, Pipeline, ResultType, RunHistory, RunnableCollection, SysInfo, UserInfo } from "@certd/pipeline";
-import { DbStorage } from "./db-storage.js";
-import { StorageService } from "./storage-service.js";
-import { Cron } from "../../cron/cron.js";
-import { HistoryService } from "./history-service.js";
-import { HistoryEntity } from "../entity/history.js";
-import { HistoryLogEntity } from "../entity/history-log.js";
-import { HistoryLogService } from "./history-log-service.js";
-import { EmailService } from "../../basic/service/email-service.js";
-import { UserService } from "../../sys/authority/service/user-service.js";
-import { CnameRecordService } from "../../cname/service/cname-record-service.js";
-import { CnameProxyService } from "./cname-proxy-service.js";
-import { PluginConfigGetter } from "../../plugin/service/plugin-config-getter.js";
+import {PipelineEntity} from "../entity/pipeline.js";
+import {PipelineDetail} from "../entity/vo/pipeline-detail.js";
+import {
+  Executor,
+  IAccessService,
+  ICnameProxyService,
+  INotificationService,
+  Pipeline,
+  ResultType,
+  RunHistory,
+  RunnableCollection,
+  SysInfo,
+  UserInfo
+} from "@certd/pipeline";
+import {DbStorage} from "./db-storage.js";
+import {StorageService} from "./storage-service.js";
+import {Cron} from "../../cron/cron.js";
+import {HistoryService} from "./history-service.js";
+import {HistoryEntity} from "../entity/history.js";
+import {HistoryLogEntity} from "../entity/history-log.js";
+import {HistoryLogService} from "./history-log-service.js";
+import {EmailService} from "../../basic/service/email-service.js";
+import {UserService} from "../../sys/authority/service/user-service.js";
+import {CnameRecordService} from "../../cname/service/cname-record-service.js";
+import {PluginConfigGetter} from "../../plugin/service/plugin-config-getter.js";
 import dayjs from "dayjs";
-import { DbAdapter } from "../../db/index.js";
-import { isComm } from "@certd/plus-core";
-import { logger } from "@certd/basic";
-import { UrlService } from "./url-service.js";
-import { NotificationService } from "./notification-service.js";
-import { NotificationGetter } from "./notification-getter.js";
-import { UserSuiteEntity, UserSuiteService } from "@certd/commercial-core";
-import { CertInfoService } from "../../monitor/service/cert-info-service.js";
+import {DbAdapter} from "../../db/index.js";
+import {isComm} from "@certd/plus-core";
+import {logger} from "@certd/basic";
+import {UrlService} from "./url-service.js";
+import {NotificationService} from "./notification-service.js";
+import {UserSuiteEntity, UserSuiteService} from "@certd/commercial-core";
+import {CertInfoService} from "../../monitor/service/cert-info-service.js";
+import {TaskServiceBuilder} from "./task-service-getter.js";
 
 const runningTasks: Map<string | number, Executor> = new Map();
 
@@ -64,6 +73,9 @@ export class PipelineService extends BaseService<PipelineEntity> {
 
   @Inject()
   pluginConfigGetter: PluginConfigGetter;
+
+  @Inject()
+  taskServiceBuilder: TaskServiceBuilder;
 
   @Inject()
   sysSettingsService: SysSettingsService;
@@ -473,20 +485,19 @@ export class PipelineService extends BaseService<PipelineEntity> {
       role: userIsAdmin ? 'admin' : 'user',
     };
 
-    const accessGetter = new AccessGetter(userId, this.accessService.getById.bind(this.accessService));
-    const cnameProxyService = new CnameProxyService(userId, this.cnameRecordService.getWithAccessByDomain.bind(this.cnameRecordService));
-    const notificationGetter = new NotificationGetter(userId, this.notificationService);
+
     const sysInfo: SysInfo = {};
     if (isComm()) {
       const siteInfo = await this.sysSettingsService.getSetting<SysSiteInfo>(SysSiteInfo);
       sysInfo.title = siteInfo.title;
     }
-    const serviceContainer = {}
-    const serviceGetter = {
-      get:(name: string) => {
-        return serviceContainer[name]
-      }
-    }
+
+    const taskServiceGetter = this.taskServiceBuilder.create({
+      userId,
+    })
+    const accessGetter = await taskServiceGetter.get<IAccessService>("accessService")
+    const notificationGetter =await taskServiceGetter.get<INotificationService>("notificationService")
+    const cnameProxyService =await taskServiceGetter.get<ICnameProxyService>("cnameProxyService")
     const executor = new Executor({
       user,
       pipeline,
@@ -500,7 +511,7 @@ export class PipelineService extends BaseService<PipelineEntity> {
       notificationService: notificationGetter,
       fileRootDir: this.certdConfig.fileRootDir,
       sysInfo,
-      serviceGetter
+      serviceGetter:taskServiceGetter
     });
     try {
       runningTasks.set(historyId, executor);
