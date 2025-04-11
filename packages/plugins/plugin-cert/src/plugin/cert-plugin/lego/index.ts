@@ -9,6 +9,7 @@ import JSZip from "jszip";
 
 export { CertReader };
 export type { CertInfo };
+export type PrivateKeyType = "rsa2048" | "rsa3072" | "rsa4096" | "rsa8192" | "ec256" | "ec384";
 
 @IsTaskPlugin({
   name: "CertApplyLego",
@@ -90,6 +91,28 @@ export class CertApplyLegoPlugin extends CertApplyBasePlugin {
   })
   customArgs = "";
 
+  @TaskInput({
+    title: "加密算法",
+    value: "ec256",
+    component: {
+      name: "a-select",
+      vModel: "value",
+      options: [
+        { value: "rsa2048", label: "RSA 2048" },
+        { value: "rsa3072", label: "RSA 3072" },
+        { value: "rsa4096", label: "RSA 4096" },
+        { value: "rsa8192", label: "RSA 8192" },
+        { value: "ec256", label: "EC 256" },
+        { value: "ec384", label: "EC 384" },
+        // { value: "ec_521", label: "EC 521" },
+      ],
+    },
+    helper: "如无特殊需求，默认即可",
+    required: true,
+  })
+  privateKeyType!: PrivateKeyType;
+
+
   eab?: EabAccess;
 
   async onInstance() {
@@ -120,7 +143,7 @@ export class CertApplyLegoPlugin extends CertApplyBasePlugin {
     if (this.eab) {
       eabArgs = ` --eab --kid "${this.eab.kid}" --hmac "${this.eab.hmacKey}"`;
     }
-    const keyType = "-k rsa2048";
+    const keyType = `-k ${this.privateKeyType}`;
 
     const saveDir = `./data/.lego/pipeline_${this.pipeline.id}/`;
     const savePathArgs = `--path "${saveDir}"`;
