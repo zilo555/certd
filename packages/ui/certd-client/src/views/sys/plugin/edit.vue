@@ -4,7 +4,10 @@
       <div class="title">
         插件编辑
         <span class="sub">
-          <span class="name">{{ plugin.title }} 【{{ plugin.author }}/{{ plugin.name }}】 </span>
+          <span class="name">
+            <a-tag color="green">{{ plugin.title }}</a-tag>
+            【{{ plugin.author }}/{{ plugin.name }}】
+          </span>
         </span>
       </div>
       <div class="more">
@@ -49,7 +52,6 @@ import createCrudOptions from "./crud";
 import { useColumns } from "@fast-crud/fast-crud";
 import yaml from "js-yaml";
 
-const CertApplyPluginNames = ["CertApply", "CertApplyLego", "CertApplyUpload"];
 defineOptions({
   name: "SysPluginEdit",
 });
@@ -60,6 +62,7 @@ const formOptionsRef: Ref = ref();
 const baseFormRef: Ref = ref({});
 function initFormOptions() {
   const formCrudOptions = createCrudOptions({
+    //@ts-ignore
     crudExpose: {},
     context: {},
   });
@@ -68,6 +71,7 @@ function initFormOptions() {
 
   const formOptions = buildFormOptions(formCrudOptions.crudOptions, {});
 
+  formOptions.mode = "edit";
   formOptions.col = {
     span: 24,
   };

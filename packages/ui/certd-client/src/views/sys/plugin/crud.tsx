@@ -119,10 +119,13 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           form: {
             order: 0,
             rules: [{ required: true }],
-          },
-          editForm: {
             component: {
               disabled: true,
+            },
+          },
+          addForm: {
+            component: {
+              disabled: false,
             },
           },
           dict: dict({
