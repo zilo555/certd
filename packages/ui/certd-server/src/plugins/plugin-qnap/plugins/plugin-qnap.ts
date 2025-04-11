@@ -51,7 +51,7 @@ export class QnapDeploy extends AbstractPlusTaskPlugin {
       throw new Error('主机登录授权配置不能为空');
     }
 
-    const connectConf = await this.ctx.accessService.getById<SshAccess>(accessId);
+    const connectConf = await this.getAccess<SshAccess>(accessId);
     const sshClient = new SshClient(this.logger);
     //合并证书
     const newCert = cert.key + '\n' + cert.crt;

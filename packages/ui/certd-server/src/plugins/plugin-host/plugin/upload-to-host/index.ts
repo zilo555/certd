@@ -278,7 +278,7 @@ export class UploadCertToHostPlugin extends AbstractTaskPlugin {
         this.logger.error('复制到当前主机功能已迁移到 “复制到本机”插件，请换成复制到本机插件');
         return;
       }
-      const connectConf: SshAccess = await this.accessService.getById(accessId);
+      const connectConf: SshAccess = await this.getAccess(accessId);
       const sshClient = new SshClient(this.logger);
 
       if (!accessId) {
@@ -370,7 +370,7 @@ export class UploadCertToHostPlugin extends AbstractTaskPlugin {
     });
 
     if (this.script && this.script?.trim()) {
-      const connectConf: SshAccess = await this.accessService.getById(accessId);
+      const connectConf: SshAccess = await this.getAccess(accessId);
       const sshClient = new SshClient(this.logger);
       this.logger.info('执行脚本命令');
 

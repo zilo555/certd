@@ -107,7 +107,7 @@ export class AliyunDeployCertToSLB extends AbstractTaskPlugin {
 
   async execute(): Promise<void> {
     this.logger.info(`开始部署证书到阿里云(slb)`);
-    const access = await this.accessService.getById<AliyunAccess>(this.accessId);
+    const access = await this.getAccess<AliyunAccess>(this.accessId);
 
     const client = await this.getLBClient(access, this.regionId);
     const aliyunCert = await this.getAliyunCertId(access);
@@ -167,7 +167,7 @@ export class AliyunDeployCertToSLB extends AbstractTaskPlugin {
     if (!this.accessId) {
       throw new Error('请选择Access授权');
     }
-    const access = await this.accessService.getById<AliyunAccess>(this.accessId);
+    const access = await this.getAccess<AliyunAccess>(this.accessId);
     const client = await this.getLBClient(access, 'cn-shanghai');
 
     const res = await client.request('DescribeRegions', {});
@@ -192,7 +192,7 @@ export class AliyunDeployCertToSLB extends AbstractTaskPlugin {
     if (!this.regionId) {
       throw new Error('请先选择地区');
     }
-    const access = await this.accessService.getById<AliyunAccess>(this.accessId);
+    const access = await this.getAccess<AliyunAccess>(this.accessId);
     const client = await this.getLBClient(access, this.regionId);
 
     const params = {
@@ -221,7 +221,7 @@ export class AliyunDeployCertToSLB extends AbstractTaskPlugin {
     if (!this.regionId) {
       throw new Error('请先选择地区');
     }
-    const access = await this.accessService.getById<AliyunAccess>(this.accessId);
+    const access = await this.getAccess<AliyunAccess>(this.accessId);
     const client = await this.getLBClient(access, this.regionId);
 
     const params: any = {

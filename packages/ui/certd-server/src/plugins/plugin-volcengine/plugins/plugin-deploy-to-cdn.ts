@@ -78,7 +78,7 @@ export class VolcengineDeployToCDN extends AbstractTaskPlugin {
   async onInstance() {}
   async execute(): Promise<void> {
     this.logger.info('开始部署证书到火山引擎CDN');
-    const access = await this.accessService.getById<VolcengineAccess>(this.accessId);
+    const access = await this.getAccess<VolcengineAccess>(this.accessId);
 
     const client = await this.getClient(access)
     const service = await client.getCdnClient()
@@ -117,7 +117,7 @@ export class VolcengineDeployToCDN extends AbstractTaskPlugin {
     if (!this.accessId) {
       throw new Error('请选择Access授权');
     }
-    const access = await this.accessService.getById<VolcengineAccess>(this.accessId);
+    const access = await this.getAccess<VolcengineAccess>(this.accessId);
 
     const client = await this.getClient(access);
     const service = await client.getCdnClient()

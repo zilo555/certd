@@ -61,7 +61,7 @@ export class JDCloudDeployToCDN extends AbstractTaskPlugin {
 
   async execute(): Promise<void> {
     this.logger.info("开始部署证书到京东云CDN");
-    const access = await this.accessService.getById<JDCloudAccess>(this.accessId);
+    const access = await this.getAccess<JDCloudAccess>(this.accessId);
 
     const service = await this.getClient(access);
     let certId = this.cert;
@@ -145,7 +145,7 @@ export class JDCloudDeployToCDN extends AbstractTaskPlugin {
     if (!this.accessId) {
       throw new Error("请选择Access授权");
     }
-    const access = await this.accessService.getById<JDCloudAccess>(this.accessId);
+    const access = await this.getAccess<JDCloudAccess>(this.accessId);
 
     const service = await this.getClient(access);
     /**

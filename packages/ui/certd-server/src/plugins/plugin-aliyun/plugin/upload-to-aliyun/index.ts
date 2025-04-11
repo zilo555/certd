@@ -83,7 +83,7 @@ export class UploadCertToAliyun extends AbstractTaskPlugin {
 
   async execute(): Promise<void> {
     this.logger.info('开始部署证书到阿里云cdn');
-    const access: AliyunAccess = await this.accessService.getById(this.accessId);
+    const access: AliyunAccess = await this.getAccess(this.accessId);
 
     let endpoint = '';
     for (const region of regionDict) {

@@ -110,7 +110,7 @@ return class DemoTask extends AbstractTaskPlugin {
   // 编写执行方法
   async execute(){
     # 根据accessId获取授权配置
-    const access = await this.accessService.getById(this.accessId)
+    const access = await this.getAccess(this.accessId)
 
     //必须使用this.logger打印日志
     // this.logger.info("cert:",this.cert);

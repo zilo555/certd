@@ -52,7 +52,7 @@ export class TencentDeployCertToLive extends AbstractPlusTaskPlugin {
   async onInstance() {}
 
   async execute(): Promise<void> {
-    const access = await this.accessService.getById<TencentAccess>(this.accessId);
+    const access = await this.getAccess<TencentAccess>(this.accessId);
 
     let tencentCertId = this.cert as string;
     if (typeof this.cert !== 'string') {
@@ -90,7 +90,7 @@ export class TencentDeployCertToLive extends AbstractPlusTaskPlugin {
   }
 
   async getLiveClient() {
-    const accessProvider = await this.accessService.getById<TencentAccess>(this.accessId);
+    const accessProvider = await this.getAccess<TencentAccess>(this.accessId);
     const sdk = await import('tencentcloud-sdk-nodejs/tencentcloud/services/live/v20180801/index.js');
     const CssClient = sdk.v20180801.Client;
 

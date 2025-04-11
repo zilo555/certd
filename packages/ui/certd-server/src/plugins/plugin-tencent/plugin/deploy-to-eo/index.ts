@@ -80,7 +80,7 @@ export class DeployCertToTencentEO extends AbstractTaskPlugin {
   }
 
   async execute(): Promise<void> {
-    const accessProvider: TencentAccess = (await this.accessService.getById(this.accessId)) as TencentAccess;
+    const accessProvider: TencentAccess = (await this.getAccess(this.accessId)) as TencentAccess;
     const client = this.getClient(accessProvider);
     const params = this.buildParams();
     await this.doRequest(client, params);

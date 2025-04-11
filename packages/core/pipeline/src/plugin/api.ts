@@ -1,7 +1,7 @@
 import { Registrable } from "../registry/index.js";
 import { FileItem, FormItemProps, Pipeline, Runnable, Step } from "../dt/index.js";
 import { FileStore } from "../core/file-store.js";
-import { IAccessService } from "../access/index.js";
+import { accessRegistry, IAccessService } from "../access/index.js";
 import { ICnameProxyService, IEmailService, IServiceGetter, IUrlService } from "../service/index.js";
 import { CancelError, IContext, RunHistory, RunnableCollection } from "../core/index.js";
 import { HttpRequestConfig, ILogger, logger, utils } from "@certd/basic";
@@ -158,14 +158,35 @@ export abstract class AbstractTaskPlugin implements ITaskPlugin {
     this.http = ctx.http;
   }
 
-  async getAccess<T = any>(accessId: string) {
+  async getAccess<T = any>(accessId: string | number, isCommon = false) {
     if (accessId == null) {
       throw new Error("您还没有配置授权");
     }
-    const res = await this.ctx.accessService.getById(accessId);
+    let res: any = null;
+    if (isCommon) {
+      res = await this.ctx.accessService.getCommonById(accessId);
+    } else {
+      res = await this.ctx.accessService.getById(accessId);
+    }
     if (res == null) {
       throw new Error("授权不存在，可能已被删除，请前往任务配置里面重新选择授权");
     }
+    // @ts-ignore
+    if (this.logger?.addSecret) {
+      // 隐藏加密信息，不在日志中输出
+      const type = res._type;
+      const plugin = accessRegistry.get(type);
+      const define = plugin.define;
+      // @ts-ignore
+      const input = define.input;
+      for (const key in input) {
+        if (input[key].encrypt) {
+          // @ts-ignore
+          this.logger.addSecret(res[key]);
+        }
+      }
+    }
+
     return res as T;
   }
 

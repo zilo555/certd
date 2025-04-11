@@ -116,7 +116,7 @@ export class DeployCertToTencentTKEIngressPlugin extends AbstractPlusTaskPlugin 
     this.K8sClient = k8sSdk.K8sClient;
   }
   async execute(): Promise<void> {
-    const accessProvider = await this.accessService.getById(this.accessId);
+    const accessProvider = await this.getAccess(this.accessId);
     const tkeClient = await this.getTkeClient(accessProvider, this.region);
     const kubeConfigStr = await this.getTkeKubeConfig(tkeClient, this.clusterId);
 

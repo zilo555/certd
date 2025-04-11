@@ -58,7 +58,7 @@ export class AwsUploadToACM extends AbstractTaskPlugin {
 
   async execute(): Promise<void> {
     const { cert, accessId, region } = this;
-    const access = await this.accessService.getById<AwsAccess>(accessId);
+    const access = await this.getAccess<AwsAccess>(accessId);
     const acmClient = new AwsAcmClient({
       access,
       region,

@@ -150,11 +150,11 @@ export class RunnableCollection {
       pipeline.stages = [];
       return;
     }
-    pipeline.stages.forEach((stage) => {
+    pipeline.stages.forEach(stage => {
       stage.runnableType = "stage";
-      stage.tasks.forEach((task) => {
+      stage.tasks.forEach(task => {
         task.runnableType = "task";
-        task.steps.forEach((step) => {
+        task.steps.forEach(step => {
           step.runnableType = "step";
         });
       });
@@ -162,7 +162,7 @@ export class RunnableCollection {
   }
 
   static each<T extends Runnable>(list: T[], exec: (item: Runnable) => void) {
-    list.forEach((item) => {
+    list.forEach(item => {
       exec(item);
       if (item.runnableType === "pipeline") {
         // @ts-ignore
@@ -179,7 +179,7 @@ export class RunnableCollection {
   public toMap(pipeline: Pipeline) {
     const map: RunnableMap = {};
 
-    RunnableCollection.each(pipeline.stages, (item) => {
+    RunnableCollection.each(pipeline.stages, item => {
       map[item.id] = item;
     });
     return map;
@@ -193,7 +193,7 @@ export class RunnableCollection {
     if (!this.pipeline) {
       return;
     }
-    RunnableCollection.each(this.pipeline.stages, (item) => {
+    RunnableCollection.each(this.pipeline.stages, item => {
       item.status = undefined;
     });
   }

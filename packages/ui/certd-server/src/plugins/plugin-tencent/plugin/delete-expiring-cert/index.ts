@@ -79,7 +79,7 @@ export class TencentDeleteExpiringCert extends AbstractPlusTaskPlugin {
   async onInstance() {}
 
   async execute(): Promise<void> {
-    const access = await this.accessService.getById<TencentAccess>(this.accessId);
+    const access = await this.getAccess<TencentAccess>(this.accessId);
     const sslClient = new TencentSslClient({
       access,
       logger: this.logger,

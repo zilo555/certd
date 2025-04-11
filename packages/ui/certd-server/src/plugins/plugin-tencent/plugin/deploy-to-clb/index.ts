@@ -108,7 +108,7 @@ export class DeployCertToTencentCLB extends AbstractTaskPlugin {
     const sdk = await import('tencentcloud-sdk-nodejs/tencentcloud/services/clb/v20180317/index.js');
     const ClbClient = sdk.v20180317.Client;
 
-    const accessProvider = (await this.accessService.getById(this.accessId)) as TencentAccess;
+    const accessProvider = (await this.getAccess(this.accessId)) as TencentAccess;
 
     const region = this.region;
     const clientConfig = {

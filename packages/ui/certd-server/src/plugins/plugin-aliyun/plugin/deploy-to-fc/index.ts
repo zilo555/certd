@@ -116,7 +116,7 @@ export class AliyunDeployCertToFC extends AbstractPlusTaskPlugin {
 
   async execute(): Promise<void> {
     this.logger.info('开始部署证书到阿里云');
-    const access = await this.accessService.getById<AliyunAccess>(this.accessId);
+    const access = await this.getAccess<AliyunAccess>(this.accessId);
 
     const client = await this.getClient(access);
 
@@ -177,7 +177,7 @@ export class AliyunDeployCertToFC extends AbstractPlusTaskPlugin {
     if (!this.accessId) {
       throw new Error('请选择Access授权');
     }
-    const access = await this.accessService.getById<AliyunAccess>(this.accessId);
+    const access = await this.getAccess<AliyunAccess>(this.accessId);
     const client = await this.getClient(access);
 
     const $OpenApi = await import('@alicloud/openapi-client');

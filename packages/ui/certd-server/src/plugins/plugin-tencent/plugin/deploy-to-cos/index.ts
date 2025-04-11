@@ -99,7 +99,7 @@ export class DeployCertToTencentCosPlugin extends AbstractTaskPlugin {
   async onInstance() {}
 
   async execute(): Promise<void> {
-    const access = await this.accessService.getById(this.accessId);
+    const access = await this.getAccess(this.accessId);
 
     const client = new TencentSslClient({
       access,
@@ -130,7 +130,7 @@ export class DeployCertToTencentCosPlugin extends AbstractTaskPlugin {
   }
 
   async onGetDomainList(data: any) {
-    const access = await this.accessService.getById(this.accessId);
+    const access = await this.getAccess(this.accessId);
 
     const cosv5 = await import('cos-nodejs-sdk-v5');
     const cos = new cosv5.default({

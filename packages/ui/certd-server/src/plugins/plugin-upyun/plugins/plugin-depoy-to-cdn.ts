@@ -68,7 +68,7 @@ export class UpyunDeployToCdn extends AbstractPlusTaskPlugin {
 
   //插件执行方法
   async execute(): Promise<void> {
-    const access = await this.accessService.getById<UpyunAccess>(this.accessId);
+    const access = await this.getAccess<UpyunAccess>(this.accessId);
 
     const upyunClient = new UpyunClient({
       access,
@@ -101,7 +101,7 @@ export class UpyunDeployToCdn extends AbstractPlusTaskPlugin {
     if (!this.accessId) {
       throw new Error("accessId不能为空");
     }
-    const access = await this.accessService.getById<UpyunAccess>(this.accessId);
+    const access = await this.getAccess<UpyunAccess>(this.accessId);
 
     const upyunClient = new UpyunClient({
       access,

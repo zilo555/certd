@@ -62,7 +62,7 @@ export class GcoreuploadPlugin extends AbstractTaskPlugin {
 
   async execute(): Promise<void> {
     const { cert, accessId } = this;
-    const access = (await this.accessService.getById(accessId)) as GcoreAccess;
+    const access = (await this.getAccess(accessId)) as GcoreAccess;
     let otp = null;
     if (access.otpkey) {
       const response = await this.http.request<any, any>({

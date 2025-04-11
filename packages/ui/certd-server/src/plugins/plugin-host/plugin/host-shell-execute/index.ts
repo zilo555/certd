@@ -41,7 +41,7 @@ export class HostShellExecutePlugin extends AbstractTaskPlugin {
   async onInstance() {}
   async execute(): Promise<void> {
     const { script, accessId } = this;
-    const connectConf = await this.accessService.getById(accessId);
+    const connectConf = await this.getAccess(accessId);
     const sshClient = new SshClient(this.logger);
 
     const scripts = script.split('\n');

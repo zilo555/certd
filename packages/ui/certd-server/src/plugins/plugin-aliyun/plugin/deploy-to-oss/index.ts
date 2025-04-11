@@ -102,7 +102,7 @@ export class DeployCertToAliyunOSS extends AbstractTaskPlugin {
   async onInstance() {}
   async execute(): Promise<void> {
     this.logger.info('开始部署证书到阿里云OSS');
-    const access = (await this.accessService.getById(this.accessId)) as AliyunAccess;
+    const access = (await this.getAccess(this.accessId)) as AliyunAccess;
     this.logger.info(`bucket: ${this.bucket}, region: ${this.region}, domainName: ${this.domainName}`);
     const client = await this.getClient(access);
     await this.doRequest(client, {});

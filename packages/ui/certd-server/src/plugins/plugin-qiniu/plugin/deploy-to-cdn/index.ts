@@ -55,7 +55,7 @@ export class QiniuDeployCertToCDN extends AbstractTaskPlugin {
   async onInstance() {}
   async execute(): Promise<void> {
     this.logger.info('开始部署证书到七牛云cdn');
-    const access = await this.accessService.getById<QiniuAccess>(this.accessId);
+    const access = await this.getAccess<QiniuAccess>(this.accessId);
     const qiniuClient = new QiniuClient({
       http: this.ctx.http,
       access,
@@ -104,7 +104,7 @@ export class QiniuDeployCertToCDN extends AbstractTaskPlugin {
   }
 
   async onGetDomainList() {
-    const access = await this.accessService.getById<QiniuAccess>(this.accessId);
+    const access = await this.getAccess<QiniuAccess>(this.accessId);
     const qiniuClient = new QiniuClient({
       http: this.ctx.http,
       access,

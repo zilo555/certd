@@ -53,7 +53,7 @@ export class DeployCertToTencentAll extends AbstractTaskPlugin {
 
   async onInstance() {}
   async execute(): Promise<void> {
-    const accessProvider = await this.accessService.getById(this.accessId);
+    const accessProvider = await this.getAccess(this.accessId);
 
     const sdk = await import('tencentcloud-sdk-nodejs/tencentcloud/services/ssl/v20191205/index.js');
     const Client = sdk.v20191205.Client;

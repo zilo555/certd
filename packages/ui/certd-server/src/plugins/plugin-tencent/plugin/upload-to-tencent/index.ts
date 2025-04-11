@@ -52,7 +52,7 @@ export class UploadCertToTencent extends AbstractTaskPlugin {
 
   async execute(): Promise<void> {
     const { accessId, name, cert } = this;
-    const accessProvider = await this.accessService.getById(accessId);
+    const accessProvider = await this.getAccess(accessId);
     const certName = this.appendTimeSuffix(name || cert.domain);
     const client = this.getClient(accessProvider);
 
@@ -96,7 +96,7 @@ export class UploadCertToTencent extends AbstractTaskPlugin {
 
   // async rollback({ input }) {
   //   const { accessId } = input;
-  //   const accessProvider = await this.accessService.getById(accessId);
+  //   const accessProvider = await this.getAccess(accessId);
   //   const client = this.getClient(accessProvider);
   //
   //   const { tencentCertId } = context;

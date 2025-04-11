@@ -56,7 +56,7 @@ export class CacheFlyPlugin extends AbstractTaskPlugin {
 
   async execute(): Promise<void> {
     const { cert, accessId } = this;
-    const access = (await this.accessService.getById(accessId)) as CacheflyAccess;
+    const access = (await this.getAccess(accessId)) as CacheflyAccess;
     let otp = null;
     if (access.otpkey) {
       const response = await this.http.request<any, any>({

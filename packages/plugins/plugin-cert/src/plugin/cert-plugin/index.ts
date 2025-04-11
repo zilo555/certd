@@ -288,7 +288,7 @@ HTTP文件验证：不支持泛域名，需要配置网站文件上传`,
     if (this.sslProvider === "google") {
       if (this.googleAccessId) {
         this.logger.info("当前正在使用 google服务账号授权获取EAB");
-        const googleAccess = await this.ctx.accessService.getById(this.googleAccessId);
+        const googleAccess = await this.getAccess(this.googleAccessId);
         const googleClient = new GoogleClient({
           access: googleAccess,
           logger: this.logger,
@@ -296,20 +296,20 @@ HTTP文件验证：不支持泛域名，需要配置网站文件上传`,
         eab = await googleClient.getEab();
       } else if (this.eabAccessId) {
         this.logger.info("当前正在使用 google EAB授权");
-        eab = await this.ctx.accessService.getById(this.eabAccessId);
+        eab = await this.getAccess(this.eabAccessId);
       } else if (this.googleCommonEabAccessId) {
         this.logger.info("当前正在使用 google公共EAB授权");
-        eab = await this.ctx.accessService.getCommonById(this.googleCommonEabAccessId);
+        eab = await this.getAccess(this.googleCommonEabAccessId, true);
       } else {
         throw new Error("google需要配置EAB授权或服务账号授权");
       }
     } else if (this.sslProvider === "zerossl") {
       if (this.eabAccessId) {
         this.logger.info("当前正在使用 zerossl EAB授权");
-        eab = await this.ctx.accessService.getById(this.eabAccessId);
+        eab = await this.getAccess(this.eabAccessId);
       } else if (this.zerosslCommonEabAccessId) {
         this.logger.info("当前正在使用 zerossl 公共EAB授权");
-        eab = await this.ctx.accessService.getCommonById(this.zerosslCommonEabAccessId);
+        eab = await this.getAccess(this.zerosslCommonEabAccessId, true);
       } else {
         throw new Error("zerossl需要配置EAB授权");
       }
@@ -359,7 +359,7 @@ HTTP文件验证：不支持泛域名，需要配置网站文件上传`,
       domainsVerifyPlan = await this.createDomainsVerifyPlan();
     } else {
       const dnsProviderType = this.dnsProviderType;
-      const access = await this.ctx.accessService.getById(this.dnsProviderAccess);
+      const access = await this.getAccess(this.dnsProviderAccess);
       dnsProvider = await this.createDnsProvider(dnsProviderType, access);
     }
 
@@ -406,7 +406,7 @@ HTTP文件验证：不支持泛域名，需要配置网站文件上传`,
       const cnameVerifyPlan: Record<string, CnameVerifyPlan> = {};
       const httpVerifyPlan: Record<string, HttpVerifyPlan> = {};
       if (domainVerifyPlan.type === "dns") {
-        const access = await this.ctx.accessService.getById(domainVerifyPlan.dnsProviderAccessId);
+        const access = await this.getAccess(domainVerifyPlan.dnsProviderAccessId);
         dnsProvider = await this.createDnsProvider(domainVerifyPlan.dnsProviderType, access);
       } else if (domainVerifyPlan.type === "cname") {
         for (const key in domainVerifyPlan.cnameVerifyPlan) {
@@ -430,7 +430,7 @@ HTTP文件验证：不支持泛域名，需要配置网站文件上传`,
         };
         for (const key in domainVerifyPlan.httpVerifyPlan) {
           const httpRecord = domainVerifyPlan.httpVerifyPlan[key];
-          const access = await this.ctx.accessService.getById(httpRecord.httpUploaderAccess);
+          const access = await this.getAccess(httpRecord.httpUploaderAccess);
           let rootDir = httpRecord.httpUploadRootDir;
           if (!rootDir.endsWith("/") && !rootDir.endsWith("\\")) {
             rootDir = rootDir + "/";

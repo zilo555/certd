@@ -51,7 +51,7 @@ export class QiniuCertUpload extends AbstractTaskPlugin {
   async onInstance() {}
   async execute(): Promise<void> {
     this.logger.info('开始上传证书到七牛云');
-    const access = await this.accessService.getById<QiniuAccess>(this.accessId);
+    const access = await this.getAccess<QiniuAccess>(this.accessId);
     const qiniuClient = new QiniuClient({
       http: this.ctx.http,
       access,

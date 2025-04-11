@@ -57,7 +57,7 @@ export class DeployCertToAliyunDCDN extends AbstractTaskPlugin {
   async onInstance() {}
   async execute(): Promise<void> {
     this.logger.info('开始部署证书到阿里云DCDN');
-    const access = (await this.accessService.getById(this.accessId)) as AliyunAccess;
+    const access = (await this.getAccess(this.accessId)) as AliyunAccess;
     const client = await this.getClient(access);
     const params = await this.buildParams();
     await this.doRequest(client, params);

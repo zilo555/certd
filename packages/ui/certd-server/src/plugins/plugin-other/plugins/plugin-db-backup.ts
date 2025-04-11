@@ -190,7 +190,7 @@ export class DBBackupPlugin extends AbstractPlusTaskPlugin {
   }
 
   private async sshBackup(dbPath: string, backupDir: string, backupPath: string) {
-    const access: SshAccess = await this.ctx.accessService.getById(this.sshAccessId);
+    const access: SshAccess = await this.getAccess(this.sshAccessId);
     const sshClient = new SshClient(this.logger);
     this.logger.info('备份目录：', backupPath);
     await sshClient.uploadFiles({

@@ -71,7 +71,7 @@ export class WoaiCdnPlugin extends AbstractTaskPlugin {
 
   async execute(): Promise<void> {
     const { baseApi, certId, cert, accessId } = this;
-    const access = (await this.accessService.getById(accessId)) as WoaiAccess;
+    const access = (await this.getAccess(accessId)) as WoaiAccess;
     // 使用默认值或用户输入的值
     const apiBase = baseApi || 'https://console.edeg.sxhjgy.cn';
     // 登录获取token

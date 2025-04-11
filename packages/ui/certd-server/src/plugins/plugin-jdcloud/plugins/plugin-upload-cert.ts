@@ -56,7 +56,7 @@ export class JDCloudUploadCert extends AbstractTaskPlugin {
 
   async execute(): Promise<void> {
     this.logger.info("开始上传证书到京东云数字证书中心");
-    const access = await this.accessService.getById<JDCloudAccess>(this.accessId);
+    const access = await this.getAccess<JDCloudAccess>(this.accessId);
 
     const service = await this.getClient(access);
 

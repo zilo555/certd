@@ -140,7 +140,7 @@ export class DemoTest extends AbstractTaskPlugin {
     const { select, text, cert, accessId } = this;
 
     try {
-      const access = await this.accessService.getById(accessId);
+      const access = await this.getAccess(accessId);
       this.logger.debug('access', access);
     } catch (e) {
       this.logger.error('获取授权失败', e);
@@ -177,7 +177,7 @@ export class DemoTest extends AbstractTaskPlugin {
     }
 
     // @ts-ignore
-    const access = await this.accessService.getById(this.accessId);
+    const access = await this.getAccess(this.accessId);
 
     // const siteRes = await this.ctx.http.request({
     //   url: '你的服务端获取选项的请求地址',

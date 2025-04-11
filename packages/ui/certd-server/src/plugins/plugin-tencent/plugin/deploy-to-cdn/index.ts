@@ -68,7 +68,7 @@ export class DeployToCdnPlugin extends AbstractTaskPlugin {
   }
 
   async getClient() {
-    const accessProvider: TencentAccess = (await this.accessService.getById(this.accessId)) as TencentAccess;
+    const accessProvider: TencentAccess = (await this.getAccess(this.accessId)) as TencentAccess;
 
     const CdnClient = this.Client;
 

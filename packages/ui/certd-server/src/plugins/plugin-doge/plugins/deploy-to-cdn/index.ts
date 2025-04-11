@@ -59,7 +59,7 @@ export class DogeCloudDeployToCDNPlugin extends AbstractTaskPlugin {
   dogeClient!: DogeClient;
 
   async onInstance() {
-    const access = await this.accessService.getById(this.accessId);
+    const access = await this.getAccess(this.accessId);
     this.dogeClient = new DogeClient(access, this.ctx.http);
   }
   async execute(): Promise<void> {

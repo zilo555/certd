@@ -51,7 +51,7 @@ export class TencentDeployCertToCDNv2 extends AbstractTaskPlugin {
   async onInstance() {}
 
   async execute(): Promise<void> {
-    const access = await this.accessService.getById<TencentAccess>(this.accessId);
+    const access = await this.getAccess<TencentAccess>(this.accessId);
     const sslClient = new TencentSslClient({
       access,
       logger: this.logger,
@@ -82,7 +82,7 @@ export class TencentDeployCertToCDNv2 extends AbstractTaskPlugin {
   }
 
   async getCdnClient() {
-    const accessProvider = await this.accessService.getById<TencentAccess>(this.accessId);
+    const accessProvider = await this.getAccess<TencentAccess>(this.accessId);
     const sdk = await import('tencentcloud-sdk-nodejs/tencentcloud/services/cdn/v20180606/index.js');
     const CdnClient = sdk.v20180606.Client;
 
