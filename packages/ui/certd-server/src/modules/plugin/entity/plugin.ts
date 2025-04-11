@@ -44,6 +44,9 @@ export class PluginEntity {
   @Column({ comment: '元数据', length: 40960, nullable: true })
   metadata: string;
 
+  @Column({ comment: '额外配置', length: 40960, nullable: true })
+  extra: string;
+
   @Column({ comment: '作者', length: 100, nullable: true })
   author: string;
 

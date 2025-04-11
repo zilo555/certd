@@ -33,7 +33,9 @@
         <a-tabs type="card">
           <a-tab-pane key="script" tab="脚本"> </a-tab-pane>
         </a-tabs>
-        <code-editor id="content" v-model:model-value="plugin.content" language="javascript" @save="doSave"></code-editor>
+        <div class="script-body">
+          <code-editor id="content" v-model:model-value="plugin.content" language="javascript" @save="doSave"></code-editor>
+        </div>
       </div>
     </div>
   </fs-page>
@@ -42,10 +44,10 @@
 import { onMounted, provide, ref, Ref } from "vue";
 import { useRoute } from "vue-router";
 import * as api from "./api";
-import yaml from "js-yaml";
 import { notification } from "ant-design-vue";
 import createCrudOptions from "./crud";
 import { useColumns } from "@fast-crud/fast-crud";
+import yaml from "js-yaml";
 
 const CertApplyPluginNames = ["CertApply", "CertApplyLego", "CertApplyUpload"];
 defineOptions({
@@ -81,19 +83,14 @@ initFormOptions();
 async function getPlugin() {
   const id = route.query.id;
   const pluginObj = await api.GetObj(id);
-  if (pluginObj.metadata) {
-    const metadata = yaml.load(pluginObj.metadata);
-    pluginObj.default = metadata.default || {};
-    delete metadata.default;
-    pluginObj.metadata = yaml.dump(metadata, {
-      indent: 2,
-    });
-  }
   plugin.value = pluginObj;
 
   const baseFrom = {
     ...pluginObj,
   };
+  if (baseFrom.extra) {
+    baseFrom.extra = yaml.load(baseFrom.extra);
+  }
   delete baseFrom.metadata;
   delete baseFrom.content;
   baseFormRef.value.setFormData(baseFrom);
@@ -107,17 +104,31 @@ provide("get:plugin", () => {
   return plugin;
 });
 
+function validate() {
+  try {
+    yaml.load(plugin.value.metadata);
+  } catch (e: any) {
+    const message = `元数据校验失败:${e.message}`;
+    notification.error({
+      message,
+    });
+
+    throw new Error(message);
+  }
+}
+
 const saveLoading = ref(false);
 async function doSave() {
+  validate();
   saveLoading.value = true;
   const baseForm = baseFormRef.value.getFormData();
-  const metadata = yaml.load(plugin.value.metadata);
-  metadata.default = baseForm.default;
   const form = {
     ...plugin.value,
     ...baseForm,
-    metadata: yaml.dump(metadata, { indent: 2 }),
   };
+  if (form.extra) {
+    form.extra = yaml.dump(form.extra);
+  }
   try {
     await api.UpdateObj(form);
     notification.success({
@@ -161,6 +172,10 @@ async function doTest() {
       display: flex;
       flex-direction: column;
       height: 100%;
+      .base-body {
+        flex: 1;
+        overflow: auto;
+      }
     }
 
     .metadata {
@@ -191,6 +206,9 @@ async function doTest() {
       display: flex;
       flex-direction: column;
       height: 100%;
+      .script-body {
+        flex: 1;
+      }
     }
   }
 }

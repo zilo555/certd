@@ -1,7 +1,10 @@
 <template>
   <fs-page class="page-cert">
     <template #header>
-      <div class="title">插件管理</div>
+      <div class="title">
+        插件管理
+        <span class="sub">自定义插件处于BETA测试版，后续可能会有破坏性变更</span>
+      </div>
     </template>
     <fs-crud ref="crudRef" v-bind="crudBinding">
       <!--      <template #pagination-left>-->

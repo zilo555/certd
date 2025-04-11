@@ -1059,17 +1059,17 @@ importers:
         specifier: ^4.1.0
         version: 4.1.0
       '@fast-crud/fast-crud':
-        specifier: ^1.25.7
-        version: 1.25.7(vue@3.5.13(typescript@5.8.2))
+        specifier: ^1.25.8
+        version: 1.25.8(vue@3.5.13(typescript@5.8.2))
       '@fast-crud/fast-extends':
-        specifier: ^1.25.7
-        version: 1.25.7(aws-crt@1.25.3)(vue@3.5.13(typescript@5.8.2))
+        specifier: ^1.25.8
+        version: 1.25.8(aws-crt@1.25.3)(vue@3.5.13(typescript@5.8.2))
       '@fast-crud/ui-antdv4':
-        specifier: ^1.25.7
-        version: 1.25.7
+        specifier: ^1.25.8
+        version: 1.25.8
       '@fast-crud/ui-interface':
-        specifier: ^1.25.7
-        version: 1.25.7
+        specifier: ^1.25.8
+        version: 1.25.8
       '@iconify/tailwind':
         specifier: ^1.2.0
         version: 1.2.0
@@ -3250,17 +3250,17 @@ packages:
     resolution: {integrity: sha512-Ys+3g2TaW7gADOJzPt83SJtCDhMjndcDMFVQ/Tj9iA1BfJzFKD9mAUXT3OenpuPHbI6P/myECxRJrofUsDx/5g==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
 
-  '@fast-crud/fast-crud@1.25.7':
-    resolution: {integrity: sha512-dq5ijw6PU/FQBTP+ZwBezMHqAEZDbAoShHGNIkCK9a0vOqL5MhBnOzq5DPRz6yFUNnJEFX8kYB7N7A00Qnw5Zg==}
+  '@fast-crud/fast-crud@1.25.8':
+    resolution: {integrity: sha512-ftIhCJwDwNdHTgCYeuSwheD9c/Vvf/5ef9hu7ZwDQ22qD9dJmSUxrAYv6UWuJ4r4zcbNCk8BaBcaKwqSltd3Dg==}
 
-  '@fast-crud/fast-extends@1.25.7':
-    resolution: {integrity: sha512-vZu6CGXvacgnZI4d78qEc0X1xrdylJjABapU1O60xwwDx+CIcJfH6N+Q4ku/12YdTTeJAsYDnsSFzNEDtzQpwQ==}
+  '@fast-crud/fast-extends@1.25.8':
+    resolution: {integrity: sha512-aw/8SLJJvBtwQOwafaG87r0IWIncZK7BOiJRl7MZiv3Cp+G4naLam7WjtIQIZIT9zfLZqb+z3zy+x00cbUMRkw==}
 
-  '@fast-crud/ui-antdv4@1.25.7':
-    resolution: {integrity: sha512-T95LiMO2WV6XcnLyALLRB59xmi43eWHxIeABeZBeDD5Y2nmXR3ceQj63VBo4SJMDNEu49MKabQpOa/A2X6Rmwg==}
+  '@fast-crud/ui-antdv4@1.25.8':
+    resolution: {integrity: sha512-lRehabbucwKV2OM0bfVHt0BI8BYu+sb4z9l+9EkIvTDQurowfxZO+WFk/KIe3BhuKHtKlmmwEa73cefMMVzvjA==}
 
-  '@fast-crud/ui-interface@1.25.7':
-    resolution: {integrity: sha512-JrP2/dm1Sco0UdSYhIMkf9tdynYURHlO1qyDHmssF1lqo9+PrU1kwuizaK1soG+myHiYznbBiXo1+GIly/MU+A==}
+  '@fast-crud/ui-interface@1.25.8':
+    resolution: {integrity: sha512-UUoXce20z+BlPu/KKNfdHb6qpX1OdrrkMuIO2KdaI4FENVa9IW83AsttmNSHNkZkvG7zeVacxd03Y0xmdGeioA==}
 
   '@fidm/asn1@1.0.4':
     resolution: {integrity: sha512-esd1jyNvRb2HVaQGq2Gg8Z0kbQPXzV9Tq5Z14KNIov6KfFD6PTaRIO8UpcsYiTNzOqJpmyzWgVTrUwFV3UF4TQ==}
@@ -15297,7 +15297,7 @@ snapshots:
 
   '@eslint/js@8.57.0': {}
 
-  '@fast-crud/fast-crud@1.25.7(vue@3.5.13(typescript@5.8.2))':
+  '@fast-crud/fast-crud@1.25.8(vue@3.5.13(typescript@5.8.2))':
     dependencies:
       '@iconify/types': 2.0.0
       file-saver: 2.0.5
@@ -15307,7 +15307,7 @@ snapshots:
     transitivePeerDependencies:
       - vue
 
-  '@fast-crud/fast-extends@1.25.7(aws-crt@1.25.3)(vue@3.5.13(typescript@5.8.2))':
+  '@fast-crud/fast-extends@1.25.8(aws-crt@1.25.3)(vue@3.5.13(typescript@5.8.2))':
     dependencies:
       '@aws-sdk/client-s3': 3.758.0(aws-crt@1.25.3)
       '@aws-sdk/s3-request-presigner': 3.758.0
@@ -15339,9 +15339,9 @@ snapshots:
       - utf-8-validate
       - vue
 
-  '@fast-crud/ui-antdv4@1.25.7': {}
+  '@fast-crud/ui-antdv4@1.25.8': {}
 
-  '@fast-crud/ui-interface@1.25.7':
+  '@fast-crud/ui-interface@1.25.8':
     dependencies:
       lodash-es: 4.17.21
 
@@ -20616,13 +20616,13 @@ snapshots:
       resolve: 1.22.10
       semver: 6.3.1
 
-  eslint-plugin-prettier@3.4.1(eslint-config-prettier@8.10.0(eslint@7.32.0))(eslint@7.32.0)(prettier@2.8.8):
+  eslint-plugin-prettier@3.4.1(eslint-config-prettier@8.10.0(eslint@8.57.0))(eslint@7.32.0)(prettier@2.8.8):
     dependencies:
       eslint: 7.32.0
       prettier: 2.8.8
       prettier-linter-helpers: 1.0.0
     optionalDependencies:
-      eslint-config-prettier: 8.10.0(eslint@7.32.0)
+      eslint-config-prettier: 8.10.0(eslint@8.57.0)
 
   eslint-plugin-prettier@4.2.1(eslint-config-prettier@8.10.0(eslint@8.57.0))(eslint@8.57.0)(prettier@2.8.8):
     dependencies:
@@ -23336,7 +23336,7 @@ snapshots:
       eslint: 7.32.0
       eslint-config-prettier: 8.10.0(eslint@7.32.0)
       eslint-plugin-node: 11.1.0(eslint@7.32.0)
-      eslint-plugin-prettier: 3.4.1(eslint-config-prettier@8.10.0(eslint@7.32.0))(eslint@7.32.0)(prettier@2.8.8)
+      eslint-plugin-prettier: 3.4.1(eslint-config-prettier@8.10.0(eslint@8.57.0))(eslint@7.32.0)(prettier@2.8.8)
       execa: 5.1.1
       inquirer: 7.3.3
       json5: 2.2.3

@@ -6,6 +6,8 @@ import { AddReq, compute, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, 
 import { useUserStore } from "/src/store/modules/user";
 import { useSettingStore } from "/src/store/modules/settings";
 import { Modal } from "ant-design-vue";
+//@ts-ignore
+import yaml from "js-yaml";
 
 export default function ({ crudExpose, context }: CreateCrudOptionsProps): CreateCrudOptionsRet {
   const router = useRouter();
@@ -277,7 +279,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             },
           },
         },
-        "default.strategy.runStrategy": {
+        "extra.default.strategy.runStrategy": {
           title: "运行策略",
           type: "dict-select",
 
@@ -298,6 +300,16 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             component: {
               color: "auto",
             },
+          },
+          valueBuilder({ row }) {
+            if (row.extra) {
+              row.extra = yaml.load(row.extra);
+            }
+          },
+          valueResolve({ row }) {
+            if (row.extra) {
+              row.extra = yaml.dump(row.extra);
+            }
           },
         },
         disabled: {
