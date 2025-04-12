@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.33.1](https://github.com/certd/certd/compare/v1.33.0...v1.33.1) (2025-04-12)
+
+### Bug Fixes
+
+* 修复ssh插件报length空指针的bug ([9c4cbe1](https://github.com/certd/certd/commit/9c4cbe17a22b548611cf1fbefecc83a421788e42))
+
 # [1.33.0](https://github.com/certd/certd/compare/v1.32.0...v1.33.0) (2025-04-11)
 
 ### Performance Improvements

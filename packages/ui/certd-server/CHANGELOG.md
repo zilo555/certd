@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.33.1](https://github.com/certd/certd/compare/v1.33.0...v1.33.1) (2025-04-12)
+
+### Bug Fixes
+
+* 修复阿里云cdn证书部署失败问题，增加certname参数传入 ([965dc2c](https://github.com/certd/certd/commit/965dc2cb476f690af716f291c6b20ba98be0c8f0))
+
 # [1.33.0](https://github.com/certd/certd/compare/v1.32.0...v1.33.0) (2025-04-11)
 
 ### Bug Fixes

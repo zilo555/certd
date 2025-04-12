@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.33.1](https://github.com/certd/certd/compare/v1.33.0...v1.33.1) (2025-04-12)
+
+### Performance Improvements
+
+* 镜像支持armv7 ([f78cbed](https://github.com/certd/certd/commit/f78cbed4d817859721fdafe7d348864848d0dfbf))
+
 # [1.33.0](https://github.com/certd/certd/compare/v1.32.0...v1.33.0) (2025-04-11)
 
 ### Performance Improvements
