@@ -87,11 +87,11 @@
 </template>
 <script lang="ts">
 import { defineComponent, reactive, ref, toRaw } from "vue";
-import { useUserStore } from "/src/store/modules/user";
+import { useUserStore } from "/src/store/user";
 import { utils } from "@fast-crud/fast-crud";
 import ImageCode from "/@/views/framework/login/image-code.vue";
 import EmailCode from "./email-code.vue";
-import { useSettingStore } from "/@/store/modules/settings";
+import { useSettingStore } from "/@/store/settings";
 import { notification } from "ant-design-vue";
 export default defineComponent({
   name: "RegisterPage",

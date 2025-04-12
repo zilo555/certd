@@ -4,7 +4,7 @@ import { LocalStorage } from "/@/utils/util.storage";
 export async function GetStatisticCount() {
   return await request({
     url: "/statistic/count",
-    method: "POST"
+    method: "POST",
   });
 }
 
@@ -16,7 +16,7 @@ export async function GetLatestVersion() {
   const res = await request({
     url: "/app/latest",
     method: "GET",
-    unpack: true
+    unpack: true,
   });
   try {
     const latest = res;

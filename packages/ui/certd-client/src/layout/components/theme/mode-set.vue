@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import { ref, defineComponent } from "vue";
-import { useSettingStore } from "/@/store/modules/settings";
+import { useSettingStore } from "/@/store/settings";
 
 export default defineComponent({
   name: "FsThemeModeSet",

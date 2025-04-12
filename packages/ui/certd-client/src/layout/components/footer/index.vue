@@ -23,7 +23,7 @@
 </template>
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
-import { useSettingStore } from "/@/store/modules/settings";
+import { useSettingStore } from "/@/store/settings";
 
 defineOptions({
   name: "PageFooter"

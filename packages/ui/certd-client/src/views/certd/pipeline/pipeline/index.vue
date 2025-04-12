@@ -255,7 +255,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, provide, Ref, watch, onMounted } from "vue";
+import { defineComponent, onMounted, provide, Ref, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import PiTaskForm from "./component/task-form/index.vue";
 import PiTriggerForm from "./component/trigger-form/index.vue";
@@ -264,16 +264,17 @@ import PiTaskView from "./component/task-view/index.vue";
 import PiStatusShow from "./component/status-show.vue";
 import VDraggable from "vuedraggable";
 import * as _ from "lodash-es";
-import { message, Modal, notification, TourProps } from "ant-design-vue";
+import { message, Modal, notification } from "ant-design-vue";
 import { nanoid } from "nanoid";
-import { PipelineDetail, PipelineOptions, PluginGroups, RunHistory } from "./type";
+import { PipelineDetail, PipelineOptions, RunHistory } from "./type";
 import type { Runnable, Stage } from "@certd/pipeline";
 import PiHistoryTimelineItem from "/@/views/certd/pipeline/pipeline/component/history-timeline-item.vue";
 import { FsIcon } from "@fast-crud/fast-crud";
-import { useSettingStore } from "/@/store/modules/settings";
-import { useUserStore } from "/@/store/modules/user";
+import { useSettingStore } from "/@/store/settings";
+import { useUserStore } from "/@/store/user";
 import TaskShortcuts from "./component/shortcut/task-shortcuts.vue";
 import { eachSteps, findStep } from "../utils";
+
 export default defineComponent({
   name: "PipelineEdit",
   // eslint-disable-next-line vue/no-unused-components

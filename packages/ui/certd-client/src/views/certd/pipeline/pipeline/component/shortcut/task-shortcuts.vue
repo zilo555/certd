@@ -5,8 +5,8 @@
 </template>
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import * as pluginApi from "/@/views/certd/pipeline/api.plugin";
 import TaskShortcut from "./task-shortcut.vue";
+import { usePluginStore } from "/@/store/plugin";
 
 defineOptions({
   name: "TaskShortcuts",
@@ -15,7 +15,8 @@ defineOptions({
 const props = defineProps<{
   task: any;
 }>();
-
+const shortcuts = ref([]);
+const pluginStore = usePluginStore();
 watch(
   () => props.task,
   value => {
@@ -24,7 +25,6 @@ watch(
   { immediate: true }
 );
 
-const shortcuts = ref([]);
 async function init() {
   const steps = props.task?.steps || [];
   if (steps.length === 0) {
@@ -33,7 +33,7 @@ async function init() {
   const list = [];
   for (const step of steps) {
     const stepType = step.type;
-    const pluginDefine = await pluginApi.GetPluginDefine(stepType);
+    const pluginDefine = await pluginStore.getPluginDefine(stepType);
     if (pluginDefine.shortcut) {
       for (const key in pluginDefine.shortcut) {
         const shortcut = pluginDefine.shortcut[key];

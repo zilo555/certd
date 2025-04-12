@@ -1,5 +1,5 @@
 import { notification } from "ant-design-vue";
-import { useSettingStore } from "/@/store/modules/settings";
+import { useSettingStore } from "/@/store/settings";
 
 export default {
   mounted(el: any, binding: any, vnode: any) {

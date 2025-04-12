@@ -43,14 +43,17 @@ export class PluginService extends BaseService<PluginEntity> {
     };
   }
 
-  async getEnabledBuildInGroup() {
+  async getEnabledBuildInGroup(isSimple = false) {
     const groups = this.builtInPluginService.getGroups();
-    for (const key in groups) {
-      const group = groups[key];
-      group.plugins.forEach(item => {
-        delete item.input;
-      });
+    if(isSimple){
+      for (const key in groups) {
+        const group = groups[key];
+        group.plugins.forEach(item => {
+          delete item.input;
+        });
+      }
     }
+
 
     if (!isComm()) {
       return groups;

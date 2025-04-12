@@ -11,7 +11,7 @@
 import { onActivated, onMounted } from "vue";
 import { useFs } from "@fast-crud/fast-crud";
 import createCrudOptions from "./crud";
-import { useSettingStore } from "/@/store/modules/settings";
+import { useSettingStore } from "/@/store/settings";
 
 defineOptions({
   name: "SettingsHeaderMenus",

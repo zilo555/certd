@@ -16,9 +16,9 @@ import { computed, onMounted, reactive } from "vue";
 import dayjs from "dayjs";
 import { message, Modal } from "ant-design-vue";
 import * as api from "./api";
-import { useSettingStore } from "/@/store/modules/settings";
+import { useSettingStore } from "/@/store/settings";
 import { useRouter } from "vue-router";
-import { useUserStore } from "/@/store/modules/user";
+import { useUserStore } from "/@/store/user";
 import { mitter } from "/@/utils/util.mitt";
 
 const settingStore = useSettingStore();

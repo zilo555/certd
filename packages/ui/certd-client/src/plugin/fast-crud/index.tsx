@@ -1,4 +1,4 @@
-import { request, requestForMock } from "/src/api/service";
+import { request } from "/src/api/service";
 // import "/src/mock";
 import { ColumnCompositionProps, CrudOptions, FastCrud, PageQuery, PageRes, setLogger, TransformResProps, useColumns, UseCrudProps, UserPageQuery, useTypes, utils } from "@fast-crud/fast-crud";
 import "@fast-crud/fast-crud/dist/style.css";
@@ -51,10 +51,6 @@ function install(app: App, options: any = {}) {
   app.use(FastCrud, {
     i18n: options.i18n,
     async dictRequest({ url }: any) {
-      if (url && url.startsWith("/mock")) {
-        //如果是crud开头的dict请求视为mock
-        return await requestForMock({ url, method: "post" });
-      }
       return await request({ url, method: "post" });
     },
     /**

@@ -54,6 +54,7 @@ defineOptions({
 });
 const route = useRoute();
 
+const pluginStore = usePluginStore();
 const plugin = ref<any>({});
 const formOptionsRef: Ref = ref();
 const baseFormRef: Ref = ref({});
@@ -145,6 +146,7 @@ async function doSave() {
     notification.success({
       message: "保存成功",
     });
+    pluginStore.clear();
   } finally {
     saveLoading.value = false;
   }

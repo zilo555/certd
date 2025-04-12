@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
 import { Modal, notification } from "ant-design-vue";
 import * as _ from "lodash-es";
-import * as basicApi from "/@/api/modules/api.basic";
-import { AppInfo, HeaderMenus, PlusInfo, SiteEnv, SiteInfo, SuiteSetting, SysInstallInfo, SysPublicSetting } from "/@/api/modules/api.basic";
-import { useUserStore } from "/@/store/modules/user";
+import * as basicApi from "./api.basic";
+import { AppInfo, HeaderMenus, PlusInfo, SiteEnv, SiteInfo, SuiteSetting, SysInstallInfo, SysPublicSetting } from "./api.basic";
+import { useUserStore } from "../user";
 import { mitter } from "/@/utils/util.mitt";
 import { env } from "/@/utils/util.env";
 import { updatePreferences } from "/@/vben/preferences";

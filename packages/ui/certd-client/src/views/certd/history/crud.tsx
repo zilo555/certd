@@ -3,8 +3,8 @@ import { useI18n } from "vue-i18n";
 import { computed, Ref, ref } from "vue";
 import { useRouter } from "vue-router";
 import { AddReq, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, EditReq, UserPageQuery, UserPageRes, utils } from "@fast-crud/fast-crud";
-import { useUserStore } from "/@/store/modules/user";
-import { useSettingStore } from "/@/store/modules/settings";
+import { useUserStore } from "/@/store/user";
+import { useSettingStore } from "/@/store/settings";
 
 export default function ({ crudExpose, context }: CreateCrudOptionsProps): CreateCrudOptionsRet {
   const router = useRouter();

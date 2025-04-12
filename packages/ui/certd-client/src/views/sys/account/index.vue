@@ -14,8 +14,8 @@
 <script setup lang="tsx">
 import { IframeClient } from "@certd/lib-iframe";
 import { computed, onMounted, ref } from "vue";
-import { useUserStore } from "/@/store/modules/user";
-import { useSettingStore } from "/@/store/modules/settings";
+import { useUserStore } from "/@/store/user";
+import { useSettingStore } from "/@/store/settings";
 import * as api from "./api";
 import { notification } from "ant-design-vue";
 

@@ -11,11 +11,17 @@ const defaultInputDefine = {
 };
 
 function initPlugins(plugins: any) {
+  const checkedComponents = ["a-checkbox", "a-radio", "a-switch"];
   for (const plugin of plugins) {
     for (const key in plugin.input) {
       const field = _.merge({}, defaultInputDefine, plugin.input[key]);
-      if (field.component.name === "a-input" || field.component.name === "a-select") {
-        field.component.vModel = "value";
+      const componentName = field.component.name;
+      if (componentName.startsWith("a-")) {
+        if (checkedComponents.includes(componentName)) {
+          field.component.vModel = "checked";
+        } else {
+          field.component.vModel = "value";
+        }
       }
       //嵌套对象
       field.key = ["input", key];

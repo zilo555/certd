@@ -6,23 +6,23 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onMounted, Ref, ref } from "vue";
+import { nextTick, Ref, ref } from "vue";
 import PipelineEdit from "./pipeline/index.vue";
-import * as pluginApi from "./api.plugin";
 import * as historyApi from "./api.history";
 import * as api from "./api";
 import { useRoute } from "vue-router";
-import { PipelineDetail, PipelineOptions, PluginGroups, RunHistory } from "./pipeline/type";
-import { TourProps } from "ant-design-vue";
+import { PipelineDetail, PipelineOptions, RunHistory } from "./pipeline/type";
 import { LocalStorage } from "/@/utils/util.storage";
-import { useUserStore } from "/@/store/modules/user";
+import { useUserStore } from "/@/store/user";
+import { usePluginStore, PluginGroups } from "/@/store/plugin";
 
 defineOptions({
   name: "PipelineDetail",
 });
 const route = useRoute();
 const pipelineId: Ref = ref(route.query.id);
-const historyId = ref(route.query.historyId);
+const historyId = ref(route.query.historyId as string);
+const pluginStore = usePluginStore();
 const pipelineOptions: PipelineOptions = {
   async getPipelineDetail({ pipelineId }) {
     const detail = await api.GetDetail(pipelineId);
@@ -48,9 +48,8 @@ const pipelineOptions: PipelineOptions = {
     return detail;
   },
 
-  async getPluginGroups() {
-    const groups = await pluginApi.GetGroups({});
-    return new PluginGroups(groups);
+  async getPluginGroups(): Promise<PluginGroups> {
+    return await pluginStore.getGroups();
   },
 
   async doSave(pipelineConfig: any) {

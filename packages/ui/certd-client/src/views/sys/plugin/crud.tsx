@@ -3,8 +3,6 @@ import { useI18n } from "vue-i18n";
 import { Ref, ref } from "vue";
 import { useRouter } from "vue-router";
 import { AddReq, compute, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, EditReq, UserPageQuery, UserPageRes } from "@fast-crud/fast-crud";
-import { useUserStore } from "/src/store/modules/user";
-import { useSettingStore } from "/src/store/modules/settings";
 import { Modal } from "ant-design-vue";
 //@ts-ignore
 import yaml from "js-yaml";
@@ -29,8 +27,6 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
     return res;
   };
 
-  const userStore = useUserStore();
-  const settingStore = useSettingStore();
   const selectedRowKeys: Ref<any[]> = ref([]);
   context.selectedRowKeys = selectedRowKeys;
 

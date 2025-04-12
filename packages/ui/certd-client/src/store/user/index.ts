@@ -3,8 +3,8 @@ import router from "../../router";
 // @ts-ignore
 import { LocalStorage } from "/src/utils/util.storage";
 // @ts-ignore
-import * as UserApi from "/src/api/modules/api.user";
-import { RegisterReq, SmsLoginReq } from "/src/api/modules/api.user";
+import * as UserApi from "./api.user";
+import { RegisterReq, SmsLoginReq } from "./api.user";
 // @ts-ignore
 import { LoginReq, UserInfoRes } from "/@/api/modules/api.user";
 import { message, Modal, notification } from "ant-design-vue";
@@ -28,7 +28,7 @@ export const useUserStore = defineStore({
     // user info
     userInfo: null,
     // token
-    token: undefined
+    token: undefined,
   }),
   getters: {
     getUserInfo(): UserInfoRes {
@@ -39,7 +39,7 @@ export const useUserStore = defineStore({
     },
     isAdmin(): boolean {
       return this.getUserInfo.roleIds?.includes(1) || this.getUserInfo.id === 1;
-    }
+    },
   },
   actions: {
     setToken(token: string, expire: number) {
@@ -63,7 +63,7 @@ export const useUserStore = defineStore({
     async register(user: RegisterReq) {
       await UserApi.register(user);
       notification.success({
-        message: "注册成功，请登录"
+        message: "注册成功，请登录",
       });
       await router.replace("/login");
     },
@@ -127,8 +127,8 @@ export const useUserStore = defineStore({
         content: t("app.login.logoutMessage"),
         onOk: async () => {
           await this.logout(true);
-        }
+        },
       });
-    }
-  }
+    },
+  },
 });

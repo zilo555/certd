@@ -23,8 +23,8 @@
 </template>
 <script lang="ts" setup>
 import { Ref, ref, watch } from "vue";
-import { useUserStore } from "/@/store/modules/user";
-import { useSettingStore } from "/@/store/modules/settings";
+import { useUserStore } from "/@/store/user";
+import { useSettingStore } from "/@/store/settings";
 
 const props = defineProps({
   options: {

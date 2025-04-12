@@ -22,12 +22,10 @@ import { useFs } from "@fast-crud/fast-crud";
 import createCrudOptions from "./crud";
 import { siteInfoApi } from "./api";
 import { Modal, notification } from "ant-design-vue";
-import { useSettingStore } from "/@/store/modules/settings";
 defineOptions({
   name: "SiteCertMonitor",
 });
 const { crudBinding, crudRef, crudExpose } = useFs({ createCrudOptions, context: {} });
-const settingStore = useSettingStore();
 function checkAll() {
   Modal.confirm({
     title: "确认",

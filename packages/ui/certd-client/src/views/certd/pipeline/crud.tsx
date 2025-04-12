@@ -6,9 +6,9 @@ import { AddReq, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, Edi
 import { statusUtil } from "/@/views/certd/pipeline/pipeline/utils/util.status";
 import { Modal, notification } from "ant-design-vue";
 import { env } from "/@/utils/util.env";
-import { useUserStore } from "/@/store/modules/user";
+import { useUserStore } from "/@/store/user";
 import dayjs from "dayjs";
-import { useSettingStore } from "/@/store/modules/settings";
+import { useSettingStore } from "/@/store/settings";
 import { cloneDeep } from "lodash-es";
 import { useModal } from "/@/use/use-modal";
 import CertView from "./cert-view.vue";

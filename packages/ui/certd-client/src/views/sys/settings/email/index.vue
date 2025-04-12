@@ -8,16 +8,7 @@
     </template>
 
     <div class="flex-o">
-      <a-form
-        :model="formState"
-        name="basic"
-        :label-col="{ span: 8 }"
-        :wrapper-col="{ span: 16 }"
-        autocomplete="off"
-        class="email-form-box"
-        @finish="onFinish"
-        @finish-failed="onFinishFailed"
-      >
+      <a-form :model="formState" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" class="email-form-box" @finish="onFinish" @finish-failed="onFinishFailed">
         <div v-if="!formState.usePlus" class="email-form">
           <a-form-item label="使用自定义邮件服务器"> </a-form-item>
           <a-form-item label="SMTP域名" name="host" :rules="[{ required: true, message: '请输入smtp域名或ip' }]">
@@ -80,13 +71,12 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import * as api from "../api";
-import { EmailSettingsSave, SettingKeys } from "../api";
 import * as emailApi from "./api.email";
 import { notification } from "ant-design-vue";
-import { useSettingStore } from "/src/store/modules/settings";
+import { useSettingStore } from "/src/store/settings";
 import * as _ from "lodash-es";
 defineOptions({
-  name: "EmailSetting"
+  name: "EmailSetting",
 });
 
 interface FormState {
@@ -108,10 +98,10 @@ interface FormState {
 const formState = reactive<Partial<FormState>>({
   auth: {
     user: "",
-    pass: ""
+    pass: "",
   },
   tls: {},
-  usePlus: false
+  usePlus: false,
 });
 
 async function load() {
@@ -125,7 +115,7 @@ const onFinish = async (form: any) => {
   console.log("Success:", form);
   await api.EmailSettingsSave(form);
   notification.success({
-    message: "保存成功"
+    message: "保存成功",
   });
 };
 
@@ -143,14 +133,14 @@ interface TestFormState {
 }
 const testFormState = reactive<TestFormState>({
   receiver: "",
-  loading: false
+  loading: false,
 });
 async function onTestSend() {
   testFormState.loading = true;
   try {
     await emailApi.TestSend(testFormState.receiver);
     notification.success({
-      message: "发送成功"
+      message: "发送成功",
     });
   } finally {
     testFormState.loading = false;

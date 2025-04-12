@@ -1,4 +1,4 @@
-import { useSettingStore } from "/@/store/modules/settings";
+import { useSettingStore } from "/@/store/settings";
 import aboutResource from "/@/router/source/modules/about";
 
 export const certdResources = [

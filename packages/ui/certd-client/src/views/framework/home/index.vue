@@ -8,7 +8,7 @@
 
 <script lang="ts" setup>
 import DashboardUser from "./dashboard/index.vue";
-import { useUserStore } from "/@/store/modules/user";
+import { useUserStore } from "/@/store/user";
 import ChangePasswordButton from "/@/views/certd/mine/change-password-button.vue";
 import { onMounted, ref } from "vue";
 import { Modal } from "ant-design-vue";

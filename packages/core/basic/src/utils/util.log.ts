@@ -38,6 +38,9 @@ export function buildLogger(write: (text: string) => void) {
   logger.addContext("outputHandler", {
     write: (text: string) => {
       for (const item of _secrets) {
+        if (item == null) {
+          continue;
+        }
         //换成同长度的*号， item可能有多行
         const reg = new RegExp(item, "g");
         text = text.replaceAll(reg, "*".repeat(item.length));

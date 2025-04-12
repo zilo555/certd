@@ -4,7 +4,7 @@ import { AddReq, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, Edi
 import { siteInfoApi } from "./api";
 import dayjs from "dayjs";
 import { notification } from "ant-design-vue";
-import { useSettingStore } from "/@/store/modules/settings";
+import { useSettingStore } from "/@/store/settings";
 import { mySuiteApi } from "/@/views/certd/suite/mine/api";
 import { mitter } from "/@/utils/util.mitt";
 

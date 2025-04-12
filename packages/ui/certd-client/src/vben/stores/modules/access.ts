@@ -78,11 +78,11 @@ export const useAccessStore = defineStore("core-access", {
     },
     setRefreshToken(token: AccessToken) {
       this.refreshToken = token;
-    }
+    },
   },
   persist: {
     // 持久化
-    pick: ["accessToken", "refreshToken", "accessCodes"]
+    pick: ["accessToken", "refreshToken", "accessCodes"],
   },
   state: (): AccessState => ({
     accessCodes: [],
@@ -91,8 +91,8 @@ export const useAccessStore = defineStore("core-access", {
     accessToken: null,
     isAccessChecked: false,
     loginExpired: false,
-    refreshToken: null
-  })
+    refreshToken: null,
+  }),
 });
 
 // 解决热更新问题

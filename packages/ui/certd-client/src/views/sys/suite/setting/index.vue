@@ -46,7 +46,7 @@ import { notification } from "ant-design-vue";
 import { request } from "/@/api/service";
 import SuiteDurationSelector from "/@/views/sys/suite/setting/suite-duration-selector.vue";
 import ProductManager from "/@/views/sys/suite/product/index.vue";
-import { useSettingStore } from "/@/store/modules/settings";
+import { useSettingStore } from "/@/store/settings";
 
 defineOptions({
   name: "SettingsSuite"

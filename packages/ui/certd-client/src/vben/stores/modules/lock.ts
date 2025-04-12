@@ -21,13 +21,13 @@ export const useLockStore = defineStore("core-lock", {
     unlockScreen() {
       this.isLockScreen = false;
       this.lockScreenPassword = undefined;
-    }
+    },
   },
   persist: {
-    pick: ["isLockScreen", "lockScreenPassword"]
+    pick: ["isLockScreen", "lockScreenPassword"],
   },
   state: (): AppState => ({
     isLockScreen: false,
-    lockScreenPassword: undefined
-  })
+    lockScreenPassword: undefined,
+  }),
 });

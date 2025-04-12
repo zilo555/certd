@@ -1,5 +1,5 @@
 import router from "/src/router";
-import { useUserStore } from "/@/store/modules/user";
+import { useUserStore } from "/@/store/user";
 import { usePermissionStore } from "./store.permission";
 import util from "./util.permission";
 import { message } from "ant-design-vue";

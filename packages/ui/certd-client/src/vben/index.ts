@@ -10,7 +10,7 @@ import "./styles/antd/index.css";
 
 import { useTitle } from "@vueuse/core";
 import { setupI18n } from "/@/vben/locales";
-import { useSettingStore } from "/@/store/modules/settings";
+import { useSettingStore } from "/@/store/settings";
 
 export async function setupVben(app: any, { loadMessages, router }: any) {
   await setupI18n(app, { loadMessages });

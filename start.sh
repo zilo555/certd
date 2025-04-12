@@ -10,13 +10,14 @@ find ./packages -mindepth 1 -maxdepth 1 -type d ! -name 'ui' -exec rm -rf {} +
 
 echo "删除成功"
 
-echo "安装pnpm 8.15.7, 前提是已经安装了nodejs"
-npm install -g pnpm@8.15.7 --registry https://registry.npmmirror.com
+echo "安装pnpm, 前提是已经安装了nodejs"
+npm install -g pnpm@ --registry https://registry.npmmirror.com
 echo "安装依赖"
 pnpm install --registry https://registry.npmmirror.com
 
 echo "开始构建"
 echo "构建certd-client"
+export NODE_OPTIONS=--max-old-space-size=32768
 cd packages/ui/certd-client
 npm run build
 cp -r dist/* ../certd-server/public

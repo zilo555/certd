@@ -1,7 +1,7 @@
 import { forEach } from "lodash-es";
 import { mySuiteApi } from "/@/views/certd/suite/mine/api";
 import { notification } from "ant-design-vue";
-import { useSettingStore } from "/@/store/modules/settings";
+import { useSettingStore } from "/@/store/settings";
 //@ts-ignore
 import forge from "node-forge";
 export function eachStages(list: any[], exec: (item: any, runnableType: string) => void, runnableType: string = "stage") {

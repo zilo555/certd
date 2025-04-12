@@ -1,8 +1,8 @@
 import { compute, CreateCrudOptionsRet, dict } from "@fast-crud/fast-crud";
 import { useReference } from "/@/use/use-refrence";
 import { merge, cloneDeep } from "lodash-es";
-import * as api from "../api.plugin";
 import NotificationSelector from "/@/views/certd/notification/notification-selector/index.vue";
+import { usePluginStore } from "/@/store/plugin";
 
 export default function (certPlugins: any[], formWrapperRef: any): CreateCrudOptionsRet {
   const inputs: any = {};
@@ -46,6 +46,7 @@ export default function (certPlugins: any[], formWrapperRef: any): CreateCrudOpt
     }
   }
 
+  const pluginStore = usePluginStore();
   const randomHour = Math.floor(Math.random() * 6);
   const randomMin = Math.floor(Math.random() * 60);
   return {
@@ -91,7 +92,7 @@ export default function (certPlugins: any[], formWrapperRef: any): CreateCrudOpt
             },
             valueChange: {
               handle: async ({ form, value }) => {
-                const config = await api.GetPluginConfig({
+                const config = await pluginStore.getPluginConfig({
                   name: value,
                   type: "builtIn",
                 });

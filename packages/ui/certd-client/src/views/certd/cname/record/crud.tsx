@@ -3,8 +3,8 @@ import { useI18n } from "vue-i18n";
 import { Ref, ref } from "vue";
 import { useRouter } from "vue-router";
 import { AddReq, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, EditReq, UserPageQuery, UserPageRes } from "@fast-crud/fast-crud";
-import { useUserStore } from "/@/store/modules/user";
-import { useSettingStore } from "/@/store/modules/settings";
+import { useUserStore } from "/@/store/user";
+import { useSettingStore } from "/@/store/settings";
 import { message } from "ant-design-vue";
 import CnameTip from "/@/components/plugins/cert/domains-verify-plan-editor/cname-tip.vue";
 export default function ({ crudExpose, context }: CreateCrudOptionsProps): CreateCrudOptionsRet {

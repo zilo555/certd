@@ -42,8 +42,8 @@
 import { reactive, ref } from "vue";
 import * as api from "./api";
 import { notification } from "ant-design-vue";
-import { useSettingStore } from "/src/store/modules/settings";
-import { useUserStore } from "/@/store/modules/user";
+import { useSettingStore } from "/src/store/settings";
+import { useUserStore } from "/@/store/user";
 import { merge } from "lodash-es";
 
 defineOptions({

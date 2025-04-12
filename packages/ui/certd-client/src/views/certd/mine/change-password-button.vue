@@ -7,7 +7,7 @@ import { ref } from "vue";
 import { CrudOptions, useColumns, useFormWrapper } from "@fast-crud/fast-crud";
 import * as api from "/@/views/certd/mine/api";
 import { notification } from "ant-design-vue";
-import { useUserStore } from "/@/store/modules/user";
+import { useUserStore } from "/@/store/user";
 
 defineProps<{
   showButton: boolean;

@@ -3,11 +3,11 @@ import NotificationSelector from "/@/views/certd/notification/notification-selec
 import { cloneDeep, omit } from "lodash-es";
 import { useReference } from "/@/use/use-refrence";
 import { ref } from "vue";
-import * as pluginApi from "../api.plugin";
 import * as api from "../api";
 import { checkPipelineLimit, getAllDomainsFromCrt } from "/@/views/certd/pipeline/utils";
 import { useRouter } from "vue-router";
 import { nanoid } from "nanoid";
+import { usePluginStore } from "/@/store/plugin";
 
 export function useCertUpload() {
   const { openCrudFormDialog } = useFormWrapper();
@@ -52,8 +52,10 @@ export function useCertUpload() {
     },
   };
 
+  const pluginStore = usePluginStore();
+
   async function buildUploadCertPluginInputs(getFormData: any) {
-    const plugin: any = await pluginApi.GetPluginDefine("CertApplyUpload");
+    const plugin: any = await pluginStore.getPluginDefine("CertApplyUpload");
     const inputs: any = {};
     for (const inputKey in plugin.input) {
       if (inputKey === "uploadCert" || inputKey === "domains") {

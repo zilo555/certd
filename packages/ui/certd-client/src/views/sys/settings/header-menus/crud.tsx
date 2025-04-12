@@ -2,7 +2,7 @@ import { useI18n } from "vue-i18n";
 import { Ref, ref } from "vue";
 import { useRouter } from "vue-router";
 import { AddReq, compute, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, EditReq, UserPageQuery, UserPageRes } from "@fast-crud/fast-crud";
-import { useSettingStore } from "/@/store/modules/settings";
+import { useSettingStore } from "/@/store/settings";
 import { cloneDeep, find, merge, remove } from "lodash-es";
 import { nanoid } from "nanoid";
 import { HeaderMenusSettingsSave, SettingsSave } from "../api";

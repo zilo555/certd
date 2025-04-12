@@ -1,5 +1,5 @@
 import { IFrameView } from "/@/vben/layouts";
-import { useSettingStore } from "/@/store/modules/settings";
+import { useSettingStore } from "/@/store/settings";
 import { computed } from "vue";
 import TutorialButton from "/@/components/tutorial/index.vue";
 export const aboutResource = [

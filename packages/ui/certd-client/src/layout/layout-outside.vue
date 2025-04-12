@@ -40,7 +40,7 @@
 <script lang="ts" setup>
 import { env } from "/@/utils/util.env";
 import { computed, ref, Ref } from "vue";
-import { useSettingStore } from "/@/store/modules/settings";
+import { useSettingStore } from "/@/store/settings";
 import { SiteInfo, SysPublicSetting } from "/@/api/modules/api.basic";
 
 const envRef = ref(env);

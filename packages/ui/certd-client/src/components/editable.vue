@@ -8,7 +8,7 @@
       </a-input>
     </div>
     <div v-else class="view" @click="edit">
-      <span> {{ modelValue }}</span>
+      <span class="ellipsis"> {{ modelValue }}</span>
       <fs-icon class="edit-icon" icon="ant-design:edit-outlined"></fs-icon>
     </div>
   </div>
@@ -22,19 +22,19 @@ export default {
   props: {
     modelValue: {
       type: String,
-      default: ""
+      default: "",
     },
     input: {
-      type: Object
+      type: Object,
     },
     disabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
     hoverShow: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   emits: ["update:modelValue"],
   setup(props, ctx) {
@@ -44,7 +44,7 @@ export default {
       () => {
         return props.modelValue;
       },
-      (value) => {
+      value => {
         valueRef.value = value;
       }
     );
@@ -66,9 +66,9 @@ export default {
       isEdit,
       save,
       edit,
-      inputRef
+      inputRef,
     };
-  }
+  },
 };
 </script>
 

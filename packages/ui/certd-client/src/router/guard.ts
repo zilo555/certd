@@ -5,10 +5,10 @@ import { preferences } from "/@/vben/preferences";
 import { useAccessStore } from "/@/vben/stores";
 import { generateMenus, startProgress, stopProgress } from "/@/vben/utils";
 import { frameworkRoutes } from "/@/router/resolve";
-import { useSettingStore } from "/@/store/modules/settings";
+import { useSettingStore } from "/@/store/settings";
 import { usePermissionStore } from "/@/plugin/permission/store.permission";
 import util from "/@/plugin/permission/util.permission";
-import { useUserStore } from "/@/store/modules/user";
+import { useUserStore } from "/@/store/user";
 
 function buildAccessedMenus(menus: any) {
   if (menus == null) {

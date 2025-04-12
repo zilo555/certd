@@ -25,7 +25,7 @@ import SettingRegister from "/@/views/sys/settings/tabs/register.vue";
 import SettingPayment from "/@/views/sys/settings/tabs/payment.vue";
 import { useRoute, useRouter } from "vue-router";
 import { ref } from "vue";
-import { useSettingStore } from "/@/store/modules/settings";
+import { useSettingStore } from "/@/store/settings";
 defineOptions({
   name: "SysSettings",
 });

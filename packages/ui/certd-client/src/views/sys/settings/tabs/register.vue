@@ -62,7 +62,7 @@ import { reactive, ref, Ref } from "vue";
 import { GetSmsTypeDefine, SysSettings } from "/@/views/sys/settings/api";
 import * as api from "/@/views/sys/settings/api";
 import { merge } from "lodash-es";
-import { useSettingStore } from "/@/store/modules/settings";
+import { useSettingStore } from "/@/store/settings";
 import { notification } from "ant-design-vue";
 
 defineOptions({

@@ -1,4 +1,4 @@
-import { request } from "../service";
+import { request } from "/src/api/service";
 
 export type SiteEnv = {
   agent?: {

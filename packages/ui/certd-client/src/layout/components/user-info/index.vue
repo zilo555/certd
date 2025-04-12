@@ -14,7 +14,7 @@
   </a-dropdown>
 </template>
 <script lang="ts" setup>
-import { useUserStore } from "/src/store/modules/user";
+import { useUserStore } from "/src/store/user";
 import { Modal } from "ant-design-vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";

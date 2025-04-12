@@ -49,12 +49,12 @@ export const useUserStore = defineStore("core-user", {
     },
     setUserRoles(roles: string[]) {
       this.userRoles = roles;
-    }
+    },
   },
   state: (): AccessState => ({
     userInfo: null,
-    userRoles: []
-  })
+    userRoles: [],
+  }),
 });
 
 // 解决热更新问题

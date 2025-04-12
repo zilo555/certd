@@ -1,12 +1,5 @@
 <template>
-  <a-drawer
-    v-model:open="taskDrawerVisible"
-    placement="right"
-    :closable="true"
-    width="700px"
-    class="pi-task-form"
-    @after-open-change="taskDrawerOnAfterVisibleChange"
-  >
+  <a-drawer v-model:open="taskDrawerVisible" placement="right" :closable="true" width="700px" class="pi-task-form" @after-open-change="taskDrawerOnAfterVisibleChange">
     <template #title>
       <div>
         编辑任务
@@ -25,21 +18,15 @@
               key: 'title',
               component: {
                 name: 'a-input',
-                vModel: 'value'
+                vModel: 'value',
               },
-              rules: [{ required: true, message: '此项必填' }]
+              rules: [{ required: true, message: '此项必填' }],
             }"
             :get-context-fn="blankFn"
           />
 
           <div class="steps">
-            <a-form-item
-              :value="currentTask.steps"
-              name="steps"
-              label=""
-              :wrapper-col="{ span: 24 }"
-              :rules="[{ required: true, message: '至少需要一个步骤，或者你可以点击标题右边删除按钮删除此任务' }]"
-            >
+            <a-form-item :value="currentTask.steps" name="steps" label="" :wrapper-col="{ span: 24 }" :rules="[{ required: true, message: '至少需要一个步骤，或者你可以点击标题右边删除按钮删除此任务' }]">
               <a-descriptions title="任务步骤" size="small">
                 <template #extra>
                   <a-button type="primary" @click="stepAdd(currentTask)">添加步骤</a-button>
@@ -86,8 +73,8 @@ import PiStepForm from "../step-form/index.vue";
 import { Modal } from "ant-design-vue";
 import { CopyOutlined } from "@ant-design/icons-vue";
 import VDraggable from "vuedraggable";
-import { useUserStore } from "/@/store/modules/user";
-import { useSettingStore } from "/@/store/modules/settings";
+import { useUserStore } from "/@/store/user";
+import { useSettingStore } from "/@/store/settings";
 import { filter } from "lodash-es";
 export default {
   name: "PiTaskForm",
@@ -95,8 +82,8 @@ export default {
   props: {
     editMode: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   emits: ["update"],
   setup(props: any, ctx: any) {
@@ -149,7 +136,7 @@ export default {
           content: `确定要删除此步骤吗？`,
           async onOk() {
             task.steps.splice(stepIndex, 1);
-          }
+          },
         });
       };
 
@@ -176,9 +163,9 @@ export default {
           {
             type: "string",
             required: true,
-            message: "请输入名称"
-          }
-        ]
+            message: "请输入名称",
+          },
+        ],
       });
 
       const taskDrawerShow = () => {
@@ -245,7 +232,7 @@ export default {
           async onOk() {
             callback.value("delete");
             taskDrawerClose();
-          }
+          },
         });
       };
 
@@ -265,7 +252,7 @@ export default {
         taskSave,
         taskDelete,
         rules,
-        blankFn
+        blankFn,
       };
     }
     return {
@@ -274,9 +261,9 @@ export default {
       labelCol: { span: 6 },
       wrapperCol: { span: 16 },
       ...useTaskForm(),
-      ...useStep()
+      ...useStep(),
     };
-  }
+  },
 };
 </script>
 

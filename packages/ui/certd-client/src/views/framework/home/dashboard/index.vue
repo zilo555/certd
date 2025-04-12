@@ -125,23 +125,22 @@
 <script lang="ts" setup>
 import { FsIcon } from "@fast-crud/fast-crud";
 import SimpleSteps from "/@/components/tutorial/simple-steps.vue";
-import { useUserStore } from "/@/store/modules/user";
+import { useUserStore } from "/@/store/user";
 import { computed, ComputedRef, onMounted, Ref, ref } from "vue";
 import dayjs from "dayjs";
 import StatisticCard from "/@/views/framework/home/dashboard/statistic-card.vue";
-import * as pluginApi from "/@/views/certd/pipeline/api.plugin";
-import { PluginGroups } from "/@/views/certd/pipeline/pipeline/type";
 import TutorialButton from "/@/components/tutorial/index.vue";
 import DayCount from "./charts/day-count.vue";
 import PieCount from "./charts/pie-count.vue";
 import ExpiringList from "./charts/expiring-list.vue";
 import SuiteCard from "./suite-card.vue";
-import { useSettingStore } from "/@/store/modules/settings";
-import { SiteInfo } from "/@/api/modules/api.basic";
-import { UserInfoRes } from "/@/api/modules/api.user";
+import { useSettingStore } from "/@/store/settings";
+import { SiteInfo } from "/@/store/settings/api.basic";
+import { UserInfoRes } from "/@/store/user/api.user";
 import { GetStatisticCount } from "/@/views/framework/home/dashboard/api";
 import { useRouter } from "vue-router";
 import * as api from "./api";
+import { usePluginStore } from "/@/store/plugin";
 defineOptions({
   name: "DashboardUser",
 });
@@ -227,9 +226,10 @@ async function loadCount() {
   });
 }
 
+const pluginStore = usePluginStore();
 async function loadPluginGroups() {
-  const groups = await pluginApi.GetGroups({});
-  pluginGroups.value = new PluginGroups(groups);
+  const groups = await pluginStore.getGroups();
+  pluginGroups.value = groups;
 }
 
 const pluginGroups = ref();

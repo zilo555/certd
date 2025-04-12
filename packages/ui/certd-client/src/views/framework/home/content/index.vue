@@ -29,7 +29,7 @@
 </template>
 <script lang="ts" setup>
 import { computed, ref, Ref } from "vue";
-import { useSettingStore } from "/@/store/modules/settings";
+import { useSettingStore } from "/@/store/settings";
 import { SiteInfo } from "/@/api/modules/api.basic";
 
 const version = ref(import.meta.env.VITE_APP_VERSION);

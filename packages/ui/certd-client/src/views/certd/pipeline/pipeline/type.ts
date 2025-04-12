@@ -1,5 +1,6 @@
 import type { Pipeline } from "@certd/pipeline";
-import { DynamicType, FormItemProps } from "@fast-crud/fast-crud";
+import { PluginGroups } from "/@/store/plugin";
+
 export type PipelineDetail = {
   pipeline: Pipeline;
 };
@@ -11,120 +12,6 @@ export type RunHistory = {
     [id: string]: string[];
   };
 };
-export type PluginGroup = {
-  key: string;
-  title: string;
-  desc?: string;
-  order: number;
-  plugins: any[];
-};
-
-export type PluginDefine = {
-  name: string;
-  title: string;
-  desc?: string;
-  input: {
-    [key: string]: DynamicType<FormItemProps>;
-  };
-  output: {
-    [key: string]: any;
-  };
-};
-
-export class PluginGroups {
-  groups: { [key: string]: PluginGroup };
-  map: { [key: string]: PluginDefine };
-  constructor(groups: { [key: string]: PluginGroup }) {
-    this.groups = groups;
-    this.initGroup(groups);
-    this.initMap();
-  }
-
-  private initGroup(groups: { [p: string]: PluginGroup }) {
-    const all: PluginGroup = {
-      key: "all",
-      title: "全部",
-      order: 0,
-      plugins: [],
-      icon: "material-symbols:border-all-rounded",
-    };
-    for (const key in groups) {
-      all.plugins.push(...groups[key].plugins);
-    }
-    this.groups = {
-      all,
-      ...groups,
-    };
-  }
-
-  initMap() {
-    const map: { [key: string]: PluginDefine } = {};
-    for (const key in this.groups) {
-      const group = this.groups[key];
-      for (const plugin of group.plugins) {
-        map[plugin.name] = plugin;
-      }
-    }
-    this.map = map;
-  }
-
-  getGroups() {
-    return this.groups;
-  }
-
-  get(name: string) {
-    return this.map[name];
-  }
-
-  getPreStepOutputOptions({ pipeline, currentStageIndex, currentTaskIndex, currentStepIndex, currentTask }: any) {
-    const steps = this.collectionPreStepOutputs({
-      pipeline,
-      currentStageIndex,
-      currentTaskIndex,
-      currentStepIndex,
-      currentTask,
-    });
-    const options: any[] = [];
-    for (const step of steps) {
-      const stepDefine = this.get(step.type);
-      for (const key in stepDefine?.output) {
-        options.push({
-          value: `step.${step.id}.${key}`,
-          label: `${stepDefine.output[key].title}【from：${step.title}】`,
-          type: step.type,
-        });
-      }
-    }
-    return options;
-  }
-
-  collectionPreStepOutputs({ pipeline, currentStageIndex, currentTaskIndex, currentStepIndex, currentTask }: any) {
-    const steps: any[] = [];
-    // 开始放step
-    for (let i = 0; i < currentStageIndex; i++) {
-      const stage = pipeline.stages[i];
-      for (const task of stage.tasks) {
-        for (const step of task.steps) {
-          steps.push(step);
-        }
-      }
-    }
-    //当前阶段之前的task
-    const currentStage = pipeline.stages[currentStageIndex];
-    for (let i = 0; i < currentTaskIndex; i++) {
-      const task = currentStage.tasks[i];
-      for (const step of task.steps) {
-        steps.push(step);
-      }
-    }
-    //放当前任务下的step
-    for (let i = 0; i < currentStepIndex; i++) {
-      const step = currentTask.steps[i];
-      steps.push(step);
-    }
-    return steps;
-  }
-}
 
 export type PipelineOptions = {
   doTrigger(options: { pipelineId: number; stepId?: string }): Promise<void>;

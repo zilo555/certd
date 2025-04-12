@@ -110,8 +110,8 @@ import FsThemeSet from "/@/layout/components/theme/index.vue";
 import { env } from "../utils/util.env";
 import VipButton from "/@/components/vip-button/index.vue";
 import TutorialButton from "/@/components/tutorial/index.vue";
-import { useUserStore } from "/@/store/modules/user";
-import { useSettingStore } from "/@/store/modules/settings";
+import { useUserStore } from "/@/store/user";
+import { useSettingStore } from "/@/store/settings";
 import { routerUtils } from "/@/utils/util.router";
 import { theme } from "ant-design-vue";
 
