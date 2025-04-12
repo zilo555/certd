@@ -69,10 +69,27 @@ export class DeployCertToAliyunCDN extends AbstractTaskPlugin {
   domainName!: string | string[];
 
   @TaskInput({
+    title: '证书所在地域',
+    helper: 'cn-hangzhou和ap-southeast-1，默认cn-hangzhou。国际站用户建议使用ap-southeast-1。',
+    value:"cn-hangzhou",
+    component: {
+      name: 'a-select',
+      options:[
+        {value:'cn-hangzhou',label:'中国大陆'},
+        {value:'ap-southeast-1',label:'新加坡'}
+      ]
+    },
+    required: true,
+  })
+  certRegion:string
+
+  @TaskInput({
     title: '证书名称',
     helper: '上传后将以此名称作为前缀备注',
   })
   certName!: string;
+
+
 
   async onInstance() {}
   async execute(): Promise<void> {
@@ -89,9 +106,12 @@ export class DeployCertToAliyunCDN extends AbstractTaskPlugin {
     }
 
     let certId: any = this.cert;
+
+    const certName =  this.appendTimeSuffix(this.certName);
+
     if (typeof this.cert === 'object') {
       certId = await sslClient.uploadCert({
-        name: this.appendTimeSuffix(this.certName),
+        name:certName,
         cert: this.cert,
       });
     }
@@ -105,6 +125,8 @@ export class DeployCertToAliyunCDN extends AbstractTaskPlugin {
       await this.SetCdnDomainSSLCertificate(client, {
         CertId: certId,
         DomainName: domain,
+        CertName: certName,
+        CertRegion:this.certRegion || 'cn-hangzhou',
       });
     }
 
@@ -122,7 +144,7 @@ export class DeployCertToAliyunCDN extends AbstractTaskPlugin {
     return client;
   }
 
-  async SetCdnDomainSSLCertificate(client: any, params: { CertId: number; DomainName: string }) {
+  async SetCdnDomainSSLCertificate(client: any, params: { CertId: number; DomainName: string,CertName:string,CertRegion:string }) {
     const requestOption = {
       method: 'POST',
       formatParams: false,
