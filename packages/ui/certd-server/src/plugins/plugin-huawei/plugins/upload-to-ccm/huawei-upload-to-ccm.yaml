@@ -1,0 +1,61 @@
+name: HuaweiUploadToCCM
+title: 华为-上传证书至CCM
+desc: 上传证书至华为云CCM
+type: plugin
+pluginType: deploy
+author: certd
+version: 1.0.0
+icon: 'svg:icon-huawei'
+group: huawei
+default:
+  strategy:
+    runStrategy: 1,
+input:   # 插件的输入参数
+  cert:
+    title: 前置任务证书
+    helper: 请选择前置任务产生的证书 # 帮助说明
+    component:
+      name: output-selector     # 输入组件名称
+      vModel: modelValue        # 组件参数
+      from:
+        - ApplyCert
+        - ApplyCertLego
+        - ApplyCertUpload
+    required: true
+  certDomains:
+    title: 当前证书域名
+    component:
+      name: cert-domains-getter
+    mergeScript: |
+      return {
+        component:{
+            inputKey: ctx.compute(({form})=>{
+              return form.cert
+            }),
+        }
+      }
+    required: true
+  accessId:
+    title: Access授权
+    helper: xxxx的授权
+    component:
+      name: access-selector    # 授权选择组件名称
+      type: aliyun             # 授权类型
+    required: true
+  key1:
+    title: 输入示例1
+    required: false
+  key2:
+    title: 可选项
+    component:
+      name: a-select
+      vMode: value
+      options:
+        - value: "1"
+          label: 选项1
+        - value: "2"
+          label: 选项2
+    required: false
+#output:  # 输出参数，一般插件都不需要配置此项
+#  outputName:
+#
