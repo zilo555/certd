@@ -1,10 +1,16 @@
 <template>
   <div class="sys-settings-form sys-settings-safe">
     <a-form ref="formRef" :model="formState" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off">
-      <div>站点隐藏</div>
+      <h2>站点隐藏</h2>
       <a-form-item label="启用站点隐藏" :name="['hidden', 'enabled']" :required="true">
         <a-switch v-model:checked="formState.hidden.enabled" />
-        <div class="helper">可以在平时关闭站点的可访问性，需要时再打开，增强站点安全性</div>
+        <div class="helper">
+          可以在平时关闭站点的可访问性，需要时再打开，增强站点安全性
+          <a href="https://certd.docmirror.cn/guide/feature/safe/hidden" class="flex items-center" target="_blank">
+            <span>帮助说明</span>
+            <fs-icon class="ml-1" icon="mingcute:question-line"></fs-icon
+          ></a>
+        </div>
       </a-form-item>
       <a-form-item v-if="formState.hidden.enabled" label="随机地址" :name="['hidden', 'openPath']" :required="true">
         <a-input-search v-model:value="formState.hidden.openPath" :allow-clear="true" @search="changeOpenPath">
