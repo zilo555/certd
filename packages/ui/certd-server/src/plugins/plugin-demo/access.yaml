@@ -1,0 +1,17 @@
+name: demo
+title: 授权插件示例
+icon: clarity:plugin-line
+desc: ''
+input:
+  demoKeyId:
+    title: 密钥Id
+    component:
+      placeholder: demoKeyId
+    required: true
+  demoKeySecret:
+    title: 密钥串
+    component:
+      placeholder: demoKeySecret
+    required: true
+    encrypt: true
+pluginType: access

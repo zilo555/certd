@@ -1,0 +1,17 @@
+name: namesilo
+title: namesilo授权
+desc: ''
+icon: simple-icons:namesilo
+input:
+  apiKey:
+    title: API Key
+    component:
+      placeholder: api key
+    helper: |-
+      前往 [获取API Key](https://www.namesilo.com/account/api-manager)
+      不要勾选第一项（Generate key for read-only access）
+      勾选第二项（Submitting this form...）
+      然后点击Generate按钮
+    required: true
+    encrypt: true
+pluginType: access

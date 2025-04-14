@@ -1,0 +1,19 @@
+name: huawei
+title: 华为云授权
+desc: ''
+icon: svg:icon-huawei
+input:
+  accessKeyId:
+    title: accessKeyId
+    component:
+      placeholder: accessKeyId
+    helper: >-
+      证书申请需要有dns解析权限，前往[我的凭证-访问密钥](https://console.huaweicloud.com/iam/?region=cn-east-3#/mine/accessKey)获取
+    required: true
+  accessKeySecret:
+    title: accessKeySecret
+    component:
+      placeholder: accessKeySecret
+    required: true
+    encrypt: true
+pluginType: access

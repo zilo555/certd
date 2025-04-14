@@ -1,0 +1,6 @@
+name: huawei
+title: 华为云
+desc: 华为云DNS解析提供商
+accessType: huawei
+icon: svg:icon-huawei
+pluginType: dnsProvider

@@ -1,0 +1,6 @@
+name: aliyun
+title: 阿里云
+desc: 阿里云DNS解析提供商
+accessType: aliyun
+icon: svg:icon-aliyun
+pluginType: dnsProvider

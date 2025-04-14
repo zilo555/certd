@@ -1,0 +1,6 @@
+name: dnsla
+title: dns.la
+desc: dns.la
+icon: arcticons:dns-changer-3
+accessType: dnsla
+pluginType: dnsProvider

@@ -1,0 +1,45 @@
+showRunStrategy: false
+default:
+  strategy:
+    runStrategy: 1
+name: DogeCloudDeployToCDN
+title: 多吉云-部署到多吉云CDN
+icon: svg:icon-dogecloud
+group: cdn
+input:
+  domain:
+    title: 域名
+    helper: CDN域名
+    required: true
+    order: 0
+  cert:
+    title: 证书
+    helper: 请选择前置任务输出的域名证书
+    component:
+      name: output-selector
+      from:
+        - CertApply
+        - CertApplyLego
+        - CertApplyUpload
+    required: true
+    order: 0
+  accessId:
+    title: 多吉云授权
+    helper: 多吉云AccessKey
+    component:
+      name: access-selector
+      type: dogecloud
+    rules:
+      - required: true
+        message: 此项必填
+    order: 0
+  ignoreDeployNullCode:
+    title: 忽略部署接口报错
+    helper: 当该域名部署后报错，但是实际上已经部署成功时，可以勾选
+    value: false
+    component:
+      name: a-switch
+      type: checked
+    order: 0
+output: {}
+pluginType: deploy

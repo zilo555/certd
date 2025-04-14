@@ -1,0 +1,20 @@
+name: dnsla
+title: dns.la授权
+icon: arcticons:dns-changer-3
+desc: ''
+input:
+  apiId:
+    title: APIID
+    component:
+      placeholder: APIID
+    helper: 从我的账户->API密钥中获取 APIID APISecret
+    required: true
+    encrypt: false
+  apiSecret:
+    title: APISecret
+    component:
+      placeholder: ''
+    helper: ''
+    required: false
+    encrypt: true
+pluginType: access

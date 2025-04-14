@@ -1,0 +1,77 @@
+showRunStrategy: true
+default:
+  strategy:
+    runStrategy: 0
+name: DBBackupPlugin
+title: 数据库备份
+icon: lucide:database-backup
+desc: 仅支持备份SQLite数据库
+group: other
+needPlus: true
+input:
+  backupMode:
+    title: 备份方式
+    value: local
+    component:
+      name: a-select
+      options:
+        - label: 本地复制
+          value: local
+        - label: ssh上传
+          value: ssh
+      placeholder: ''
+    helper: 支持本地复制、ssh上传
+    required: true
+    order: 0
+  sshAccessId:
+    title: 主机登录授权
+    component:
+      name: access-selector
+      type: ssh
+    mergeScript: |2-
+
+            return {
+               show:ctx.compute(({form})=>{
+                return form.backupMode === 'ssh';
+              })
+            }
+          
+    required: true
+    order: 0
+  backupDir:
+    title: 备份保存目录
+    component:
+      name: a-input
+      type: value
+      placeholder: 默认certd_backup
+    helper: ssh方式默认保存在当前用户的certd_backup目录下，本地方式默认保存在data/certd_backup目录下，也可以填写绝对路径
+    required: false
+    order: 0
+  filePrefix:
+    title: 备份文件前缀
+    component:
+      name: a-input
+      vModel: value
+      placeholder: 默认db-backup
+    required: false
+    order: 0
+  withUpload:
+    title: 附加上传文件
+    value: true
+    component:
+      name: a-switch
+      vModel: checked
+      placeholder: 是否备份上传的头像等文件
+    required: false
+    order: 0
+  retainDays:
+    title: 删除过期备份
+    component:
+      name: a-input-number
+      vModel: value
+      placeholder: '20'
+    helper: 删除多少天前的备份,不填则不删除，windows暂不支持
+    required: false
+    order: 0
+output: {}
+pluginType: deploy
