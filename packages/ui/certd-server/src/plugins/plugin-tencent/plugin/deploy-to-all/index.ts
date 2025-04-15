@@ -128,11 +128,12 @@ export class DeployCertToTencentAll extends AbstractTaskPlugin {
     });
 
     let certId:string = null
-    if (typeof certId === 'object') {
-      //上传
-      certId = await this.uploadToTencent(access,this.tencentCertId as CertInfo);
+    if (typeof this.tencentCertId === 'string') {
+      certId = this.tencentCertId as string;
+    } else if (this.tencentCertId && typeof this.tencentCertId === 'object') {
+      certId = await this.uploadToTencent(access, this.tencentCertId as CertInfo);
     } else {
-      certId = this.tencentCertId  as string;
+      throw new Error('无效的证书输入类型');
     }
 
     const params = {
