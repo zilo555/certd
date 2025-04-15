@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.33.4](https://github.com/certd/certd/compare/v1.33.3...v1.33.4) (2025-04-15)
+
+### Performance Improvements
+
+* 插件支持导入导出 ([cf8abb4](https://github.com/certd/certd/commit/cf8abb45282070c8ba91469f93fd379fabf1f74a))
+
 ## [1.33.3](https://github.com/certd/certd/compare/v1.33.2...v1.33.3) (2025-04-14)
 
 **Note:** Version bump only for package @certd/plugin-lib

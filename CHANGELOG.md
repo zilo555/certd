@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.33.4](https://github.com/certd/certd/compare/v1.33.3...v1.33.4) (2025-04-15)
+
+### Bug Fixes
+
+* 补充类型断言 ([2143dff](https://github.com/certd/certd/commit/2143dff2ae96e6a78bef9f0498e36f8cd9e6941f))
+* 修复腾讯云部署到任意资源插件，无法使用之前已上传的腾讯云证书问题 ([32c714d](https://github.com/certd/certd/commit/32c714d1b6e68c71a74a7452115040c87ac4bfdc))
+
+### Performance Improvements
+
+* 插件支持导入导出 ([cf8abb4](https://github.com/certd/certd/commit/cf8abb45282070c8ba91469f93fd379fabf1f74a))
+* 支持上传证书到华为云CCM ([cfd3b66](https://github.com/certd/certd/commit/cfd3b66be9ebf53a26693057e70ed60c3f116be9))
+
 ## [1.33.3](https://github.com/certd/certd/compare/v1.33.2...v1.33.3) (2025-04-14)
 
 ### Bug Fixes
