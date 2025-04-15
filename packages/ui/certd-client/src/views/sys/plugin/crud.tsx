@@ -2,8 +2,8 @@ import * as api from "./api";
 import { useI18n } from "vue-i18n";
 import { Ref, ref } from "vue";
 import { useRouter } from "vue-router";
-import { AddReq, compute, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, EditReq, UserPageQuery, UserPageRes } from "@fast-crud/fast-crud";
-import { Modal } from "ant-design-vue";
+import { AddReq, compute, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, EditReq, useFormWrapper, UserPageQuery, UserPageRes } from "@fast-crud/fast-crud";
+import { Modal, notification } from "ant-design-vue";
 //@ts-ignore
 import yaml from "js-yaml";
 
@@ -36,7 +36,74 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
 
   const selectedRowKeys: Ref<any[]> = ref([]);
   context.selectedRowKeys = selectedRowKeys;
+  const { openCrudFormDialog } = useFormWrapper();
 
+  async function openImportDialog() {
+    function createCrudOptions() {
+      return {
+        crudOptions: {
+          columns: {
+            content: {
+              title: "插件文件",
+              type: "text",
+              form: {
+                component: {
+                  name: "pem-input",
+                  vModel: "modelValue",
+                  textarea: {
+                    rows: 8,
+                  },
+                },
+                col: {
+                  span: 24,
+                },
+                helper: "选择插件文件",
+              },
+            },
+            override: {
+              title: "同名覆盖",
+              type: "dict-switch",
+              dict: dict({
+                data: [
+                  {
+                    value: true,
+                    label: "覆盖",
+                  },
+                  {
+                    value: false,
+                    label: "不覆盖",
+                  },
+                ],
+              }),
+              form: {
+                value: false,
+                col: {
+                  span: 24,
+                },
+                helper: "如果已有相同名称插件，直接覆盖",
+              },
+            },
+          },
+          form: {
+            wrapper: {
+              title: "导入插件",
+              saveRemind: false,
+            },
+            afterSubmit() {
+              notification.success({ message: "操作成功" });
+            },
+            async doSubmit({ form }: any) {
+              return await api.ImportPlugin({
+                ...form,
+              });
+            },
+          },
+        },
+      };
+    }
+    const { crudOptions } = createCrudOptions();
+    await openCrudFormDialog({ crudOptions });
+  }
   return {
     crudOptions: {
       settings: {
@@ -65,7 +132,17 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
         buttons: {
           add: {
             show: true,
+            icon: "ion:ios-add-circle-outline",
             text: "自定义插件",
+          },
+          import: {
+            show: true,
+            icon: "ion:cloud-upload-outline",
+            text: "导入",
+            type: "primary",
+            async click() {
+              await openImportDialog();
+            },
           },
         },
       },
@@ -85,9 +162,32 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             }),
           },
           remove: {
+            order: 999,
             show: compute(({ row }) => {
               return row.type === "custom";
             }),
+          },
+          export: {
+            text: null,
+            icon: "ion:cloud-download-outline",
+            title: "导出",
+            type: "link",
+            show: compute(({ row }) => {
+              return row.type === "custom";
+            }),
+            async click({ row }) {
+              //将文本内容，作为文件下载
+              const content = await api.ExportPlugin(row.id);
+              if (content) {
+                const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement("a");
+                link.href = url;
+                link.download = `${row.name}.yaml`;
+                link.click();
+                URL.revokeObjectURL(url);
+              }
+            },
           },
         },
       },
@@ -182,8 +282,15 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           },
           form: {
             show: true,
-            helper: "必须为英文，驼峰命名，类型作为前缀\n例如AliyunDeployToCDN\n插件一旦被使用，不要修改名称",
-            rules: [{ required: true }],
+            helper: "必须为英文或数字，驼峰命名，类型作为前缀\n例如AliyunDeployToCDN\n插件一旦被使用，不要修改名称",
+            rules: [
+              { required: true },
+              {
+                type: "regexp",
+                pattern: /^[a-zA-Z][a-zA-Z0-9]+$/,
+                message: "必须为英文或数字，驼峰命名，类型作为前缀",
+              },
+            ],
           },
           column: {
             width: 250,
@@ -205,7 +312,14 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           form: {
             show: true,
             helper: "上传到插件商店时，将作为插件名称前缀,例如：greper/pluginName",
-            rules: [{ required: true }],
+            rules: [
+              { required: true },
+              {
+                type: "regexp",
+                pattern: /^[a-zA-Z][a-zA-Z0-9]+$/,
+                message: "必须为英文字母或数字",
+              },
+            ],
           },
           column: {
             width: 200,

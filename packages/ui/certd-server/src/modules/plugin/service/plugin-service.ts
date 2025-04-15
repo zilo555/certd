@@ -12,6 +12,10 @@ import { logger } from "@certd/basic";
 import yaml from "js-yaml";
 import { getDefaultAccessPlugin, getDefaultDeployPlugin, getDefaultDnsPlugin } from "./default-plugin.js";
 
+export type PluginImportReq = {
+  content: string,
+  override?: boolean;
+};
 
 @Provide()
 @Scope(ScopeEnum.Request, { allowDowngrade: true })
@@ -41,7 +45,7 @@ export class PluginService extends BaseService<PluginEntity> {
     const builtInList = await this.getBuiltInEntityList();
 
     //获取分页数据
-    const data =  builtInList.slice(offset, offset + limit);
+    const data = builtInList.slice(offset, offset + limit);
 
     return {
       records: data,
@@ -53,7 +57,7 @@ export class PluginService extends BaseService<PluginEntity> {
 
   async getEnabledBuildInGroup(isSimple = false) {
     const groups = this.builtInPluginService.getGroups();
-    if(isSimple){
+    if (isSimple) {
       for (const key in groups) {
         const group = groups[key];
         group.plugins.forEach(item => {
@@ -97,8 +101,8 @@ export class PluginService extends BaseService<PluginEntity> {
     });
     const disabledNames = list.map(it => it.name);
 
-    return builtInList.filter(it =>{
-      return !disabledNames.includes(it.name)
+    return builtInList.filter(it => {
+      return !disabledNames.includes(it.name);
     });
   }
 
@@ -168,33 +172,48 @@ export class PluginService extends BaseService<PluginEntity> {
         name: param.name,
         author: param.author
       }
-    })
+    });
 
     if (old) {
       throw new Error(`插件${param.author}/${param.name}已存在`);
     }
 
-    let plugin:any = {}
+    let plugin: any = {};
     if (param.pluginType === "access") {
-      plugin = getDefaultAccessPlugin()
-      delete param.group
-    }else if (param.pluginType === "deploy") {
-      plugin = getDefaultDeployPlugin()
-    }else if (param.pluginType === "dnsProvider") {
-      plugin = getDefaultDnsPlugin()
-      delete param.group
-    }else{
+      plugin = getDefaultAccessPlugin();
+      delete param.group;
+    } else if (param.pluginType === "deploy") {
+      plugin = getDefaultDeployPlugin();
+    } else if (param.pluginType === "dnsProvider") {
+      plugin = getDefaultDnsPlugin();
+      delete param.group;
+    } else {
       throw new Error(`插件类型${param.pluginType}不支持`);
     }
 
-    return  await super.add({
+    return await super.add({
       ...param,
       ...plugin
     });
   }
 
+  async update(param: any) {
+    const old = await this.repository.findOne({
+      where: {
+        name: param.name,
+        author: param.author
+      }
+    });
+
+    if (old && old.id !== param.id) {
+      throw new Error(`插件${param.author}/${param.name}已存在`);
+    }
+
+    return await super.update(param);
+  }
+
   async compile(code: string) {
-    const ts = await import("typescript")
+    const ts = await import("typescript");
     return ts.transpileModule(code, {
       compilerOptions: { module: ts.ModuleKind.ESNext }
     }).outputText;
@@ -220,16 +239,16 @@ export class PluginService extends BaseService<PluginEntity> {
     if (info && info.length > 0) {
       const plugin = info[0];
 
-      try{
+      try {
         const AsyncFunction = Object.getPrototypeOf(async () => {
         }).constructor;
         // const script = await this.compile(plugin.content);
-        const script = plugin.content
+        const script = plugin.content;
         const getPluginClass = new AsyncFunction(script);
         return await getPluginClass({ logger: logger });
-      }catch (e) {
-        logger.error("编译插件失败:",e)
-        throw e
+      } catch (e) {
+        logger.error("编译插件失败:", e);
+        throw e;
       }
 
     }
@@ -284,4 +303,80 @@ export class PluginService extends BaseService<PluginEntity> {
     });
   }
 
+  async exportPlugin(id: number) {
+    const info = await this.info(id);
+    if (!info) {
+      throw new Error("插件不存在");
+    }
+    const metadata = yaml.load(info.metadata || "");
+    const extra = yaml.load(info.extra || "");
+    const content = info.content;
+    delete info.metadata;
+    delete info.extra;
+    delete info.content;
+    delete info.id;
+    delete info.createTime;
+    delete info.updateTime;
+    const plugin = {
+      ...info,
+      ...metadata,
+      ...extra,
+      content
+    };
+
+    return yaml.dump(plugin) as string;
+  }
+
+  async importPlugin(req: PluginImportReq) {
+
+    const loaded = yaml.load(req.content);
+    if (!loaded) {
+      throw new Error("插件内容不能为空");
+    }
+    delete loaded.id
+
+    const old = await this.repository.findOne({
+      where: {
+        name: loaded.name,
+        author: loaded.author
+      }
+    });
+
+    const metadata = {
+      input: loaded.input,
+      output: loaded.output
+    };
+    const extra = {
+      dependPlugins: loaded.dependPlugins,
+      default: loaded.default,
+      showRunStrategy: loaded.showRunStrategy
+    };
+
+    const pluginEntity = {
+      ...loaded,
+      metadata: yaml.dump(metadata),
+      extra: yaml.dump(extra),
+      content: req.content,
+      disabled: false
+    };
+    if (!pluginEntity.pluginType) {
+      throw new Error(`插件类型不能为空`);
+    }
+
+    if (old) {
+      if (!req.override) {
+        throw new Error(`插件${loaded.author}/${loaded.name}已存在`);
+      }
+      //update
+      pluginEntity.id = old.id;
+      await this.update(pluginEntity);
+    } else {
+      //add
+      const { id } = await this.add(pluginEntity);
+      pluginEntity.id = id;
+    }
+    return {
+      id: pluginEntity.id
+    };
+  }
 }

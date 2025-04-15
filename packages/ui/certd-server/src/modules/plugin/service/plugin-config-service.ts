@@ -18,6 +18,8 @@ export type PluginFindReq = {
   name?: string;
   type: string;
 };
+
+
 @Provide()
 @Scope(ScopeEnum.Request, { allowDowngrade: true })
 export class PluginConfigService {

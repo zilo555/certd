@@ -66,6 +66,22 @@ export async function SetDisabled(data: { id?: number; name?: string; type?: str
   });
 }
 
+export async function ExportPlugin(id: number) {
+  return await request({
+    url: apiPrefix + "/export",
+    method: "post",
+    data: { id },
+  });
+}
+
+export async function ImportPlugin(body: any) {
+  return await request({
+    url: apiPrefix + "/import",
+    method: "post",
+    data: body,
+  });
+}
+
 export type PluginConfigBean = {
   name: string;
   disabled: boolean;

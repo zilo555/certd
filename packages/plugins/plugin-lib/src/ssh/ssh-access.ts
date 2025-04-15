@@ -1,7 +1,4 @@
 import { AccessInput, BaseAccess, IsAccess } from "@certd/pipeline";
-import { ConnectConfig } from "ssh2";
-import { SshClient } from "./ssh.js";
-
 @IsAccess({
   name: "ssh",
   title: "主机登录授权",
@@ -9,7 +6,7 @@ import { SshClient } from "./ssh.js";
   icon: "clarity:host-line",
   input: {},
 })
-export class SshAccess extends BaseAccess implements ConnectConfig {
+export class SshAccess extends BaseAccess {
   @AccessInput({
     title: "主机地址",
     component: {
@@ -125,6 +122,7 @@ export class SshAccess extends BaseAccess implements ConnectConfig {
   testRequest = true;
 
   async onTestRequest() {
+    const { SshClient } = await import("./ssh.js");
     const client = new SshClient(this.ctx.logger);
 
     await client.exec({

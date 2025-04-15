@@ -1,22 +1,33 @@
 // @ts-ignore
-import ssh2, { ConnectConfig, ExecOptions } from "ssh2";
-
-import ssh2Constants from "ssh2/lib/protocol/constants.js";
 import path from "path";
-import * as _ from "lodash-es";
+import { isArray } from "lodash-es";
 import { ILogger } from "@certd/basic";
 import { SshAccess } from "./ssh-access.js";
-import stripAnsi from "strip-ansi";
-import { SocksClient } from "socks";
-import { SocksProxy, SocksProxyType } from "socks/typings/common/constants.js";
+
 import fs from "fs";
+import { SocksProxyType } from "socks/typings/common/constants";
 
 export type TransportItem = { localPath: string; remotePath: string };
+export interface SocksProxy {
+  ipaddress?: string;
+  host?: string;
+  port: number;
+  type: any;
+  userId?: string;
+  password?: string;
+  custom_auth_method?: number;
+  custom_auth_request_handler?: () => Promise<Buffer>;
+  custom_auth_response_size?: number;
+  custom_auth_response_handler?: (data: Buffer) => Promise<boolean>;
+}
+export type SshConnectConfig = {
+  sock?: any;
+};
 
 export class AsyncSsh2Client {
-  conn: ssh2.Client;
+  conn: any;
   logger: ILogger;
-  connConf: SshAccess & ssh2.ConnectConfig;
+  connConf: SshAccess & SshConnectConfig;
   windows = false;
   encoding: string;
   constructor(connConf: SshAccess, logger: ILogger) {
@@ -40,7 +51,10 @@ export class AsyncSsh2Client {
       if (typeof this.connConf.port === "string") {
         this.connConf.port = parseInt(this.connConf.port);
       }
-      const proxyOption: SocksProxy = this.parseSocksProxyFromUri(this.connConf.socksProxy);
+
+      const { SocksClient } = await import("socks");
+
+      const proxyOption = this.parseSocksProxyFromUri(this.connConf.socksProxy);
       const info = await SocksClient.createConnection({
         proxy: proxyOption,
         command: "connect",
@@ -53,10 +67,12 @@ export class AsyncSsh2Client {
       this.connConf.sock = info.socket;
     }
 
-    const { SUPPORTED_KEX, SUPPORTED_SERVER_HOST_KEY, SUPPORTED_CIPHER, SUPPORTED_MAC } = ssh2Constants;
+    const ssh2 = await import("ssh2");
+    const ssh2Constants = await import("ssh2/lib/protocol/constants.js");
+    const { SUPPORTED_KEX, SUPPORTED_SERVER_HOST_KEY, SUPPORTED_CIPHER, SUPPORTED_MAC } = ssh2Constants.default;
     return new Promise((resolve, reject) => {
       try {
-        const conn = new ssh2.Client();
+        const conn = new ssh2.default.Client();
         conn
           .on("error", (err: any) => {
             this.logger.error("连接失败", err);
@@ -197,6 +213,8 @@ export class AsyncSsh2Client {
   }
 
   async shell(script: string | string[]): Promise<string> {
+    const stripAnsiModule = await import("strip-ansi");
+    const stripAnsi = stripAnsiModule.default;
     return new Promise<any>((resolve, reject) => {
       this.logger.info(`执行shell脚本：[${this.connConf.host}][shell]: ` + script);
       this.conn.shell((err: Error, stream: any) => {
@@ -449,7 +467,7 @@ export class SshClient {
           script = script.join(" && ");
         } else {
           const newLine = isLinux ? "\n" : "\r\n";
-          if (_.isArray(script)) {
+          if (isArray(script)) {
             script = script as Array<string>;
             script = script.join(newLine);
           }
@@ -465,7 +483,7 @@ export class SshClient {
   async shell(options: { connectConf: SshAccess; script: string | Array<string> }): Promise<string> {
     let { script } = options;
     const { connectConf } = options;
-    if (_.isArray(script)) {
+    if (isArray(script)) {
       script = script as Array<string>;
       if (connectConf.windows) {
         script = script.join("\r\n");
