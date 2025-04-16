@@ -1,8 +1,9 @@
-import { Provide, Scope, ScopeEnum } from '@midwayjs/core';
-import { InjectEntityModel } from '@midwayjs/typeorm';
-import { Repository } from 'typeorm';
-import { BaseService } from '@certd/lib-server';
-import { UserSettingsEntity } from '../entity/user-settings.js';
+import { Provide, Scope, ScopeEnum } from "@midwayjs/core";
+import { InjectEntityModel } from "@midwayjs/typeorm";
+import { Repository } from "typeorm";
+import { BaseService, BaseSettings } from "@certd/lib-server";
+import { UserSettingsEntity } from "../entity/user-settings.js";
+import { merge } from "lodash-es";
 
 /**
  * 授权
@@ -27,23 +28,29 @@ export class UserSettingsService extends BaseService<UserSettingsEntity> {
     const setting = JSON.parse(entity.setting);
     return {
       id: entity.id,
-      ...setting,
+      ...setting
     };
   }
 
   async getByKey(key: string, userId: number): Promise<UserSettingsEntity | null> {
+    if(!userId){
+      throw new Error('userId is required');
+    }
     if (!key || !userId) {
       return null;
     }
     return await this.repository.findOne({
       where: {
         key,
-        userId,
-      },
+        userId
+      }
     });
   }
 
   async getSettingByKey(key: string, userId: number): Promise<any | null> {
+    if(!userId){
+      throw new Error('userId is required');
+    }
     const entity = await this.getByKey(key, userId);
     if (!entity) {
       return null;
@@ -55,8 +62,8 @@ export class UserSettingsService extends BaseService<UserSettingsEntity> {
     const entity = await this.repository.findOne({
       where: {
         key: bean.key,
-        userId: bean.userId,
-      },
+        userId: bean.userId
+      }
     });
     if (entity) {
       entity.setting = bean.setting;
@@ -66,4 +73,39 @@ export class UserSettingsService extends BaseService<UserSettingsEntity> {
       await this.repository.save(bean);
     }
   }
+
+
+  async getSetting<T>( userId: number,type: any): Promise<T> {
+    if(!userId){
+      throw new Error('userId is required');
+    }
+    const key = type.__key__;
+    let newSetting: T = new type();
+    const savedSettings = await this.getSettingByKey(key, userId);
+    newSetting = merge(newSetting, savedSettings);
+    return newSetting;
+  }
+
+  async saveSetting<T extends BaseSettings>(userId:number,bean: T) {
+    if(!userId){
+      throw new Error('userId is required');
+    }
+    const old = await this.getSetting(userId,bean.constructor)
+    bean = merge(old,bean)
+
+    const type: any = bean.constructor;
+    const key = type.__key__;
+    const entity = await this.getByKey(key,userId);
+    const newEntity = new UserSettingsEntity();
+    if (entity) {
+      newEntity.id = entity.id;
+    }else{
+      newEntity.key = key;
+      newEntity.title = type.__title__;
+      newEntity.userId = userId;
+    }
+    entity.setting = JSON.stringify(bean);
+    await this.repository.save(entity);
+  }
+
 }
