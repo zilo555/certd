@@ -38,3 +38,10 @@ export async function TwoFactorAuthenticatorSave(req: AuthenticatorSaveReq) {
     data: req,
   });
 }
+
+export async function TwoFactorAuthenticatorOff() {
+  return await request({
+    url: apiPrefix + "/twoFactor/authenticator/off",
+    method: "post",
+  });
+}

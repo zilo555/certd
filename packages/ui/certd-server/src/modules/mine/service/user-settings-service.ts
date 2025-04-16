@@ -95,6 +95,9 @@ export class UserSettingsService extends BaseService<UserSettingsEntity> {
 
     const type: any = bean.constructor;
     const key = type.__key__;
+    if(!key){
+      throw new Error(`${type.name} must have __key__`);
+    }
     const entity = await this.getByKey(key,userId);
     const newEntity = new UserSettingsEntity();
     if (entity) {
@@ -104,8 +107,8 @@ export class UserSettingsService extends BaseService<UserSettingsEntity> {
       newEntity.title = type.__title__;
       newEntity.userId = userId;
     }
-    entity.setting = JSON.stringify(bean);
-    await this.repository.save(entity);
+    newEntity.setting = JSON.stringify(bean);
+    await this.repository.save(newEntity);
   }
 
 }

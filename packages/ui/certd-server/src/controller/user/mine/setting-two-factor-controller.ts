@@ -58,4 +58,11 @@ export class UserTwoFactorSettingController extends BaseController {
     return this.ok();
   }
 
+  @Post("/authenticator/off", { summary: Constants.per.authOnly })
+  async authenticatorOff() {
+    const userId = this.getUserId();
+    await this.twoFactorService.offAuthenticator(userId);
+    return this.ok();
+  }
+
 }

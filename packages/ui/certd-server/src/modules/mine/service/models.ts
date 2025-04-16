@@ -14,7 +14,6 @@ export class UserTwoFactorSetting extends BaseSettings {
   authenticator: TwoFactorAuthenticator = {
     enabled:false,
     verified:false,
-    type: "totp"
   };
 
 }

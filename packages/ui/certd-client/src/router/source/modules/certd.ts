@@ -144,6 +144,17 @@ export const certdResources = [
             },
           },
           {
+            title: "认证安全设置",
+            name: "UserSecurity",
+            path: "/certd/mine/security",
+            component: "/certd/mine/security/index.vue",
+            meta: {
+              icon: "ion:locked-outline",
+              auth: true,
+              isMenu: true,
+            },
+          },
+          {
             title: "账号信息",
             name: "UserProfile",
             path: "/certd/mine/user-profile",

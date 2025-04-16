@@ -1,14 +1,6 @@
 <template>
   <div class="main login-page">
-    <a-form
-      ref="formRef"
-      class="user-layout-login"
-      name="custom-validation"
-      :model="formState"
-      v-bind="layout"
-      @finish="handleFinish"
-      @finish-failed="handleFinishFailed"
-    >
+    <a-form ref="formRef" class="user-layout-login" name="custom-validation" :model="formState" v-bind="layout" @finish="handleFinish" @finish-failed="handleFinishFailed">
       <!--      <div class="login-title">登录</div>-->
       <a-tabs v-model:active-key="formState.loginType" :tab-bar-style="{ textAlign: 'center', borderBottom: 'unset' }">
         <a-tab-pane key="password" tab="密码登录" :disabled="sysPublicSettings.passwordLoginEnabled !== true">
@@ -44,13 +36,7 @@
             </a-form-item>
 
             <a-form-item name="smsCode" :rules="rules.smsCode">
-              <sms-code
-                v-model:value="formState.smsCode"
-                :img-code="formState.imgCode"
-                :mobile="formState.mobile"
-                :phone-code="formState.phoneCode"
-                :random-str="formState.randomStr"
-              />
+              <sms-code v-model:value="formState.smsCode" :img-code="formState.imgCode" :mobile="formState.mobile" :phone-code="formState.phoneCode" :random-str="formState.randomStr" />
             </a-form-item>
           </template>
         </a-tab-pane>
@@ -89,42 +75,42 @@ export default defineComponent({
       loginType: "password", //password
       imgCode: "",
       smsCode: "",
-      randomStr: ""
+      randomStr: "",
     });
 
     const rules = {
       mobile: [
         {
           required: true,
-          message: "请输入手机号"
-        }
+          message: "请输入手机号",
+        },
       ],
       username: [
         {
           required: true,
-          message: "请输入用户名"
-        }
+          message: "请输入用户名",
+        },
       ],
       password: [
         {
           required: true,
-          message: "请输入登录密码"
-        }
+          message: "请输入登录密码",
+        },
       ],
       smsCode: [
         {
           required: true,
-          message: "请输入短信验证码"
-        }
-      ]
+          message: "请输入短信验证码",
+        },
+      ],
     };
     const layout = {
       labelCol: {
-        span: 0
+        span: 0,
       },
       wrapperCol: {
-        span: 24
-      }
+        span: 24,
+      },
     };
 
     const handleFinish = async (values: any) => {
@@ -163,9 +149,9 @@ export default defineComponent({
       resetForm,
       isLoginError,
       sysPublicSettings,
-      hasRegisterTypeEnabled
+      hasRegisterTypeEnabled,
     };
-  }
+  },
 });
 </script>
 
