@@ -7,11 +7,13 @@
       <a-form :model="formState" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off">
         <a-form-item label="OTP多重验证登录" :name="['authenticator', 'enabled']">
           <div class="flex mt-5">
-            <a-switch v-model:checked="formState.authenticator.enabled" @change="onAuthenticatorEnabledChanged" />
+            <a-switch v-model:checked="formState.authenticator.enabled" :disabled="!settingsStore.isPlus" @change="onAuthenticatorEnabledChanged" />
 
-            <a-button v-if="formState.authenticator.enabled && formState.authenticator.verified" :disabled="authenticatorOpenRef" size="small" class="ml-2" type="primary" @click="authenticatorForm.open = true">
+            <a-button v-if="formState.authenticator.enabled && formState.authenticator.verified" :disabled="authenticatorOpenRef" size="small" class="ml-5" type="primary" @click="authenticatorForm.open = true">
               重新绑定
             </a-button>
+
+            <vip-button class="ml-5" mode="button"></vip-button>
           </div>
 
           <div class="helper">是否开启多重验证登录</div>
@@ -45,7 +47,8 @@ import * as api from "./api";
 import { UserTwoFactorSetting } from "./api";
 import { Modal, notification } from "ant-design-vue";
 import { merge } from "lodash-es";
-
+import { useSettingStore } from "/@/store/settings";
+const settingsStore = useSettingStore();
 defineOptions({
   name: "UserSecurity",
 });
@@ -92,7 +95,7 @@ const doAuthenticatorSave = async (form: any) => {
   authenticatorForm.open = false;
 };
 
-function onAuthenticatorEnabledChanged(value) {
+function onAuthenticatorEnabledChanged(value: any) {
   if (!value) {
     //要关闭
     if (formState.authenticator.verified) {

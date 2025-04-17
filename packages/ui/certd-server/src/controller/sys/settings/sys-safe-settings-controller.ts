@@ -2,6 +2,7 @@ import {ALL, Body, Controller, Inject, Post, Provide} from '@midwayjs/core';
 import {BaseController, SysSafeSetting} from '@certd/lib-server';
 import {cloneDeep} from 'lodash-es';
 import {SafeService} from "../../../modules/sys/settings/safe-service.js";
+import {isPlus} from "@certd/plus-core";
 
 
 /**
@@ -24,6 +25,9 @@ export class SysSettingsController extends BaseController {
 
   @Post("/save", { summary: "sys:settings:edit" })
   async safeSave(@Body(ALL) body: any) {
+    if (!isPlus()) {
+      throw new Error('本功能需要开通专业版')
+    }
     await this.safeService.saveSafeSetting(body);
     return this.ok({});
   }

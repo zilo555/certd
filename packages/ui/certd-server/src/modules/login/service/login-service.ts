@@ -1,7 +1,7 @@
 import {Config, Inject, Provide, Scope, ScopeEnum} from '@midwayjs/core';
 import {UserService} from '../../sys/authority/service/user-service.js';
 import jwt from 'jsonwebtoken';
-import { AuthException, CommonException, Need2FAException } from "@certd/lib-server";
+import {AuthException, CommonException, Need2FAException} from "@certd/lib-server";
 import {RoleService} from '../../sys/authority/service/role-service.js';
 import {UserEntity} from '../../sys/authority/entity/user.js';
 import {SysSettingsService} from '@certd/lib-server';
@@ -9,8 +9,9 @@ import {SysPrivateSettings} from '@certd/lib-server';
 import {cache, utils} from '@certd/basic';
 import {LoginErrorException} from '@certd/lib-server/dist/basic/exception/login-error-exception.js';
 import {CodeService} from '../../basic/service/code-service.js';
-import { TwoFactorService } from "../../mine/service/two-factor-service.js";
-import { UserSettingsService } from '../../mine/service/user-settings-service.js';
+import {TwoFactorService} from "../../mine/service/two-factor-service.js";
+import {UserSettingsService} from '../../mine/service/user-settings-service.js';
+import {isPlus} from "@certd/plus-core";
 
 /**
  * 系统用户
@@ -144,13 +145,16 @@ export class LoginService {
     return this.onLoginSuccess(info);
   }
 
-  async checkTwoFactorEnabled(userId:number) {
+  async checkTwoFactorEnabled(userId: number) {
     //检查是否开启多重认证
+    if (!isPlus()) {
+      return true
+    }
 
     const twoFactorSetting = await this.twoFactorService.getSetting(userId)
 
     const authenticatorSetting = twoFactorSetting.authenticator
-    if (authenticatorSetting.enabled){
+    if (authenticatorSetting.enabled) {
       //要检查
       const randomKey = utils.id.simpleNanoId(12)
       cache.set(`login_2fa_code:${randomKey}`, userId, {
@@ -161,9 +165,13 @@ export class LoginService {
 
   }
 
-  async loginByTwoFactor(req: {  loginCode: string; verifyCode: string }){
-      const userId = cache.get(`login_2fa_code:${req.loginCode}`)
-    if (!userId){
+  async loginByTwoFactor(req: { loginCode: string; verifyCode: string }) {
+    //检查是否开启多重认证
+    if (!isPlus()) {
+      throw new Error('本功能需要开通专业版')
+    }
+    const userId = cache.get(`login_2fa_code:${req.loginCode}`)
+    if (!userId) {
       throw new AuthException('登录状态已失效，请重新登录')
     }
     await this.twoFactorService.verifyAuthenticatorCode(userId, req.verifyCode)
@@ -178,7 +186,6 @@ export class LoginService {
     await this.checkTwoFactorEnabled(info.id)
     return this.generateToken(info);
   }
-
 
 
   /**

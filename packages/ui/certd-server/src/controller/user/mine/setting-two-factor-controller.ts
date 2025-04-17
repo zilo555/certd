@@ -4,6 +4,7 @@ import { UserSettingsService } from "../../../modules/mine/service/user-settings
 import { UserTwoFactorSetting } from "../../../modules/mine/service/models.js";
 import { merge } from "lodash-es";
 import { TwoFactorService } from "../../../modules/mine/service/two-factor-service.js";
+import {isPlus} from "@certd/plus-core";
 
 /**
  */
@@ -27,6 +28,9 @@ export class UserTwoFactorSettingController extends BaseController {
 
   @Post("/save", { summary: Constants.per.authOnly })
   async save(@Body(ALL) bean: any) {
+    if (!isPlus()) {
+      throw new Error('本功能需要开通专业版')
+    }
     const userId = this.getUserId();
     const setting = new UserTwoFactorSetting();
     merge(setting, bean);
@@ -50,6 +54,9 @@ export class UserTwoFactorSettingController extends BaseController {
 
   @Post("/authenticator/save", { summary: Constants.per.authOnly })
   async authenticatorSave(@Body(ALL) bean: any) {
+    if (!isPlus()) {
+      throw new Error('本功能需要开通专业版')
+    }
     const userId = this.getUserId();
     await this.twoFactorService.saveAuthenticator({
         userId,

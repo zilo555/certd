@@ -3,7 +3,11 @@
     <a-form ref="formRef" :model="formState" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off">
       <h2>站点隐藏</h2>
       <a-form-item label="启用站点隐藏" :name="['hidden', 'enabled']" :required="true">
-        <a-switch v-model:checked="formState.hidden.enabled" />
+        <div class="flex">
+          <a-switch v-model:checked="formState.hidden.enabled" :disabled="!settingsStore.isPlus" />
+          <vip-button class="ml-5" mode="button"></vip-button>
+        </div>
+
         <div class="helper">
           可以在平时关闭站点的可访问性，需要时再打开，增强站点安全性
           <a href="https://certd.docmirror.cn/guide/feature/safe/hidden" class="flex items-center" target="_blank">
@@ -52,10 +56,11 @@ import { merge } from "lodash-es";
 import { Modal, notification } from "ant-design-vue";
 import { request } from "/@/api/service";
 import { util, utils } from "/@/utils";
+import { useSettingStore } from "/@/store/settings";
 defineOptions({
   name: "SettingSafe",
 });
-
+const settingsStore = useSettingStore();
 const api = {
   async SettingGet() {
     return await request({

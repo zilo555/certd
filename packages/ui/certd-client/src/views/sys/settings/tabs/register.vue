@@ -66,34 +66,34 @@ import { useSettingStore } from "/@/store/settings";
 import { notification } from "ant-design-vue";
 
 defineOptions({
-  name: "SettingRegister"
+  name: "SettingRegister",
 });
 
 const testMobile = ref("");
 async function testSendSms() {
   if (!testMobile.value) {
     notification.error({
-      message: "请输入测试手机号"
+      message: "请输入测试手机号",
     });
     return;
   }
   await api.TestSms({
-    mobile: testMobile.value
+    mobile: testMobile.value,
   });
   notification.success({
-    message: "发送成功"
+    message: "发送成功",
   });
 }
 const formState = reactive<Partial<SysSettings>>({
   public: {
-    registerEnabled: false
+    registerEnabled: false,
   },
   private: {
     sms: {
       type: "aliyun",
-      config: {}
-    }
-  }
+      config: {},
+    },
+  },
 });
 
 const rules = {
@@ -103,13 +103,13 @@ const rules = {
         return Promise.reject("密码登录和手机号登录至少开启一个");
       }
       return Promise.resolve();
-    }
+    },
   },
   required: {
     required: true,
     trigger: "change",
-    message: "此项必填"
-  }
+    message: "此项必填",
+  },
 };
 
 async function smsTypeChange(value: string) {
@@ -124,13 +124,13 @@ async function loadTypeDefine(type: string) {
   const define: any = await api.GetSmsTypeDefine(type);
   const keys = Object.keys(define.input);
   const inputs: any = {};
-  keys.forEach((key) => {
+  keys.forEach(key => {
     const value = define.input[key];
     value.simpleKey = key;
     value.key = "private.sms.config." + key;
     if (!value.component) {
       value.component = {
-        name: "a-input"
+        name: "a-input",
       };
     }
     if (!value.component.name) {
@@ -165,7 +165,7 @@ const onFinish = async (form: any) => {
     await api.SysSettingsSave(form);
     await settingsStore.loadSysSettings();
     notification.success({
-      message: "保存成功"
+      message: "保存成功",
     });
   } finally {
     saveLoading.value = false;
