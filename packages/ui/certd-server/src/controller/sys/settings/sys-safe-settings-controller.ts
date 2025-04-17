@@ -1,7 +1,7 @@
-import {ALL, Body, Controller, Inject, Post, Provide} from '@midwayjs/core';
-import {BaseController, SysSafeSetting} from '@certd/lib-server';
-import {cloneDeep} from 'lodash-es';
-import {SafeService} from "../../../modules/sys/settings/safe-service.js";
+import { ALL, Body, Controller, Inject, Post, Provide } from "@midwayjs/core";
+import { BaseController, SysSafeSetting } from "@certd/lib-server";
+import { cloneDeep } from "lodash-es";
+import { SafeService } from "../../../modules/sys/settings/safe-service.js";
 
 
 /**

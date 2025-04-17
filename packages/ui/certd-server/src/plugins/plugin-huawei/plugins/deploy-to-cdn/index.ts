@@ -22,11 +22,11 @@ export class HauweiDeployCertToCDN extends AbstractTaskPlugin {
     helper: '请选择前置任务输出的域名证书',
     component: {
       name: 'output-selector',
-      from: [...CertApplyPluginNames],
+      from: [...CertApplyPluginNames,'HauweiUploadToCCM'],
     },
     required: true,
   })
-  cert!: CertInfo;
+  cert!: CertInfo | string;
 
   @TaskInput(createCertDomainGetterInputDefine({ props: { required: false } }))
   certDomains!: string[];
@@ -53,14 +53,25 @@ export class HauweiDeployCertToCDN extends AbstractTaskPlugin {
   domains!: string[];
 
   async execute(): Promise<void> {
+    if (!this.cert) {
+      throw new Error('域名证书不能为空');
+    }
     this.logger.info('开始部署证书到华为云cdn');
     const { cdn, client } = await this.getCdnClient();
-    const httpsConfig = new cdn.HttpPutBody()
+    let httpsConfig = new cdn.HttpPutBody()
       .withHttpsStatus('on')
       .withCertificateType('server')
-      .withCertificateName(this.appendTimeSuffix('certd'))
-      .withCertificateValue(this.cert.crt)
-      .withPrivateKey(this.cert.key);
+
+      if(typeof this.cert  === 'object'){
+        httpsConfig=  httpsConfig.withCertificateSource(0)
+          .withCertificateName(this.appendTimeSuffix('certd'))
+          .withCertificateValue(this.cert.crt)
+          .withPrivateKey(this.cert.key);
+      }else{
+        this.logger.info('使用已有域名证书：', this.cert);
+        httpsConfig=  httpsConfig.withCertificateSource(2)//scm证书
+          .withScmCertificateId(this.cert)
+      }
 
     const config = new cdn.Configs().withHttps(httpsConfig);
     const body = new cdn.ModifyDomainConfigRequestBody().withConfigs(config);
@@ -70,9 +81,28 @@ export class HauweiDeployCertToCDN extends AbstractTaskPlugin {
     this.logger.info('部署域名：', JSON.stringify(this.domains));
     for (const domain of this.domains) {
       this.logger.info('部署到域名:', domain);
-      const req = new cdn.UpdateDomainFullConfigRequest().withDomainName(domain).withBody(body);
-      await client.updateDomainFullConfig(req);
-      this.logger.info(`部署到域名${domain}完成:`);
+
+      const queryReq =  new cdn.ShowDomainDetailByNameRequest(domain);
+      const domainDetail = await client.showDomainDetailByName(queryReq);
+      //@ts-ignore
+      const status = domainDetail.domain.domainStatus || domainDetail.domain.domain_status
+      this.logger.info(`当前域名状态:`, status);
+      let ignoreError = false
+      if (status === 'offline') {
+        ignoreError = true
+      }
+      try{
+        const req = new cdn.UpdateDomainFullConfigRequest().withDomainName(domain).withBody(body);
+        await client.updateDomainFullConfig(req);
+        this.logger.info(`部署到域名${domain}完成:`);
+      }catch (e) {
+        if (ignoreError){
+          this.logger.warn(`部署到域名${domain}失败，由于其处于offline状态，忽略部署错误，继续执行:`, e);
+        }else{
+          throw e
+        }
+      }
+
     }
 
     this.logger.info('部署证书到华为云cdn完成');

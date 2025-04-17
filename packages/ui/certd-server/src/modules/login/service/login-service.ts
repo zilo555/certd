@@ -1,14 +1,17 @@
 import {Config, Inject, Provide, Scope, ScopeEnum} from '@midwayjs/core';
 import {UserService} from '../../sys/authority/service/user-service.js';
 import jwt from 'jsonwebtoken';
-import {CommonException} from '@certd/lib-server';
+import {AuthException, CommonException, Need2FAException} from "@certd/lib-server";
 import {RoleService} from '../../sys/authority/service/role-service.js';
 import {UserEntity} from '../../sys/authority/entity/user.js';
 import {SysSettingsService} from '@certd/lib-server';
 import {SysPrivateSettings} from '@certd/lib-server';
-import {cache} from '@certd/basic';
+import {cache, utils} from '@certd/basic';
 import {LoginErrorException} from '@certd/lib-server/dist/basic/exception/login-error-exception.js';
 import {CodeService} from '../../basic/service/code-service.js';
+import {TwoFactorService} from "../../mine/service/two-factor-service.js";
+import {UserSettingsService} from '../../mine/service/user-settings-service.js';
+import {isPlus} from "@certd/plus-core";
 
 /**
  * 系统用户
@@ -28,6 +31,10 @@ export class LoginService {
 
   @Inject()
   sysSettingsService: SysSettingsService;
+  @Inject()
+  userSettingsService: UserSettingsService;
+  @Inject()
+  twoFactorService: TwoFactorService;
 
   checkIsBlocked(username: string) {
     const blockDurationKey = `login_block_duration:${username}`;
@@ -138,21 +145,56 @@ export class LoginService {
     return this.onLoginSuccess(info);
   }
 
-  private async onLoginSuccess(info: UserEntity) {
+  async checkTwoFactorEnabled(userId: number) {
+    //检查是否开启多重认证
+    if (!isPlus()) {
+      return true
+    }
 
+    const twoFactorSetting = await this.twoFactorService.getSetting(userId)
+
+    const authenticatorSetting = twoFactorSetting.authenticator
+    if (authenticatorSetting.enabled) {
+      //要检查
+      const randomKey = utils.id.simpleNanoId(12)
+      cache.set(`login_2fa_code:${randomKey}`, userId, {
+        ttl: 60 * 1000 * 2,
+      })
+      throw new Need2FAException('已开启多重认证，请在2分钟内输入OPT验证码',randomKey)
+    }
+
+  }
+
+  async loginByTwoFactor(req: { loginId: string; verifyCode: string }) {
+    //检查是否开启多重认证
+    if (!isPlus()) {
+      throw new Error('本功能需要开通专业版')
+    }
+    const userId = cache.get(`login_2fa_code:${req.loginId}`)
+    if (!userId) {
+      throw new AuthException('已超时，请返回重新登录')
+    }
+    await this.twoFactorService.verifyAuthenticatorCode(userId, req.verifyCode)
+
+    return this.generateToken(await this.userService.findOne(userId))
+  }
+
+  private async onLoginSuccess(info: UserEntity) {
     if (info.status === 0) {
       throw new CommonException('用户已被禁用');
     }
-    const roleIds = await this.roleService.getRoleIdsByUserId(info.id);
-    return this.generateToken(info, roleIds);
+    await this.checkTwoFactorEnabled(info.id)
+    return this.generateToken(info);
   }
+
 
   /**
    * 生成token
    * @param user 用户对象
    * @param roleIds
    */
-  async generateToken(user: UserEntity, roleIds: number[]) {
+  async generateToken(user: UserEntity) {
+    const roleIds = await this.roleService.getRoleIdsByUserId(user.id);
     const tokenInfo = {
       username: user.username,
       id: user.id,

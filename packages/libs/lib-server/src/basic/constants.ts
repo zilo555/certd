@@ -75,6 +75,10 @@ export const Constants = {
       code: 10010,
       message: '站点已关闭',
     },
+    need2fa:{
+      code: 10020,
+      message: '需要2FA认证',
+    },
     openKeyError: {
       code: 20000,
       message: 'ApiToken错误',

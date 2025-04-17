@@ -1,8 +1,7 @@
-import { ALL, Body, Controller, Inject, Post, Provide, Query } from '@midwayjs/core';
-import { CrudController } from '@certd/lib-server';
-import { Constants } from '@certd/lib-server';
-import { UserSettingsService } from '../../../modules/mine/service/user-settings-service.js';
-import { UserSettingsEntity } from '../../../modules/mine/entity/user-settings.js';
+import { ALL, Body, Controller, Inject, Post, Provide, Query } from "@midwayjs/core";
+import { Constants, CrudController } from "@certd/lib-server";
+import { UserSettingsService } from "../../../modules/mine/service/user-settings-service.js";
+import { UserSettingsEntity } from "../../../modules/mine/entity/user-settings.js";
 
 /**
  */
@@ -66,4 +65,6 @@ export class UserSettingsController extends CrudController<UserSettingsService> 
     const entity = await this.service.getByKey(key, this.getUserId());
     return this.ok(entity);
   }
+
+
 }

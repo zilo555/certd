@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.33.5](https://github.com/certd/certd/compare/v1.33.4...v1.33.5) (2025-04-17)
+
+### Performance Improvements
+
+* 登录支持双重认证 ([48aef25](https://github.com/certd/certd/commit/48aef25b3f6499d674ca4e4ef16f4c62399fb735))
+* 多重认证登录 ([0f82cf4](https://github.com/certd/certd/commit/0f82cf409bc60706ab07e4ca4f272b9a1ca7eecb))
+* 优化部署到华为云CDN，支持先上传到ccm，再使用证书id部署，修复offline状态下导致部署报错的bug ([79df39a](https://github.com/certd/certd/commit/79df39acabab10ae7e1864dadcdc186bb007a3c5))
+
 ## [1.33.4](https://github.com/certd/certd/compare/v1.33.3...v1.33.4) (2025-04-15)
 
 ### Bug Fixes

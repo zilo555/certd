@@ -23,11 +23,14 @@ export class LoginController extends BaseController {
     user: any
   ) {
     const token = await this.loginService.loginByPassword(user);
-    this.ctx.cookies.set('token', token.token, {
-      maxAge: 1000 * token.expire,
-    });
-
+    this.writeTokenCookie(token);
     return this.ok(token);
+  }
+
+  private writeTokenCookie(token: { expire: any; token: any }) {
+    this.ctx.cookies.set("token", token.token, {
+      maxAge: 1000 * token.expire
+    });
   }
 
   @Post('/loginBySms', { summary: Constants.per.guest })
@@ -48,10 +51,23 @@ export class LoginController extends BaseController {
       randomStr: body.randomStr,
     });
 
-    this.ctx.cookies.set('token', token.token, {
-      maxAge: 1000 * token.expire,
+    this.writeTokenCookie(token);
+
+    return this.ok(token);
+  }
+
+  @Post('/loginByTwoFactor', { summary: Constants.per.guest })
+  public async loginByTwoFactor(
+    @Body(ALL)
+    body: any
+  ) {
+
+    const token = await this.loginService.loginByTwoFactor({
+      loginId: body.loginId,
+      verifyCode: body.verifyCode,
     });
 
+    this.writeTokenCookie(token);
     return this.ok(token);
   }
 

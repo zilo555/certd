@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.33.5](https://github.com/certd/certd/compare/v1.33.4...v1.33.5) (2025-04-17)
+
+### Performance Improvements
+
+* 多重认证登录 ([0f82cf4](https://github.com/certd/certd/commit/0f82cf409bc60706ab07e4ca4f272b9a1ca7eecb))
+
 ## [1.33.4](https://github.com/certd/certd/compare/v1.33.3...v1.33.4) (2025-04-15)
 
 **Note:** Version bump only for package @certd/basic

@@ -3,6 +3,17 @@ import { get } from "lodash-es";
 import { errorLog, errorCreate } from "./tools";
 import { env } from "/src/utils/util.env";
 import { useUserStore } from "/@/store/user";
+
+export class CodeError extends Error {
+  code: number;
+  data?: any;
+  constructor(message: string, code: number, data?: any) {
+    super(message);
+    this.code = code;
+    this.data = data;
+  }
+}
+
 /**
  * @description 创建请求实例
  */
@@ -56,12 +67,13 @@ function createService() {
             const errorMessage = dataAxios.msg || dataAxios.message || "未知错误";
             // @ts-ignore
             if (response?.config?.onError) {
-              // @ts-ignore
-              response.config.onError(new Error(errorMessage));
+              const err = new CodeError(errorMessage, dataAxios.code, dataAxios.data);
+              response.config.onError(err);
+              return;
             }
             //@ts-ignore
             const showErrorNotify = response?.config?.showErrorNotify;
-            errorCreate(`${errorMessage}: ${response.config.url}`, showErrorNotify);
+            errorCreate(`${errorMessage}: ${response.config.url}`, showErrorNotify, dataAxios);
             return dataAxios;
         }
       }

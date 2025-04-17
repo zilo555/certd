@@ -4,10 +4,14 @@
       <a-tab-pane v-for="item of detail.nodes" :key="item.node.id">
         <template #tab>
           <div class="tab-title flex-between" :title="item.node.title">
-            <span class="tab-title-text flex items-center md:w-40">
+            <span class="tab-title-text flex items-center md:w-48">
               <pi-status-show class="mr-1" :status="item.node.status?.result" type="icon"></pi-status-show>
               <!--              <fs-icon icon="ion:chevron-forward-circle" class="text-md mr-1"></fs-icon>-->
-              {{ item.node.title }}
+              <span class="flex-1 ellipsis">{{ item.node.title }}</span>
+
+              <a-tooltip title="强制重新执行此步骤">
+                <fs-icon class="pointer color-blue ml-1" style="font-size: 16px" title="强制重新执行此步骤" icon="icon-park-outline:replay-music" @click="triggerRun(item.node.id)"></fs-icon>
+              </a-tooltip>
             </span>
           </div>
         </template>
@@ -31,13 +35,14 @@ export default {
   name: "PiTaskView",
   components: { PiStatusShow },
   props: {},
+  emits: ["run"],
   setup(props: any, ctx: any) {
     const taskModal = ref({
       open: false,
       onOk() {
         taskViewClose();
       },
-      cancelText: "关闭"
+      cancelText: "关闭",
     });
     const { isMobile } = usePreferences();
     const tabPosition = computed(() => {
@@ -65,7 +70,7 @@ export default {
           node: step,
           type: "步骤",
           tab: 2,
-          logs: []
+          logs: [],
         });
       }
       for (let node of nodes) {
@@ -82,7 +87,7 @@ export default {
                 list.push({
                   time,
                   content,
-                  color
+                  color,
                 });
               }
               return list;
@@ -111,12 +116,12 @@ export default {
               if (isBottom && el) {
                 el?.scrollTo({
                   top: el.scrollHeight,
-                  behavior: "smooth"
+                  behavior: "smooth",
                 });
               }
             },
             {
-              immediate: true
+              immediate: true,
             }
           );
         }
@@ -135,15 +140,21 @@ export default {
       taskModal.value.open = false;
     };
 
+    function triggerRun(id: string) {
+      ctx.emit("run", id);
+      taskModal.value.open = false;
+    }
+
     return {
       detail,
       taskModal,
       activeKey,
       taskViewOpen,
       taskViewClose,
-      tabPosition
+      tabPosition,
+      triggerRun,
     };
-  }
+  },
 };
 </script>
 
@@ -154,7 +165,7 @@ export default {
 
     .tab-title-text {
       display: flex;
-      max-width: 180px;
+      //max-width: 180px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
