@@ -4,6 +4,7 @@
  * @param {String} defaultValue 默认值
  */
 import { uiContext } from "@fast-crud/fast-crud";
+import { CodeError } from "/@/api/service";
 
 export function parse(jsonString = "{}", defaultValue = {}) {
   let result = defaultValue;
@@ -68,8 +69,8 @@ export function errorLog(error: any, notify = true) {
  * @description 创建一个错误
  * @param {String} msg 错误信息
  */
-export function errorCreate(msg: string, notify = true) {
-  const err = new Error(msg);
+export function errorCreate(msg: string, notify = true, data?: any) {
+  const err = new CodeError(msg, data.code, data.data);
   console.error("errorCreate", err);
   if (notify) {
     uiContext.get().notification.error({ message: err.message });

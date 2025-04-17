@@ -149,7 +149,7 @@ export const certdResources = [
             path: "/certd/mine/security",
             component: "/certd/mine/security/index.vue",
             meta: {
-              icon: "ion:locked-outline",
+              icon: "fluent:shield-keyhole-16-regular",
               auth: true,
               isMenu: true,
             },

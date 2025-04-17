@@ -66,3 +66,11 @@ export async function mine(): Promise<UserInfoRes> {
     method: "post",
   });
 }
+
+export async function loginByTwoFactor(data: any) {
+  return await request({
+    url: "/loginByTwoFactor",
+    method: "post",
+    data,
+  });
+}

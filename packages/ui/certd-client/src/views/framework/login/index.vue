@@ -1,6 +1,6 @@
 <template>
   <div class="main login-page">
-    <a-form ref="formRef" class="user-layout-login" name="custom-validation" :model="formState" v-bind="layout" @finish="handleFinish" @finish-failed="handleFinishFailed">
+    <a-form v-if="!twoFactor.loginId" ref="formRef" class="user-layout-login" name="custom-validation" :model="formState" v-bind="layout" @finish="handleFinish" @finish-failed="handleFinishFailed">
       <!--      <div class="login-title">登录</div>-->
       <a-tabs v-model:active-key="formState.loginType" :tab-bar-style="{ textAlign: 'center', borderBottom: 'unset' }">
         <a-tab-pane key="password" tab="密码登录" :disabled="sysPublicSettings.passwordLoginEnabled !== true">
@@ -47,6 +47,23 @@
 
       <a-form-item class="user-login-other">
         <router-link v-if="hasRegisterTypeEnabled()" class="register" :to="{ name: 'register' }"> 注册 </router-link>
+      </a-form-item>
+    </a-form>
+    <a-form v-else ref="twoFactorFormRef" class="user-layout-login" :model="twoFactor" v-bind="layout">
+      <div class="mb-10 flex flex-center">请打开您的Authenticator APP，获取动态验证码。</div>
+      <a-form-item name="verifyCode">
+        <a-input v-model:value="twoFactor.verifyCode" placeholder="请输入动态验证码" allow-clear>
+          <template #prefix>
+            <fs-icon icon="ion:lock-closed-outline"></fs-icon>
+          </template>
+        </a-input>
+      </a-form-item>
+      <a-form-item>
+        <loading-button type="primary" size="large" html-type="button" class="login-button" :click="handleTwoFactorSubmit">OTP验证登录</loading-button>
+      </a-form-item>
+
+      <a-form-item class="user-login-other">
+        <a class="register" @click="twoFactor.loginId = null"> 返回 </a>
       </a-form-item>
     </a-form>
   </div>
@@ -113,11 +130,28 @@ export default defineComponent({
       },
     };
 
+    const twoFactor = reactive({
+      loginId: "",
+      verifyCode: "",
+    });
+
+    const handleTwoFactorSubmit = async () => {
+      await userStore.loginByTwoFactor(twoFactor);
+    };
+
     const handleFinish = async (values: any) => {
       loading.value = true;
       try {
         const loginType = formState.loginType;
         await userStore.login(loginType, toRaw(formState));
+      } catch (e: any) {
+        //@ts-ignore
+        if (e.code === 10020) {
+          //@ts-ignore
+          twoFactor.loginId = e.data;
+        } else {
+          throw e;
+        }
       } finally {
         loading.value = false;
       }
@@ -150,6 +184,8 @@ export default defineComponent({
       isLoginError,
       sysPublicSettings,
       hasRegisterTypeEnabled,
+      twoFactor,
+      handleTwoFactorSubmit,
     };
   },
 });

@@ -9,7 +9,14 @@
           <div class="flex mt-5">
             <a-switch v-model:checked="formState.authenticator.enabled" :disabled="!settingsStore.isPlus" @change="onAuthenticatorEnabledChanged" />
 
-            <a-button v-if="formState.authenticator.enabled && formState.authenticator.verified" :disabled="authenticatorOpenRef" size="small" class="ml-5" type="primary" @click="authenticatorForm.open = true">
+            <a-button
+              v-if="formState.authenticator.enabled && formState.authenticator.verified"
+              :disabled="authenticatorOpenRef || !settingsStore.isPlus"
+              size="small"
+              class="ml-5"
+              type="primary"
+              @click="authenticatorForm.open = true"
+            >
               重新绑定
             </a-button>
 
@@ -53,7 +60,12 @@ defineOptions({
   name: "UserSecurity",
 });
 
-const formState = reactive<Partial<UserTwoFactorSetting>>({});
+const formState = reactive<Partial<UserTwoFactorSetting>>({
+  authenticator: {
+    enabled: false,
+    verified: false,
+  },
+});
 
 const authenticatorForm = reactive({
   qrcodeSrc: "",
