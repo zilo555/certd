@@ -158,21 +158,21 @@ export class LoginService {
       //要检查
       const randomKey = utils.id.simpleNanoId(12)
       cache.set(`login_2fa_code:${randomKey}`, userId, {
-        ttl: 60 * 1000,
+        ttl: 60 * 1000 * 2,
       })
-      throw new Need2FAException('已开启多重认证，请在60秒内输入验证码')
+      throw new Need2FAException('已开启多重认证，请在2分钟内输入OPT验证码',randomKey)
     }
 
   }
 
-  async loginByTwoFactor(req: { loginCode: string; verifyCode: string }) {
+  async loginByTwoFactor(req: { loginId: string; verifyCode: string }) {
     //检查是否开启多重认证
     if (!isPlus()) {
       throw new Error('本功能需要开通专业版')
     }
-    const userId = cache.get(`login_2fa_code:${req.loginCode}`)
+    const userId = cache.get(`login_2fa_code:${req.loginId}`)
     if (!userId) {
-      throw new AuthException('登录状态已失效，请重新登录')
+      throw new AuthException('已超时，请返回重新登录')
     }
     await this.twoFactorService.verifyAuthenticatorCode(userId, req.verifyCode)
 

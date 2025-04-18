@@ -63,7 +63,7 @@ export class LoginController extends BaseController {
   ) {
 
     const token = await this.loginService.loginByTwoFactor({
-      loginCode: body.loginCode,
+      loginId: body.loginId,
       verifyCode: body.verifyCode,
     });
 

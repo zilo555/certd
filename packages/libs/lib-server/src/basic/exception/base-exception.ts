@@ -3,9 +3,11 @@
  */
 export class BaseException extends Error {
   code: number;
-  constructor(name, code, message) {
+  data?:any
+  constructor(name, code, message,data?:any) {
     super(message);
     this.name = name;
     this.code = code;
+    this.data = data;
   }
 }

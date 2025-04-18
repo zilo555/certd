@@ -4,8 +4,7 @@
       <h2>站点隐藏</h2>
       <a-form-item label="启用站点隐藏" :name="['hidden', 'enabled']" :required="true">
         <div class="flex">
-          <a-switch v-model:checked="formState.hidden.enabled" :disabled="!settingsStore.isPlus" />
-          <vip-button class="ml-5" mode="button"></vip-button>
+          <a-switch v-model:checked="formState.hidden.enabled" />
         </div>
 
         <div class="helper">

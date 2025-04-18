@@ -249,7 +249,7 @@
 
     <pi-task-form ref="taskFormRef" :edit-mode="editMode"></pi-task-form>
     <pi-trigger-form ref="triggerFormRef" :edit-mode="editMode"></pi-trigger-form>
-    <pi-task-view ref="taskViewRef"></pi-task-view>
+    <pi-task-view ref="taskViewRef" @run="run"></pi-task-view>
     <PiNotificationForm ref="notificationFormRef" :edit-mode="editMode"></PiNotificationForm>
   </fs-page>
 </template>

@@ -51,7 +51,7 @@ export const useUserStore = defineStore({
     setUserInfo(info: UserInfoRes) {
       this.userInfo = info;
       const userStore = vbenUserStore();
-      userStore.setUserInfo(info);
+      userStore.setUserInfo(info as any);
       LocalStorage.set(USER_INFO_KEY, info);
     },
     resetState() {
@@ -71,23 +71,18 @@ export const useUserStore = defineStore({
      * @description: login
      */
     async login(loginType: string, params: LoginReq | SmsLoginReq): Promise<any> {
-      try {
-        let loginRes: any = null;
-        if (loginType === "sms") {
-          loginRes = await UserApi.loginBySms(params as SmsLoginReq);
-        } else {
-          loginRes = await UserApi.login(params as LoginReq);
-        }
-
-        const { token, expire } = loginRes;
-        // save token
-        this.setToken(token, expire);
-        // get user info
-        return await this.onLoginSuccess(loginRes);
-      } catch (error) {
-        console.error(error);
-        return null;
+      let loginRes: any = null;
+      if (loginType === "sms") {
+        loginRes = await UserApi.loginBySms(params as SmsLoginReq);
+      } else {
+        loginRes = await UserApi.login(params as LoginReq);
       }
+      return await this.onLoginSuccess(loginRes);
+    },
+
+    async loginByTwoFactor(form: any) {
+      const loginRes = await UserApi.loginByTwoFactor(form);
+      return await this.onLoginSuccess(loginRes);
     },
     async getUserInfoAction(): Promise<UserInfoRes> {
       const userInfo = await UserApi.mine();
@@ -100,9 +95,13 @@ export const useUserStore = defineStore({
     },
 
     async onLoginSuccess(loginData: any) {
+      const { token, expire } = loginData;
+      // save token
+      this.setToken(token, expire);
+      // get user info
       // await this.getUserInfoAction();
       // const userInfo = await this.getUserInfoAction();
-      mitter.emit("app.login", { token: loginData });
+      mitter.emit("app.login", { ...loginData });
       await router.replace("/");
     },
 

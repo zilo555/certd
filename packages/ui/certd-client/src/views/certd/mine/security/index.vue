@@ -5,11 +5,18 @@
     </template>
     <div class="user-settings-form settings-form">
       <a-form :model="formState" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off">
-        <a-form-item label="OTP多重验证登录" :name="['authenticator', 'enabled']">
+        <a-form-item label="2FA多重验证登录" :name="['authenticator', 'enabled']">
           <div class="flex mt-5">
             <a-switch v-model:checked="formState.authenticator.enabled" :disabled="!settingsStore.isPlus" @change="onAuthenticatorEnabledChanged" />
 
-            <a-button v-if="formState.authenticator.enabled && formState.authenticator.verified" :disabled="authenticatorOpenRef" size="small" class="ml-5" type="primary" @click="authenticatorForm.open = true">
+            <a-button
+              v-if="formState.authenticator.enabled && formState.authenticator.verified"
+              :disabled="authenticatorOpenRef || !settingsStore.isPlus"
+              size="small"
+              class="ml-5"
+              type="primary"
+              @click="authenticatorForm.open = true"
+            >
               重新绑定
             </a-button>
 
@@ -19,8 +26,30 @@
           <div class="helper">是否开启多重验证登录</div>
         </a-form-item>
         <a-form-item v-if="authenticatorOpenRef" label="绑定设备" class="authenticator-config">
-          <h3 class="font-bold m-5">1. 安装任意一款 Authenticator APP</h3>
-          <div class="ml-20">比如：Microsoft Authenticator / Google Authenticator / Authy / Synology Secure SignIn 等</div>
+          <h3 class="font-bold m-5">1. 安装任意一款支持Authenticator的验证APP，比如：</h3>
+          <div class="ml-20">
+            <ul>
+              <li>
+                <a-tooltip title="如果报没有找到谷歌服务的错误，您可以安装KK谷歌助手">
+                  <a href="https://appgallery.huawei.com/app/C100262999" target="_blank"> Microsoft Authenticator</a>
+                </a-tooltip>
+              </li>
+              <li>
+                <a href="https://sj.qq.com/appdetail/com.tencent.authenticator" target="_blank">腾讯身份验证器</a>
+              </li>
+              <li>
+                <a href="https://www.synology.cn/zh-cn/dsm/feature/authentication" target="_blank">群晖身份验证器</a>
+              </li>
+              <li>
+                <a-tooltip title="如果报没有找到谷歌服务的错误，您可以安装KK谷歌助手">
+                  <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2" target="_blank">Google Authenticator</a>
+                </a-tooltip>
+              </li>
+              <li>
+                <a href="https://play.google.com/store/apps/details?id=com.authy.authy" target="_blank">Authy</a>
+              </li>
+            </ul>
+          </div>
           <h3 class="font-bold m-10">2. 扫描二维码添加账号</h3>
           <div v-if="authenticatorForm.qrcodeSrc" class="qrcode">
             <div class="ml-20">
@@ -53,7 +82,12 @@ defineOptions({
   name: "UserSecurity",
 });
 
-const formState = reactive<Partial<UserTwoFactorSetting>>({});
+const formState = reactive<Partial<UserTwoFactorSetting>>({
+  authenticator: {
+    enabled: false,
+    verified: false,
+  },
+});
 
 const authenticatorForm = reactive({
   qrcodeSrc: "",
