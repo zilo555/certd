@@ -1,7 +1,7 @@
 <template>
   <div class="pem-input">
     <FileInput v-bind="fileInput" class="mb-5" type="primary" text="选择文件" @change="onChange" />
-    <a-textarea v-bind="textarea" v-model:value="textRef"></a-textarea>
+    <a-textarea v-bind="textarea" :value="modelValue" @update:value="emitValue"></a-textarea>
   </div>
 </template>
 
@@ -17,7 +17,6 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits(["update:modelValue"]);
-const textRef = ref();
 
 function emitValue(value: string) {
   emit("update:modelValue", value);
@@ -39,16 +38,6 @@ function onChange(e: any) {
   };
   fileReader.readAsText(file); // 以文本形式读取文件
 }
-
-watch(
-  () => props.modelValue,
-  value => {
-    textRef.value = value;
-  },
-  {
-    immediate: true,
-  }
-);
 </script>
 
 <style lang="less">

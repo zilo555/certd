@@ -135,7 +135,7 @@ export function useCertUpload() {
             },
             async doSubmit({ form }: any) {
               const cert = form.uploadCert;
-              const domains = getAllDomainsFromCrt(cert.crt);
+              const domains = await getAllDomainsFromCrt(cert.crt);
 
               const notifications = [];
               if (form.notification != null) {

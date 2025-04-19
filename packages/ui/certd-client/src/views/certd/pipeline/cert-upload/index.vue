@@ -8,7 +8,7 @@
 </template>
 
 <script lang="tsx" setup>
-import { computed, inject } from "vue";
+import { computed, inject, watch, ref } from "vue";
 import { useCertUpload } from "./use";
 import { getAllDomainsFromCrt } from "/@/views/certd/pipeline/utils";
 
@@ -27,19 +27,36 @@ const emit = defineEmits(["updated", "update:modelValue"]);
 
 const { openUpdateCertDialog } = useCertUpload();
 
-const domain = computed(() => {
-  if (!props.modelValue?.crt) {
-    return "";
-  }
-  const domains = getAllDomainsFromCrt(props.modelValue?.crt);
+const domainsRef = ref([]);
 
-  return domains[0];
+watch(
+  () => {
+    return props.modelValue?.crt;
+  },
+  async crt => {
+    if (crt) {
+      domainsRef.value = await getAllDomainsFromCrt(crt);
+    } else {
+      domainsRef.value = [];
+    }
+
+    emit("updated", { domains: domainsRef.value });
+  },
+  {
+    immediate: true,
+  }
+);
+
+const domain = computed(() => {
+  if (domainsRef.value && domainsRef.value.length > 0) {
+    return domainsRef.value[0];
+  }
+
+  return "";
 });
 
-function onUpdated(res: { uploadCert: any }) {
+async function onUpdated(res: { uploadCert: any }) {
   emit("update:modelValue", res.uploadCert);
-  const domains = getAllDomainsFromCrt(res.uploadCert.crt);
-  emit("updated", { domains });
 }
 
 const pipeline: any = inject("pipeline");

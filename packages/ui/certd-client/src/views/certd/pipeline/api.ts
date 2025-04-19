@@ -122,3 +122,11 @@ export async function GetCert(pipelineId: number): Promise<CertInfo> {
     params: { id: pipelineId },
   });
 }
+
+export async function ReadCertDetail(crt: string): Promise<any> {
+  return await request({
+    url: certApiPrefix + "/readCertDetail",
+    method: "post",
+    data: { crt },
+  });
+}

@@ -2,8 +2,7 @@ import { forEach } from "lodash-es";
 import { mySuiteApi } from "/@/views/certd/suite/mine/api";
 import { notification } from "ant-design-vue";
 import { useSettingStore } from "/@/store/settings";
-//@ts-ignore
-import forge from "node-forge";
+import { ReadCertDetail } from "./api";
 export function eachStages(list: any[], exec: (item: any, runnableType: string) => void, runnableType: string = "stage") {
   if (!list || list.length <= 0) {
     return;
@@ -70,33 +69,16 @@ export async function checkPipelineLimit() {
   }
 }
 
-export function readCertDetail(crt: string) {
-  const detail = forge.pki.certificateFromPem(crt);
-  const expires = detail.notAfter;
-  return { detail, expires };
+export async function readCertDetail(crt: string) {
+  return await ReadCertDetail(crt);
 }
 
-export function getAllDomainsFromCrt(crt: string) {
-  const { detail } = readCertDetail(crt);
-  const domains = [];
-
-  // 1. 提取SAN中的DNS名称
-  const sanExtension = detail.extensions.find((ext: any) => ext.name === "subjectAltName");
-  if (sanExtension) {
-    sanExtension.altNames.forEach((altName: any) => {
-      if (altName.type === 2) {
-        // type=2 表示DNS名称
-        domains.push(altName.value);
-      }
-    });
+export async function getAllDomainsFromCrt(crt: string) {
+  const { detail } = await readCertDetail(crt);
+  const altNames = detail.domains.altNames;
+  const commonName = detail.domains.commonName;
+  if (altNames.includes(commonName)) {
+    return altNames;
   }
-
-  // 2. 如果没有SAN，回退到CN（通用名称）
-  if (domains.length === 0) {
-    const cnAttr = detail.subject.attributes.find((attr: any) => attr.name === "commonName");
-    if (cnAttr) {
-      domains.push(cnAttr.value);
-    }
-  }
-  return domains;
+  return [commonName, ...altNames];
 }
