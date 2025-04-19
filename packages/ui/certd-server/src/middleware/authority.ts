@@ -56,7 +56,20 @@ export class AuthorityMiddleware implements IWebMiddleware {
       token = token.replace('Bearer ', '').trim();
       if (!token) {
         //尝试从cookie中获取token
-        token = ctx.cookies.get('token') || '';
+        const cookie = ctx.headers.cookie;
+        if (cookie) {
+          const items = cookie.split(';');
+          for (const item of items) {
+            if (!item  || !item.trim()) {
+              continue;
+            }
+            const [key, value] = item.split('=');
+            if (key.trim() === 'certd_token') {
+              token = value.trim();
+              break;
+            }
+          }
+        }
       }
       if (!token) {
         //尝试从query中获取token

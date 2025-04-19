@@ -20,7 +20,7 @@ import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 
 defineOptions({
-  name: "FsUserInfo"
+  name: "FsUserInfo",
 });
 const userStore = useUserStore();
 const { t } = useI18n();
@@ -38,7 +38,7 @@ function doLogout() {
     content: t("app.login.logoutMessage"),
     onOk: async () => {
       await userStore.logout(true);
-    }
+    },
   });
 }
 </script>

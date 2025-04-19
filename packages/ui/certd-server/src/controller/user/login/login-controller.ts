@@ -28,7 +28,7 @@ export class LoginController extends BaseController {
   }
 
   private writeTokenCookie(token: { expire: any; token: any }) {
-    this.ctx.cookies.set("token", token.token, {
+    this.ctx.cookies.set("certd_token", token.token, {
       maxAge: 1000 * token.expire
     });
   }
@@ -72,5 +72,10 @@ export class LoginController extends BaseController {
   }
 
   @Post('/logout', { summary: Constants.per.authOnly })
-  public logout() {}
+  public logout() {
+    this.ctx.cookies.set("certd_token", "", {
+      maxAge: 0
+    });
+    return this.ok();
+  }
 }

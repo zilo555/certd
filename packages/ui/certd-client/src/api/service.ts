@@ -49,33 +49,32 @@ function createService() {
       }
 
       // 这个状态码是和后端约定的
-      const { code } = dataAxios;
-      // 根据 code 进行判断
-      if (code === undefined) {
+      if (dataAxios?.code === undefined) {
         // 如果没有 code 代表这不是项目后端开发的接口
         errorCreate(`非标准返回：${dataAxios}， ${response.config.url}`);
         return dataAxios;
-      } else {
-        // 有 code 代表这是一个后端接口 可以进行进一步的判断
-        switch (code) {
-          case 0:
-            // [ 示例 ] code === 0 代表没有错误
+      }
+      const { code } = dataAxios;
+      // 有 code 代表这是一个后端接口 可以进行进一步的判断
+      switch (code) {
+        case 0:
+          // [ 示例 ] code === 0 代表没有错误
+          // @ts-ignore
+          return dataAxios?.data;
+        default:
+          // 不是正确的 code
+          const errorMessage = dataAxios.msg || dataAxios.message || "未知错误";
+          // @ts-ignore
+          if (response?.config?.onError) {
+            const err = new CodeError(errorMessage, dataAxios.code, dataAxios.data);
             // @ts-ignore
-            return dataAxios.data;
-          default:
-            // 不是正确的 code
-            const errorMessage = dataAxios.msg || dataAxios.message || "未知错误";
-            // @ts-ignore
-            if (response?.config?.onError) {
-              const err = new CodeError(errorMessage, dataAxios.code, dataAxios.data);
-              response.config.onError(err);
-              return;
-            }
-            //@ts-ignore
-            const showErrorNotify = response?.config?.showErrorNotify;
-            errorCreate(`${errorMessage}: ${response.config.url}`, showErrorNotify, dataAxios);
-            return dataAxios;
-        }
+            response.config.onError(err);
+            return;
+          }
+          //@ts-ignore
+          const showErrorNotify = response?.config?.showErrorNotify;
+          errorCreate(`${errorMessage}: ${response.config.url}`, showErrorNotify, dataAxios);
+          return dataAxios;
       }
     },
     error => {
