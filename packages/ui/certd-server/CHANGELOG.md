@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.33.6](https://github.com/certd/certd/compare/v1.33.5...v1.33.6) (2025-04-20)
+
+### Bug Fixes
+
+* 上传商用证书，直接粘贴文本报错的问题；修复无法上传ec加密证书的bug ([5750bb7](https://github.com/certd/certd/commit/5750bb706779da274d8e7a87e71416cb64d2df79))
+* 修复下载证书时提示token已过期的问题 ([0e07ae6](https://github.com/certd/certd/commit/0e07ae6ce84dcb9279d3c44060d621566afa593c))
+
+### Performance Improvements
+
+* 新增部署到火山引擎ALB/CLB、上传到证书中心 ([c9a3e3d](https://github.com/certd/certd/commit/c9a3e3d9d26f964c7af7b56667936f1414fbf42a))
+* 优化/api缓存为0 ([dc05cd4](https://github.com/certd/certd/commit/dc05cd481f186b13375192be965000e6b4b429a5))
+* 优化华为cdn插件引用ccm证书 ([b565b4b](https://github.com/certd/certd/commit/b565b4b3b919b71b98ea2517670bc1ef00e00dc9))
+
 ## [1.33.5](https://github.com/certd/certd/compare/v1.33.4...v1.33.5) (2025-04-17)
 
 ### Performance Improvements

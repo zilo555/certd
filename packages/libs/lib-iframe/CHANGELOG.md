@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.33.6](https://github.com/certd/certd/compare/v1.33.5...v1.33.6) (2025-04-20)
+
+### Performance Improvements
+
+* 更新license时同时绑定url ([78367af](https://github.com/certd/certd/commit/78367af8307f801e778c76d49f0918c21ffe032f))
+
 ## [1.33.5](https://github.com/certd/certd/compare/v1.33.4...v1.33.5) (2025-04-17)
 
 **Note:** Version bump only for package @certd/lib-iframe
