@@ -19,7 +19,7 @@ import { CertApplyPluginNames} from '@certd/plugin-cert';
 export class HauweiDeployCertToCDN extends AbstractTaskPlugin {
   @TaskInput({
     title: '域名证书',
-    helper: '请选择前置任务输出的域名证书',
+    helper: '请选择前置任务输出的域名证书\n如果你选择使用ccm证书ID，则需要在[域名管理页面右上角开启SCM授权](https://console.huaweicloud.com/cdn/#/cdn/domain)',
     component: {
       name: 'output-selector',
       from: [...CertApplyPluginNames,'HauweiUploadToCCM'],
@@ -62,16 +62,17 @@ export class HauweiDeployCertToCDN extends AbstractTaskPlugin {
       .withHttpsStatus('on')
       .withCertificateType('server')
 
-      if(typeof this.cert  === 'object'){
-        httpsConfig=  httpsConfig.withCertificateSource(0)
-          .withCertificateName(this.appendTimeSuffix('certd'))
-          .withCertificateValue(this.cert.crt)
-          .withPrivateKey(this.cert.key);
-      }else{
-        this.logger.info('使用已有域名证书：', this.cert);
-        httpsConfig=  httpsConfig.withCertificateSource(2)//scm证书
-          .withScmCertificateId(this.cert)
-      }
+    if(typeof this.cert  === 'object'){
+      httpsConfig=  httpsConfig.withCertificateSource(0)
+        .withCertificateName(this.appendTimeSuffix('certd'))
+        .withCertificateValue(this.cert.crt)
+        .withPrivateKey(this.cert.key);
+    }else{
+      this.logger.info('使用已有域名证书：', this.cert);
+      httpsConfig=  httpsConfig.withCertificateSource(2)//scm证书
+        .withCertificateName(this.appendTimeSuffix('certd'))
+        .withScmCertificateId(this.cert)
+    }
 
     const config = new cdn.Configs().withHttps(httpsConfig);
     const body = new cdn.ModifyDomainConfigRequestBody().withConfigs(config);

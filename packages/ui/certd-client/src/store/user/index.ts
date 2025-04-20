@@ -108,9 +108,10 @@ export const useUserStore = defineStore({
     /**
      * @description: logout
      */
-    logout(goLogin = true) {
+    async logout(goLogin = true) {
       this.resetState();
       resetAllStores();
+      await UserApi.logout(); //主要是清空cookie
       goLogin && router.push("/login");
       mitter.emit("app.logout");
     },

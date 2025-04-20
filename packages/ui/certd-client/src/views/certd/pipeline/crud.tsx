@@ -13,15 +13,16 @@ import { cloneDeep } from "lodash-es";
 import { useModal } from "/@/use/use-modal";
 import CertView from "./cert-view.vue";
 import { eachStages } from "./utils";
-import { setRunnableIds, useCertd } from "/@/views/certd/pipeline/certd-form/use";
+import { setRunnableIds, useCertPipelineCreator } from "/@/views/certd/pipeline/certd-form/use";
 import { useCertUpload } from "/@/views/certd/pipeline/cert-upload/use";
+import GroupSelector from "/@/views/certd/pipeline/group/group-selector.vue";
 
-export default function ({ crudExpose, context: { certdFormRef, groupDictRef, selectedRowKeys } }: CreateCrudOptionsProps): CreateCrudOptionsRet {
+export default function ({ crudExpose, context: { groupDictRef, selectedRowKeys } }: CreateCrudOptionsProps): CreateCrudOptionsRet {
   const router = useRouter();
   const { t } = useI18n();
   const lastResRef = ref();
 
-  const { openAddCertdPipelineDialog } = useCertd(certdFormRef);
+  const { openAddCertdPipelineDialog } = useCertPipelineCreator();
   const { openUploadCreateDialog } = useCertUpload();
 
   const pageRequest = async (query: UserPageQuery): Promise<UserPageRes> => {
@@ -116,6 +117,13 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
   const userStore = useUserStore();
   const settingStore = useSettingStore();
 
+  function onDialogOpen(opt: any) {
+    const searchForm = crudExpose.getSearchValidatedFormData();
+    opt.initialForm = {
+      groupId: searchForm.groupId,
+    };
+  }
+
   return {
     crudOptions: {
       request: {
@@ -157,7 +165,9 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
             type: "primary",
             icon: "ion:ios-add-circle-outline",
             click() {
-              openAddCertdPipelineDialog();
+              const searchForm = crudExpose.getSearchValidatedFormData();
+              const defaultGroupId = searchForm.groupId;
+              openAddCertdPipelineDialog({ defaultGroupId });
             },
           },
           uploadCert: {
@@ -179,7 +189,8 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
             },
             icon: "ion:cloud-upload-outline",
             click() {
-              openUploadCreateDialog();
+              const searchForm = crudExpose.getSearchValidatedFormData();
+              openUploadCreateDialog({ defaultGroupId: searchForm.groupId });
             },
           },
         },
@@ -189,6 +200,9 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
           if (mode === "add") {
             router.push({ path: "/certd/pipeline/detail", query: { id: res.id, editMode: "true" } });
           }
+        },
+        wrapper: {
+          onOpen: onDialogOpen,
         },
       },
       table: {
@@ -418,7 +432,7 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
             show: false,
           },
           column: {
-            sorter: true,
+            sorter: false,
             width: 150,
             align: "center",
           },
@@ -489,6 +503,12 @@ export default function ({ crudExpose, context: { certdFormRef, groupDictRef, se
             show: true,
           },
           dict: groupDictRef,
+          form: {
+            component: {
+              name: GroupSelector,
+              vModel: "modelValue",
+            },
+          },
           column: {
             width: 130,
             align: "center",

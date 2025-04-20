@@ -7,7 +7,7 @@ export function createNotificationApi() {
       return await request({
         url: apiPrefix + "/page",
         method: "post",
-        data: query
+        data: query,
       });
     },
 
@@ -15,7 +15,7 @@ export function createNotificationApi() {
       return await request({
         url: apiPrefix + "/add",
         method: "post",
-        data: obj
+        data: obj,
       });
     },
 
@@ -23,7 +23,7 @@ export function createNotificationApi() {
       return await request({
         url: apiPrefix + "/update",
         method: "post",
-        data: obj
+        data: obj,
       });
     },
 
@@ -31,7 +31,7 @@ export function createNotificationApi() {
       return await request({
         url: apiPrefix + "/delete",
         method: "post",
-        params: { id }
+        params: { id },
       });
     },
 
@@ -39,14 +39,14 @@ export function createNotificationApi() {
       return await request({
         url: apiPrefix + "/info",
         method: "post",
-        params: { id }
+        params: { id },
       });
     },
 
     async GetOptions(id: number) {
       return await request({
         url: apiPrefix + "/options",
-        method: "post"
+        method: "post",
       });
     },
 
@@ -54,14 +54,14 @@ export function createNotificationApi() {
       return await request({
         url: apiPrefix + "/setDefault",
         method: "post",
-        params: { id }
+        params: { id },
       });
     },
 
     async GetDefaultId() {
       return await request({
         url: apiPrefix + "/getDefaultId",
-        method: "post"
+        method: "post",
       });
     },
 
@@ -69,14 +69,14 @@ export function createNotificationApi() {
       return await request({
         url: apiPrefix + "/simpleInfo",
         method: "post",
-        params: { id }
+        params: { id },
       });
     },
 
     async GetDefineTypes() {
       return await request({
         url: apiPrefix + "/getTypeDict",
-        method: "post"
+        method: "post",
       });
     },
 
@@ -84,7 +84,7 @@ export function createNotificationApi() {
       return await request({
         url: apiPrefix + "/define",
         method: "post",
-        params: { type }
+        params: { type },
       });
     },
 
@@ -92,15 +92,15 @@ export function createNotificationApi() {
       return await request({
         url: apiPrefix + "/defineByType",
         method: "post",
-        params: { type }
+        params: { type },
       });
     },
     async GetOrCreateDefault(param: { email: any }) {
       return await request({
         url: apiPrefix + "/getOrCreateDefault",
         method: "post",
-        data: param
+        data: param,
       });
-    }
+    },
   };
 }

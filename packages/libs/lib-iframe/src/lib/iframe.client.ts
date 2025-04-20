@@ -65,7 +65,7 @@ export class IframeClient {
     return window.self !== window.top;
   }
 
-  register<T = any>(action: string, handler: (data: IframeMessageData<T>) => Promise<void>) {
+  register<T = any>(action: string, handler: (data: IframeMessageData<T>) => Promise<any>) {
     this.handlers[action] = handler;
   }
 

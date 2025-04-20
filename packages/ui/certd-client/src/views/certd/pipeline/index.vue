@@ -15,7 +15,6 @@
       <template #form-bottom>
         <div>申请证书</div>
       </template>
-      <pi-certd-form ref="certdFormRef"></pi-certd-form>
     </fs-crud>
   </fs-page>
 </template>
@@ -33,7 +32,6 @@ defineOptions({
   name: "PipelineManager",
 });
 
-const certdFormRef = ref();
 const groupDictRef = dict({
   url: "/pi/pipeline/group/all",
   value: "id",
@@ -41,7 +39,6 @@ const groupDictRef = dict({
 });
 const selectedRowKeys = ref([]);
 const context: any = {
-  certdFormRef,
   groupDictRef,
   selectedRowKeys,
 };

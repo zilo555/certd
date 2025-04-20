@@ -10,6 +10,7 @@ import { updatePreferences } from "/@/vben/preferences";
 import { useTitle } from "@vueuse/core";
 import { utils } from "/@/utils";
 import { cloneDeep } from "lodash-es";
+
 export interface SettingState {
   sysPublic?: SysPublicSetting;
   installInfo?: {
@@ -184,6 +185,17 @@ export const useSettingStore = defineStore({
         useTitle(this.siteInfo.title);
       }
     },
+    getBaseUrl() {
+      let url = window.location.href;
+      //只要hash前面的部分
+      url = url.split("#")[0];
+      return url;
+    },
+    async doBindUrl() {
+      const url = this.getBaseUrl();
+      await basicApi.bindUrl({ url });
+      await this.loadSysSettings();
+    },
     async checkUrlBound() {
       const userStore = useUserStore();
       const settingStore = useSettingStore();
@@ -193,22 +205,9 @@ export const useSettingStore = defineStore({
 
       const bindUrl = this.installInfo.bindUrl;
 
-      function getBaseUrl() {
-        let url = window.location.href;
-        //只要hash前面的部分
-        url = url.split("#")[0];
-        return url;
-      }
-
-      const doBindUrl = async (url: string) => {
-        await basicApi.bindUrl({ url });
-        await this.loadSysSettings();
-      };
-
-      const baseUrl = getBaseUrl();
       if (!bindUrl) {
         //绑定url
-        await doBindUrl(baseUrl);
+        await this.doBindUrl();
       } else {
         //检查当前url 是否与绑定的url一致
         const url = window.location.href;
@@ -217,7 +216,7 @@ export const useSettingStore = defineStore({
             title: "URL地址有变化",
             content: "以后都用这个新地址访问本系统吗？",
             onOk: async () => {
-              await doBindUrl(baseUrl);
+              await this.doBindUrl();
             },
             okText: "是的，继续",
             cancelText: "不是，回到原来的地址",

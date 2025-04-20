@@ -5,7 +5,6 @@ import { AddReq, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, Edi
 import { pipelineGroupApi } from "./api";
 
 export default function ({ crudExpose, context }: CreateCrudOptionsProps): CreateCrudOptionsRet {
-  const { t } = useI18n();
   const api = pipelineGroupApi;
   const pageRequest = async (query: UserPageQuery): Promise<UserPageRes> => {
     return await api.GetList(query);
@@ -34,32 +33,32 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           mobile: {
             props: {
               rowHandle: {
-                width: 160
-              }
-            }
-          }
-        }
+                width: 160,
+              },
+            },
+          },
+        },
       },
       request: {
         pageRequest,
         addRequest,
         editRequest,
-        delRequest
+        delRequest,
       },
       form: {
         labelCol: {
           //固定label宽度
           span: null,
           style: {
-            width: "100px"
-          }
+            width: "100px",
+          },
         },
         col: {
-          span: 22
+          span: 22,
         },
         wrapper: {
-          width: 600
-        }
+          width: 600,
+        },
       },
       rowHandle: {
         width: 200,
@@ -72,12 +71,12 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
               click({ row, index }) {
                 crudExpose.openEdit({
                   index,
-                  row
+                  row,
                 });
-              }
-            }
-          }
-        }
+              },
+            },
+          },
+        },
       },
       table: {
         editable: {
@@ -90,8 +89,8 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             const { row, key, value } = opts;
             //如果是添加，需要返回{[rowKey]:xxx},比如:{id:2}
             return await api.UpdateObj({ id: row.id, [key]: value });
-          }
-        }
+          },
+        },
       },
       columns: {
         id: {
@@ -99,37 +98,37 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           key: "id",
           type: "number",
           search: {
-            show: true
+            show: true,
           },
           column: {
             width: 100,
             editable: {
-              disabled: true
-            }
+              disabled: true,
+            },
           },
           form: {
-            show: false
-          }
+            show: false,
+          },
         },
         name: {
           title: "分组名称",
           search: {
-            show: true
+            show: true,
           },
           type: "text",
           form: {
             rules: [
               {
                 required: true,
-                message: "请输入分组名称"
-              }
-            ]
+                message: "请输入分组名称",
+              },
+            ],
           },
           column: {
-            width: 400
-          }
-        }
-      }
-    }
+            width: 400,
+          },
+        },
+      },
+    },
   };
 }

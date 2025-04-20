@@ -41,6 +41,12 @@ export async function register(user: RegisterReq): Promise<UserInfoRes> {
     data: user,
   });
 }
+export async function logout() {
+  return await request({
+    url: "/logout",
+    method: "post",
+  });
+}
 
 export async function login(data: LoginReq): Promise<LoginRes> {
   //如果开启了登录与权限模块，则真实登录

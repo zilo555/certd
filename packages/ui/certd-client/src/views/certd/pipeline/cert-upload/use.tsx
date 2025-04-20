@@ -1,4 +1,4 @@
-import { compute, useFormWrapper } from "@fast-crud/fast-crud";
+import { compute, dict, useFormWrapper } from "@fast-crud/fast-crud";
 import NotificationSelector from "/@/views/certd/notification/notification-selector/index.vue";
 import { cloneDeep, omit } from "lodash-es";
 import { useReference } from "/@/use/use-refrence";
@@ -8,6 +8,7 @@ import { checkPipelineLimit, getAllDomainsFromCrt } from "/@/views/certd/pipelin
 import { useRouter } from "vue-router";
 import { nanoid } from "nanoid";
 import { usePluginStore } from "/@/store/plugin";
+import GroupSelector from "/@/views/certd/pipeline/group/group-selector.vue";
 
 export function useCertUpload() {
   const { openCrudFormDialog } = useFormWrapper();
@@ -90,7 +91,7 @@ export function useCertUpload() {
     return inputs;
   }
 
-  async function openUploadCreateDialog() {
+  async function openUploadCreateDialog(req: { defaultGroupId?: number }) {
     //检查是否流水线数量超出限制
     await checkPipelineLimit();
 
@@ -102,7 +103,11 @@ export function useCertUpload() {
       return wrapperRef.value.getFormData();
     }
     const inputs = await buildUploadCertPluginInputs(getFormData);
-
+    const groupDictRef = dict({
+      url: "/pi/pipeline/group/all",
+      value: "id",
+      label: "name",
+    });
     function createCrudOptions() {
       return {
         crudOptions: {
@@ -127,6 +132,19 @@ export function useCertUpload() {
                 helper: "任务执行失败实时提醒",
               },
             },
+            groupId: {
+              title: "流水线分组",
+              type: "dict-select",
+              dict: groupDictRef,
+              form: {
+                component: {
+                  name: GroupSelector,
+                  vModel: "modelValue",
+                },
+                value: req.defaultGroupId || undefined,
+                order: 9999,
+              },
+            },
           },
           form: {
             wrapper: {
@@ -135,7 +153,7 @@ export function useCertUpload() {
             },
             async doSubmit({ form }: any) {
               const cert = form.uploadCert;
-              const domains = getAllDomainsFromCrt(cert.crt);
+              const domains = await getAllDomainsFromCrt(cert.crt);
 
               const notifications = [];
               if (form.notification != null) {
@@ -191,6 +209,7 @@ export function useCertUpload() {
                 content: JSON.stringify(pipeline),
                 keepHistoryCount: 30,
                 type: "cert_upload",
+                groupId: form.groupId,
               });
               router.push({
                 path: "/certd/pipeline/detail",

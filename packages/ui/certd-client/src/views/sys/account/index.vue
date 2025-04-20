@@ -76,6 +76,7 @@ onMounted(() => {
   iframeClient.register("updateLicense", async req => {
     await api.UpdateLicense(req.data);
     await settingStore.init();
+    await settingStore.doBindUrl();
     notification.success({
       message: "更新成功",
       description: "专业版/商业版已激活",

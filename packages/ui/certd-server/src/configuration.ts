@@ -96,7 +96,7 @@ export class MainConfiguration {
 
     this.app.getMiddleware().insertFirst(async (ctx: IMidwayKoaContext, next: NextFunction) => {
       await next();
-      if (ctx.path === '/' || ctx.path === '/index.html') {
+      if (ctx.path === '/' || ctx.path === '/index.html' || ctx.path.startsWith("/api")) {
         ctx.response.set('Cache-Control', 'public,max-age=0');
       }
     });

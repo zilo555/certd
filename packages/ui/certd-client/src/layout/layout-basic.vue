@@ -30,7 +30,7 @@ const avatar = computed(() => {
 });
 
 async function handleLogout() {
-  userStore.logout(true);
+  await userStore.logout(true);
 }
 
 const settingStore = useSettingStore();
