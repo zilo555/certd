@@ -23,7 +23,7 @@ export class VolcengineDeployToCDN extends AbstractTaskPlugin {
     helper: '请选择前置任务输出的域名证书',
     component: {
       name: 'output-selector',
-      from: [...CertApplyPluginNames, 'VolcengineUploadCert'],
+      from: [...CertApplyPluginNames, 'VolcengineUploadToCertCenter'],
     },
     required: true,
   })
@@ -82,11 +82,17 @@ export class VolcengineDeployToCDN extends AbstractTaskPlugin {
 
     const client = await this.getClient(access)
     const service = await client.getCdnClient()
+    if (!this.cert) {
+      throw new Error('你还未选择证书');
+    }
     let certId = this.cert
     if (typeof certId !== 'string') {
       const certInfo = this.cert as CertInfo
       this.logger.info(`开始上传证书`)
       certId = await client.uploadCert(certInfo, this.appendTimeSuffix('certd'))
+      this.logger.info(`上传证书成功：${certId}`);
+    }else{
+      this.logger.info(`使用已有证书ID：${certId}`);
     }
 
     for (const domain of this.domainName) {

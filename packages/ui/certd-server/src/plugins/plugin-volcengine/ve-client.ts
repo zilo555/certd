@@ -1,0 +1,122 @@
+import { VolcengineAccess } from "./access.js";
+import { HttpClient, ILogger } from "@certd/basic";
+
+export type VolcengineOpts = {
+  access: VolcengineAccess
+  logger: ILogger
+  http: HttpClient
+}
+
+export class VolcengineClient {
+  opts: VolcengineOpts;
+  CommonService: any;
+
+  constructor(opts: VolcengineOpts) {
+    this.opts = opts;
+  }
+
+  async getCertCenterService() {
+    const CommonService = await this.getServiceCls();
+
+    const service = new CommonService({
+      serviceName: "certificate_service",
+      defaultVersion: "2024-10-01"
+    });
+    service.setAccessKeyId(this.opts.access.accessKeyId);
+    service.setSecretKey(this.opts.access.secretAccessKey);
+    service.setRegion("cn-beijing");
+
+    service.ImportCertificate = async (body: { certName: string, cert: any }) => {
+      const { certName, cert } = body;
+      const res =  await service.request({
+        action: "ImportCertificate",
+        method: "POST",
+        body: {
+          Tag: certName,
+          Repeatable: false,
+          CertificateInfo: {
+            CertificateChain: cert.crt,
+            PrivateKey: cert.key
+          }
+        }
+      });
+      return res.Result.InstanceId || res.Result.RepeatId
+    };
+    return service;
+  }
+
+  async getClbService(opts: { region?: string }) {
+    const CommonService = await this.getServiceCls();
+
+    const service = new CommonService({
+      serviceName: "clb",
+      defaultVersion: "2020-04-01"
+    });
+    service.setAccessKeyId(this.opts.access.accessKeyId);
+    service.setSecretKey(this.opts.access.secretAccessKey);
+    service.setRegion(opts.region);
+
+    return service;
+  }
+
+  async getAlbService(opts: { region?: string }) {
+    const CommonService = await this.getServiceCls();
+
+    const service = new CommonService({
+      serviceName: "alb",
+      defaultVersion: "2020-04-01"
+    });
+    service.setAccessKeyId(this.opts.access.accessKeyId);
+    service.setSecretKey(this.opts.access.secretAccessKey);
+    service.setRegion(opts.region);
+
+    return service;
+  }
+
+  async getServiceCls() {
+    if (this.CommonService) {
+      return this.CommonService;
+    }
+    const { Service } = await import("@volcengine/openapi");
+
+    class CommonService extends Service {
+      Generic: any;
+
+      constructor(options: {
+        serviceName: string;
+        defaultVersion: string;
+      }) {
+        super(Object.assign({ host: "open.volcengineapi.com" }, options));
+        this.Generic = async (req: { action: string, body?: any, method?: string, query?: any }) => {
+          const { action, method, body, query } = req;
+          return await this.fetchOpenAPI({
+            Action: action,
+            Version: options.defaultVersion,
+            method: method as any,
+            headers: {
+              "content-type": "application/json"
+            },
+            query: query || {},
+            data: body
+          });
+        };
+      }
+
+      async request(req: { action: string, body?: any, method?: string, query?: any }) {
+        const res = await this.Generic(req);
+        if (res.errorcode) {
+          throw new Error(`${res.errorcode}:${res.message}`);
+        }
+        if (res.ResponseMetadata?.Error) {
+          throw new Error(res.ResponseMetadata?.Error?.Message);
+        }
+        return res;
+      }
+    }
+
+    this.CommonService = CommonService;
+    return CommonService;
+  }
+
+
+}
