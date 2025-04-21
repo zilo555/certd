@@ -170,7 +170,9 @@ export class AsyncSsh2Client {
     // }
     return new Promise((resolve, reject) => {
       this.logger.info(`执行命令：[${this.connConf.host}][exec]: \n` + script);
-      this.conn.exec(script, { pty: true, env: opts.env }, (err: Error, stream: any) => {
+      // pty 必须为false， 否则返回值会带上 所有输出，影响返回结果判断， 比如 root#: xxxx
+      // 当使用keyboard-interactive 登录时，需要pty
+      this.conn.exec(script, { pty: this.connConf.pty ?? false, env: opts.env }, (err: Error, stream: any) => {
         if (err) {
           reject(err);
           return;
@@ -475,7 +477,7 @@ export class SshClient {
             script = envScripts.join(newLine) + newLine + script;
           }
         }
-        return await conn.exec(script as string, { env: options.env });
+        return await conn.exec(script as string, {});
       },
     });
   }
