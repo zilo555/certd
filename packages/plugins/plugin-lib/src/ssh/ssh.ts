@@ -172,7 +172,7 @@ export class AsyncSsh2Client {
       this.logger.info(`执行命令：[${this.connConf.host}][exec]: \n` + script);
       // pty 伪终端，window下的输出会带上conhost.exe之类的多余的字符串，影响返回结果判断
       // linux下 当使用keyboard-interactive 登录时，需要pty
-      const pty = !this.connConf.windows //linux下开启伪终端，windows下不开启
+      const pty = this.connConf.pty; //linux下开启伪终端，windows下不开启
       this.conn.exec(script, { pty, env: opts.env }, (err: Error, stream: any) => {
         if (err) {
           reject(err);
