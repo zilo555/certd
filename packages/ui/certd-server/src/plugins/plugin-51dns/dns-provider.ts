@@ -6,7 +6,6 @@ import { Dns51Client } from "./client.js";
 export type Dns51Record = {
   id: number;
   domainId: number,
-  client: Dns51Client,
 };
 
 // 这里通过IsDnsProvider注册一个dnsProvider
@@ -21,10 +20,16 @@ export type Dns51Record = {
 export class Dns51DnsProvider extends AbstractDnsProvider<Dns51Record> {
   // 通过Autowire传递context
   access!: Dns51Access;
+
+  client!:Dns51Client;
   async onInstance() {
     //一些初始化的操作
     // 也可以通过ctx成员变量传递context， 与Autowire效果一样
     this.access = this.ctx.access as Dns51Access;
+    this.client = new Dns51Client({
+      logger: this.logger,
+      access: this.access,
+    });
   }
 
   /**
@@ -41,15 +46,12 @@ export class Dns51DnsProvider extends AbstractDnsProvider<Dns51Record> {
     this.logger.info('添加域名解析：', fullRecord, value, type, domain);
 
 
-    const dns51Client = new Dns51Client({
-      logger: this.logger,
-      access: this.access,
-    });
 
-    const domainId = await dns51Client.getDomainId(domain);
+
+    const domainId = await this.client.getDomainId(domain);
     this.logger.info('获取domainId成功:', domainId);
 
-    const res = await dns51Client.createRecord({
+    const res = await this.client.createRecord({
       domain: domain,
       domainId: domainId,
       type: 'TXT',
@@ -60,7 +62,6 @@ export class Dns51DnsProvider extends AbstractDnsProvider<Dns51Record> {
     return {
       id: res.id,
       domainId: domainId,
-      client: dns51Client,
     };
   }
 
@@ -84,8 +85,8 @@ export class Dns51DnsProvider extends AbstractDnsProvider<Dns51Record> {
      * Authorization: Basic {token}
      * 请求参数
      */
-    const { client,id,domainId} = record
-    await client.deleteRecord({
+    const {id,domainId} = record
+    await this.client.deleteRecord({
       id,
       domainId
     })
