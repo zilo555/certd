@@ -55,6 +55,11 @@ https://your_server_ip:7002
 
 ## 二、升级
 
+::: warning   
+如果您是第一次升级certd版本，切记切记先备份一下数据    
+:::
+
+
 ### 如果使用固定版本号
 1. 修改`docker-compose.yaml`中的镜像版本号
 2. 运行`docker compose up -d` 即可

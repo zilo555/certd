@@ -8,5 +8,9 @@
 3. [1Panel面板方式部署升级](./1panel/#三、升级)
 4. [源码方式部署](./source/#二、升级)
 
+::: warning   
+如果您是第一次升级certd版本，切记切记先备份一下数据    
+:::
+
 ## 升级日志
 [CHANGELOG](../changelogs/CHANGELOG.md)

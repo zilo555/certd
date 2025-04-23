@@ -44,6 +44,11 @@ kill -9 $(lsof -t -i:7001)
 ./start.sh
 ```
 
+::: warning   
+升级certd版本前，切记切记先备份一下数据    
+:::
+
+
 ## 三、数据备份
 > 数据默认保存在 `./packages/ui/certd-server/data` 目录下    
 > 建议配置一条[数据库备份流水线](../../use/backup/)  自动备份
