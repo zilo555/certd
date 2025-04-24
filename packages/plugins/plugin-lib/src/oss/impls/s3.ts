@@ -1,8 +1,9 @@
-import { BaseOssClient, OssClientRemoveByOpts, OssFileItem } from "../api.js";
+import { BaseOssClient, OssFileItem } from "../api.js";
 import path from "node:path";
 import { S3Access } from "../../s3/access.js";
 import fs from "fs";
 import dayjs from "dayjs";
+
 export default class S3OssClientImpl extends BaseOssClient<S3Access> {
   client: any;
   join(...strs: string[]) {

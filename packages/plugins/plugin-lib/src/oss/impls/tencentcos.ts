@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { TencentAccess, TencentCosAccess, TencentCosClient } from "../../tencent/index.js";
-import { BaseOssClient, OssClientRemoveByOpts, OssFileItem } from "../api.js";
+import { BaseOssClient, OssFileItem } from "../api.js";
 
 export default class TencentOssClientImpl extends BaseOssClient<TencentCosAccess> {
   client: TencentCosClient;
