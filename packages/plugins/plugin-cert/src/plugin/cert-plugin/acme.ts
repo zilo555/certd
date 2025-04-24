@@ -7,7 +7,7 @@ import { IContext } from "@certd/pipeline";
 import { ILogger, utils } from "@certd/basic";
 import { IDnsProvider, IDomainParser } from "../../dns-provider/index.js";
 import { HttpChallengeUploader } from "./uploads/api.js";
-
+import punycode from "node:punycode";
 export type CnameVerifyPlan = {
   type?: string;
   domain: string;
@@ -203,14 +203,15 @@ export class AcmeService {
       this.logger.info("dns校验");
       const keyAuthorization = await keyAuthorizationGetter(challenge);
 
+      const mainDomain = dnsProvider.usePunyCode() ? domain : punycode.toUnicode(domain);
       const recordValue = keyAuthorization;
-      let hostRecord = fullRecord.replace(`${domain}`, "");
+      let hostRecord = fullRecord.replace(`${mainDomain}`, "");
       if (hostRecord.endsWith(".")) {
         hostRecord = hostRecord.substring(0, hostRecord.length - 1);
       }
 
       const recordReq = {
-        domain,
+        domain: mainDomain,
         fullRecord,
         hostRecord,
         type: "TXT",
@@ -321,8 +322,15 @@ export class AcmeService {
     isTest?: boolean;
     privateKeyType?: string;
   }): Promise<CertInfo> {
-    const { email, isTest, domains, csrInfo, dnsProvider, domainsVerifyPlan, httpUploader } = options;
+    const { email, isTest, csrInfo, dnsProvider, domainsVerifyPlan, httpUploader } = options;
     const client: acme.Client = await this.getAcmeClient(email, isTest);
+
+    let domains = options.domains;
+    const encodingDomains = [];
+    for (const domain of domains) {
+      encodingDomains.push(punycode.toASCII(domain));
+    }
+    domains = encodingDomains;
 
     /* Create CSR */
     const { commonName, altNames } = this.buildCommonNameByDomains(domains);

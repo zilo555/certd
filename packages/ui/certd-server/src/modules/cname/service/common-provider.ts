@@ -1,5 +1,5 @@
-import { CreateRecordOptions, DnsProviderContext, IDnsProvider, RemoveRecordOptions } from '@certd/plugin-cert';
-import { PlusService } from '@certd/lib-server';
+import {CreateRecordOptions, DnsProviderContext, IDnsProvider, RemoveRecordOptions} from '@certd/plugin-cert';
+import {PlusService} from '@certd/lib-server';
 
 export type CommonCnameProvider = {
   id: number;
@@ -24,7 +24,13 @@ export class CommonDnsProvider implements IDnsProvider {
     this.plusService = opts.plusService;
   }
 
-  async onInstance() {}
+  usePunyCode(): boolean {
+    return false
+  }
+
+  async onInstance() {
+  }
+
   async createRecord(options: CreateRecordOptions) {
     if (!this.config.domain.endsWith(options.domain)) {
       throw new Error('cname服务域名不匹配');
@@ -45,6 +51,7 @@ export class CommonDnsProvider implements IDnsProvider {
     });
     return res;
   }
+
   async removeRecord(options: RemoveRecordOptions<any>) {
     const res = await this.plusService.requestWithToken({
       url: '/activation/certd/cname/recordRemove',
@@ -60,6 +67,7 @@ export class CommonDnsProvider implements IDnsProvider {
     });
     return res;
   }
+
   setCtx(ctx: DnsProviderContext): void {
     this.ctx = ctx;
   }
