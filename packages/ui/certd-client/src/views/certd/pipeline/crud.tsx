@@ -120,6 +120,7 @@ export default function ({ crudExpose, context: { groupDictRef, selectedRowKeys 
   function onDialogOpen(opt: any) {
     const searchForm = crudExpose.getSearchValidatedFormData();
     opt.initialForm = {
+      ...opt.initialForm,
       groupId: searchForm.groupId,
     };
   }
