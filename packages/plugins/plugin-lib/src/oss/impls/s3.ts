@@ -1,14 +1,24 @@
 import { BaseOssClient, OssClientRemoveByOpts, OssFileItem } from "../api.js";
 import path from "node:path";
 import { S3Access } from "../../s3/access.js";
+import fs from "fs";
+import dayjs from "dayjs";
 export default class S3OssClientImpl extends BaseOssClient<S3Access> {
   client: any;
-
+  join(...strs: string[]) {
+    const str = super.join(...strs);
+    if (str.startsWith("/")) {
+      return str.substring(1);
+    }
+    return str;
+  }
   async init() {
     // import { S3Client } from "@aws-sdk/client-s3";
     const { S3Client } = await import("@aws-sdk/client-s3");
     this.client = new S3Client({
       forcePathStyle: true,
+      //@ts-ignore
+      s3ForcePathStyle: true,
       credentials: {
         accessKeyId: this.access.accessKeyId, // 默认 MinIO 访问密钥
         secretAccessKey: this.access.secretAccessKey, // 默认 MinIO 秘密密钥
@@ -18,16 +28,37 @@ export default class S3OssClientImpl extends BaseOssClient<S3Access> {
     });
   }
 
-  download(fileName: string, savePath: string): Promise<void> {
-    throw new Error("Method not implemented.");
+  async download(filePath: string, savePath: string): Promise<void> {
+    const { GetObjectCommand } = await import("@aws-sdk/client-s3");
+    const key = path.join(this.rootDir, filePath);
+    const params = {
+      Bucket: this.access.bucket, // The name of the bucket. For example, 'sample_bucket_101'.
+      Key: key, // The name of the object. For example, 'sample_upload.txt'.
+    };
+    const res = await this.client.send(new GetObjectCommand({ ...params }));
+    const fileContent = fs.createWriteStream(savePath);
+    res.Body.pipe(fileContent);
+
+    this.logger.info(`文件下载成功: ${savePath}`);
   }
-  removeBy(removeByOpts: OssClientRemoveByOpts): Promise<void> {
-    throw new Error("Method not implemented.");
+
+  async listDir(dir: string): Promise<OssFileItem[]> {
+    const { ListObjectsCommand } = await import("@aws-sdk/client-s3");
+    const dirKey = this.join(this.rootDir, dir);
+    const params = {
+      Bucket: this.access.bucket, // The name of the bucket. For example, 'sample_bucket_101'.
+      Prefix: dirKey, // The name of the object. For example, 'sample_upload.txt'.
+    };
+    const res = await this.client.send(new ListObjectsCommand({ ...params }));
+    return res.Contents.map(item => {
+      return {
+        path: item.Key,
+        size: item.Size,
+        lastModified: dayjs(item.LastModified).valueOf(),
+      };
+    });
   }
-  listDir(dir: string): Promise<OssFileItem[]> {
-    throw new Error("Method not implemented.");
-  }
-  async upload(filePath: string, fileContent: Buffer) {
+  async upload(filePath: string, fileContent: Buffer | string) {
     const { PutObjectCommand } = await import("@aws-sdk/client-s3");
     const key = path.join(this.rootDir, filePath);
     this.logger.info(`开始上传文件: ${key}`);
@@ -35,6 +66,9 @@ export default class S3OssClientImpl extends BaseOssClient<S3Access> {
       Bucket: this.access.bucket, // The name of the bucket. For example, 'sample_bucket_101'.
       Key: key, // The name of the object. For example, 'sample_upload.txt'.
     };
+    if (typeof fileContent === "string") {
+      fileContent = fs.createReadStream(fileContent) as any;
+    }
     await this.client.send(new PutObjectCommand({ Body: fileContent, ...params }));
 
     this.logger.info(`文件上传成功: ${filePath}`);

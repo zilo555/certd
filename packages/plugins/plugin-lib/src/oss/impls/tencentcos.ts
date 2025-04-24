@@ -28,6 +28,7 @@ export default class TencentOssClientImpl extends BaseOssClient<TencentCosAccess
 
   async listDir(dir: string): Promise<OssFileItem[]> {
     const dirKey = this.join(this.rootDir, dir) + "/";
+    // @ts-ignore
     const res: any[] = await this.client.listDir(dirKey);
     return res.map(item => {
       return {
