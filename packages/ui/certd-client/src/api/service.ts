@@ -120,7 +120,7 @@ function createService() {
       errorLog(error, error?.response?.config?.showErrorNotify);
       if (status === 401) {
         const userStore = useUserStore();
-        userStore.logout();
+        userStore.logout(true, true);
       }
 
       if (error?.config?.onError) {

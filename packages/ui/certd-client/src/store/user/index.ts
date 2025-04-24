@@ -108,10 +108,12 @@ export const useUserStore = defineStore({
     /**
      * @description: logout
      */
-    async logout(goLogin = true) {
+    async logout(goLogin = true, from401 = false) {
       this.resetState();
       resetAllStores();
-      await UserApi.logout(); //主要是清空cookie
+      if (!from401) {
+        await UserApi.logout(); //主要是清空cookie
+      }
       goLogin && router.push("/login");
       mitter.emit("app.logout");
     },
