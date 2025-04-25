@@ -161,10 +161,10 @@ export const useSettingStore = defineStore({
       //@ts-ignore
       if (this.isComm) {
         if (siteInfo.logo) {
-          siteInfo.logo = `/api/basic/file/download?key=${siteInfo.logo}`;
+          siteInfo.logo = `api/basic/file/download?key=${siteInfo.logo}`;
         }
         if (siteInfo.loginLogo) {
-          siteInfo.loginLogo = `/api/basic/file/download?key=${siteInfo.loginLogo}`;
+          siteInfo.loginLogo = `api/basic/file/download?key=${siteInfo.loginLogo}`;
         }
       }
       this.siteInfo = _.merge({}, defaultSiteInfo, siteInfo);

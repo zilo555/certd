@@ -164,7 +164,7 @@ export default function ({ crudExpose }: CreateCrudOptionsProps): CreateCrudOpti
                 width: "auto",
               },
               buildUrl(key: string) {
-                return `/api/basic/file/download?&key=` + key;
+                return `api/basic/file/download?&key=` + key;
               },
             },
           },
@@ -190,7 +190,7 @@ export default function ({ crudExpose }: CreateCrudOptionsProps): CreateCrudOpti
                 },
               },
               buildUrl(key: string) {
-                return `/api/basic/file/download?&key=` + key;
+                return `api/basic/file/download?&key=` + key;
               },
             },
           },

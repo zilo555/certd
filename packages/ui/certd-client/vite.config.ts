@@ -21,9 +21,9 @@ export default ({ command, mode }) => {
   const env = loadEnv(mode, process.cwd());
   const devServerFs: any = {};
   const devAlias: any[] = [];
-  const base = "/";
+  const base = "./";
   // if (mode.startsWith("dev")) {
-  //   base = "/dev";
+  //   base = "./";
   // }
   return {
     base: base,
@@ -36,6 +36,7 @@ export default ({ command, mode }) => {
           data: {
             title: env.VITE_APP_TITLE,
             projectPath: env.VITE_APP_PROJECT_PATH,
+            version: env.VITE_APP_VERSION,
           },
         },
       }),

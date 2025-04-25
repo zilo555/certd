@@ -21,6 +21,6 @@ const props = defineProps<{
 }>();
 
 const nslookupCmd = computed(() => {
-  return `nslookup -qa=txt _acme-challenge.${props.record.domain}`;
+  return `nslookup -q=txt _acme-challenge.${props.record.domain}`;
 });
 </script>

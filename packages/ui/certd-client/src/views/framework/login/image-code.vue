@@ -28,7 +28,7 @@ function onChange(value: string) {
 const imageCodeUrl = ref();
 function resetImageCode() {
   const randomStr = nanoid(10);
-  let url = "/api/basic/code/captcha";
+  let url = "api/basic/code/captcha";
   imageCodeUrl.value = url + "?randomStr=" + randomStr;
   emit("update:randomStr", randomStr);
 }

@@ -87,15 +87,13 @@ export class AliyunDnsProvider extends AbstractDnsProvider {
   // }
 
   async createRecord(options: CreateRecordOptions): Promise<any> {
-    const { fullRecord, value, type, domain } = options;
+    const { fullRecord,hostRecord, value, type, domain } = options;
     this.logger.info('添加域名解析：', fullRecord, value, domain);
     // const domain = await this.matchDomain(fullRecord);
-    const rr = fullRecord.replace('.' + domain, '');
-
     const params = {
       RegionId: 'cn-hangzhou',
       DomainName: domain,
-      RR: rr,
+      RR: hostRecord,
       Type: type,
       Value: value,
       // Line: 'oversea' // 海外
