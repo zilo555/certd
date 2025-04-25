@@ -510,7 +510,7 @@ importers:
         version: 1.15.1
       typeorm:
         specifier: ^0.3.20
-        version: 0.3.21(better-sqlite3@11.8.1)(mysql2@3.14.0)(pg@8.13.3)(reflect-metadata@0.2.2)(ts-node@10.9.2(@types/node@18.19.80)(typescript@5.8.2))
+        version: 0.3.21(better-sqlite3@11.8.1)(mysql2@3.14.0)(pg@8.13.3)(reflect-metadata@0.2.2)(ts-node@10.9.2(@swc/core@1.11.22)(@types/node@18.19.80)(typescript@5.8.2))
     devDependencies:
       '@types/chai':
         specifier: ^4.3.3
@@ -599,7 +599,7 @@ importers:
         version: 2.8.1
       typeorm:
         specifier: ^0.3.11
-        version: 0.3.21(better-sqlite3@11.8.1)(mysql2@3.14.0)(pg@8.13.3)(reflect-metadata@0.2.2)(ts-node@10.9.2(@types/node@18.19.80)(typescript@5.8.2))
+        version: 0.3.21(better-sqlite3@11.8.1)(mysql2@3.14.0)(pg@8.13.3)(reflect-metadata@0.2.2)(ts-node@10.9.2(@swc/core@1.11.22)(@types/node@18.19.80)(typescript@5.8.2))
       typescript:
         specifier: ^5.4.2
         version: 5.8.2
@@ -814,7 +814,7 @@ importers:
         version: 1.11.13
       typeorm:
         specifier: ^0.3.20
-        version: 0.3.21(better-sqlite3@11.8.1)(mysql2@3.14.0)(pg@8.13.3)(reflect-metadata@0.2.2)(ts-node@10.9.2(@types/node@18.19.80)(typescript@5.8.2))
+        version: 0.3.21(better-sqlite3@11.8.1)(mysql2@3.14.0)(pg@8.13.3)(reflect-metadata@0.2.2)(ts-node@10.9.2(@swc/core@1.11.22)(@types/node@18.19.80)(typescript@5.8.2))
       wechatpay-node-v3:
         specifier: ^2.2.1
         version: 2.2.1
@@ -1096,7 +1096,7 @@ importers:
         version: 0.0.0-insiders.565cd3e(postcss@8.5.3)
       '@tailwindcss/typography':
         specifier: ^0.5.16
-        version: 0.5.16(tailwindcss@3.4.17(ts-node@10.9.2(@types/node@18.19.80)(typescript@5.8.2)))
+        version: 0.5.16(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.11.22)(@types/node@18.19.80)(typescript@5.8.2)))
       '@tanstack/vue-store':
         specifier: ^0.7.0
         version: 0.7.0(vue@3.5.13(typescript@5.8.2))
@@ -1240,7 +1240,7 @@ importers:
         version: 3.0.2
       tailwindcss-animate:
         specifier: ^1.0.7
-        version: 1.0.7(tailwindcss@3.4.17(ts-node@10.9.2(@types/node@18.19.80)(typescript@5.8.2)))
+        version: 1.0.7(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.11.22)(@types/node@18.19.80)(typescript@5.8.2)))
       theme-colors:
         specifier: ^0.1.0
         version: 0.1.0
@@ -1397,13 +1397,13 @@ importers:
         version: 6.0.4(stylelint@15.11.0(typescript@5.8.2))
       tailwindcss:
         specifier: ^3.4.14
-        version: 3.4.17(ts-node@10.9.2(@types/node@18.19.80)(typescript@5.8.2))
+        version: 3.4.17(ts-node@10.9.2(@swc/core@1.11.22)(@types/node@18.19.80)(typescript@5.8.2))
       terser:
         specifier: ^5.29.2
         version: 5.39.0
       ts-node:
         specifier: ^10.9.2
-        version: 10.9.2(@types/node@18.19.80)(typescript@5.8.2)
+        version: 10.9.2(@swc/core@1.11.22)(@types/node@18.19.80)(typescript@5.8.2)
       tslint:
         specifier: ^6.1.3
         version: 6.1.3(typescript@5.8.2)
@@ -1419,6 +1419,9 @@ importers:
       vite-plugin-compression:
         specifier: ^0.5.1
         version: 0.5.1(vite@5.4.14(@types/node@18.19.80)(less@4.2.2)(terser@5.39.0))
+      vite-plugin-dynamic-base:
+        specifier: ^1.1.0
+        version: 1.1.0(vite@5.4.14(@types/node@18.19.80)(less@4.2.2)(terser@5.39.0))
       vite-plugin-html:
         specifier: ^3.2.2
         version: 3.2.2(vite@5.4.14(@types/node@18.19.80)(less@4.2.2)(terser@5.39.0))
@@ -1685,7 +1688,7 @@ importers:
         version: 4.0.1045(encoding@0.1.13)
       typeorm:
         specifier: ^0.3.20
-        version: 0.3.21(better-sqlite3@11.8.1)(mysql2@3.14.0)(pg@8.13.3)(reflect-metadata@0.2.2)(ts-node@10.9.2(@types/node@18.19.80)(typescript@5.8.2))
+        version: 0.3.21(better-sqlite3@11.8.1)(mysql2@3.14.0)(pg@8.13.3)(reflect-metadata@0.2.2)(ts-node@10.9.2(@swc/core@1.11.22)(@types/node@18.19.80)(typescript@5.8.2))
       uuid:
         specifier: ^10.0.0
         version: 10.0.0
@@ -4626,8 +4629,83 @@ packages:
   '@sqltools/formatter@1.2.5':
     resolution: {integrity: sha512-Uy0+khmZqUrUGm5dmMqVlnvufZRSK0FbYzVgp0UMstm+F5+W2/jnEEQyc9vo1ZR/E5ZI/B1WjjoTqBqwJL6Krw==}
 
+  '@swc/core-darwin-arm64@1.11.22':
+    resolution: {integrity: sha512-upSiFQfo1TE2QM3+KpBcp5SrOdKKjoc+oUoD1mmBDU2Wv4Bjjv16Z2I5ADvIqMV+b87AhYW+4Qu6iVrQD7j96Q==}
+    engines: {node: '>=10'}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@swc/core-darwin-x64@1.11.22':
+    resolution: {integrity: sha512-8PEuF/gxIMJVK21DjuCOtzdqstn2DqnxVhpAYfXEtm3WmMqLIOIZBypF/xafAozyaHws4aB/5xmz8/7rPsjavw==}
+    engines: {node: '>=10'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@swc/core-linux-arm-gnueabihf@1.11.22':
+    resolution: {integrity: sha512-NIPTXvqtn9e7oQHgdaxM9Z/anHoXC3Fg4ZAgw5rSGa1OlnKKupt5sdfJamNggSi+eAtyoFcyfkgqHnfe2u63HA==}
+    engines: {node: '>=10'}
+    cpu: [arm]
+    os: [linux]
+
+  '@swc/core-linux-arm64-gnu@1.11.22':
+    resolution: {integrity: sha512-xZ+bgS60c5r8kAeYsLNjJJhhQNkXdidQ277pUabSlu5GjR0CkQUPQ+L9hFeHf8DITEqpPBPRiAiiJsWq5eqMBg==}
+    engines: {node: '>=10'}
+    cpu: [arm64]
+    os: [linux]
+
+  '@swc/core-linux-arm64-musl@1.11.22':
+    resolution: {integrity: sha512-JhrP/q5VqQl2eJR0xKYIkKTPjgf8CRsAmRnjJA2PtZhfQ543YbYvUqxyXSRyBOxdyX8JwzuAxIPEAlKlT7PPuQ==}
+    engines: {node: '>=10'}
+    cpu: [arm64]
+    os: [linux]
+
+  '@swc/core-linux-x64-gnu@1.11.22':
+    resolution: {integrity: sha512-htmAVL+U01gk9GyziVUP0UWYaUQBgrsiP7Ytf6uDffrySyn/FclUS3MDPocNydqYsOpj3OpNKPxkaHK+F+X5fg==}
+    engines: {node: '>=10'}
+    cpu: [x64]
+    os: [linux]
+
+  '@swc/core-linux-x64-musl@1.11.22':
+    resolution: {integrity: sha512-PL0VHbduWPX+ANoyOzr58jBiL2VnD0xGSFwPy7NRZ1Pr6SNWm4jw3x2u6RjLArGhS5EcWp64BSk9ZxqmTV3FEg==}
+    engines: {node: '>=10'}
+    cpu: [x64]
+    os: [linux]
+
+  '@swc/core-win32-arm64-msvc@1.11.22':
+    resolution: {integrity: sha512-moJvFhhTVGoMeEThtdF7hQog80Q00CS06v5uB+32VRuv+I31+4WPRyGlTWHO+oY4rReNcXut/mlDHPH7p0LdFg==}
+    engines: {node: '>=10'}
+    cpu: [arm64]
+    os: [win32]
+
+  '@swc/core-win32-ia32-msvc@1.11.22':
+    resolution: {integrity: sha512-/jnsPJJz89F1aKHIb5ScHkwyzBciz2AjEq2m9tDvQdIdVufdJ4SpEDEN9FqsRNRLcBHjtbLs6bnboA+B+pRFXw==}
+    engines: {node: '>=10'}
+    cpu: [ia32]
+    os: [win32]
+
+  '@swc/core-win32-x64-msvc@1.11.22':
+    resolution: {integrity: sha512-lc93Y8Mku7LCFGqIxJ91coXZp2HeoDcFZSHCL90Wttg5xhk5xVM9uUCP+OdQsSsEixLF34h5DbT9ObzP8rAdRw==}
+    engines: {node: '>=10'}
+    cpu: [x64]
+    os: [win32]
+
+  '@swc/core@1.11.22':
+    resolution: {integrity: sha512-mjPYbqq8XjwqSE0hEPT9CzaJDyxql97LgK4iyvYlwVSQhdN1uK0DBG4eP9PxYzCS2MUGAXB34WFLegdUj5HGpg==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      '@swc/helpers': '>=0.5.17'
+    peerDependenciesMeta:
+      '@swc/helpers':
+        optional: true
+
+  '@swc/counter@0.1.3':
+    resolution: {integrity: sha512-e2BR4lsJkkRlKZ/qCHPw9ZaSxc0MVUd7gtbtaB7aMvHeJVYe8sOB8DBZkP2DtISHGSku9sCK6T6cnY0CtXrOCQ==}
+
   '@swc/helpers@0.5.15':
     resolution: {integrity: sha512-JQ5TuMi45Owi4/BIMAJBoSQoOJu12oOk/gADqlcUL9JEdHB8vyjUSsxqeNXnmXHjYKMi2WcYtezGEEhqUI/E2g==}
+
+  '@swc/types@0.1.21':
+    resolution: {integrity: sha512-2YEtj5HJVbKivud9N4bpPBAyZhj4S2Ipe5LkUG94alTpr7in/GU/EARgPAd3BwU+YOmFVJC2+kjqhGRi3r0ZpQ==}
 
   '@szmarczak/http-timer@1.1.2':
     resolution: {integrity: sha512-XIB2XbzHTN6ieIjfIMV9hlVcfPU26s2vafYWQcZHWXHOxiaRZYEDKEwdl129Zyg50+foYV2jCgtrqSA6qNuNSA==}
@@ -12937,6 +13015,11 @@ packages:
     peerDependencies:
       vite: '>=2.0.0'
 
+  vite-plugin-dynamic-base@1.1.0:
+    resolution: {integrity: sha512-/hIOTuzedlPRiUTCIY1cJx7UDDUF0brxWIifE7xG1czCJy0Aw6k3QPbHVjPCs30YuU+WAgrX4ACOySLIp2NHkw==}
+    peerDependencies:
+      vite: '>= 2.9.5'
+
   vite-plugin-html@3.2.2:
     resolution: {integrity: sha512-vb9C9kcdzcIo/Oc3CLZVS03dL5pDlOFuhGlZYDCJ840BhWl/0nGeZWf3Qy7NlOayscY4Cm/QRgULCQkEZige5Q==}
     peerDependencies:
@@ -17935,9 +18018,61 @@ snapshots:
 
   '@sqltools/formatter@1.2.5': {}
 
+  '@swc/core-darwin-arm64@1.11.22':
+    optional: true
+
+  '@swc/core-darwin-x64@1.11.22':
+    optional: true
+
+  '@swc/core-linux-arm-gnueabihf@1.11.22':
+    optional: true
+
+  '@swc/core-linux-arm64-gnu@1.11.22':
+    optional: true
+
+  '@swc/core-linux-arm64-musl@1.11.22':
+    optional: true
+
+  '@swc/core-linux-x64-gnu@1.11.22':
+    optional: true
+
+  '@swc/core-linux-x64-musl@1.11.22':
+    optional: true
+
+  '@swc/core-win32-arm64-msvc@1.11.22':
+    optional: true
+
+  '@swc/core-win32-ia32-msvc@1.11.22':
+    optional: true
+
+  '@swc/core-win32-x64-msvc@1.11.22':
+    optional: true
+
+  '@swc/core@1.11.22':
+    dependencies:
+      '@swc/counter': 0.1.3
+      '@swc/types': 0.1.21
+    optionalDependencies:
+      '@swc/core-darwin-arm64': 1.11.22
+      '@swc/core-darwin-x64': 1.11.22
+      '@swc/core-linux-arm-gnueabihf': 1.11.22
+      '@swc/core-linux-arm64-gnu': 1.11.22
+      '@swc/core-linux-arm64-musl': 1.11.22
+      '@swc/core-linux-x64-gnu': 1.11.22
+      '@swc/core-linux-x64-musl': 1.11.22
+      '@swc/core-win32-arm64-msvc': 1.11.22
+      '@swc/core-win32-ia32-msvc': 1.11.22
+      '@swc/core-win32-x64-msvc': 1.11.22
+
+  '@swc/counter@0.1.3': {}
+
   '@swc/helpers@0.5.15':
     dependencies:
       tslib: 2.8.1
+
+  '@swc/types@0.1.21':
+    dependencies:
+      '@swc/counter': 0.1.3
 
   '@szmarczak/http-timer@1.1.2':
     dependencies:
@@ -17948,13 +18083,13 @@ snapshots:
       postcss: 8.5.3
       postcss-nested: 5.0.6(postcss@8.5.3)
 
-  '@tailwindcss/typography@0.5.16(tailwindcss@3.4.17(ts-node@10.9.2(@types/node@18.19.80)(typescript@5.8.2)))':
+  '@tailwindcss/typography@0.5.16(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.11.22)(@types/node@18.19.80)(typescript@5.8.2)))':
     dependencies:
       lodash.castarray: 4.4.0
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
-      tailwindcss: 3.4.17(ts-node@10.9.2(@types/node@18.19.80)(typescript@5.8.2))
+      tailwindcss: 3.4.17(ts-node@10.9.2(@swc/core@1.11.22)(@types/node@18.19.80)(typescript@5.8.2))
 
   '@tanstack/store@0.7.0': {}
 
@@ -25296,13 +25431,13 @@ snapshots:
       '@csstools/utilities': 2.0.0(postcss@8.5.3)
       postcss: 8.5.3
 
-  postcss-load-config@4.0.2(postcss@8.5.3)(ts-node@10.9.2(@types/node@18.19.80)(typescript@5.8.2)):
+  postcss-load-config@4.0.2(postcss@8.5.3)(ts-node@10.9.2(@swc/core@1.11.22)(@types/node@18.19.80)(typescript@5.8.2)):
     dependencies:
       lilconfig: 3.1.3
       yaml: 2.7.0
     optionalDependencies:
       postcss: 8.5.3
-      ts-node: 10.9.2(@types/node@18.19.80)(typescript@5.8.2)
+      ts-node: 10.9.2(@swc/core@1.11.22)(@types/node@18.19.80)(typescript@5.8.2)
 
   postcss-logical@8.1.0(postcss@8.5.3):
     dependencies:
@@ -27061,11 +27196,11 @@ snapshots:
 
   tailwind-merge@3.0.2: {}
 
-  tailwindcss-animate@1.0.7(tailwindcss@3.4.17(ts-node@10.9.2(@types/node@18.19.80)(typescript@5.8.2))):
+  tailwindcss-animate@1.0.7(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.11.22)(@types/node@18.19.80)(typescript@5.8.2))):
     dependencies:
-      tailwindcss: 3.4.17(ts-node@10.9.2(@types/node@18.19.80)(typescript@5.8.2))
+      tailwindcss: 3.4.17(ts-node@10.9.2(@swc/core@1.11.22)(@types/node@18.19.80)(typescript@5.8.2))
 
-  tailwindcss@3.4.17(ts-node@10.9.2(@types/node@18.19.80)(typescript@5.8.2)):
+  tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.11.22)(@types/node@18.19.80)(typescript@5.8.2)):
     dependencies:
       '@alloc/quick-lru': 5.2.0
       arg: 5.0.2
@@ -27084,7 +27219,7 @@ snapshots:
       postcss: 8.5.3
       postcss-import: 15.1.0(postcss@8.5.3)
       postcss-js: 4.0.1(postcss@8.5.3)
-      postcss-load-config: 4.0.2(postcss@8.5.3)(ts-node@10.9.2(@types/node@18.19.80)(typescript@5.8.2))
+      postcss-load-config: 4.0.2(postcss@8.5.3)(ts-node@10.9.2(@swc/core@1.11.22)(@types/node@18.19.80)(typescript@5.8.2))
       postcss-nested: 6.2.0(postcss@8.5.3)
       postcss-selector-parser: 6.1.2
       resolve: 1.22.10
@@ -27296,7 +27431,7 @@ snapshots:
 
   ts-interface-checker@0.1.13: {}
 
-  ts-node@10.9.2(@types/node@18.19.80)(typescript@5.8.2):
+  ts-node@10.9.2(@swc/core@1.11.22)(@types/node@18.19.80)(typescript@5.8.2):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.11
@@ -27313,6 +27448,8 @@ snapshots:
       typescript: 5.8.2
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
+    optionalDependencies:
+      '@swc/core': 1.11.22
 
   tsc-alias@1.8.11:
     dependencies:
@@ -27480,7 +27617,7 @@ snapshots:
 
   typedarray@0.0.6: {}
 
-  typeorm@0.3.21(better-sqlite3@11.8.1)(mysql2@3.14.0)(pg@8.13.3)(reflect-metadata@0.2.2)(ts-node@10.9.2(@types/node@18.19.80)(typescript@5.8.2)):
+  typeorm@0.3.21(better-sqlite3@11.8.1)(mysql2@3.14.0)(pg@8.13.3)(reflect-metadata@0.2.2)(ts-node@10.9.2(@swc/core@1.11.22)(@types/node@18.19.80)(typescript@5.8.2)):
     dependencies:
       '@sqltools/formatter': 1.2.5
       ansis: 3.17.0
@@ -27500,7 +27637,7 @@ snapshots:
       better-sqlite3: 11.8.1
       mysql2: 3.14.0
       pg: 8.13.3
-      ts-node: 10.9.2(@types/node@18.19.80)(typescript@5.8.2)
+      ts-node: 10.9.2(@swc/core@1.11.22)(@types/node@18.19.80)(typescript@5.8.2)
     transitivePeerDependencies:
       - supports-color
 
@@ -27850,6 +27987,14 @@ snapshots:
       vite: 5.4.14(@types/node@18.19.80)(less@4.2.2)(terser@5.39.0)
     transitivePeerDependencies:
       - supports-color
+
+  vite-plugin-dynamic-base@1.1.0(vite@5.4.14(@types/node@18.19.80)(less@4.2.2)(terser@5.39.0)):
+    dependencies:
+      '@swc/core': 1.11.22
+      node-html-parser: 5.4.2
+      vite: 5.4.14(@types/node@18.19.80)(less@4.2.2)(terser@5.39.0)
+    transitivePeerDependencies:
+      - '@swc/helpers'
 
   vite-plugin-html@3.2.2(vite@5.4.14(@types/node@18.19.80)(less@4.2.2)(terser@5.39.0)):
     dependencies:

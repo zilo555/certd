@@ -204,6 +204,7 @@ export class AcmeService {
       const keyAuthorization = await keyAuthorizationGetter(challenge);
 
       const mainDomain = dnsProvider.usePunyCode() ? domain : punycode.toUnicode(domain);
+      fullRecord = dnsProvider.usePunyCode() ? fullRecord : punycode.toUnicode(fullRecord);
       const recordValue = keyAuthorization;
       let hostRecord = fullRecord.replace(`${mainDomain}`, "");
       if (hostRecord.endsWith(".")) {
