@@ -24,7 +24,7 @@ export class TencentCosClient {
     return new sdk.default(clientConfig);
   }
 
-  async uploadFile(key: string, file: Buffer) {
+  async uploadFile(key: string, file: Buffer | string) {
     const cos = await this.getCosClient();
     return new Promise((resolve, reject) => {
       cos.putObject(

@@ -1,5 +1,6 @@
-import { HttpClient, ILogger } from "@certd/basic";
+import { HttpClient, ILogger, utils } from "@certd/basic";
 import { QiniuAccess } from "../access.js";
+import fs from "fs";
 
 export type QiniuCertInfo = {
   key: string;
@@ -98,7 +99,7 @@ export class QiniuClient {
     });
   }
 
-  async uploadFile(bucket: string, key: string, content: Buffer) {
+  async uploadFile(bucket: string, key: string, content: Buffer | string) {
     const sdk = await import("qiniu");
     const qiniu = sdk.default;
     const mac = new qiniu.auth.digest.Mac(this.access.accessKey, this.access.secretKey);
@@ -111,8 +112,15 @@ export class QiniuClient {
     const config = new qiniu.conf.Config();
     const formUploader = new qiniu.form_up.FormUploader(config);
     const putExtra = new qiniu.form_up.PutExtra();
-    // 文件上传
-    const { data, resp } = await formUploader.put(uploadToken, key, content, putExtra);
+    let res: any = {};
+    if (typeof content === "string") {
+      const readableStream = fs.createReadStream(content);
+      res = await formUploader.putStream(uploadToken, key, readableStream, putExtra);
+    } else {
+      // 文件上传
+      res = await formUploader.put(uploadToken, key, content, putExtra);
+    }
+    const { data, resp } = res;
     if (resp.statusCode === 200) {
       this.logger.info("文件上传成功：" + key);
       return data;
@@ -123,12 +131,7 @@ export class QiniuClient {
   }
 
   async removeFile(bucket: string, key: string) {
-    const sdk = await import("qiniu");
-    const qiniu = sdk.default;
-    const mac = new qiniu.auth.digest.Mac(this.access.accessKey, this.access.secretKey);
-    const config = new qiniu.conf.Config();
-    config.useHttpsDomain = true;
-    const bucketManager = new qiniu.rs.BucketManager(mac, config);
+    const bucketManager = await this.getBucketManager();
 
     const { resp } = await bucketManager.delete(bucket, key);
 
@@ -138,5 +141,40 @@ export class QiniuClient {
     } else {
       throw new Error("删除失败:" + JSON.stringify(resp));
     }
+  }
+
+  async downloadFile(bucket: string, path: string, savePath: string) {
+    const bucketManager = await this.getBucketManager();
+    const privateBucketDomain = `http://${bucket}.qiniudn.com`;
+    const deadline = Math.floor(Date.now() / 1000) + 3600; // 1小时过期
+    const privateDownloadUrl = bucketManager.privateDownloadUrl(privateBucketDomain, path, deadline);
+
+    await utils.request.download({
+      http: this.http,
+      logger: this.logger,
+      config: {
+        url: privateDownloadUrl,
+        method: "get",
+      },
+      savePath,
+    });
+  }
+
+  private async getBucketManager() {
+    const sdk = await import("qiniu");
+    const qiniu = sdk.default;
+    const mac = new qiniu.auth.digest.Mac(this.access.accessKey, this.access.secretKey);
+    const config = new qiniu.conf.Config();
+    config.useHttpsDomain = true;
+    return new qiniu.rs.BucketManager(mac, config);
+  }
+
+  async listDir(bucket: string, path: string) {
+    const bucketManager = await this.getBucketManager();
+    const res = await bucketManager.listPrefix(bucket, {
+      prefix: path,
+      limit: 1000,
+    });
+    return res.data;
   }
 }

@@ -15,6 +15,7 @@ export default class S3OssClientImpl extends BaseOssClient<S3Access> {
   }
   async init() {
     // import { S3Client } from "@aws-sdk/client-s3";
+    //@ts-ignore
     const { S3Client } = await import("@aws-sdk/client-s3");
     this.client = new S3Client({
       forcePathStyle: true,
@@ -30,6 +31,7 @@ export default class S3OssClientImpl extends BaseOssClient<S3Access> {
   }
 
   async download(filePath: string, savePath: string): Promise<void> {
+    // @ts-ignore
     const { GetObjectCommand } = await import("@aws-sdk/client-s3");
     const key = path.join(this.rootDir, filePath);
     const params = {
@@ -44,6 +46,7 @@ export default class S3OssClientImpl extends BaseOssClient<S3Access> {
   }
 
   async listDir(dir: string): Promise<OssFileItem[]> {
+    // @ts-ignore
     const { ListObjectsCommand } = await import("@aws-sdk/client-s3");
     const dirKey = this.join(this.rootDir, dir);
     const params = {
@@ -60,6 +63,7 @@ export default class S3OssClientImpl extends BaseOssClient<S3Access> {
     });
   }
   async upload(filePath: string, fileContent: Buffer | string) {
+    // @ts-ignore
     const { PutObjectCommand } = await import("@aws-sdk/client-s3");
     const key = path.join(this.rootDir, filePath);
     this.logger.info(`开始上传文件: ${key}`);
@@ -77,6 +81,7 @@ export default class S3OssClientImpl extends BaseOssClient<S3Access> {
 
   async remove(filePath: string) {
     const key = path.join(this.rootDir, filePath);
+    // @ts-ignore
     const { DeleteObjectCommand } = await import("@aws-sdk/client-s3");
     await this.client.send(
       new DeleteObjectCommand({
