@@ -1,8 +1,16 @@
 import { QiniuAccess, QiniuClient, QiniuOssAccess } from "../../qiniu/index.js";
-import { BaseOssClient, OssClientRemoveByOpts, OssFileItem } from "../api.js";
+import { BaseOssClient, OssFileItem } from "../api.js";
 
 export default class QiniuOssClientImpl extends BaseOssClient<QiniuOssAccess> {
   client: QiniuClient;
+
+  join(...strs: string[]) {
+    const str = super.join(...strs);
+    if (str.startsWith("/")) {
+      return str.substring(1);
+    }
+    return str;
+  }
   async init() {
     const qiniuAccess = await this.ctx.accessService.getById<QiniuAccess>(this.access.accessId);
     this.client = new QiniuClient({
