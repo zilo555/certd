@@ -65,7 +65,7 @@ export function createRemoteSelectInputDefine(opts?: {
       watches: [certDomainsInputKey, accessIdInputKey, ...watches],
     },
     rules: opts?.rules,
-    required: true,
+    required: opts.required ?? true,
     mergeScript: `
           return {
             component:{
