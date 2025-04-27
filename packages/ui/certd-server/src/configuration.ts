@@ -26,11 +26,11 @@ process.on('uncaughtException', error => {
 });
 
 @Configuration({
-  // detectorOptions: {
-  //   ignore: [
-  //     '**/plugins/**'
-  //   ]
-  // },
+  detectorOptions: {
+    ignore: [
+      '**/plugins/**'
+    ]
+  },
   imports: [
     koa,
     orm,
