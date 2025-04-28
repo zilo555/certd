@@ -69,12 +69,10 @@ function createService() {
             const err = new CodeError(errorMessage, dataAxios.code, dataAxios.data);
             // @ts-ignore
             response.config.onError(err);
-            return;
           }
           //@ts-ignore
           const showErrorNotify = response?.config?.showErrorNotify;
           errorCreate(`${errorMessage}: ${response.config.url}`, showErrorNotify, dataAxios);
-          return dataAxios;
       }
     },
     error => {
