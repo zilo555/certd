@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.34.0](https://github.com/certd/certd/compare/v1.33.8...v1.34.0) (2025-04-28)
+
+### Bug Fixes
+
+* 修复二次认证登录进入错误账号的bug ([e3930e0](https://github.com/certd/certd/commit/e3930e07172dd7903cb0f6ff26e0e3e828ba3e77))
+
+### Features
+
+* 从yaml文件注册插件 ([deb3893](https://github.com/certd/certd/commit/deb38938204b29543f36d3266249958faaaa6b66))
+
+### Performance Improvements
+
+* 优化cdnfly插件，支持自动匹配域名部署 ([afd59e9](https://github.com/certd/certd/commit/afd59e9933b2650f41c5d47684c171b93b962065))
+
 ## [1.33.8](https://github.com/certd/certd/compare/v1.33.7...v1.33.8) (2025-04-26)
 
 ### Bug Fixes
