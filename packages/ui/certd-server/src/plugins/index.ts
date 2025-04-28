@@ -1,21 +1,21 @@
 export * from '@certd/plugin-cert';
 export * from '@certd/plugin-plus';
-// export * from './plugin-aliyun/index.js';
-// export * from './plugin-tencent/index.js';
-// export * from './plugin-host/index.js';
-// export * from './plugin-huawei/index.js';
-// export * from './plugin-demo/index.js';
-// export * from './plugin-other/index.js';
-// export * from './plugin-west/index.js';
-// export * from './plugin-doge/index.js';
-// export * from './plugin-qiniu/index.js';
-// export * from './plugin-woai/index.js';
-// export * from './plugin-cachefly/index.js';
-// export * from './plugin-gcore/index.js';
-// export * from './plugin-qnap/index.js';
-// export * from './plugin-aws/index.js';
-// export * from './plugin-dnsla/index.js';
-// export * from './plugin-upyun/index.js';
-// export * from './plugin-volcengine/index.js'
-// export * from './plugin-jdcloud/index.js'
-// export * from './plugin-51dns/index.js'
+export * from './plugin-aliyun/index.js';
+export * from './plugin-tencent/index.js';
+export * from './plugin-host/index.js';
+export * from './plugin-huawei/index.js';
+export * from './plugin-demo/index.js';
+export * from './plugin-other/index.js';
+export * from './plugin-west/index.js';
+export * from './plugin-doge/index.js';
+export * from './plugin-qiniu/index.js';
+export * from './plugin-woai/index.js';
+export * from './plugin-cachefly/index.js';
+export * from './plugin-gcore/index.js';
+export * from './plugin-qnap/index.js';
+export * from './plugin-aws/index.js';
+export * from './plugin-dnsla/index.js';
+export * from './plugin-upyun/index.js';
+export * from './plugin-volcengine/index.js'
+export * from './plugin-jdcloud/index.js'
+export * from './plugin-51dns/index.js'

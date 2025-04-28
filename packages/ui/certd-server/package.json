@@ -20,7 +20,7 @@
     "lint": "mwts check",
     "lint:fix": "mwts fix",
     "ci": "npm run cov",
-    "build": "npm run export-metadata && mwtsc --cleanOutDir --skipLibCheck",
+    "build": "mwtsc --cleanOutDir --skipLibCheck",
     "export-metadata": "node export-plugin-yaml.js",
     "dev-build": "echo 1",
     "build-on-docker": "node ./before-build.js && npm run build",
