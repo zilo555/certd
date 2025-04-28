@@ -135,7 +135,7 @@ export class UserService extends BaseService<UserEntity> {
     return bcrypt.hashSync(plainPassword, salt);
   }
 
-  async findOne(param: any) {
+  async findOne(param: Record<string,any>) {
     return this.repository.findOne({
       where: param,
     });

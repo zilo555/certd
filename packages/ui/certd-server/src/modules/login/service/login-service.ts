@@ -176,7 +176,11 @@ export class LoginService {
     }
     await this.twoFactorService.verifyAuthenticatorCode(userId, req.verifyCode)
 
-    return this.generateToken(await this.userService.findOne(userId))
+    const user = await this.userService.info(userId);
+    if (!user) {
+      throw new AuthException('用户不存在')
+    }
+    return this.generateToken(user)
   }
 
   private async onLoginSuccess(info: UserEntity) {

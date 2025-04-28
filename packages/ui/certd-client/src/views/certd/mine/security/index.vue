@@ -127,6 +127,7 @@ const doAuthenticatorSave = async (form: any) => {
     message: "保存成功",
   });
   authenticatorForm.open = false;
+  formState.authenticator.verified = true;
 };
 
 function onAuthenticatorEnabledChanged(value: any) {
