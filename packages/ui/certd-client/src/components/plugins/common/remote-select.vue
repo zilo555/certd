@@ -53,11 +53,15 @@ const getOptions = async () => {
   if (!define) {
     return;
   }
+  const pluginType = getPluginType();
+  const { form } = getScope();
+  const input = pluginType === "plugin" ? form.input : form;
+
   for (let key in define.input) {
     const inWatches = props.watches.includes(key);
     const inputDefine = define.input[key];
     if (inWatches && inputDefine.required) {
-      const value = props.form[key];
+      const value = input[key];
       if (value == null || value === "") {
         console.log("remote-select required", key);
         return;
@@ -69,8 +73,6 @@ const getOptions = async () => {
   hasError.value = false;
   loading.value = true;
   optionsRef.value = [];
-  const { form } = getScope();
-  const pluginType = getPluginType();
 
   try {
     const res = await doRequest(
@@ -78,7 +80,7 @@ const getOptions = async () => {
         type: pluginType,
         typeName: form.type,
         action: props.action,
-        input: pluginType === "plugin" ? form.input : form,
+        input,
       },
       {
         onError(err: any) {
@@ -115,11 +117,16 @@ async function refreshOptions() {
 watch(
   () => {
     const values = [];
+
+    const pluginType = getPluginType();
+    const { form } = getScope();
+    const input = pluginType === "plugin" ? form.input : form;
+
     for (const item of props.watches) {
-      values.push(props.form[item]);
+      values.push(input[item]);
     }
     return {
-      form: props.form,
+      form: input,
       watched: values,
     };
   },

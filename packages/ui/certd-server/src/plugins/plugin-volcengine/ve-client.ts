@@ -100,6 +100,19 @@ export class VolcengineClient {
     return service;
   }
 
+  async getDCDNService( opts?: {  }) {
+    const CommonService = await this.getServiceCls();
+
+    const service = new CommonService({
+      serviceName: "dcdn",
+      defaultVersion: "2023-01-01"
+    });
+    service.setAccessKeyId(this.opts.access.accessKeyId);
+    service.setSecretKey(this.opts.access.secretAccessKey);
+    service.setRegion("cn-north-1");
+    return service;
+  }
+
   async getServiceCls() {
     if (this.CommonService) {
       return this.CommonService;
@@ -114,11 +127,11 @@ export class VolcengineClient {
         defaultVersion: string;
       }) {
         super(Object.assign({ host: "open.volcengineapi.com" }, options));
-        this.Generic = async (req: { action: string, body?: any, method?: string, query?: any }) => {
-          const { action, method, body, query } = req;
+        this.Generic = async (req: { action: string, body?: any, method?: string, query?: any ,version?:string}) => {
+          const { action, method, body, query,version } = req;
           return await this.fetchOpenAPI({
             Action: action,
-            Version: options.defaultVersion,
+            Version: version||options.defaultVersion,
             method: method as any,
             headers: {
               "content-type": "application/json"
@@ -129,8 +142,11 @@ export class VolcengineClient {
         };
       }
 
-      async request(req: { action: string, body?: any, method?: string, query?: any }) {
+      async request(req: { action: string, body?: any, method?: string, query?: any,version?:string }) {
         const res = await this.Generic(req);
+        if (res ==="Not Found"){
+          throw new Error(`${res} (检查method)`);
+        }
         if (res.errorcode) {
           throw new Error(`${res.errorcode}:${res.message}`);
         }
@@ -144,6 +160,7 @@ export class VolcengineClient {
     this.CommonService = CommonService;
     return CommonService;
   }
+
 
 
 }
