@@ -2,7 +2,7 @@ import https from 'node:https';
 import fs from 'fs';
 import { Application } from '@midwayjs/koa';
 import { createSelfCertificate } from './self-certificate.js';
-import { logger } from '@certd/basic';
+import {logger, safePromise} from '@certd/basic';
 
 export type HttpsServerOptions = {
   enabled: boolean;
@@ -23,7 +23,7 @@ export class HttpsServer {
   }
 
   async close() {
-    return new Promise((resolve, reject) => {
+    return safePromise((resolve, reject) => {
       this.server.close(() => {
         resolve(true);
       });

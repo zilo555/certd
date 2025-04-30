@@ -1,5 +1,5 @@
 import { TencentAccess } from "../access.js";
-import { ILogger } from "@certd/basic";
+import { ILogger, safePromise } from "@certd/basic";
 import fs from "fs";
 
 export class TencentCosClient {
@@ -26,7 +26,7 @@ export class TencentCosClient {
 
   async uploadFile(key: string, file: Buffer | string) {
     const cos = await this.getCosClient();
-    return new Promise((resolve, reject) => {
+    return safePromise((resolve, reject) => {
       let readableStream = file as any;
       if (typeof file === "string") {
         readableStream = fs.createReadStream(file);
@@ -54,7 +54,7 @@ export class TencentCosClient {
 
   async removeFile(key: string) {
     const cos = await this.getCosClient();
-    return new Promise((resolve, reject) => {
+    return safePromise((resolve, reject) => {
       cos.deleteObject(
         {
           Bucket: this.bucket,
@@ -75,7 +75,7 @@ export class TencentCosClient {
   async downloadFile(key: string, savePath: string) {
     const cos = await this.getCosClient();
     const writeStream = fs.createWriteStream(savePath);
-    return new Promise((resolve, reject) => {
+    return safePromise((resolve, reject) => {
       cos.getObject(
         {
           Bucket: this.bucket,
@@ -96,7 +96,7 @@ export class TencentCosClient {
 
   async listDir(dirKey: string) {
     const cos = await this.getCosClient();
-    return new Promise((resolve, reject) => {
+    return safePromise((resolve, reject) => {
       cos.getBucket(
         {
           Bucket: this.bucket,

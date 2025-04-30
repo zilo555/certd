@@ -1,4 +1,4 @@
-import { HttpClient, ILogger, utils } from "@certd/basic";
+import { HttpClient, ILogger, safePromise, utils } from "@certd/basic";
 import { QiniuAccess } from "../access.js";
 import fs from "fs";
 
@@ -77,7 +77,7 @@ export class QiniuClient {
     const http = new HttpClient({ timeout: 10000, middlewares: [auth] });
     console.log("http", http);
 
-    return new Promise((resolve, reject) => {
+    return safePromise((resolve, reject) => {
       try {
         http.get({
           url: opts.url,

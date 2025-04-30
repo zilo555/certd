@@ -1,4 +1,4 @@
-import { logger, utils } from '@certd/basic';
+import {logger, safePromise, utils} from '@certd/basic';
 import { merge } from 'lodash-es';
 import https from 'https';
 import { PeerCertificate } from 'tls';
@@ -49,7 +49,7 @@ export class SiteTester {
     );
     options.agent = agent;
     // 创建 HTTPS 请求
-    const requestPromise = new Promise((resolve, reject) => {
+    const requestPromise = safePromise((resolve, reject) => {
       const req = https.request(options, res => {
         // 获取证书
         // @ts-ignore
