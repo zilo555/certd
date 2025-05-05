@@ -80,7 +80,10 @@ export class AccessController extends CrudController<AccessService> {
 
   @Post('/accessTypeDict', { summary: Constants.per.authOnly })
   async getAccessTypeDict() {
-    const list: AccessDefine[] = this.service.getDefineList();
+    let list: AccessDefine[] = this.service.getDefineList();
+    list = list.sort((a,b) => {
+      return (a.order??10) - (b.order??10);
+    });
     const dict = [];
     for (const item of list) {
       dict.push({

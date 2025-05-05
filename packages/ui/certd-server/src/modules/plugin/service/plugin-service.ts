@@ -285,12 +285,22 @@ export class PluginService extends BaseService<PluginEntity> {
   async registerFromLocal(localDir: string) {
     //scan path
     const files = fs.readdirSync(localDir);
+    let list = []
     for (const file of files) {
       if (!file.endsWith(".yaml")) {
         continue;
       }
       const item = yaml.load(fs.readFileSync(path.join(localDir, file), "utf8"));
 
+      list.push(item);
+
+    }
+    //排序
+    list = list.sort((a, b) => {
+      return (a.order??10) - (b.order ??10);
+    });
+
+    for (const item of list) {
       await this.registerPlugin(item);
     }
   }

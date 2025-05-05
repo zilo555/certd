@@ -51,10 +51,6 @@ export type PluginDefine = Registrable & {
     [key: string]: TaskOutputDefine;
   };
 
-  autowire?: {
-    [key: string]: any;
-  };
-
   shortcut?: {
     [key: string]: {
       title: string;

@@ -1,9 +1,9 @@
 import { AbstractTaskPlugin, IsTaskPlugin, pluginGroups, RunStrategy, TaskInput, TaskOutput } from '@certd/pipeline';
 import { CertInfo, CertReader } from '@certd/plugin-cert';
 import * as fs from 'fs';
-import { Constants } from '@certd/lib-server';
 import path from 'path';
 import { CertApplyPluginNames} from '@certd/plugin-cert';
+const dataDir = "./data"
 @IsTaskPlugin({
   name: 'CopyToLocal',
   title: '主机-复制到本机',
@@ -209,37 +209,37 @@ export class CopyCertToLocalPlugin extends AbstractTaskPlugin {
       this.logger.info('复制到目标路径');
       if (crtPath) {
         crtPath = crtPath.trim();
-        crtPath = crtPath.startsWith('/') ? crtPath : path.join(Constants.dataDir, crtPath);
+        crtPath = crtPath.startsWith('/') ? crtPath : path.join(dataDir, crtPath);
         this.copyFile(tmpCrtPath, crtPath);
         this.hostCrtPath = crtPath;
       }
       if (keyPath) {
         keyPath = keyPath.trim();
-        keyPath = keyPath.startsWith('/') ? keyPath : path.join(Constants.dataDir, keyPath);
+        keyPath = keyPath.startsWith('/') ? keyPath : path.join(dataDir, keyPath);
         this.copyFile(tmpKeyPath, keyPath);
         this.hostKeyPath = keyPath;
       }
       if (icPath) {
         icPath = icPath.trim();
-        icPath = icPath.startsWith('/') ? icPath : path.join(Constants.dataDir, icPath);
+        icPath = icPath.startsWith('/') ? icPath : path.join(dataDir, icPath);
         this.copyFile(tmpIcPath, icPath);
         this.hostIcPath = icPath;
       }
       if (pfxPath) {
         pfxPath = pfxPath.trim();
-        pfxPath = pfxPath.startsWith('/') ? pfxPath : path.join(Constants.dataDir, pfxPath);
+        pfxPath = pfxPath.startsWith('/') ? pfxPath : path.join(dataDir, pfxPath);
         this.copyFile(tmpPfxPath, pfxPath);
         this.hostPfxPath = pfxPath;
       }
       if (derPath) {
         derPath = derPath.trim();
-        derPath = derPath.startsWith('/') ? derPath : path.join(Constants.dataDir, derPath);
+        derPath = derPath.startsWith('/') ? derPath : path.join(dataDir, derPath);
         this.copyFile(tmpDerPath, derPath);
         this.hostDerPath = derPath;
       }
       if (jksPath) {
         jksPath = jksPath.trim();
-        jksPath = jksPath.startsWith('/') ? jksPath : path.join(Constants.dataDir, jksPath);
+        jksPath = jksPath.startsWith('/') ? jksPath : path.join(dataDir, jksPath);
         this.copyFile(tmpJksPath, jksPath);
         this.hostJksPath = jksPath;
       }

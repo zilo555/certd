@@ -1,5 +1,4 @@
 import { AbstractDnsProvider, CreateRecordOptions, IsDnsProvider, RemoveRecordOptions } from "@certd/plugin-cert";
-import { Autowire } from "@certd/pipeline";
 import { JDCloudAccess } from "./access.js";
 
 @IsDnsProvider({
@@ -10,11 +9,11 @@ import { JDCloudAccess } from "./access.js";
   icon: "svg:icon-jdcloud"
 })
 export class JDCloudDnsProvider extends AbstractDnsProvider {
-  @Autowire()
   access!: JDCloudAccess;
 
 
   async onInstance() {
+    this.access = this.ctx.access as JDCloudAccess
   }
 
 

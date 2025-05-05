@@ -1,5 +1,3 @@
-import { Autowire } from '@certd/pipeline';
-
 import { AbstractDnsProvider, CreateRecordOptions, IsDnsProvider, RemoveRecordOptions } from '@certd/plugin-cert';
 import { TencentAccess } from '@certd/plugin-lib';
 
@@ -11,7 +9,6 @@ import { TencentAccess } from '@certd/plugin-lib';
   icon: 'svg:icon-tencentcloud',
 })
 export class TencentDnsProvider extends AbstractDnsProvider {
-  @Autowire()
   access!: TencentAccess;
 
   client!: any;
@@ -19,6 +16,7 @@ export class TencentDnsProvider extends AbstractDnsProvider {
   endpoint = 'dnspod.tencentcloudapi.com';
 
   async onInstance() {
+    this.access = this.ctx.access as TencentAccess
     const clientConfig = {
       credential: this.access,
       region: '',

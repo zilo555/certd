@@ -16,15 +16,15 @@ export type Dns51Record = {
   icon: 'arcticons:dns-changer-3',
   // 这里是对应的 cloudflare的access类型名称
   accessType: '51dns',
+  order:999,
 })
 export class Dns51DnsProvider extends AbstractDnsProvider<Dns51Record> {
-  // 通过Autowire传递context
   access!: Dns51Access;
 
   client!:Dns51Client;
   async onInstance() {
     //一些初始化的操作
-    // 也可以通过ctx成员变量传递context， 与Autowire效果一样
+    // 也可以通过ctx成员变量传递context
     this.access = this.ctx.access as Dns51Access;
     this.client = new Dns51Client({
       logger: this.logger,

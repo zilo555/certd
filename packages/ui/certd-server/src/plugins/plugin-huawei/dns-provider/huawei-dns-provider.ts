@@ -1,6 +1,5 @@
 import * as _ from "lodash-es";
 import { AbstractDnsProvider, CreateRecordOptions, IsDnsProvider, RemoveRecordOptions } from "@certd/plugin-cert";
-import { Autowire } from "@certd/pipeline";
 
 import { HuaweiAccess } from "../access/index.js";
 import { ApiRequestOptions, HuaweiYunClient } from "@certd/lib-huawei";
@@ -18,12 +17,12 @@ export type SearchRecordOptions = {
 })
 export class HuaweiDnsProvider extends AbstractDnsProvider {
   client!: HuaweiYunClient;
-  @Autowire()
   access!: HuaweiAccess;
   domainEndpoint = "https://domains-external.myhuaweicloud.com";
   dnsEndpoint = "https://dns.cn-south-1.myhuaweicloud.com";
 
   async onInstance() {
+    this.access = this.ctx.access as HuaweiAccess
     const access: any = this.access;
     this.client = new HuaweiYunClient(access, this.logger);
   }

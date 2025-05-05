@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.1](https://github.com/certd/certd/compare/v1.34.0...v1.34.1) (2025-05-05)
+
+### Performance Improvements
+
+* 支持部署证书到火山dcdn ([5f85219](https://github.com/certd/certd/commit/5f852194953dc1b4e6336770f417507b8f5a33ad))
+
 # [1.34.0](https://github.com/certd/certd/compare/v1.33.8...v1.34.0) (2025-04-28)
 
 **Note:** Version bump only for package @certd/basic

@@ -1,5 +1,4 @@
 import { AbstractDnsProvider, CreateRecordOptions, IsDnsProvider, RemoveRecordOptions } from "@certd/plugin-cert";
-import { Autowire } from "@certd/pipeline";
 
 import { VolcengineDnsClient } from "./dns-client.js";
 import { VolcengineAccess } from "./access.js";
@@ -13,11 +12,11 @@ import { VolcengineAccess } from "./access.js";
 })
 export class VolcengineDnsProvider extends AbstractDnsProvider {
   client: VolcengineDnsClient;
-  @Autowire()
   access!: VolcengineAccess;
 
 
   async onInstance() {
+    this.access = this.ctx.access as VolcengineAccess
     this.client = new VolcengineDnsClient({
       access: this.access,
       logger: this.logger,

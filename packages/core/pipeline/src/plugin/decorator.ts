@@ -1,7 +1,6 @@
 import { pluginRegistry } from "./registry.js";
 import { PluginDefine, TaskInputDefine, TaskOutputDefine } from "./api.js";
 import { Decorator } from "../decorator/index.js";
-import { AUTOWIRE_KEY } from "../decorator/index.js";
 import "reflect-metadata";
 import { merge, sortBy } from "lodash-es";
 // 提供一个唯一 key
@@ -12,18 +11,12 @@ export function IsTaskPlugin(define: PluginDefine): ClassDecorator {
     target = Decorator.target(target);
 
     const inputs: any = {};
-    const autowires: any = {};
     const outputs: any = {};
     const properties = Decorator.getClassProperties(target);
     for (const property in properties) {
       const input = Reflect.getMetadata(PLUGIN_INPUT_KEY, target, property);
       if (input) {
         inputs[property] = input;
-      }
-
-      const autowire = Reflect.getMetadata(AUTOWIRE_KEY, target, property);
-      if (autowire) {
-        autowires[property] = autowire;
       }
 
       const output = Reflect.getMetadata(PLUGIN_OUTPUT_KEY, target, property);
@@ -57,7 +50,7 @@ export function IsTaskPlugin(define: PluginDefine): ClassDecorator {
       },
     };
 
-    define = merge(defaultConfig, define, { input: inputMap, autowire: autowires, output: outputs });
+    define = merge(defaultConfig, define, { input: inputMap, output: outputs });
 
     Reflect.defineMetadata(PLUGIN_CLASS_KEY, define, target);
 

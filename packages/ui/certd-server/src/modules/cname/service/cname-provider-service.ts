@@ -114,4 +114,5 @@ export class CnameProviderService extends BaseService<CnameProviderEntity> {
     }
     return await super.info(id, infoIgnoreProperty);
   }
+
 }

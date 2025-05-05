@@ -1,5 +1,3 @@
-import { Autowire } from '@certd/pipeline';
-
 import { AbstractDnsProvider, CreateRecordOptions, IsDnsProvider, RemoveRecordOptions } from '@certd/plugin-cert';
 import * as _ from 'lodash-es';
 import { DnspodAccess } from '../access/index.js';
@@ -13,13 +11,13 @@ import { DnspodAccess } from '../access/index.js';
   icon: 'svg:icon-tencentcloud',
 })
 export class DnspodDnsProvider extends AbstractDnsProvider {
-  @Autowire()
   access!: DnspodAccess;
 
   loginToken: any;
 
   endpoint = '';
   async onInstance() {
+    this.access = this.ctx.access as DnspodAccess
     const access: DnspodAccess = this.access as DnspodAccess;
     this.loginToken = access.id + ',' + access.token;
     this.endpoint = access.endpoint || 'https://dnsapi.cn';

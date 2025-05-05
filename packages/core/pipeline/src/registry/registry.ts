@@ -65,7 +65,7 @@ export class Registry<T = any> {
   }
 
   getDefineList() {
-    const list = [];
+    let list = [];
     for (const key in this.storage) {
       const define = this.getDefine(key);
       if (define) {
@@ -78,6 +78,10 @@ export class Registry<T = any> {
         list.push({ ...define, key });
       }
     }
+
+    list = list.sort((a, b) => {
+      return (a.order ?? 10) - (b?.order ?? 10);
+    });
     return list;
   }
 

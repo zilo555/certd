@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.1](https://github.com/certd/certd/compare/v1.34.0...v1.34.1) (2025-05-05)
+
+### Bug Fixes
+
+* 根据SOA记录判断子域名托管有缺陷，改回手动配置子域名托管记录的方式 ([1b280a2](https://github.com/certd/certd/commit/1b280a2940f9e2d919b0bf23b89cc185be1fa498))
+* 修复宝塔授权测试按钮显示错误的bug ([048696e](https://github.com/certd/certd/commit/048696ee9386491bb68592fb3a47d1c900bb68bf))
+
+### Performance Improvements
+
+* 支持部署证书到火山dcdn ([5f85219](https://github.com/certd/certd/commit/5f852194953dc1b4e6336770f417507b8f5a33ad))
+* 支持部署证书到unicloud ([a63d687](https://github.com/certd/certd/commit/a63d687f1c573159f0857693f37602b0e1e44072))
+
 # [1.34.0](https://github.com/certd/certd/compare/v1.33.8...v1.34.0) (2025-04-28)
 
 ### Bug Fixes

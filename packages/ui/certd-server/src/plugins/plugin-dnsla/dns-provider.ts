@@ -16,11 +16,10 @@ export type DnslaRecord = {
   accessType: 'dnsla',
 })
 export class DnslaDnsProvider extends AbstractDnsProvider<DnslaRecord> {
-  // 通过Autowire传递context
   access!: DnslaAccess;
   async onInstance() {
     //一些初始化的操作
-    // 也可以通过ctx成员变量传递context， 与Autowire效果一样
+    // 通过ctx成员变量传递context
     this.access = this.ctx.access as DnslaAccess;
   }
 

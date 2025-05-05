@@ -327,7 +327,7 @@ HTTP文件验证：不支持泛域名，需要配置网站文件上传`,
     }
     this.eab = eab;
     const subDomainsGetter = await this.ctx.serviceGetter.get<ISubDomainsGetter>("subDomainsGetter");
-    const domainParser = new DomainParser(subDomainsGetter);
+    const domainParser = new DomainParser(subDomainsGetter, this.logger);
     this.acme = new AcmeService({
       userId: this.ctx.user.id,
       userContext: this.userContext,

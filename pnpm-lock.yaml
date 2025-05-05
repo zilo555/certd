@@ -46,7 +46,7 @@ importers:
   packages/core/acme-client:
     dependencies:
       '@certd/basic':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../basic
       '@peculiar/x509':
         specifier: ^1.11.0
@@ -207,10 +207,10 @@ importers:
   packages/core/pipeline:
     dependencies:
       '@certd/basic':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../basic
       '@certd/plus-core':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../pro/plus-core
       dayjs:
         specifier: ^1.11.7
@@ -415,7 +415,7 @@ importers:
   packages/libs/lib-k8s:
     dependencies:
       '@certd/basic':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../core/basic
       '@kubernetes/client-node':
         specifier: 0.21.0
@@ -455,16 +455,16 @@ importers:
   packages/libs/lib-server:
     dependencies:
       '@certd/acme-client':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../core/acme-client
       '@certd/basic':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../core/basic
       '@certd/pipeline':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../core/pipeline
       '@certd/plus-core':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../pro/plus-core
       '@midwayjs/cache':
         specifier: ~3.14.0
@@ -607,16 +607,16 @@ importers:
   packages/plugins/plugin-cert:
     dependencies:
       '@certd/acme-client':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../core/acme-client
       '@certd/basic':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../core/basic
       '@certd/pipeline':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../core/pipeline
       '@certd/plugin-lib':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../plugin-lib
       '@google-cloud/publicca':
         specifier: ^1.3.0
@@ -689,10 +689,10 @@ importers:
         specifier: ^3.787.0
         version: 3.787.0(aws-crt@1.25.3)
       '@certd/basic':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../core/basic
       '@certd/pipeline':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../core/pipeline
       '@kubernetes/client-node':
         specifier: 0.21.0
@@ -780,19 +780,19 @@ importers:
   packages/pro/commercial-core:
     dependencies:
       '@certd/basic':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../core/basic
       '@certd/lib-server':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../libs/lib-server
       '@certd/pipeline':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../core/pipeline
       '@certd/plugin-plus':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../plugin-plus
       '@certd/plus-core':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../plus-core
       '@midwayjs/core':
         specifier: ~3.20.3
@@ -877,22 +877,22 @@ importers:
         specifier: ^1.0.2
         version: 1.0.2
       '@certd/basic':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../core/basic
       '@certd/lib-k8s':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../libs/lib-k8s
       '@certd/pipeline':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../core/pipeline
       '@certd/plugin-cert':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../plugins/plugin-cert
       '@certd/plugin-lib':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../plugins/plugin-lib
       '@certd/plus-core':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../plus-core
       ali-oss:
         specifier: ^6.21.0
@@ -989,7 +989,7 @@ importers:
   packages/pro/plus-core:
     dependencies:
       '@certd/basic':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../core/basic
       dayjs:
         specifier: ^1.11.7
@@ -1279,10 +1279,10 @@ importers:
         version: 0.1.3(zod@3.24.2)
     devDependencies:
       '@certd/lib-iframe':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../libs/lib-iframe
       '@certd/pipeline':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../core/pipeline
       '@rollup/plugin-commonjs':
         specifier: ^25.0.7
@@ -1419,9 +1419,6 @@ importers:
       vite-plugin-compression:
         specifier: ^0.5.1
         version: 0.5.1(vite@5.4.14(@types/node@18.19.80)(less@4.2.2)(terser@5.39.0))
-      vite-plugin-dynamic-base:
-        specifier: ^1.1.0
-        version: 1.1.0(vite@5.4.14(@types/node@18.19.80)(less@4.2.2)(terser@5.39.0))
       vite-plugin-html:
         specifier: ^3.2.2
         version: 3.2.2(vite@5.4.14(@types/node@18.19.80)(less@4.2.2)(terser@5.39.0))
@@ -1465,43 +1462,43 @@ importers:
         specifier: ^3.705.0
         version: 3.758.0(aws-crt@1.25.3)
       '@certd/acme-client':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../core/acme-client
       '@certd/basic':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../core/basic
       '@certd/commercial-core':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../pro/commercial-core
       '@certd/jdcloud':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../libs/lib-jdcloud
       '@certd/lib-huawei':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../libs/lib-huawei
       '@certd/lib-k8s':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../libs/lib-k8s
       '@certd/lib-server':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../libs/lib-server
       '@certd/midway-flyway-js':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../libs/midway-flyway-js
       '@certd/pipeline':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../core/pipeline
       '@certd/plugin-cert':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../plugins/plugin-cert
       '@certd/plugin-lib':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../plugins/plugin-lib
       '@certd/plugin-plus':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../pro/plugin-plus
       '@certd/plus-core':
-        specifier: ^1.33.7
+        specifier: ^1.34.0
         version: link:../../pro/plus-core
       '@corsinvest/cv4pve-api-javascript':
         specifier: ^8.3.0
@@ -1738,6 +1735,9 @@ importers:
       typescript:
         specifier: ^5.4.2
         version: 5.8.2
+      why-is-node-running:
+        specifier: ^3.2.2
+        version: 3.2.2
 
 packages:
 
@@ -13015,11 +13015,6 @@ packages:
     peerDependencies:
       vite: '>=2.0.0'
 
-  vite-plugin-dynamic-base@1.1.0:
-    resolution: {integrity: sha512-/hIOTuzedlPRiUTCIY1cJx7UDDUF0brxWIifE7xG1czCJy0Aw6k3QPbHVjPCs30YuU+WAgrX4ACOySLIp2NHkw==}
-    peerDependencies:
-      vite: '>= 2.9.5'
-
   vite-plugin-html@3.2.2:
     resolution: {integrity: sha512-vb9C9kcdzcIo/Oc3CLZVS03dL5pDlOFuhGlZYDCJ840BhWl/0nGeZWf3Qy7NlOayscY4Cm/QRgULCQkEZige5Q==}
     peerDependencies:
@@ -13335,6 +13330,11 @@ packages:
   why-is-node-running@2.3.0:
     resolution: {integrity: sha512-hUrmaWBdVDcxvYqnyh09zunKzROWjbZTiNy8dBEjkS7ehEDQibXJ7XvlmtbwuTclUiIyN+CyXQD4Vmko8fNm8w==}
     engines: {node: '>=8'}
+    hasBin: true
+
+  why-is-node-running@3.2.2:
+    resolution: {integrity: sha512-NKUzAelcoCXhXL4dJzKIwXeR8iEVqsA0Lq6Vnd0UXvgaKbzVo4ZTHROF2Jidrv+SgxOQ03fMinnNhzZATxOD3A==}
+    engines: {node: '>=20.11'}
     hasBin: true
 
   wide-align@1.1.5:
@@ -18063,8 +18063,10 @@ snapshots:
       '@swc/core-win32-arm64-msvc': 1.11.22
       '@swc/core-win32-ia32-msvc': 1.11.22
       '@swc/core-win32-x64-msvc': 1.11.22
+    optional: true
 
-  '@swc/counter@0.1.3': {}
+  '@swc/counter@0.1.3':
+    optional: true
 
   '@swc/helpers@0.5.15':
     dependencies:
@@ -18073,6 +18075,7 @@ snapshots:
   '@swc/types@0.1.21':
     dependencies:
       '@swc/counter': 0.1.3
+    optional: true
 
   '@szmarczak/http-timer@1.1.2':
     dependencies:
@@ -21769,13 +21772,13 @@ snapshots:
       resolve: 1.22.10
       semver: 6.3.1
 
-  eslint-plugin-prettier@3.4.1(eslint-config-prettier@8.10.0(eslint@8.57.0))(eslint@7.32.0)(prettier@2.8.8):
+  eslint-plugin-prettier@3.4.1(eslint-config-prettier@8.10.0(eslint@7.32.0))(eslint@7.32.0)(prettier@2.8.8):
     dependencies:
       eslint: 7.32.0
       prettier: 2.8.8
       prettier-linter-helpers: 1.0.0
     optionalDependencies:
-      eslint-config-prettier: 8.10.0(eslint@8.57.0)
+      eslint-config-prettier: 8.10.0(eslint@7.32.0)
 
   eslint-plugin-prettier@4.2.1(eslint-config-prettier@8.10.0(eslint@8.57.0))(eslint@8.57.0)(prettier@2.8.8):
     dependencies:
@@ -24489,7 +24492,7 @@ snapshots:
       eslint: 7.32.0
       eslint-config-prettier: 8.10.0(eslint@7.32.0)
       eslint-plugin-node: 11.1.0(eslint@7.32.0)
-      eslint-plugin-prettier: 3.4.1(eslint-config-prettier@8.10.0(eslint@8.57.0))(eslint@7.32.0)(prettier@2.8.8)
+      eslint-plugin-prettier: 3.4.1(eslint-config-prettier@8.10.0(eslint@7.32.0))(eslint@7.32.0)(prettier@2.8.8)
       execa: 5.1.1
       inquirer: 7.3.3
       json5: 2.2.3
@@ -27988,14 +27991,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  vite-plugin-dynamic-base@1.1.0(vite@5.4.14(@types/node@18.19.80)(less@4.2.2)(terser@5.39.0)):
-    dependencies:
-      '@swc/core': 1.11.22
-      node-html-parser: 5.4.2
-      vite: 5.4.14(@types/node@18.19.80)(less@4.2.2)(terser@5.39.0)
-    transitivePeerDependencies:
-      - '@swc/helpers'
-
   vite-plugin-html@3.2.2(vite@5.4.14(@types/node@18.19.80)(less@4.2.2)(terser@5.39.0)):
     dependencies:
       '@rollup/pluginutils': 4.2.1
@@ -28347,6 +28342,8 @@ snapshots:
     dependencies:
       siginfo: 2.0.0
       stackback: 0.0.2
+
+  why-is-node-running@3.2.2: {}
 
   wide-align@1.1.5:
     dependencies:

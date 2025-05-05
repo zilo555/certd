@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.1](https://github.com/publishlab/node-acme-client/compare/v1.34.0...v1.34.1) (2025-05-05)
+
+### Bug Fixes
+
+* 根据SOA记录判断子域名托管有缺陷，改回手动配置子域名托管记录的方式 ([1b280a2](https://github.com/publishlab/node-acme-client/commit/1b280a2940f9e2d919b0bf23b89cc185be1fa498))
+
 # [1.34.0](https://github.com/publishlab/node-acme-client/compare/v1.33.8...v1.34.0) (2025-04-28)
 
 **Note:** Version bump only for package @certd/acme-client

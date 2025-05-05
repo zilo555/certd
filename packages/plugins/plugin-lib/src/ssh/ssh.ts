@@ -1,7 +1,7 @@
 // @ts-ignore
 import path from "path";
 import { isArray } from "lodash-es";
-import { ILogger } from "@certd/basic";
+import { ILogger, safePromise } from "@certd/basic";
 import { SshAccess } from "./ssh-access.js";
 
 import fs from "fs";
@@ -70,7 +70,7 @@ export class AsyncSsh2Client {
     const ssh2 = await import("ssh2");
     const ssh2Constants = await import("ssh2/lib/protocol/constants.js");
     const { SUPPORTED_KEX, SUPPORTED_SERVER_HOST_KEY, SUPPORTED_CIPHER, SUPPORTED_MAC } = ssh2Constants.default;
-    return new Promise((resolve, reject) => {
+    return safePromise((resolve, reject) => {
       try {
         const conn = new ssh2.default.Client();
         conn
@@ -108,7 +108,7 @@ export class AsyncSsh2Client {
     });
   }
   async getSftp() {
-    return new Promise((resolve, reject) => {
+    return safePromise((resolve, reject) => {
       this.logger.info("获取sftp");
       this.conn.sftp((err: any, sftp: any) => {
         if (err) {
@@ -122,7 +122,7 @@ export class AsyncSsh2Client {
 
   async fastPut(options: { sftp: any; localPath: string; remotePath: string; opts?: { mode?: string } }) {
     const { sftp, localPath, remotePath, opts } = options;
-    return new Promise((resolve, reject) => {
+    return safePromise((resolve, reject) => {
       this.logger.info(`开始上传：${localPath} => ${remotePath}`);
       sftp.fastPut(localPath, remotePath, { ...(opts ?? {}) }, (err: Error) => {
         if (err) {
@@ -138,7 +138,7 @@ export class AsyncSsh2Client {
 
   async listDir(options: { sftp: any; remotePath: string }) {
     const { sftp, remotePath } = options;
-    return new Promise((resolve, reject) => {
+    return safePromise((resolve, reject) => {
       this.logger.info(`listDir：${remotePath}`);
       sftp.readdir(remotePath, (err: Error, list: any) => {
         if (err) {
@@ -152,7 +152,7 @@ export class AsyncSsh2Client {
 
   async unlink(options: { sftp: any; remotePath: string }) {
     const { sftp, remotePath } = options;
-    return new Promise((resolve, reject) => {
+    return safePromise((resolve, reject) => {
       this.logger.info(`开始删除远程文件：${remotePath}`);
       sftp.unlink(remotePath, (err: Error) => {
         if (err) {
@@ -182,7 +182,7 @@ export class AsyncSsh2Client {
     //   script += "\r\nexit\r\n";
     //   //保证windows下正常退出
     // }
-    return new Promise((resolve, reject) => {
+    return safePromise((resolve, reject) => {
       this.logger.info(`执行命令：[${this.connConf.host}][exec]: \n` + script);
       // pty 伪终端，window下的输出会带上conhost.exe之类的多余的字符串，影响返回结果判断
       // linux下 当使用keyboard-interactive 登录时，需要pty
@@ -232,7 +232,7 @@ export class AsyncSsh2Client {
   async shell(script: string | string[]): Promise<string> {
     const stripAnsiModule = await import("strip-ansi");
     const stripAnsi = stripAnsiModule.default;
-    return new Promise<any>((resolve, reject) => {
+    return safePromise<any>((resolve, reject) => {
       this.logger.info(`执行shell脚本：[${this.connConf.host}][shell]: ` + script);
       this.conn.shell((err: Error, stream: any) => {
         if (err) {
@@ -299,7 +299,7 @@ export class AsyncSsh2Client {
   }
 
   async download(param: { remotePath: string; savePath: string; sftp: any }) {
-    return new Promise((resolve, reject) => {
+    return safePromise((resolve, reject) => {
       const { remotePath, savePath, sftp } = param;
       sftp.fastGet(
         remotePath,
@@ -385,44 +385,40 @@ export class SshClient {
 
   async scpUpload(options: { conn: any; localPath: string; remotePath: string; opts?: { mode?: string } }) {
     const { conn, localPath, remotePath } = options;
-    return new Promise((resolve, reject) => {
+    return safePromise((resolve, reject) => {
       // 关键步骤：构造 SCP 命令
-      try {
-        this.logger.info(`开始上传：${localPath} => ${remotePath}`);
-        conn.conn.exec(
-          `scp -t ${remotePath}`, // -t 表示目标模式
-          (err, stream) => {
-            if (err) {
-              return reject(err);
-            }
-            try {
-              // 准备 SCP 协议头
-              const fileStats = fs.statSync(localPath);
-              const fileName = path.basename(localPath);
-
-              // SCP 协议格式：C[权限] [文件大小] [文件名]\n
-              stream.write(`C0644 ${fileStats.size} ${fileName}\n`);
-
-              // 通过管道传输文件
-              fs.createReadStream(localPath)
-                .on("error", e => {
-                  this.logger.info("read stream error", e);
-                  reject(e);
-                })
-                .pipe(stream)
-                .on("finish", async () => {
-                  this.logger.info(`上传完成：${localPath} => ${remotePath}`);
-                  resolve(true);
-                })
-                .on("error", reject);
-            } catch (e) {
-              reject(e);
-            }
+      this.logger.info(`开始上传：${localPath} => ${remotePath}`);
+      conn.conn.exec(
+        `scp -t ${remotePath}`, // -t 表示目标模式
+        (err, stream) => {
+          if (err) {
+            return reject(err);
           }
-        );
-      } catch (e) {
-        reject(e);
-      }
+          try {
+            // 准备 SCP 协议头
+            const fileStats = fs.statSync(localPath);
+            const fileName = path.basename(localPath);
+
+            // SCP 协议格式：C[权限] [文件大小] [文件名]\n
+            stream.write(`C0644 ${fileStats.size} ${fileName}\n`);
+
+            // 通过管道传输文件
+            fs.createReadStream(localPath)
+              .on("error", e => {
+                this.logger.info("read stream error", e);
+                reject(e);
+              })
+              .pipe(stream)
+              .on("finish", async () => {
+                this.logger.info(`上传完成：${localPath} => ${remotePath}`);
+                resolve(true);
+              })
+              .on("error", reject);
+          } catch (e) {
+            reject(e);
+          }
+        }
+      );
     });
   }
 

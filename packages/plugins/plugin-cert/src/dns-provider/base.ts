@@ -1,6 +1,5 @@
 import { CreateRecordOptions, DnsProviderContext, DnsProviderDefine, IDnsProvider, RemoveRecordOptions } from "./api.js";
 import { dnsProviderRegistry } from "./registry.js";
-import { Decorator } from "@certd/pipeline";
 import { HttpClient, ILogger } from "@certd/basic";
 
 export abstract class AbstractDnsProvider<T = any> implements IDnsProvider<T> {
@@ -39,8 +38,6 @@ export async function createDnsProvider(opts: { dnsProviderType: string; context
   }
   // @ts-ignore
   const dnsProvider: IDnsProvider = new DnsProviderClass();
-
-  Decorator.inject(dnsProviderDefine.autowire, dnsProvider, context);
   dnsProvider.setCtx(context);
   await dnsProvider.onInstance();
   return dnsProvider;

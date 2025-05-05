@@ -37,6 +37,7 @@ export function createRemoteSelectInputDefine(opts?: {
   multi?: boolean;
   required?: boolean;
   rules?: any;
+  mergeScript?: string;
 }) {
   const title = opts?.title || "请选择";
   const certDomainsInputKey = opts?.certDomainsInputKey || "certDomains";
@@ -66,7 +67,9 @@ export function createRemoteSelectInputDefine(opts?: {
     },
     rules: opts?.rules,
     required: opts.required ?? true,
-    mergeScript: `
+    mergeScript:
+      opts.mergeScript ??
+      `
           return {
             component:{
               form: ctx.compute(({form})=>{
@@ -80,3 +83,5 @@ export function createRemoteSelectInputDefine(opts?: {
 
   return merge(item, opts?.formItem);
 }
+
+

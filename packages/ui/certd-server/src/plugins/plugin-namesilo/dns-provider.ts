@@ -17,11 +17,10 @@ export type NamesiloRecord = {
   accessType: 'namesilo',
 })
 export class NamesiloDnsProvider extends AbstractDnsProvider<NamesiloRecord> {
-  // 通过Autowire传递context
   access!: NamesiloAccess;
   async onInstance() {
     //一些初始化的操作
-    // 也可以通过ctx成员变量传递context， 与Autowire效果一样
+    // 也可以通过ctx成员变量传递context
     this.access = this.ctx.access as NamesiloAccess;
   }
 

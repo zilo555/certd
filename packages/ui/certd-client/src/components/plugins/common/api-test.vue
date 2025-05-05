@@ -15,7 +15,7 @@ import { ref, inject } from "vue";
 import { Form } from "ant-design-vue";
 
 defineOptions({
-  name: "ApiTest"
+  name: "ApiTest",
 });
 
 const getScope: any = inject("get:scope");
@@ -49,14 +49,14 @@ const doTest = async () => {
         type: pluginType,
         typeName: form.type,
         action: props.action,
-        input: pluginType === "plugin" ? form.input : form
+        input: pluginType === "plugin" ? form.input : form,
       },
       {
         onError(err: any) {
           hasError.value = true;
           message.value = `错误：${err.message}`;
         },
-        showErrorNotify: false
+        showErrorNotify: false,
       }
     );
     message.value = "测试请求成功";

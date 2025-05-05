@@ -67,7 +67,6 @@ export function errorLog(error: any, notify = true) {
 
 /**
  * @description 创建一个错误
- * @param {String} msg 错误信息
  */
 export function errorCreate(msg: string, notify = true, data?: any) {
   const err = new CodeError(msg, data.code, data.data);

@@ -248,7 +248,10 @@ export class AcmeService {
               fullRecord = cname.fullRecord;
             }
           } else {
-            this.logger.error("未找到域名Cname校验计划，使用默认的dnsProvider");
+            this.logger.error(`未找到域名${fullDomain}的CNAME校验计划，请修改证书申请配置`);
+          }
+          if (dnsProvider == null) {
+            throw new Error(`未找到域名${fullDomain}CNAME校验计划的DnsProvider，请修改证书申请配置`);
           }
         } else if (domainVerifyPlan.type === "http") {
           const httpVerifyPlan = domainVerifyPlan.httpVerifyPlan;

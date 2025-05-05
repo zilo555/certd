@@ -1,5 +1,4 @@
 import { AbstractDnsProvider, CreateRecordOptions, IsDnsProvider, RemoveRecordOptions } from '@certd/plugin-cert';
-import { Autowire } from '@certd/pipeline';
 
 import { WestAccess } from './access.js';
 
@@ -22,12 +21,11 @@ type westRecord = {
   accessType: 'west',
 })
 export class WestDnsProvider extends AbstractDnsProvider<westRecord> {
-  // 通过Autowire注入工具对象
-  @Autowire()
   access!: WestAccess;
 
   async onInstance() {
-    // 也可以通过ctx成员变量传递context， 与Autowire效果一样
+    this.access = this.ctx.access as WestAccess
+    // 也可以通过ctx成员变量传递context
     this.logger.debug('access:', this.access);
     //初始化的操作
     //...

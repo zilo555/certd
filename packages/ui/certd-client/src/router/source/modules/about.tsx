@@ -16,9 +16,9 @@ export const aboutResource = [
       show: () => {
         const settingStore = useSettingStore();
         return !settingStore.isComm;
-      }
-    }
-  }
+      },
+    },
+  },
 ];
 
 export default aboutResource;
