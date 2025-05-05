@@ -1,12 +1,15 @@
 import { IDomainParser, ISubDomainsGetter } from "./api";
 //@ts-ignore
 import psl from "psl";
-import { logger, utils } from "@certd/basic";
+import { ILogger, utils, logger as globalLogger } from "@certd/basic";
+import { resolveDomainBySoaRecord } from "@certd/acme-client";
 
 export class DomainParser implements IDomainParser {
   subDomainsGetter: ISubDomainsGetter;
-  constructor(subDomainsGetter: ISubDomainsGetter) {
+  logger: ILogger;
+  constructor(subDomainsGetter: ISubDomainsGetter, logger?: ILogger) {
     this.subDomainsGetter = subDomainsGetter;
+    this.logger = logger || globalLogger;
   }
 
   parseDomainByPsl(fullDomain: string) {
@@ -18,42 +21,46 @@ export class DomainParser implements IDomainParser {
   }
 
   async parse(fullDomain: string) {
-    logger.info(`查找主域名:${fullDomain}`);
+    this.logger.info(`查找主域名:${fullDomain}`);
     const cacheKey = `domain_parse:${fullDomain}`;
     const value = utils.cache.get(cacheKey);
     if (value) {
-      logger.info(`从缓存获取到主域名:${fullDomain}->${value}`);
+      this.logger.info(`从缓存获取到主域名:${fullDomain}->${value}`);
       return value;
     }
-    // try {
-    //   const mainDomain = await resolveDomainBySoaRecord(fullDomain);
-    //   if (mainDomain) {
-    //     utils.cache.set(cacheKey, mainDomain, {
-    //       ttl: 2 * 60 * 1000,
-    //     });
-    //     logger.info(`获取到主域名:${fullDomain}->${mainDomain}`);
-    //     return mainDomain;
-    //   }
-    // } catch (e) {
-    //   logger.error("从SOA获取主域名失败", e.message);
-    // }
 
     const subDomains = await this.subDomainsGetter.getSubDomains();
     if (subDomains && subDomains.length > 0) {
+      const fullDomainDot = "." + fullDomain;
       for (const subDomain of subDomains) {
-        if (fullDomain.endsWith(subDomain)) {
+        if (fullDomainDot.endsWith("." + subDomain)) {
           //找到子域名托管
           utils.cache.set(cacheKey, subDomain, {
-            ttl: 2 * 60 * 1000,
+            ttl: 60 * 1000,
           });
-          logger.info(`获取到子域名托管域名:${fullDomain}->${subDomain}`);
+          this.logger.info(`获取到子域名托管域名:${fullDomain}->${subDomain}`);
           return subDomain;
         }
       }
     }
 
     const res = this.parseDomainByPsl(fullDomain);
-    logger.info(`从psl获取主域名:${fullDomain}->${res}`);
+    this.logger.info(`从psl获取主域名:${fullDomain}->${res}`);
+
+    let soaManDomain = null;
+    try {
+      const mainDomain = await resolveDomainBySoaRecord(fullDomain);
+      if (mainDomain) {
+        this.logger.info(`从SOA获取到主域名:${fullDomain}->${mainDomain}`);
+        soaManDomain = mainDomain;
+      }
+    } catch (e) {
+      this.logger.error("从SOA获取主域名失败", e.message);
+    }
+    if (soaManDomain && soaManDomain !== res) {
+      this.logger.warn(`SOA获取的主域名（${soaManDomain}）和psl获取的主域名(${res})不一致，请确认是否有设置子域名托管`);
+    }
+
     return res;
   }
 }

@@ -61,7 +61,7 @@ export class CommonDnsProvider implements IDnsProvider {
         domain: options.recordReq.domain,
         hostRecord: options.recordReq.hostRecord,
         recordValue: options.recordReq.value,
-        recordId: options.recordRes.recordId,
+        recordId: options.recordRes?.recordId,
         providerId: this.config.id,
       },
     });
