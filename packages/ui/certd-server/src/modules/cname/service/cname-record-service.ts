@@ -20,6 +20,7 @@ type CnameCheckCacheValue = {
   recordRes?: any;
   startTime: number;
   intervalId?: NodeJS.Timeout;
+  dnsProvider?: IDnsProvider;
 };
 /**
  * 授权
@@ -235,6 +236,23 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
       return dnsProvider;
     };
 
+    const clearVerifyRecord = async () => {
+      cache.delete(cacheKey);
+      try {
+        let dnsProvider =value.dnsProvider
+        if (!dnsProvider) {
+          dnsProvider = await buildDnsProvider();
+        }
+        await dnsProvider.removeRecord({
+          recordReq: value.recordReq,
+          recordRes: value.recordRes,
+        });
+        logger.info('删除CNAME的校验DNS记录成功');
+      } catch (e) {
+        logger.error(`删除CNAME的校验DNS记录失败， ${e.message}，req:${JSON.stringify(value.recordReq)}，recordRes:${JSON.stringify(value.recordRes)}`, e);
+      }
+    };
+
     const checkRecordValue = async () => {
       if (value.pass) {
         return true;
@@ -243,7 +261,7 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
         logger.warn(`cname验证超时,停止检查,${bean.domain} ${testRecordValue}`);
         clearInterval(value.intervalId);
         await this.updateStatus(bean.id, 'timeout');
-        cache.delete(cacheKey);
+        await clearVerifyRecord()
         return false;
       }
 
@@ -270,17 +288,7 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
         logger.info(`检测到CNAME配置,修改状态 ${fullDomain} ${testRecordValue}`);
         await this.updateStatus(bean.id, 'valid');
         value.pass = true;
-        cache.delete(cacheKey);
-        try {
-          const dnsProvider = await buildDnsProvider();
-          await dnsProvider.removeRecord({
-            recordReq: value.recordReq,
-            recordRes: value.recordRes,
-          });
-          logger.info('删除CNAME的校验DNS记录成功');
-        } catch (e) {
-          logger.error(`删除CNAME的校验DNS记录失败， ${e.message}，req:${JSON.stringify(value.recordReq)}，recordRes:${JSON.stringify(value.recordRes)}`, e);
-        }
+        await clearVerifyRecord()
         return success;
       }
     };
@@ -306,6 +314,7 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
     };
     const dnsProvider = await buildDnsProvider();
     const recordRes = await dnsProvider.createRecord(req);
+    value.dnsProvider = dnsProvider;
     value.validating = true;
     value.recordReq = req;
     value.recordRes = recordRes;

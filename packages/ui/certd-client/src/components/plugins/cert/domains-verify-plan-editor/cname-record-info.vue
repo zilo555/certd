@@ -8,7 +8,7 @@
         <fs-copyable v-model="cnameRecord.hostRecord"></fs-copyable>
       </td>
       <td style="text-align: center">CNAME</td>
-      <td class="record-value">
+      <td class="record-value" :title="cnameRecord.recordValue">
         <fs-copyable v-model="cnameRecord.recordValue"></fs-copyable>
       </td>
       <td class="status center flex-center">
@@ -38,12 +38,12 @@ const statusDict = dict({
     { label: "验证中", value: "validating", color: "blue" },
     { label: "验证成功", value: "valid", color: "green" },
     { label: "验证失败", value: "failed", color: "red" },
-    { label: "验证超时", value: "timeout", color: "red" }
-  ]
+    { label: "验证超时", value: "timeout", color: "red" },
+  ],
 });
 
 defineOptions({
-  name: "CnameRecordInfo"
+  name: "CnameRecordInfo",
 });
 
 const props = defineProps<{
@@ -55,7 +55,7 @@ const emit = defineEmits<{
     {
       id: number | null;
       status: string | null;
-    }
+    },
   ];
 }>();
 
@@ -64,7 +64,7 @@ const cnameRecord = ref<CnameRecord | null>(null);
 function onRecordChange() {
   emit("change", {
     id: cnameRecord.value?.id,
-    status: cnameRecord.value?.status
+    status: cnameRecord.value?.status,
   });
 }
 
@@ -90,11 +90,11 @@ async function doRefresh() {
 
 watch(
   () => props.domain,
-  async (value) => {
+  async value => {
     await doRefresh();
   },
   {
-    immediate: true
+    immediate: true,
   }
 );
 
