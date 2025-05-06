@@ -24,21 +24,45 @@ const dns = dnsSdk.promises
  */
 
 async function verifyHttpChallenge(authz, challenge, keyAuthorization, suffix = `/.well-known/acme-challenge/${challenge.token}`) {
+
+    async function doQuery(challengeUrl){
+        log(`正在测试请求 ${challengeUrl} `)
+        // const httpsPort = axios.defaults.acmeSettings.httpsChallengePort || 443;
+        // const challengeUrl = `https://${authz.identifier.value}:${httpsPort}${suffix}`;
+
+        /* May redirect to HTTPS with invalid/self-signed cert - https://letsencrypt.org/docs/challenge-types/#http-01-challenge */
+        const httpsAgent = new https.Agent({ rejectUnauthorized: false });
+
+        log(`Sending HTTP query to ${authz.identifier.value}, suffix: ${suffix}, port: ${httpPort}`);
+        let data = ""
+        try{
+            const resp = await axios.get(challengeUrl, { httpsAgent });
+            data = (resp.data || '').replace(/\s+$/, '');
+        }catch (e) {
+            log(`[error] HTTP request error from ${authz.identifier.value}`,e);
+            return false
+        }
+
+        if (!data || (data !== keyAuthorization)) {
+            log(`[error] Authorization not found in HTTPS response from ${authz.identifier.value}`);
+            return false
+        }
+        return true
+
+    }
+
     const httpPort = axios.defaults.acmeSettings.httpChallengePort || 80;
     const challengeUrl = `http://${authz.identifier.value}:${httpPort}${suffix}`;
 
-    /* May redirect to HTTPS with invalid/self-signed cert - https://letsencrypt.org/docs/challenge-types/#http-01-challenge */
-    const httpsAgent = new https.Agent({ rejectUnauthorized: false });
-
-    log(`Sending HTTP query to ${authz.identifier.value}, suffix: ${suffix}, port: ${httpPort}`);
-    const resp = await axios.get(challengeUrl, { httpsAgent });
-    const data = (resp.data || '').replace(/\s+$/, '');
-
-    log(`Query successful, HTTP status code: ${resp.status}`);
-
-    if (!data || (data !== keyAuthorization)) {
-        throw new Error(`Authorization not found in HTTP response from ${authz.identifier.value}`);
+    if (!await doQuery(challengeUrl)) {
+        const httpsPort = axios.defaults.acmeSettings.httpsChallengePort || 443;
+        const httpsChallengeUrl = `https://${authz.identifier.value}:${httpsPort}${suffix}`;
+        const res = await doQuery(httpsChallengeUrl)
+        if (!res) {
+            throw new Error(`[error] 验证失败，请检查以上测试url是否可以正常访问`);
+        }
     }
+
 
     log(`Key authorization match for ${challenge.type}/${authz.identifier.value}, ACME challenge verified`);
     return true;

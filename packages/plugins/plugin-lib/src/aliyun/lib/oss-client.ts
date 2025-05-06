@@ -52,9 +52,11 @@ export class AliossClient {
     }
   }
 
-  async uploadFile(filePath: string, content: Buffer | string) {
+  async uploadFile(filePath: string, content: Buffer | string, timeout = 1000 * 60 * 60) {
     await this.init();
-    return await this.client.put(filePath, content);
+    return await this.client.put(filePath, content, {
+      timeout,
+    });
   }
 
   async removeFile(filePath: string) {
@@ -62,9 +64,11 @@ export class AliossClient {
     return await this.client.delete(filePath);
   }
 
-  async downloadFile(key: string, savePath: string) {
+  async downloadFile(key: string, savePath: string, timeout = 1000 * 60 * 60) {
     await this.init();
-    return await this.client.get(key, savePath);
+    return await this.client.get(key, savePath, {
+      timeout,
+    });
   }
 
   async listDir(dirKey: string) {
