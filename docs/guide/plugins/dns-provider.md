@@ -10,3 +10,13 @@
 | 6.| **火山引擎** | 火山引擎DNS解析提供商 | 
 | 7.| **京东云** | 京东云DNS解析提供商 | 
 | 8.| **51dns** | 51DNS | 
+
+<style module>
+table th:first-of-type {
+        width: 65px;
+    }
+table th:nth-of-type(2) {
+        width: 240px;
+    }
+</style>
+    

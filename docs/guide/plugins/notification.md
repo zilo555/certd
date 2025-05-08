@@ -14,3 +14,13 @@
 | 10.| **Slack通知** | Slack消息推送通知 | 
 | 11.| **Bark 通知** | Bark 推送通知插件 | 
 | 12.| **飞书通知** | 飞书群聊webhook通知 | 
+
+<style module>
+table th:first-of-type {
+        width: 65px;
+    }
+table th:nth-of-type(2) {
+        width: 240px;
+    }
+</style>
+    

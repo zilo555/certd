@@ -46,3 +46,13 @@
 | 42.| **火山引擎** |  | 
 | 43.| **京东云** |  | 
 | 44.| **51dns授权** |  | 
+
+<style module>
+table th:first-of-type {
+        width: 65px;
+    }
+table th:nth-of-type(2) {
+        width: 240px;
+    }
+</style>
+    

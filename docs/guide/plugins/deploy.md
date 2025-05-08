@@ -118,3 +118,13 @@
 | 3.| **自定义js脚本** | 【仅管理员】运行自定义js脚本执行 | 
 | 4.| **等待** | 等待一段时间 | 
 | 5.| **数据库备份** | 仅支持备份SQLite数据库 | 
+
+<style module>
+table th:first-of-type {
+        width: 65px;
+    }
+table th:nth-of-type(2) {
+        width: 240px;
+    }
+</style>
+    
