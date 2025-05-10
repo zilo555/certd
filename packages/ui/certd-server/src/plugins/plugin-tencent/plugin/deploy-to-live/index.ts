@@ -1,22 +1,21 @@
-import { IsTaskPlugin, pluginGroups, RunStrategy, TaskInput } from '@certd/pipeline';
-import { CertInfo } from '@certd/plugin-cert';
-import { createRemoteSelectInputDefine, TencentAccess, TencentSslClient } from '@certd/plugin-lib';
-import { AbstractPlusTaskPlugin } from '@certd/plugin-plus';
-import { CertApplyPluginNames} from '@certd/plugin-cert';
+import { AbstractTaskPlugin, IsTaskPlugin, pluginGroups, RunStrategy, TaskInput } from "@certd/pipeline";
+import { CertApplyPluginNames, CertInfo } from "@certd/plugin-cert";
+import { createRemoteSelectInputDefine, TencentAccess, TencentSslClient } from "@certd/plugin-lib";
+
 @IsTaskPlugin({
   name: 'TencentDeployCertToLive',
   title: '腾讯云-部署到腾讯云直播',
   icon: 'svg:icon-tencentcloud',
   desc: 'https://console.cloud.tencent.com/live/',
   group: pluginGroups.tencent.key,
-  needPlus: true,
+  needPlus: false,
   default: {
     strategy: {
       runStrategy: RunStrategy.SkipWhenSucceed,
     },
   },
 })
-export class TencentDeployCertToLive extends AbstractPlusTaskPlugin {
+export class TencentDeployCertToLive extends AbstractTaskPlugin {
   @TaskInput({
     title: 'Access提供者',
     helper: 'access 授权',

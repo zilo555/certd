@@ -1,9 +1,7 @@
-import { IsTaskPlugin, pluginGroups, RunStrategy, TaskInput } from "@certd/pipeline";
-import { CertInfo } from "@certd/plugin-cert";
-import { AbstractPlusTaskPlugin } from "@certd/plugin-plus";
+import { AbstractTaskPlugin, IsTaskPlugin, pluginGroups, RunStrategy, TaskInput } from "@certd/pipeline";
+import { CertApplyPluginNames, CertInfo } from "@certd/plugin-cert";
 import { UpyunAccess } from "../access.js";
 import { createCertDomainGetterInputDefine, createRemoteSelectInputDefine } from "@certd/plugin-lib";
-import { CertApplyPluginNames } from "@certd/plugin-cert";
 import { optionsUtils } from "@certd/basic/dist/utils/util.options.js";
 import { UpyunClient } from "../client.js";
 
@@ -15,7 +13,7 @@ import { UpyunClient } from "../client.js";
   desc:"支持又拍云CDN，又拍云云存储USS",
   //插件分组
   group: pluginGroups.cdn.key,
-  needPlus: true,
+  needPlus: false,
   default: {
     //默认值配置照抄即可
     strategy: {
@@ -24,7 +22,7 @@ import { UpyunClient } from "../client.js";
   }
 })
 //类名规范，跟上面插件名称（name）一致
-export class UpyunDeployToCdn extends AbstractPlusTaskPlugin {
+export class UpyunDeployToCdn extends AbstractTaskPlugin {
   //证书选择，此项必须要有
   @TaskInput({
     title: "域名证书",

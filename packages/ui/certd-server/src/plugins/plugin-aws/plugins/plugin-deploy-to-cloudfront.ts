@@ -1,25 +1,24 @@
-import { IsTaskPlugin, pluginGroups, RunStrategy, TaskInput } from '@certd/pipeline';
-import { CertInfo } from '@certd/plugin-cert';
-import { AwsAccess, AwsRegions } from '../access.js';
-import { AwsAcmClient } from '../libs/aws-acm-client.js';
-import { createCertDomainGetterInputDefine, createRemoteSelectInputDefine } from '@certd/plugin-lib';
-import { optionsUtils } from '@certd/basic/dist/utils/util.options.js';
-import { AbstractPlusTaskPlugin } from '@certd/plugin-plus';
-import { CertApplyPluginNames} from '@certd/plugin-cert';
+import { AbstractTaskPlugin, IsTaskPlugin, pluginGroups, RunStrategy, TaskInput } from "@certd/pipeline";
+import { CertApplyPluginNames, CertInfo } from "@certd/plugin-cert";
+import { AwsAccess, AwsRegions } from "../access.js";
+import { AwsAcmClient } from "../libs/aws-acm-client.js";
+import { createCertDomainGetterInputDefine, createRemoteSelectInputDefine } from "@certd/plugin-lib";
+import { optionsUtils } from "@certd/basic/dist/utils/util.options.js";
+
 @IsTaskPlugin({
   name: 'AwsDeployToCloudFront',
   title: 'AWS-部署证书到CloudFront',
   desc: '部署证书到 AWS CloudFront',
   icon: 'svg:icon-aws',
   group: pluginGroups.aws.key,
-  needPlus: true,
+  needPlus: false,
   default: {
     strategy: {
       runStrategy: RunStrategy.SkipWhenSucceed,
     },
   },
 })
-export class AwsDeployToCloudFront extends AbstractPlusTaskPlugin {
+export class AwsDeployToCloudFront extends AbstractTaskPlugin {
   @TaskInput({
     title: '域名证书',
     helper: '请选择前置任务输出的域名证书',

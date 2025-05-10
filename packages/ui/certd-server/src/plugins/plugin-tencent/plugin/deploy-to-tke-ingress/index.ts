@@ -1,13 +1,13 @@
-import { IsTaskPlugin, pluginGroups, RunStrategy, TaskInput } from '@certd/pipeline';
-import { utils } from '@certd/basic';
+import { AbstractTaskPlugin, IsTaskPlugin, pluginGroups, RunStrategy, TaskInput } from "@certd/pipeline";
+import { utils } from "@certd/basic";
 
-import dayjs from 'dayjs';
-import { AbstractPlusTaskPlugin } from '@certd/plugin-plus';
-import { CertApplyPluginNames} from '@certd/plugin-cert';
+import dayjs from "dayjs";
+import { CertApplyPluginNames } from "@certd/plugin-cert";
+
 @IsTaskPlugin({
   name: 'DeployCertToTencentTKEIngress',
   title: '腾讯云-部署到TKE-ingress',
-  needPlus: true,
+  needPlus: false,
   icon: 'svg:icon-tencentcloud',
   group: pluginGroups.tencent.key,
   desc: 'serverless集群请使用K8S部署插件；Qcloud类型需要【上传到腾讯云】作为前置任务；ApiServer未开启外网访问则需要做域名的内网IP映射',
@@ -17,7 +17,7 @@ import { CertApplyPluginNames} from '@certd/plugin-cert';
     },
   },
 })
-export class DeployCertToTencentTKEIngressPlugin extends AbstractPlusTaskPlugin {
+export class DeployCertToTencentTKEIngressPlugin extends AbstractTaskPlugin {
   @TaskInput({ title: '大区', value: 'ap-guangzhou', required: true })
   region!: string;
 
