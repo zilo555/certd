@@ -133,7 +133,7 @@ const asideCollapsed = ref(false);
 function asideCollapsedToggle() {
   asideCollapsed.value = !asideCollapsed.value;
 }
-onErrorCaptured((e) => {
+onErrorCaptured(e => {
   console.error("ErrorCaptured:", e);
   // notification.error({ message: e.message });
   //阻止错误向上传递

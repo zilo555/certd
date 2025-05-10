@@ -18,7 +18,7 @@ import { useLayout } from "./hooks/use-layout";
 interface Props extends VbenLayoutProps {}
 
 defineOptions({
-  name: "VbenLayout"
+  name: "VbenLayout",
 });
 
 const props = withDefaults(defineProps<Props>(), {
@@ -48,7 +48,7 @@ const props = withDefaults(defineProps<Props>(), {
   sideCollapseWidth: 60,
   tabbarEnable: true,
   tabbarHeight: 40,
-  zIndex: 200
+  zIndex: 200,
 });
 
 const emit = defineEmits<{ sideMouseLeave: []; toggleSidebar: [] }>();
@@ -193,7 +193,7 @@ const mainStyle = computed(() => {
   }
   return {
     sidebarAndExtraWidth,
-    width
+    width,
   };
 });
 
@@ -221,7 +221,7 @@ const tabbarStyle = computed((): CSSProperties => {
 
   return {
     marginLeft: `${marginLeft}px`,
-    width
+    width,
   };
 });
 
@@ -231,7 +231,7 @@ const contentStyle = computed((): CSSProperties => {
   const { footerEnable, footerFixed, footerHeight } = props;
   return {
     marginTop: fixed && !isFullContent.value && !headerIsHidden.value && (!isHeaderAutoMode.value || scrollY.value < headerWrapperHeight.value) ? `${headerWrapperHeight.value}px` : 0,
-    paddingBottom: `${footerEnable && footerFixed ? footerHeight : 0}px`
+    paddingBottom: `${footerEnable && footerFixed ? footerHeight : 0}px`,
   };
 });
 
@@ -249,7 +249,7 @@ const headerWrapperStyle = computed((): CSSProperties => {
     position: fixed ? "fixed" : "static",
     top: headerIsHidden.value || isFullContent.value ? `-${headerWrapperHeight.value}px` : 0,
     width: mainStyle.value.width,
-    "z-index": headerZIndex.value
+    "z-index": headerZIndex.value,
   };
 });
 
@@ -289,13 +289,13 @@ const showHeaderLogo = computed(() => {
 
 watch(
   () => props.isMobile,
-  (val) => {
+  val => {
     if (val) {
       sidebarCollapse.value = true;
     }
   },
   {
-    immediate: true
+    immediate: true,
   }
 );
 
@@ -305,7 +305,7 @@ watch(
     setLayoutHeaderHeight(isFullContent.value ? 0 : height);
   },
   {
-    immediate: true
+    immediate: true,
   }
 );
 
@@ -315,7 +315,7 @@ watch(
     setLayoutFooterHeight(height);
   },
   {
-    immediate: true
+    immediate: true,
   }
 );
 
@@ -336,7 +336,7 @@ watch(
       mouseMove();
     },
     {
-      immediate: true
+      immediate: true,
     }
   );
 }
@@ -433,9 +433,9 @@ const idMainContent = ELEMENT_ID_MAIN_CONTENT;
       <div
         :class="[
           {
-            'shadow-[0_16px_24px_hsl(var(--background))]': scrollY > 20
+            'shadow-[0_16px_24px_hsl(var(--background))]': scrollY > 20,
           },
-          SCROLL_FIXED_CLASS
+          SCROLL_FIXED_CLASS,
         ]"
         :style="headerWrapperStyle"
         class="overflow-hidden transition-all duration-200"

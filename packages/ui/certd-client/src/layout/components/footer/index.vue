@@ -15,8 +15,13 @@
       <template v-if="sysPublic.icpNo">
         <span>
           <a href="https://beian.miit.gov.cn/" target="_blank">{{ sysPublic.icpNo }}</a>
+          <a-divider type="vertical" />
         </span>
       </template>
+
+      <span v-if="sysPublic.mpsNo">
+        <a href="http://www.beian.gov.cn/portal/registerSystemInfo" target="_blank">{{ sysPublic.mpsNo }}</a>
+      </span>
     </div>
     <div class="ml-5">v{{ version }}</div>
   </div>
@@ -26,7 +31,7 @@ import { computed, onMounted, ref } from "vue";
 import { useSettingStore } from "/@/store/settings";
 
 defineOptions({
-  name: "PageFooter"
+  name: "PageFooter",
 });
 const version = ref(import.meta.env.VITE_APP_VERSION);
 

@@ -20,8 +20,8 @@ const menus = computed(() => [
       router.push("/certd/mine/user-profile");
     },
     icon: "fa-solid:book",
-    text: "账号信息"
-  }
+    text: "账号信息",
+  },
 ]);
 
 const avatar = computed(() => {
@@ -42,7 +42,7 @@ const siteInfo = computed(() => {
   return settingStore.siteInfo;
 });
 
-onErrorCaptured((e) => {
+onErrorCaptured(e => {
   console.error("ErrorCaptured:", e);
   // notification.error({ message: e.message });
   //阻止错误向上传递
