@@ -35,6 +35,8 @@ services:
 #    networks:
 #      - ip6net
     environment:
+#             ↓↓↓↓ ----------------------------------------------------- 使用上海东八时区
+#      - TZ=Asia/Shanghai
 #     设置环境变量即可自定义certd配置
 #     配置项见： packages/ui/certd-server/src/config/config.default.ts
 #     配置规则： certd_ + 配置项, 点号用_代替
