@@ -145,7 +145,7 @@ export function createAxiosService({ logger }: { logger: Logger }) {
       } else {
         logger.info("http response status:", response?.status);
       }
-      if (response?.config?.returnResponse) {
+      if (response?.config?.returnOriginRes) {
         return response;
       }
       return response.data;
@@ -215,7 +215,7 @@ export type HttpRequestConfig<D = any> = {
   logParams?: boolean;
   logRes?: boolean;
   httpProxy?: string;
-  returnResponse?: boolean;
+  returnOriginRes?: boolean;
 } & AxiosRequestConfig<D>;
 export type HttpClient = {
   request<D = any, R = any>(config: HttpRequestConfig<D>): Promise<HttpClientResponse<R>>;
