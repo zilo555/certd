@@ -255,7 +255,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, onUnmounted, provide, Ref, ref, watch} from "vue";
+import { defineComponent, onMounted, onUnmounted, provide, Ref, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import PiTaskForm from "./component/task-form/index.vue";
 import PiTriggerForm from "./component/trigger-form/index.vue";
@@ -381,8 +381,6 @@ export default defineComponent({
           if (currentHistory.value != null) {
             if (currentHistory.value.pipeline?.status?.status === "start") {
               await loadCurrentHistoryDetail();
-            } else {
-              return;
             }
           }
         } catch (e) {
