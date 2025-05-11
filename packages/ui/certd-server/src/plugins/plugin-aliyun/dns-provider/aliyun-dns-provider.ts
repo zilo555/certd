@@ -11,6 +11,7 @@ import { AliyunAccess, AliyunClient } from '@certd/plugin-lib';
   order:0,
 })
 export class AliyunDnsProvider extends AbstractDnsProvider {
+
   client: any;
   async onInstance() {
     const access: AliyunAccess = this.ctx.access as AliyunAccess

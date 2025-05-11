@@ -8,6 +8,8 @@ export abstract class AbstractDnsProvider<T = any> implements IDnsProvider<T> {
   logger!: ILogger;
 
   usePunyCode(): boolean {
+    //是否使用punycode来添加解析记录
+    //默认都使用原始中文域名来添加
     return false;
   }
 
