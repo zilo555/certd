@@ -113,24 +113,26 @@ export class UpyunDeployToCdn extends AbstractTaskPlugin {
     for (const item of this.cdnList) {
 
       const data :any= {
-        crt_id: certId,
-        domain_name: item,
+        certificate_id: certId,
+        domain: item,
       }
+
       if (this.forceHttps !== 'keep') {
         data.force_https = Boolean(this.forceHttps);
       }
       if (this.https !=='keep') {
         data.https = Boolean(this.https);
       }
-
       this.logger.info(`开始部署证书：${item}`);
       const res = await upyunClient.doRequest({
         cookie: cookie,
-        url: "https://console.upyun.com/api/https/migrate/domain",
+        url: "https://console.upyun.com/api/https/certificate/manager",
         method: "POST",
         data: data
       });
       this.logger.info(`部署成功：${JSON.stringify(res)}`);
+
+
     }
 
     this.logger.info("部署成功");
