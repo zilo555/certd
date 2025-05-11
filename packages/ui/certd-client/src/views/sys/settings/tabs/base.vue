@@ -4,6 +4,9 @@
       <a-form-item label="ICP备案号" :name="['public', 'icpNo']">
         <a-input v-model:value="formState.public.icpNo" placeholder="粤ICP备xxxxxxx号" />
       </a-form-item>
+      <a-form-item label="网安备案号" :name="['public', 'mpsNo']">
+        <a-input v-model:value="formState.public.mpsNo" placeholder="京公网安备xxxxxxx号" />
+      </a-form-item>
 
       <a-form-item label="允许爬虫" :name="['public', 'robots']">
         <a-switch v-model:checked="formState.public.robots" />
@@ -53,19 +56,20 @@ import { notification } from "ant-design-vue";
 import { util } from "/@/utils";
 
 defineOptions({
-  name: "SettingBase"
+  name: "SettingBase",
 });
 
 const formState = reactive<Partial<SysSettings>>({
   public: {
-    icpNo: ""
+    icpNo: "",
+    mpsNo: "",
   },
-  private: {}
+  private: {},
 });
 
 const urlRules = ref({
   type: "url",
-  message: "请输入正确的URL"
+  message: "请输入正确的URL",
 });
 
 async function loadSysSettings() {
@@ -82,7 +86,7 @@ const onFinish = async (form: any) => {
     await api.SysSettingsSave(form);
     await settingsStore.loadSysSettings();
     notification.success({
-      message: "保存成功"
+      message: "保存成功",
     });
   } finally {
     saveLoading.value = false;
@@ -96,7 +100,7 @@ const onFinishFailed = (errorInfo: any) => {
 async function stopOtherUserTimer() {
   await api.stopOtherUserTimer();
   notification.success({
-    message: "停止成功"
+    message: "停止成功",
   });
 }
 
@@ -120,13 +124,13 @@ async function testProxy() {
     if (!success) {
       notification.error({
         message: "测试失败",
-        description: content
+        description: content,
       });
       return;
     }
     notification.success({
       message: "测试完成",
-      description: content
+      description: content,
     });
   } finally {
     testProxyLoading.value = false;

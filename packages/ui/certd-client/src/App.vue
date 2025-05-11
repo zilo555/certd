@@ -3,6 +3,7 @@
     <FsFormProvider>
       <contextHolder />
       <router-view />
+      <MaxKBChat ref="chatBox" />
     </FsFormProvider>
   </AConfigProvider>
 </template>
@@ -10,7 +11,7 @@
 <script lang="ts" setup>
 import zhCN from "ant-design-vue/es/locale/zh_CN";
 import enUS from "ant-design-vue/es/locale/en_US";
-import { computed, provide, ref } from "vue";
+import { computed, onMounted, provide, ref } from "vue";
 import "dayjs/locale/zh-cn";
 import "dayjs/locale/en";
 import dayjs from "dayjs";
@@ -19,6 +20,8 @@ import { useAntdDesignTokens } from "/@/vben/hooks";
 import { theme } from "ant-design-vue";
 import AConfigProvider from "ant-design-vue/es/config-provider";
 import { Modal } from "ant-design-vue";
+import MaxKBChat from "/@/components/ai/index.vue";
+import { util } from "/@/utils";
 
 defineOptions({
   name: "App",
@@ -69,4 +72,10 @@ const tokenTheme = computed(() => {
 // pageStore.init();
 // const settingStore = useSettingStore();
 // settingStore.init();
+
+const chatBox = ref();
+onMounted(async () => {
+  // await util.sleep(5000);
+  // await chatBox.value.openChat({ q: "hello" });
+});
 </script>

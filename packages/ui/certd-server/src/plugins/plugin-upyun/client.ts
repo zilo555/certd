@@ -41,7 +41,7 @@ export class UpyunClient {
         password: access.password
       },
       logRes: false,
-      returnResponse: true
+      returnOriginRes: true
     });
     if (res.data?.errors?.length > 0) {
       throw new Error(JSON.stringify(res.data.msg));

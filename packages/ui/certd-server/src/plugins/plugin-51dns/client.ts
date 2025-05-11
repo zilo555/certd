@@ -58,7 +58,7 @@ export class Dns51Client {
       method: "get",
       withCredentials: true,
       logRes: false,
-      returnResponse: true,
+      returnOriginRes: true,
       headers: {
         // 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.6261.95 Safari/537.36',
         'Origin': 'https://www.51dns.com',
@@ -90,7 +90,7 @@ export class Dns51Client {
       },
       withCredentials: true,
       logRes: false,
-      returnResponse: true,
+      returnOriginRes: true,
       headers: {
         'Origin': 'https://www.51dns.com',
         'Referer': 'https://www.51dns.com',
@@ -117,7 +117,7 @@ export class Dns51Client {
       method: 'get',
       withCredentials: true,
       logRes: false,
-      returnResponse: true,
+      returnOriginRes: true,
       headers: {
         // 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.6261.95 Safari/537.36',
         'Origin': 'https://www.51dns.com',
@@ -144,7 +144,7 @@ export class Dns51Client {
       method: "get",
       withCredentials: true,
       logRes: false,
-      returnResponse: true,
+      returnOriginRes: true,
       headers: this.getRequestHeaders()
     });
 

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.2](https://github.com/certd/certd/compare/v1.34.1...v1.34.2) (2025-05-11)
+
+### Performance Improvements
+
+* http方式支持校验443端口 ([d75fcb7](https://github.com/certd/certd/commit/d75fcb7fec421a9a638eaa27fe9378c84b5e0f19))
+
 ## [1.34.1](https://github.com/certd/certd/compare/v1.34.0...v1.34.1) (2025-05-05)
 
 ### Performance Improvements

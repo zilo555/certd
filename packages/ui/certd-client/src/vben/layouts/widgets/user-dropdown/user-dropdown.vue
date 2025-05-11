@@ -35,7 +35,7 @@ interface Props {
   /**
    * 菜单数组
    */
-  menus?: Array<{ handler: AnyFunction; icon?: Component; text: string }>;
+  menus?: Array<{ handler: AnyFunction; icon?: Component | string; text: string }>;
 
   /**
    * 标签文本
@@ -52,7 +52,7 @@ interface Props {
 }
 
 defineOptions({
-  name: "UserDropdown"
+  name: "UserDropdown",
 });
 
 const props = withDefaults(defineProps<Props>(), {
@@ -64,7 +64,7 @@ const props = withDefaults(defineProps<Props>(), {
   tagText: "",
   text: "",
   trigger: "click",
-  hoverDelay: 500
+  hoverDelay: 500,
 });
 
 const emit = defineEmits<{ logout: [] }>();
@@ -72,12 +72,12 @@ const emit = defineEmits<{ logout: [] }>();
 const { globalLockScreenShortcutKey, globalLogoutShortcutKey } = usePreferences();
 const lockStore = useLockStore();
 const [LockModal, lockModalApi] = useVbenModal({
-  connectedComponent: LockScreenModal
+  connectedComponent: LockScreenModal,
 });
 const [LogoutModal, logoutModalApi] = useVbenModal({
   onConfirm() {
     handleSubmitLogout();
-  }
+  },
 });
 
 const refTrigger = useTemplateRef("refTrigger");
@@ -86,7 +86,7 @@ const [openPopover, hoverWatcher] = useHoverToggle([refTrigger, refContent], () 
 
 watch(
   () => props.trigger === "hover" || props.trigger === "both",
-  (val) => {
+  val => {
     if (val) {
       hoverWatcher.enable();
     } else {
@@ -94,7 +94,7 @@ watch(
     }
   },
   {
-    immediate: true
+    immediate: true,
   }
 );
 

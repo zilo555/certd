@@ -19,6 +19,7 @@ export default {
       "CodeEditor",
       defineAsyncComponent(() => import("./code-editor/index.vue"))
     );
+
     app.component("PiContainer", PiContainer);
     app.component("TextEditable", TextEditable);
     app.component("FileInput", FileInput);

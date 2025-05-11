@@ -255,7 +255,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, provide, Ref, ref, watch } from "vue";
+import { defineComponent, onMounted, onUnmounted, provide, Ref, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import PiTaskForm from "./component/task-form/index.vue";
 import PiTriggerForm from "./component/trigger-form/index.vue";
@@ -274,6 +274,7 @@ import { useSettingStore } from "/@/store/settings";
 import { useUserStore } from "/@/store/user";
 import TaskShortcuts from "./component/shortcut/task-shortcuts.vue";
 import { eachSteps, findStep } from "../utils";
+import { PluginGroups } from "/@/store/plugin";
 
 export default defineComponent({
   name: "PipelineEdit",
@@ -365,9 +366,14 @@ export default defineComponent({
       return true;
     }
     const intervalLoadHistoryRef = ref();
+    const isLoadingHistory = ref(false);
     function watchNewHistoryList() {
-      intervalLoadHistoryRef.value = setTimeout(async () => {
+      intervalLoadHistoryRef.value = setInterval(async () => {
+        if (isLoadingHistory.value) {
+          return;
+        }
         try {
+          isLoadingHistory.value = true;
           if (currentHistory.value == null) {
             await loadHistoryList();
           }
@@ -375,16 +381,21 @@ export default defineComponent({
           if (currentHistory.value != null) {
             if (currentHistory.value.pipeline?.status?.status === "start") {
               await loadCurrentHistoryDetail();
-            } else {
-              return;
             }
           }
         } catch (e) {
           console.error(e);
+        } finally {
+          isLoadingHistory.value = false;
         }
-        watchNewHistoryList();
       }, 3000);
     }
+    onMounted(() => {
+      watchNewHistoryList();
+    });
+    onUnmounted(() => {
+      clearInterval(intervalLoadHistoryRef.value);
+    });
 
     watch(
       () => {
@@ -632,7 +643,6 @@ export default defineComponent({
           async onOk() {
             //@ts-ignore
             await changeCurrentHistory(null);
-            watchNewHistoryList();
             await props.options.doTrigger({ pipelineId: pipeline.value.id, stepId: stepId });
             notification.success({ message: "管道已经开始运行" });
           },
@@ -1081,7 +1091,7 @@ export default defineComponent({
   }
 
   .layout-right {
-    position: "relative";
+    position: relative;
     &.collapsed {
       margin-right: -350px;
     }

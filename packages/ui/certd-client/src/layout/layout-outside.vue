@@ -31,6 +31,10 @@
               <a-divider type="vertical" />
               <a href="https://beian.miit.gov.cn/" target="_blank">{{ sysPublic.icpNo }}</a>
             </span>
+            <span v-if="sysPublic.mpsNo">
+              <a-divider type="vertical" />
+              <a href="http://www.beian.gov.cn/portal/registerSystemInfo" target="_blank">{{ sysPublic.mpsNo }}</a>
+            </span>
           </div>
         </div>
       </div>

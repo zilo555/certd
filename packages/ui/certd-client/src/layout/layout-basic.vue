@@ -20,8 +20,8 @@ const menus = computed(() => [
       router.push("/certd/mine/user-profile");
     },
     icon: "fa-solid:book",
-    text: "账号信息"
-  }
+    text: "账号信息",
+  },
 ]);
 
 const avatar = computed(() => {
@@ -42,7 +42,7 @@ const siteInfo = computed(() => {
   return settingStore.siteInfo;
 });
 
-onErrorCaptured((e) => {
+onErrorCaptured(e => {
   console.error("ErrorCaptured:", e);
   // notification.error({ message: e.message });
   //阻止错误向上传递
@@ -68,6 +68,9 @@ onMounted(async () => {
       </div>
       <div class="hover:bg-accent ml-1 mr-2 cursor-pointer rounded-full">
         <vip-button class="flex-center header-btn" mode="nav" />
+      </div>
+      <div class="hover:bg-accent ml-1 mr-2 cursor-pointer rounded-full">
+        <fs-icon icon="ion:logo-github" />
       </div>
     </template>
     <template #footer>

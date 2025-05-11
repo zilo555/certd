@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.2](https://github.com/certd/certd/compare/v1.34.1...v1.34.2) (2025-05-11)
+
+### Performance Improvements
+
+* 支持设置网安备案号 ([d18e431](https://github.com/certd/certd/commit/d18e431e2f08e6b37704032c4ea6fbdd8e971442))
+
 ## [1.34.1](https://github.com/certd/certd/compare/v1.34.0...v1.34.1) (2025-05-05)
 
 **Note:** Version bump only for package @certd/lib-server

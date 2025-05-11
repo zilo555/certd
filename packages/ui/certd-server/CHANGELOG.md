@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.2](https://github.com/certd/certd/compare/v1.34.1...v1.34.2) (2025-05-11)
+
+### Bug Fixes
+
+* 修复部署到又拍云强制https无效的bug ([2397097](https://github.com/certd/certd/commit/2397097e4ddcb6f593210598e8779ffd44ac3f8f))
+
 ## [1.34.1](https://github.com/certd/certd/compare/v1.34.0...v1.34.1) (2025-05-05)
 
 ### Bug Fixes

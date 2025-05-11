@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.2](https://github.com/certd/certd/compare/v1.34.1...v1.34.2) (2025-05-11)
+
+### Bug Fixes
+
+* 修复刷新流水线页面后，日志不自动更新的bug ([0b2e28b](https://github.com/certd/certd/commit/0b2e28b62dd5eb6804c602083e65c87a9d1d72d2))
+
+### Performance Improvements
+
+* 集成智能问答机器人 ([9dd4905](https://github.com/certd/certd/commit/9dd49054d18ec436a5029444ca55a38adc682933))
+* 支持设置网安备案号 ([d18e431](https://github.com/certd/certd/commit/d18e431e2f08e6b37704032c4ea6fbdd8e971442))
+
 ## [1.34.1](https://github.com/certd/certd/compare/v1.34.0...v1.34.1) (2025-05-05)
 
 ### Bug Fixes

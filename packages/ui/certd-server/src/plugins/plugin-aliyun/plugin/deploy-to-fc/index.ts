@@ -1,22 +1,21 @@
-import { IsTaskPlugin, pluginGroups, RunStrategy, TaskInput } from '@certd/pipeline';
-import { CertInfo } from '@certd/plugin-cert';
-import { AliyunAccess, createCertDomainGetterInputDefine, createRemoteSelectInputDefine } from '@certd/plugin-lib';
-import { AbstractPlusTaskPlugin } from '@certd/plugin-plus';
-import { CertApplyPluginNames} from '@certd/plugin-cert';
+import { AbstractTaskPlugin, IsTaskPlugin, pluginGroups, RunStrategy, TaskInput } from "@certd/pipeline";
+import { CertApplyPluginNames, CertInfo } from "@certd/plugin-cert";
+import { AliyunAccess, createCertDomainGetterInputDefine, createRemoteSelectInputDefine } from "@certd/plugin-lib";
+
 @IsTaskPlugin({
   name: 'AliyunDeployCertToFC',
   title: '阿里云-部署至阿里云FC(3.0)',
   icon: 'svg:icon-aliyun',
   group: pluginGroups.aliyun.key,
   desc: '部署证书到阿里云函数计算（FC3.0）,【注意】证书的加密算法必须选择【pkcs1旧版】',
-  needPlus: true,
+  needPlus: false,
   default: {
     strategy: {
       runStrategy: RunStrategy.SkipWhenSucceed,
     },
   },
 })
-export class AliyunDeployCertToFC extends AbstractPlusTaskPlugin {
+export class AliyunDeployCertToFC extends AbstractTaskPlugin {
   @TaskInput({
     title: '域名证书',
     helper: '请选择证书申请任务输出的域名证书',

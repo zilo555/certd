@@ -234,6 +234,7 @@ export default async (client, userOpts) => {
             throw new CancelError("用户取消");
         }
 
+        const waitDnsDiffuseTime = opts.waitDnsDiffuseTime || 30;
         try {
             // eslint-disable-next-line no-await-in-loop
             await runPromisePa(challengePromises);
@@ -242,8 +243,8 @@ export default async (client, userOpts) => {
                 await wait(60 * 1000);
             } else {
                 await runPromisePa(localVerifyTasks, 1000);
-                log("本地校验完成，等待30s")
-                await wait(30 * 1000)
+                log(`本地校验完成，等待${waitDnsDiffuseTime}s`)
+                await wait(waitDnsDiffuseTime * 1000)
             }
 
             log("开始向提供商请求挑战验证");

@@ -50,49 +50,52 @@ export default async function loadModules(dir) {
 function isPrototypeOf(value,cls){
   return cls.prototype.isPrototypeOf(value.prototype)
 }
+async function genMetadata(){
+  const modules = await loadModules('./dist/plugins');
 
-const modules = await loadModules('./dist/plugins');
+  fs.rmSync("./metadata", { recursive: true });
+  fs.mkdirSync("./metadata", { recursive: true });
+  for (const key in modules) {
+    console.log(key)
+    const module = modules[key]
+    const entry = Object.entries(module)
+    for (const [name, value] of entry) {
+      //如果有define属性
+      if(value.define){
+        //那么就是插件
+        let location = key.substring(4)
+        location = location.substring(0, location.length - 3)
+        location = location.replaceAll("\\","/")
+        location += ".js"
+        location = `../../..${location}` // 从modules/plugin/plugin-service 加载 ../../plugins目录下的文件
 
-fs.rmSync("./metadata", { recursive: true });
-fs.mkdirSync("./metadata", { recursive: true });
-for (const key in modules) {
-  console.log(key)
-  const module = modules[key]
-  const entry = Object.entries(module)
-  for (const [name, value] of entry) {
-    //如果有define属性
-    if(value.define){
-      //那么就是插件
-      let location = key.substring(4)
-      location = location.substring(0, location.length - 3)
-      location = location.replaceAll("\\","/")
-      location += ".js"
-      location = `../../..${location}` // 从modules/plugin/plugin-service 加载 ../../plugins目录下的文件
+        const pluginDefine = {
+          ...value.define
+        }
+        pluginDefine.type = "builtIn"
+        if(pluginDefine.accessType){
+          pluginDefine.pluginType = "dnsProvider"
+        }else if(isPrototypeOf(value,AbstractTaskPlugin)){
+          pluginDefine.pluginType = "deploy"
+        }else if(isPrototypeOf(value,BaseNotification)){
+          pluginDefine.pluginType = "notification"
+        }else if(isPrototypeOf(value,BaseAccess)){
+          pluginDefine.pluginType = "access"
+        }else{
+          console.log(`[warning] 未知的插件类型：${pluginDefine.name}`)
+        }
 
-      const pluginDefine = {
-        ...value.define
+        const filePath = path.join(`./metadata/${pluginDefine.pluginType}_${pluginDefine.name}.yaml`)
+
+        pluginDefine.scriptFilePath = location
+        const data  = yaml.dump(pluginDefine)
+        fs.writeFileSync(filePath,data ,'utf8')
       }
-      pluginDefine.type = "builtIn"
-      if(pluginDefine.accessType){
-        pluginDefine.pluginType = "dnsProvider"
-      }else if(isPrototypeOf(value,AbstractTaskPlugin)){
-        pluginDefine.pluginType = "deploy"
-      }else if(isPrototypeOf(value,BaseNotification)){
-        pluginDefine.pluginType = "notification"
-      }else if(isPrototypeOf(value,BaseAccess)){
-        pluginDefine.pluginType = "access"
-      }else{
-        console.log(`[warning] 未知的插件类型：${pluginDefine.name}`)
-      }
-      const filePath = path.join(`./metadata/${pluginDefine.pluginType}_${pluginDefine.name}.yaml`)
-
-      pluginDefine.scriptFilePath = location
-      const data  = yaml.dump(pluginDefine)
-      fs.writeFileSync(filePath,data ,'utf8')
     }
   }
+  process.exit()
 }
 // import why from 'why-is-node-running'
 // setTimeout(() => why(), 100); // 延迟打印原因
+genMetadata()
 
-process.exit()

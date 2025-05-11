@@ -36,7 +36,7 @@ function createService() {
         return response;
       }
       //@ts-ignore
-      if (response.config.returnResponse) {
+      if (response.config.returnOriginRes) {
         return response;
       }
       // dataAxios 是 axios 返回数据中的 data

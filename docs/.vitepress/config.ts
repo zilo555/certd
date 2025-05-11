@@ -88,22 +88,25 @@ export default defineConfig({
                     text: "特性",
                     items: [
                         {text: "CNAME代理校验", link: "/guide/feature/cname/index.md"},
-                        {text: "插件列表", link: "/guide/plugins.md"},
                         {text: "多数据库支持", link: "/guide/install/database.md"},
                         {text: "开放接口", link: "/guide/open/index.md"},
                         {
-                            text: "站点安全", items: [
-                                {text: "安全特性", link: "/guide/feature/safe"},
-                                {text: "站点隐藏", link: "/guide/feature/safe/hidden"},
-                                {text: "安全生产建议", link: "/guide/feature/safe/suggest"},
+                            text: "站点安全",  link: "/guide/feature/safe"
+                        },
+                        {
+                            text: "插件列表", items: [
+                                {text: "授权提供商", link: "/guide/plugins/access"},
+                                {text: "DNS提供商", link: "/guide/plugins/dns-provider"},
+                                {text: "任务插件", link: "/guide/plugins/deploy"},
+                                {text: "通知插件", link: "/guide/plugins/notification"},
                             ]
                         },
-
                     ]
                 },
                 {
                     text: "常见问题",
                     items: [
+                        {text: "常见报错处理", link: "/guide/qa/"},
                         {text: "群晖证书部署", link: "/guide/use/synology/"},
                         {text: "腾讯云密钥获取", link: "/guide/use/tencent/"},
                         {text: "连接windows主机", link: "/guide/use/host/windows.md"},
@@ -115,8 +118,14 @@ export default defineConfig({
                         {text: "js脚本插件使用", link: "/guide/use/custom-script/index.md"},
                         {text: "邮箱配置", link: "/guide/use/email/index.md"},
                         {text: "IPv6支持", link: "/guide/use/setting/ipv6.md"},
-                        {text: "其他插件使用", link: "/deploy/"},
-                        {text: "商业版说明", link: "/comm/"},
+                        {text: "ESXi", link: "/guide/use/ESXi/index.md"},
+                    ]
+                },
+                {
+                    text: "商业版配置", link: "/guide/use/comm/", items: [
+                        {text: "支付宝配置", link: "/guide/use/comm/payments/alipay.md"},
+                        {text: "微信支付配置", link: "/guide/use/comm/payments/wxpay.md"},
+                        {text: "彩虹易支付配置", link: "/guide/use/comm/payments/yizhifu.md"},
                     ]
                 },
                 {
@@ -133,26 +142,6 @@ export default defineConfig({
                     ]
                 }
             ],
-            "/deploy/": [
-                {
-                    text: "部署证书插件",
-                    items: [
-                        {text: "插件说明", link: "/deploy/index.md"},
-                        {text: "部署到ESXi", link: "/deploy/ESXi/index.md"},
-                    ]
-                }
-            ],
-            "/comm/": [
-                {
-                    text: "商业版",
-                    items: [
-                        {text: "支付宝配置", link: "/comm/payments/alipay.md"},
-                        {text: "微信支付配置", link: "/comm/payments/wxpay.md"},
-                        {text: "彩虹易支付配置", link: "/comm/payments/yizhifu.md"},
-                    ]
-                }
-            ]
-            ,
         },
 
         socialLinks: [

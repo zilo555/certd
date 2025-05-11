@@ -63,6 +63,7 @@ type AcmeServiceOptions = {
   maxCheckRetryCount?: number;
   userId: number;
   domainParser: IDomainParser;
+  waitDnsDiffuseTime?: number;
 };
 
 export class AcmeService {
