@@ -18,7 +18,7 @@ const props = defineProps<{
   modelValue: string;
   title: string;
   action: string;
-  form: any;
+  form?: any;
   button?: any;
 }>();
 
