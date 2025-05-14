@@ -39,3 +39,9 @@ networks:
 ## 3. SSL_CERT_NOT_MATCH_DOMAIN_ERROR
 部署证书任务报类似 `SSL_CERT_NOT_MATCH_DOMAIN_ERROR`错误
 这是由于当前流水线的证书域名与要部署的目标站点的域名不匹配导致的，在申请证书任务中，增加目标站点域名，重新运行流水线即可
+
+
+
+## 4. 是否支持IP证书
+
+因为ACME协议不支持IP证书，所以certd目前也不支持IP证书
