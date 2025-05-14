@@ -17,7 +17,9 @@ CERTD_HTTPS_port=7002
 参考Certd顶部的创建证书流水线教程
 
 ### 2、配置复制到本机任务
-将证书复制到certd的证书安装位置
+将证书复制到certd的证书安装位置   
+证书路径：`ssl/cert.crt`   
+私钥路径：`ssl/cert.key` 
 
 ![](./images/1.png)
 ![](./images/2.png)
