@@ -62,8 +62,10 @@ export default {
     });
 
     function onAiChat() {
-      debugger;
       const logs = currentHistory.value?.logs[activeKey.value];
+      if (!logs || logs.length === 0) {
+        return;
+      }
       let logText = "";
       for (let log of logs) {
         logText += log + "\n";

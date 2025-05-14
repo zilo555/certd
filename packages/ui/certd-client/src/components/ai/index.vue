@@ -123,6 +123,9 @@ onMounted(() => {
 });
 
 async function openChat(req: { q: string }) {
+  if (!req.q) {
+    return;
+  }
   chatVisible.value = true;
 
   const iframeId = "maxkb-chat";
@@ -132,7 +135,13 @@ async function openChat(req: { q: string }) {
     throw new Error("iframe not found");
     return;
   }
-  iframe.contentWindow?.postMessage(req, "*");
+  iframe.contentWindow?.postMessage(
+    {
+      ...req,
+      from: "certd",
+    },
+    "*"
+  );
 }
 
 defineExpose({
