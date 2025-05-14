@@ -64,7 +64,7 @@ export class UploadCertToHostPlugin extends AbstractTaskPlugin {
   crtPath!: string;
   @TaskInput({
     title: '私钥保存路径',
-    helper: '需要有写入权限，路径要包含私钥文件名，例如：/tmp/cert.key',
+    helper: '原本的私钥保存路径，需要有写入权限，路径要包含私钥文件名，例如：/tmp/cert.key',
     component: {
       placeholder: '/root/deploy/nginx/cert.key',
     },
@@ -212,8 +212,9 @@ export class UploadCertToHostPlugin extends AbstractTaskPlugin {
       name: 'a-textarea',
       vModel: 'value',
       rows: 6,
+      placeholder: 'systemctl restart nginx ',
     },
-    helper: '上传后执行脚本命令，不填则不执行\n注意：如果目标主机是windows，且终端是cmd，系统会自动将多行命令通过“&&”连接成一行',
+    helper: '上传后执行脚本命令,让证书生效（比如重启nginx），不填则不执行\n注意：如果目标主机是windows，且终端是cmd，系统会自动将多行命令通过“&&”连接成一行',
     required: false,
   })
   script!: string;
