@@ -11,13 +11,13 @@ export function getCommonColumnDefine(crudExpose: any, typeRef: any, api: any) {
     return "access";
   });
   const AccessTypeDictRef = dict({
-    url: "/pi/access/accessTypeDict"
+    url: "/pi/access/accessTypeDict",
   });
   const defaultPluginConfig = {
     component: {
       name: "a-input",
-      vModel: "value"
-    }
+      vModel: "value",
+    },
   };
 
   function buildDefineFields(define: any, form: any, mode: string) {
@@ -34,7 +34,7 @@ export function getCommonColumnDefine(crudExpose: any, typeRef: any, api: any) {
       const key = "access." + mapKey;
       const field = {
         ...value,
-        key
+        key,
       };
       const column = merge({ title: key }, defaultPluginConfig, field);
 
@@ -77,13 +77,13 @@ export function getCommonColumnDefine(crudExpose: any, typeRef: any, api: any) {
       type: "dict-select",
       dict: AccessTypeDictRef,
       search: {
-        show: true
+        show: true,
       },
       column: {
         width: 200,
         component: {
-          color: "auto"
-        }
+          color: "auto",
+        },
       },
       form: {
         component: {
@@ -100,7 +100,7 @@ export function getCommonColumnDefine(crudExpose: any, typeRef: any, api: any) {
                 {item.label}
               </span>
             );
-          }
+          },
         },
         rules: [{ required: true, message: "请选择类型" }],
         valueChange: {
@@ -116,7 +116,7 @@ export function getCommonColumnDefine(crudExpose: any, typeRef: any, api: any) {
               form.access = {};
             }
             buildDefineFields(define, form, mode);
-          }
+          },
         },
         helper: {
           render: () => {
@@ -125,12 +125,12 @@ export function getCommonColumnDefine(crudExpose: any, typeRef: any, api: any) {
               return "";
             }
             return <div innerHTML={utils.transformLink(define.desc)}></div>;
-          }
-        }
+          },
+        },
       },
       addForm: {
-        value: typeRef
-      }
+        value: typeRef,
+      },
     } as ColumnCompositionProps,
     setting: {
       column: { show: false },
@@ -149,8 +149,8 @@ export function getCommonColumnDefine(crudExpose: any, typeRef: any, api: any) {
         valueResolve({ form }) {
           const setting = form.access;
           form.setting = JSON.stringify(setting);
-        }
-      }
-    } as ColumnCompositionProps
+        },
+      },
+    } as ColumnCompositionProps,
   };
 }
