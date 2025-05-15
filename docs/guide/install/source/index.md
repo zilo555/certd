@@ -45,19 +45,6 @@ kill -9 $(lsof -t -i:7001)
 ./start.sh
 
 ```
-::: warning    
-start.sh脚本中默认是前台运行（关闭ssh就会停止）    
-调试启动正常了之后，再将运行模式改成后台运行
-
-```
-# 前台运行
-npm run start
-
-# 前台运行调试没有问题之后，改成此方式在后台运行
-# nohup npm run start > certd.log &
-```
-:::
-
 ::: warning   
 升级certd版本前，切记切记先备份一下数据    
 :::

@@ -1,17 +1,31 @@
 #
 set -e
+
 echo "即将删除packages下除ui之外的其他目录，按y确认（如果您没有修改过源码，按y即可）"
 read -p "y/n: " confirm
 if [ $confirm != "y" ]; then
   echo "取消操作"
   exit 1
 fi
-find ./packages -mindepth 1 -maxdepth 1 -type d ! -name 'ui' -exec rm -rf {} +
 
+find ./packages -mindepth 1 -maxdepth 1 -type d ! -name 'ui' -exec rm -rf {} +
 echo "删除成功"
 
+# 检查输入是否正确 循环输入
+while true; do
+  echo "是否后台运行(第一次运行建议选择n，调试没有问题之后，重新运行，选择y)"
+  read -p "y/n: " confirmNohup
+  # 校验输入是否正确
+  if [ $confirmNohup != "y" ] && [ $confirmNohup != "n" ]; then
+    echo "输入错误"
+  else
+    break
+  fi
+done
+
+
 echo "安装pnpm, 前提是已经安装了nodejs"
-npm install -g pnpm@ --registry https://registry.npmmirror.com
+npm install -g pnpm --registry https://registry.npmmirror.com
 echo "安装依赖"
 pnpm install --registry https://registry.npmmirror.com
 
@@ -27,8 +41,14 @@ cd ../certd-server
 npm run build
 echo "构建完成"
 echo "启动服务"
-# 前台运行
-npm run start
 
-# 前台运行测试没问题之后，用下面的启动命令，在后台运行
-# nohup npm run start > certd.log &
+# 前台运行
+if [ $confirmNohup != "y" ]; then
+  echo "当前运行模式为前台运行，ctrl+c或者关闭ssh将会停止运行"
+  npm run start
+else
+  echo "当前运行模式为后台运行，可以通过tail -f ./certd.log 命令查看日志"
+  nohup npm run start > certd.log &
+fi
+
+
