@@ -30,5 +30,5 @@ echo "启动服务"
 # 前台运行
 npm run start
 
-# 后台运行
-# nohup npm run start &
+# 前台运行测试没问题之后，用下面的启动命令，在后台运行
+# nohup npm run start > certd.log &
