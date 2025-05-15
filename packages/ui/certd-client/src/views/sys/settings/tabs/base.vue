@@ -8,6 +8,9 @@
         <a-input v-model:value="formState.public.mpsNo" placeholder="京公网安备xxxxxxx号" />
       </a-form-item>
 
+      <a-form-item label="开启小助手" :name="['public', 'aiChatEnabled']">
+        <a-switch v-model:checked="formState.public.aiChatEnabled" />
+      </a-form-item>
       <a-form-item label="允许爬虫" :name="['public', 'robots']">
         <a-switch v-model:checked="formState.public.robots" />
       </a-form-item>

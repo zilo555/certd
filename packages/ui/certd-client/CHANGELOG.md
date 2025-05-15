@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.3](https://github.com/certd/certd/compare/v1.34.2...v1.34.3) (2025-05-15)
+
+### Performance Improvements
+
+* 小助手可以关闭 ([3e2101a](https://github.com/certd/certd/commit/3e2101aa5b56548614102e900d59819ce8c7e97c))
+* 支持AI分析报错 ([aa96859](https://github.com/certd/certd/commit/aa96859798166426e485947a6590464de189de05))
+
 ## [1.34.2](https://github.com/certd/certd/compare/v1.34.1...v1.34.2) (2025-05-11)
 
 ### Bug Fixes

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.3](https://github.com/certd/certd/compare/v1.34.2...v1.34.3) (2025-05-15)
+
+### Performance Improvements
+
+* 支持部署到maoyun cdn ([68f333f](https://github.com/certd/certd/commit/68f333fb87ce85eed27436ecb0f76351c0ccb0d1))
+
 ## [1.34.2](https://github.com/certd/certd/compare/v1.34.1...v1.34.2) (2025-05-11)
 
 ### Performance Improvements

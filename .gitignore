@@ -17,6 +17,7 @@ gen
 /test/*.private.*
 
 /*.log
+nohup.out
 
 /packages/ui/*/.idea
 /packages/ui/*/node_modules

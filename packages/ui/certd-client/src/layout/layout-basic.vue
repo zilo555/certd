@@ -52,6 +52,10 @@ onErrorCaptured(e => {
 onMounted(async () => {
   await settingStore.checkUrlBound();
 });
+
+function goGithub() {
+  window.open("https://github.com/certd/certd");
+}
 </script>
 
 <template>
@@ -63,14 +67,14 @@ onMounted(async () => {
       <LockScreen :avatar @to-login="handleLogout" />
     </template>
     <template #header-right-0>
-      <div class="hover:bg-accent ml-1 mr-2 cursor-pointer rounded-full hidden md:block">
-        <tutorial-button v-if="!settingStore.isComm" class="flex-center header-btn" />
+      <div v-if="!settingStore.isComm" class="hover:bg-accent ml-1 mr-2 cursor-pointer rounded-full hidden md:block">
+        <tutorial-button class="flex-center header-btn" />
       </div>
       <div class="hover:bg-accent ml-1 mr-2 cursor-pointer rounded-full">
         <vip-button class="flex-center header-btn" mode="nav" />
       </div>
-      <div class="hover:bg-accent ml-1 mr-2 cursor-pointer rounded-full">
-        <fs-icon icon="ion:logo-github" />
+      <div v-if="!settingStore.isComm" class="hover:bg-accent ml-1 mr-2 cursor-pointer rounded-full">
+        <fs-button shape="circle" type="text" icon="ion:logo-github" :text="null" @click="goGithub" />
       </div>
     </template>
     <template #footer>

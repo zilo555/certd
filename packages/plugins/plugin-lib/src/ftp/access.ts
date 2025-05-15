@@ -24,7 +24,7 @@ export class FtpAccess extends BaseAccess {
   host!: string;
 
   @AccessInput({
-    title: "host",
+    title: "端口",
     value: 21,
     component: {
       placeholder: "21",

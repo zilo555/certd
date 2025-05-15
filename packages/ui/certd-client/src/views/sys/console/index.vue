@@ -9,7 +9,10 @@
           <a-col :span="6">
             <statistic-card title="用户总数" :count="count.userCount">
               <template #footer>
-                <router-link to="/sys/authority/user" class="flex"><fs-icon icon="ion:settings-outline" class="mr-5 fs-16" /> 管理用户</router-link>
+                <router-link to="/sys/authority/user" class="flex">
+                  <fs-icon icon="ion:settings-outline" class="mr-5 fs-16" />
+                  管理用户
+                </router-link>
               </template>
             </statistic-card>
           </a-col>
@@ -21,7 +24,10 @@
           <a-col :span="6">
             <statistic-card title="全站流水线总数" :count="count.pipelineCount">
               <template #footer>
-                <router-link to="/certd/pipeline" class="flex"><fs-icon icon="ion:settings-outline" class="mr-5 fs-16" /> 管理流水线</router-link>
+                <router-link to="/certd/pipeline" class="flex">
+                  <fs-icon icon="ion:settings-outline" class="mr-5 fs-16" />
+                  管理流水线
+                </router-link>
               </template>
             </statistic-card>
           </a-col>
@@ -42,21 +48,23 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, Ref } from "vue";
 import { FsIcon } from "@fast-crud/fast-crud";
 import StatisticCard from "/@/views/framework/home/dashboard/statistic-card.vue";
 import DayCount from "/@/views/framework/home/dashboard/charts/day-count.vue";
 import { GetStatisticCount } from "./api";
 
-const count = ref({});
-function transformCountPerDayToChartData(key) {
-  count.value[key] = count.value[key].map((item) => {
+const count: Ref = ref({});
+
+function transformCountPerDayToChartData(key: string) {
+  count.value[key] = count.value[key].map((item:any) => {
     return {
       name: item.date,
-      value: item.count
+      value: item.count,
     };
   });
 }
+
 async function loadCount() {
   count.value = await GetStatisticCount();
   transformCountPerDayToChartData("userRegisterCountPerDay");

@@ -9,15 +9,15 @@ import { preferences, updatePreferences } from "/@/vben/preferences";
 import { VbenDropdownRadioMenu, VbenIconButton } from "/@/vben//shadcn-ui";
 
 defineOptions({
-  name: "LanguageToggle"
+  name: "LanguageToggle",
 });
 
 async function handleUpdate(value: string) {
   const locale = value as SupportedLanguagesType;
   updatePreferences({
     app: {
-      locale
-    }
+      locale,
+    },
   });
   await loadLocaleMessages(locale);
 }

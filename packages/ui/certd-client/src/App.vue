@@ -3,7 +3,7 @@
     <FsFormProvider>
       <contextHolder />
       <router-view />
-      <MaxKBChat ref="chatBox" />
+      <MaxKBChat v-if="settingsStore.sysPublic.aiChatEnabled !== false" ref="chatBox" />
     </FsFormProvider>
   </AConfigProvider>
 </template>
@@ -22,7 +22,7 @@ import AConfigProvider from "ant-design-vue/es/config-provider";
 import { Modal } from "ant-design-vue";
 import MaxKBChat from "/@/components/ai/index.vue";
 import { util } from "/@/utils";
-
+import { useSettingStore } from "/@/store/settings";
 defineOptions({
   name: "App",
 });
@@ -49,6 +49,7 @@ localeChanged("zh-cn");
 provide("fn:router.reload", reload);
 provide("fn:locale.changed", localeChanged);
 
+const settingsStore = useSettingStore();
 const { isDark } = usePreferences();
 const { tokens } = useAntdDesignTokens();
 
@@ -74,8 +75,12 @@ const tokenTheme = computed(() => {
 // settingStore.init();
 
 const chatBox = ref();
-onMounted(async () => {
-  // await util.sleep(5000);
-  // await chatBox.value.openChat({ q: "hello" });
-});
+// onMounted(async () => {
+//   await util.sleep(2000);
+//   await chatBox.value.openChat({ q: "hello" });
+// });
+const openChat = (q: string) => {
+  chatBox.value.openChat({ q });
+};
+provide("fn:ai.open", openChat);
 </script>

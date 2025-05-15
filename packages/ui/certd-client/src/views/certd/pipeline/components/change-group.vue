@@ -21,7 +21,7 @@ async function batchUpdateGroupRequest(groupId: number) {
 const pipelineGroupDictRef = dict({
   url: "/pi/pipeline/group/all",
   value: "id",
-  label: "name"
+  label: "name",
 });
 const { openCrudFormDialog } = useFormWrapper();
 
@@ -33,9 +33,9 @@ async function openGroupSelectDialog() {
         type: "dict-select",
         dict: pipelineGroupDictRef,
         form: {
-          rules: [{ required: true, message: "请选择分组" }]
-        }
-      }
+          rules: [{ required: true, message: "请选择分组" }],
+        },
+      },
     },
     form: {
       mode: "edit",
@@ -44,18 +44,18 @@ async function openGroupSelectDialog() {
         await batchUpdateGroupRequest(form.groupId);
       },
       col: {
-        span: 22
+        span: 22,
       },
       labelCol: {
         style: {
-          width: "100px"
-        }
+          width: "100px",
+        },
       },
       wrapper: {
         title: "批量修改分组",
-        width: 600
-      }
-    }
+        width: 600,
+      },
+    },
   } as any;
   await openCrudFormDialog({ crudOptions });
 }

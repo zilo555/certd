@@ -24,7 +24,7 @@
     </div>
 
     <!-- 聊天按钮 -->
-    <div v-show="!chatVisible" class="maxkb-chat-button" :style="buttonPosition" @click="toggleChat">
+    <div v-show="!chatVisible" class="maxkb-chat-button" @click="toggleChat">
       <img src="https://maxkb.handfree.work/ui/MaxKB.gif" />
     </div>
 
@@ -123,7 +123,10 @@ onMounted(() => {
 });
 
 async function openChat(req: { q: string }) {
-  showGuide.value = true;
+  if (!req.q) {
+    return;
+  }
+  chatVisible.value = true;
 
   const iframeId = "maxkb-chat";
 
@@ -132,7 +135,13 @@ async function openChat(req: { q: string }) {
     throw new Error("iframe not found");
     return;
   }
-  iframe.contentWindow?.postMessage(req, "*");
+  iframe.contentWindow?.postMessage(
+    {
+      ...req,
+      from: "certd",
+    },
+    "*"
+  );
 }
 
 defineExpose({
@@ -227,10 +236,10 @@ defineExpose({
 #maxkb .maxkb-tips .maxkb-button button::after {
   border: none;
 }
-#maxkb .maxkb-tips . {
+#maxkb .maxkb-tips {
   position: absolute;
   right: 20px;
-  top: 20px;
+  //top: 20px;
   cursor: pointer;
 }
 #maxkb-chat-container {
@@ -248,7 +257,7 @@ defineExpose({
 
 #maxkb .maxkb-chat-button {
   position: fixed;
-  right: 0px;
+  right: 10px;
   bottom: 30px;
   cursor: pointer;
   z-index: 10000;

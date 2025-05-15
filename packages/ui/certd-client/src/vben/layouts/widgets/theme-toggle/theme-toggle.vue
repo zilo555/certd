@@ -10,16 +10,16 @@ import { ToggleGroup, ToggleGroupItem, VbenTooltip } from "/@/vben//shadcn-ui";
 import ThemeButton from "./theme-button.vue";
 
 defineOptions({
-  name: "ThemeToggle"
+  name: "ThemeToggle",
 });
 
 withDefaults(defineProps<{ shouldOnHover?: boolean }>(), {
-  shouldOnHover: false
+  shouldOnHover: false,
 });
 
 function handleChange(isDark: boolean) {
   updatePreferences({
-    theme: { mode: isDark ? "dark" : "light" }
+    theme: { mode: isDark ? "dark" : "light" },
   });
 }
 
@@ -29,18 +29,18 @@ const PRESETS = [
   {
     icon: Sun,
     name: "light",
-    title: $t("preferences.theme.light")
+    title: $t("preferences.theme.light"),
   },
   {
     icon: MoonStar,
     name: "dark",
-    title: $t("preferences.theme.dark")
+    title: $t("preferences.theme.dark"),
   },
   {
     icon: SunMoon,
     name: "auto",
-    title: $t("preferences.followSystem")
-  }
+    title: $t("preferences.followSystem"),
+  },
 ];
 </script>
 <template>
@@ -49,7 +49,7 @@ const PRESETS = [
       <template #trigger>
         <ThemeButton :model-value="isDark" type="icon" @update:model-value="handleChange" />
       </template>
-      <ToggleGroup :model-value="preferences.theme.mode" class="gap-2" type="single" variant="outline" @update:model-value="(val) => updatePreferences({ theme: { mode: val as ThemeModeType } })">
+      <ToggleGroup :model-value="preferences.theme.mode" class="gap-2" type="single" variant="outline" @update:model-value="val => updatePreferences({ theme: { mode: val as ThemeModeType } })">
         <ToggleGroupItem v-for="item in PRESETS" :key="item.name" :value="item.name">
           <component :is="item.icon" class="size-5" />
         </ToggleGroupItem>

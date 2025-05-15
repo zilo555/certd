@@ -1,16 +1,16 @@
-import {Inject, Provide, Scope, ScopeEnum} from "@midwayjs/core";
-import {BaseService, PageReq} from "@certd/lib-server";
-import {PluginEntity} from "../entity/plugin.js";
-import {InjectEntityModel} from "@midwayjs/typeorm";
-import {Repository} from "typeorm";
-import {isComm} from "@certd/plus-core";
-import {BuiltInPluginService} from "../../pipeline/service/builtin-plugin-service.js";
-import {merge} from "lodash-es";
-import {accessRegistry, notificationRegistry, pluginRegistry} from "@certd/pipeline";
-import {dnsProviderRegistry} from "@certd/plugin-cert";
-import {logger} from "@certd/basic";
+import { Inject, Provide, Scope, ScopeEnum } from "@midwayjs/core";
+import { BaseService, PageReq } from "@certd/lib-server";
+import { PluginEntity } from "../entity/plugin.js";
+import { InjectEntityModel } from "@midwayjs/typeorm";
+import { Repository } from "typeorm";
+import { isComm } from "@certd/plus-core";
+import { BuiltInPluginService } from "../../pipeline/service/builtin-plugin-service.js";
+import { merge } from "lodash-es";
+import { accessRegistry, notificationRegistry, pluginRegistry } from "@certd/pipeline";
+import { dnsProviderRegistry } from "@certd/plugin-cert";
+import { logger } from "@certd/basic";
 import yaml from "js-yaml";
-import {getDefaultAccessPlugin, getDefaultDeployPlugin, getDefaultDnsPlugin} from "./default-plugin.js";
+import { getDefaultAccessPlugin, getDefaultDeployPlugin, getDefaultDnsPlugin } from "./default-plugin.js";
 import fs from "fs";
 import path from "path";
 

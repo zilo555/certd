@@ -27,6 +27,7 @@ export class SysPublicSettings extends BaseSettings {
   icpNo?: string;
   mpsNo?: string;
   robots?: boolean = true;
+  aiChatEnabled = true;
 }
 
 export class SysPrivateSettings extends BaseSettings {

@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   loading: false,
   size: "default",
-  variant: "default"
+  variant: "default",
 });
 
 const isDisabled = computed(() => {

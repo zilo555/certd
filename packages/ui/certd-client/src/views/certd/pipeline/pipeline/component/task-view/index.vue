@@ -22,6 +22,11 @@
         </div>
       </a-tab-pane>
     </a-tabs>
+    <template #footer>
+      <fs-button key="aiChat" type="primary" icon="ion:color-wand-outline" @click="taskModal.onAiChat">AI分析</fs-button>
+      <fs-button key="cancel" icon="ion:close-circle-outline" @click="taskModal.onOk">关闭</fs-button>
+      <fs-button key="submit" icon="ion:checkmark-circle-outline" type="primary" @click="taskModal.onOk">确定</fs-button>
+    </template>
   </a-modal>
 </template>
 
@@ -37,10 +42,14 @@ export default {
   props: {},
   emits: ["run"],
   setup(props: any, ctx: any) {
+    const openAiChat: any = inject("fn:ai.open", (q: string) => {});
     const taskModal = ref({
       open: false,
       onOk() {
         taskViewClose();
+      },
+      onAiChat() {
+        onAiChat();
       },
       cancelText: "关闭",
     });
@@ -51,6 +60,24 @@ export default {
       }
       return "left";
     });
+
+    function onAiChat() {
+      const logs = currentHistory.value?.logs[activeKey.value];
+      if (!logs || logs.length === 0) {
+        return;
+      }
+      let logText = "";
+      for (let log of logs) {
+        logText += log + "\n";
+      }
+      const maxLength = 5000;
+      if (logText.length > maxLength) {
+        logText = logText.substring(logText.length - maxLength);
+      }
+      if (openAiChat) {
+        openAiChat(logText);
+      }
+    }
 
     const detail = ref({ nodes: [] });
     const activeKey = ref();

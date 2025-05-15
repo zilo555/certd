@@ -11,11 +11,11 @@ interface Props {
 }
 
 defineOptions({
-  name: "ThemeToggleButton"
+  name: "ThemeToggleButton",
 });
 
 const props = withDefaults(defineProps<Props>(), {
-  type: "normal"
+  type: "normal",
 });
 
 const isDark = defineModel<boolean>();
@@ -29,13 +29,13 @@ const bindProps = computed(() => {
 
   return type === "normal"
     ? {
-        variant: "heavy" as const
+        variant: "heavy" as const,
       }
     : {
         class: "rounded-full",
         size: "icon" as const,
         style: { padding: "7px" },
-        variant: "icon" as const
+        variant: "icon" as const,
       };
 });
 
@@ -59,12 +59,12 @@ function toggleTheme(event: MouseEvent) {
     const clipPath = [`circle(0px at ${x}px ${y}px)`, `circle(${endRadius}px at ${x}px ${y}px)`];
     document.documentElement.animate(
       {
-        clipPath: isDark.value ? [...clipPath].reverse() : clipPath
+        clipPath: isDark.value ? [...clipPath].reverse() : clipPath,
       },
       {
         duration: 450,
         easing: "ease-in",
-        pseudoElement: isDark.value ? "::view-transition-old(root)" : "::view-transition-new(root)"
+        pseudoElement: isDark.value ? "::view-transition-old(root)" : "::view-transition-new(root)",
       }
     );
   });
