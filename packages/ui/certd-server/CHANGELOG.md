@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.3](https://github.com/certd/certd/compare/v1.34.2...v1.34.3) (2025-05-15)
+
+### Performance Improvements
+
+* 添加 FlexCDN 更新证书插件 ([bf040d4](https://github.com/certd/certd/commit/bf040d4c428d29c06fbaca5e29100e0c583b2b0b))
+
 ## [1.34.2](https://github.com/certd/certd/compare/v1.34.1...v1.34.2) (2025-05-11)
 
 ### Bug Fixes
