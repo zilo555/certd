@@ -125,15 +125,17 @@ export class DingTalkNotification extends BaseNotification {
         at.isAtAll = true;
     }
 
+    const color = body.errorMessage?'red':'green';
     const res = await this.http.request({
       url: webhook,
       method: 'POST',
       data: {
         at: at,
-        text: {
-          content: `${body.title}\n${body.content}\n查看详情: ${body.url}`,
+        markdown: {
+          title: body.title,
+          text: `<font color='${color}'>${body.title}</font>\n\n\n ${body.content}\n\n\n[查看详情](${body.url})`,
         },
-        msgtype:"text"
+        msgtype:"markdown"
       },
     });
     if(res.errcode>100){
