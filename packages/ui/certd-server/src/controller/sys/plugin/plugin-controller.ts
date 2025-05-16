@@ -57,12 +57,12 @@ export class PluginController extends CrudController<PluginService> {
 
   @Post('/delete', { summary: 'sys:settings:edit' })
   async delete(@Query('id') id: number) {
-    return super.delete(id);
+    return super.deleteByIds([id]);
   }
 
   @Post('/deleteByIds', { summary: 'sys:settings:edit' })
   async deleteByIds(@Body('ids') ids: number[]) {
-    const res = await this.service.delete(ids);
+    const res = await this.service.deleteByIds(ids);
     return this.ok(res);
   }
 

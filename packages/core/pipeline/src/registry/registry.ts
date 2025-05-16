@@ -48,6 +48,11 @@ export class Registry<T = any> {
     logger.info(`注册插件:${this.type}:${key}`);
   }
 
+  unRegister(key: string) {
+    delete this.storage[key];
+    logger.info(`反注册插件:${this.type}:${key}`);
+  }
+
   get(name: string): RegistryItem<T> {
     if (!name) {
       throw new Error("插件名称不能为空");
