@@ -15,9 +15,9 @@ import { FlexCDNClient } from "../client.js";
   default: {
     //默认值配置照抄即可
     strategy: {
-      runStrategy: RunStrategy.SkipWhenSucceed,
-    },
-  },
+      runStrategy: RunStrategy.SkipWhenSucceed
+    }
+  }
 })
 //类名规范，跟上面插件名称（name）一致
 export class FlexCDNRefreshCert extends AbstractTaskPlugin {
@@ -27,8 +27,8 @@ export class FlexCDNRefreshCert extends AbstractTaskPlugin {
     helper: "请选择前置任务输出的域名证书",
     component: {
       name: "output-selector",
-      from: [...CertApplyPluginNames],
-    },
+      from: [...CertApplyPluginNames]
+    }
     // required: true, // 必填
   })
   cert!: CertInfo;
@@ -41,9 +41,9 @@ export class FlexCDNRefreshCert extends AbstractTaskPlugin {
     title: "FlexCDN授权",
     component: {
       name: "access-selector",
-      type: "FlexCDN", //固定授权类型
+      type: "flexcdn" //固定授权类型
     },
-    required: true, //必填
+    required: true //必填
   })
   accessId!: string;
   //
@@ -52,13 +52,14 @@ export class FlexCDNRefreshCert extends AbstractTaskPlugin {
     createRemoteSelectInputDefine({
       title: "证书Id",
       helper: "要更新的Flex证书id",
-      action: FlexCDNRefreshCert.prototype.onGetCertList.name,
+      action: FlexCDNRefreshCert.prototype.onGetCertList.name
     })
   )
   certList!: number[];
 
   //插件实例化时执行的方法
-  async onInstance() {}
+  async onInstance() {
+  }
 
   //插件执行方法
   async execute(): Promise<void> {
@@ -67,7 +68,7 @@ export class FlexCDNRefreshCert extends AbstractTaskPlugin {
     const client = new FlexCDNClient({
       http: this.ctx.http,
       logger: this.logger,
-      access,
+      access
     });
     await client.getToken();
     for (const item of this.certList) {
@@ -76,18 +77,23 @@ export class FlexCDNRefreshCert extends AbstractTaskPlugin {
       const res = await client.doRequest({
         url: `/SSLCertService/findEnabledSSLCertConfig`,
         data: {
-          sslCertId: item,
-        },
+          sslCertId: item
+        }
       });
 
+      const sslCert = JSON.parse(this.ctx.utils.hash.base64Decode(res.sslCertJSON))
+      this.logger.info(`证书信息：${sslCert.name}，${sslCert.dnsNames}`);
+      const body = {
+        name: sslCert.name,
+        sslCertId: item,
+        certData: this.cert.crt,
+        keyData: this.cert.key
+      };
       await client.doRequest({
         url: `/SSLCertService/updateSSLCert`,
         data: {
-          ...res,
-          sslCertId: item,
-          certData: this.cert.crt,
-          keyData: this.cert.key,
-        },
+          sslCertJSON:this.ctx.utils.hash.base64(JSON.stringify(body))
+        }
       });
 
       this.logger.info(`更新证书${item}成功`);
@@ -101,28 +107,29 @@ export class FlexCDNRefreshCert extends AbstractTaskPlugin {
     const client = new FlexCDNClient({
       http: this.ctx.http,
       logger: this.logger,
-      access,
+      access
     });
     await client.getToken();
     const res = await client.doRequest({
       url: "/SSLCertService/listSSLCerts",
-      data: {  size: 1000},
-      method: "POST",
+      data: { size: 1000 },
+      method: "POST"
     });
-    const list = res.sslCertsJSON;
+    const list = JSON.parse(this.ctx.utils.hash.base64Decode(res.sslCertsJSON));
     if (!list || list.length === 0) {
       throw new Error("没有找到证书，请先在控制台上传一次证书且关联网站");
     }
 
     const options = list.map((item: any) => {
       return {
-        label: `${item.name}<${item.id}-${item.firstServerName}>`,
+        label: `${item.name}<${item.id}-${item.dnsNames[0]}>`,
         value: item.id,
-        domain: JSON.parse(item.serverNamesJSON),
+        domain: item.dnsNames
       };
     });
     return this.ctx.utils.options.buildGroupOptions(options, this.certDomains);
   }
 }
+
 //实例化一下，注册插件
 new FlexCDNRefreshCert();
