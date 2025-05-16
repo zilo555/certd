@@ -91,6 +91,13 @@ export function createAxiosService({ logger }: { logger: Logger }) {
   // 请求拦截
   service.interceptors.request.use(
     (config: any) => {
+      if (config.logParams == null) {
+        config.logParams = false;
+      }
+      if (config.logRes == null) {
+        config.logRes = false;
+      }
+
       logger.info(`http request:${config.url}，method:${config.method}`);
       if (config.logParams !== false && config.params) {
         logger.info(`params:${JSON.stringify(config.params)}`);

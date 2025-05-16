@@ -193,10 +193,49 @@ export class PluginService extends BaseService<PluginEntity> {
       throw new Error(`插件类型${param.pluginType}不支持`);
     }
 
-    return await super.add({
+    const res= await super.add({
       ...param,
       ...plugin
     });
+
+    await this.registerById(res.id);
+    return res
+  }
+
+   async registerById(id: any) {
+    const item = await this.info(id);
+    if (!item) {
+      return;
+    }
+    if(item.type === "builtIn"){
+      return;
+    }
+    await this.registerPlugin(item);
+  }
+
+  async unRegisterById(id: any){
+    const item = await this.info(id);
+    if (!item) {
+      return;
+    }
+    if (item.type === "builtIn") {
+      return;
+    }
+    let name = item.name;
+    if (item.author){
+       name = `${item.author}/${item.name}`
+    }
+    if (item.pluginType  === "access"){
+      accessRegistry.unRegister(name)
+    }else if (item.pluginType === "deploy"){
+      pluginRegistry.unRegister(name)
+    }else if (item.pluginType === "dnsProvider"){
+      dnsProviderRegistry.unRegister(name)
+    }else if (item.pluginType === "notification"){
+      notificationRegistry.unRegister(name)
+    }else{
+     logger.warn(`不支持的插件类型：${item.pluginType}`)
+    }
   }
 
   async update(param: any) {
@@ -211,7 +250,11 @@ export class PluginService extends BaseService<PluginEntity> {
       throw new Error(`插件${param.author}/${param.name}已存在`);
     }
 
-    return await super.update(param);
+
+    const res= await super.update(param);
+
+    await this.registerById(param.id);
+    return res
   }
 
   async compile(code: string) {
@@ -307,12 +350,15 @@ export class PluginService extends BaseService<PluginEntity> {
 
   async registerPlugin(plugin: PluginEntity) {
     const metadata = plugin.metadata ? yaml.load(plugin.metadata) : {};
+    const extra = plugin.extra ? yaml.load(plugin.extra) : {};
     const item = {
       ...plugin,
-      ...metadata
+      ...metadata,
+      ...extra
     };
     delete item.metadata;
     delete item.content;
+    delete item.extra;
     if (item.author) {
       item.name = item.author + "/" + item.name;
     }
@@ -395,28 +441,36 @@ export class PluginService extends BaseService<PluginEntity> {
       ...loaded,
       metadata: yaml.dump(metadata),
       extra: yaml.dump(extra),
-      content: req.content,
+      content: loaded.content,
       disabled: false
     };
     if (!pluginEntity.pluginType) {
       throw new Error(`插件类型不能为空`);
     }
 
-    if (old) {
-      if (!req.override) {
-        throw new Error(`插件${loaded.author}/${loaded.name}已存在`);
-      }
-      //update
-      pluginEntity.id = old.id;
-      await this.update(pluginEntity);
-    } else {
+    if (!old) {
       //add
       const {id} = await this.add(pluginEntity);
       pluginEntity.id = id;
+    } else{
+      if (!req.override) {
+        throw new Error(`插件${loaded.author}/${loaded.name}已存在`);
+      }
+      pluginEntity.id = old.id;
     }
+    //update
+    await this.update(pluginEntity);
     return {
       id: pluginEntity.id
     };
+  }
+
+
+  async deleteByIds(ids:any[]){
+     await super.delete(ids);
+    for (const id of ids) {
+      await this.unRegisterById(id)
+    }
   }
 
 

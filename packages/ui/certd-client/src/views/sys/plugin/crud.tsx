@@ -91,6 +91,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             },
             afterSubmit() {
               notification.success({ message: "操作成功" });
+              crudExpose.doRefresh();
             },
             async doSubmit({ form }: any) {
               return await api.ImportPlugin({
@@ -203,12 +204,14 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
       },
       form: {
         onSuccess(opts: any) {
-          router.push({
-            name: "SysPluginEdit",
-            query: {
-              id: opts.res.id,
-            },
-          });
+          if (opts.res?.id) {
+            router.push({
+              name: "SysPluginEdit",
+              query: {
+                id: opts.res.id,
+              },
+            });
+          }
         },
       },
       columns: {

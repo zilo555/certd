@@ -14,9 +14,13 @@ function hmacSha256(data: string, digest: BinaryToTextEncoding = "base64") {
 function base64(data: string) {
   return Buffer.from(data).toString("base64");
 }
+function base64Decode(data: string) {
+  return Buffer.from(data, "base64").toString("utf8");
+}
 export const hashUtils = {
   md5,
   sha256,
   base64,
+  base64Decode,
   hmacSha256,
 };

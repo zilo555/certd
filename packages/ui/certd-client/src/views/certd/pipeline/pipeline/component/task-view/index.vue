@@ -23,7 +23,7 @@
       </a-tab-pane>
     </a-tabs>
     <template #footer>
-      <fs-button key="aiChat" type="primary" icon="ion:color-wand-outline" @click="taskModal.onAiChat">AI分析</fs-button>
+      <fs-button v-if="settingsStore.sysPublic.aiChatEnabled !== false" key="aiChat" type="primary" icon="ion:color-wand-outline" @click="taskModal.onAiChat">AI分析</fs-button>
       <fs-button key="cancel" icon="ion:close-circle-outline" @click="taskModal.onOk">关闭</fs-button>
       <fs-button key="submit" icon="ion:checkmark-circle-outline" type="primary" @click="taskModal.onOk">确定</fs-button>
     </template>
@@ -35,7 +35,7 @@ import { computed, inject, nextTick, Ref, ref, watch } from "vue";
 import { RunHistory } from "../../type";
 import PiStatusShow from "/@/views/certd/pipeline/pipeline/component/status-show.vue";
 import { usePreferences } from "/@/vben/preferences";
-
+import { useSettingStore } from "/@/store/settings/index";
 export default {
   name: "PiTaskView",
   components: { PiStatusShow },
@@ -70,7 +70,7 @@ export default {
       for (let log of logs) {
         logText += log + "\n";
       }
-      const maxLength = 5000;
+      const maxLength = 2500;
       if (logText.length > maxLength) {
         logText = logText.substring(logText.length - maxLength);
       }
@@ -172,6 +172,7 @@ export default {
       taskModal.value.open = false;
     }
 
+    const settingsStore = useSettingStore();
     return {
       detail,
       taskModal,
@@ -180,6 +181,7 @@ export default {
       taskViewClose,
       tabPosition,
       triggerRun,
+      settingsStore,
     };
   },
 };

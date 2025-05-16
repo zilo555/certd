@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.4](https://github.com/certd/certd/compare/v1.34.3...v1.34.4) (2025-05-16)
+
+### Bug Fixes
+
+* 修复部署flexcdn问题 ([76b19a4](https://github.com/certd/certd/commit/76b19a4980f8edba5238543b82a7811e1003746c))
+* 修复插件导入的bug ([677fec0](https://github.com/certd/certd/commit/677fec0a0b6fceb4966705e471bbfeeda91610c7))
+* 修复导入在线插件不生效的bug ([fcf8309](https://github.com/certd/certd/commit/fcf8309c238208281ecb4575b2c3cfe50c11d783))
+* 修复自建插件保存丢失部署策略的bug ([863e74d](https://github.com/certd/certd/commit/863e74dd2e3912f950ff5025b5ed0070aeb37035))
+
 ## [1.34.3](https://github.com/certd/certd/compare/v1.34.2...v1.34.3) (2025-05-15)
 
 ### Performance Improvements
