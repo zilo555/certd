@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.4](https://github.com/certd/certd/compare/v1.34.3...v1.34.4) (2025-05-16)
+
+### Bug Fixes
+
+* 修复插件导入的bug ([677fec0](https://github.com/certd/certd/commit/677fec0a0b6fceb4966705e471bbfeeda91610c7))
+* 修复自建插件保存丢失部署策略的bug ([863e74d](https://github.com/certd/certd/commit/863e74dd2e3912f950ff5025b5ed0070aeb37035))
+
+### Performance Improvements
+
+* 调整小助手，仅在登录之后显示 ([aebb07c](https://github.com/certd/certd/commit/aebb07c5cc8b1f233b9d203ff017ac60e6971a85))
+
 ## [1.34.3](https://github.com/certd/certd/compare/v1.34.2...v1.34.3) (2025-05-15)
 
 ### Performance Improvements
