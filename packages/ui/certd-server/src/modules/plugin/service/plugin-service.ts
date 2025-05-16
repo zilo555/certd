@@ -438,25 +438,25 @@ export class PluginService extends BaseService<PluginEntity> {
       ...loaded,
       metadata: yaml.dump(metadata),
       extra: yaml.dump(extra),
-      content: req.content,
+      content: loaded.content,
       disabled: false
     };
     if (!pluginEntity.pluginType) {
       throw new Error(`插件类型不能为空`);
     }
 
-    if (old) {
-      if (!req.override) {
-        throw new Error(`插件${loaded.author}/${loaded.name}已存在`);
-      }
-      //update
-      pluginEntity.id = old.id;
-      await this.update(pluginEntity);
-    } else {
+    if (!old) {
       //add
       const {id} = await this.add(pluginEntity);
       pluginEntity.id = id;
+    } else{
+      if (!req.override) {
+        throw new Error(`插件${loaded.author}/${loaded.name}已存在`);
+      }
+      pluginEntity.id = old.id;
     }
+    //update
+    await this.update(pluginEntity);
     return {
       id: pluginEntity.id
     };

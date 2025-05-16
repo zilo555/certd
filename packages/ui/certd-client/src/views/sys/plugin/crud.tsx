@@ -91,6 +91,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             },
             afterSubmit() {
               notification.success({ message: "操作成功" });
+              crudExpose.doRefresh();
             },
             async doSubmit({ form }: any) {
               return await api.ImportPlugin({
