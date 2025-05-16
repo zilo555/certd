@@ -72,7 +72,7 @@ export class FlexCDNRefreshCert extends AbstractTaskPlugin {
     });
     await client.getToken();
     for (const item of this.certList) {
-      this.logger.info(`开始更新证书：${item}`);
+      this.logger.info(`----------- 开始更新证书：${item}`);
 
       const res = await client.doRequest({
         url: `/SSLCertService/findEnabledSSLCertConfig`,
@@ -86,17 +86,17 @@ export class FlexCDNRefreshCert extends AbstractTaskPlugin {
       const body = {
         name: sslCert.name,
         sslCertId: item,
-        certData: this.cert.crt,
-        keyData: this.cert.key
+        certData: this.ctx.utils.hash.base64(this.cert.crt),
+        keyData: this.ctx.utils.hash.base64(this.cert.key)
       };
       await client.doRequest({
         url: `/SSLCertService/updateSSLCert`,
         data: {
-          sslCertJSON:this.ctx.utils.hash.base64(JSON.stringify(body))
+          ...body
         }
       });
 
-      this.logger.info(`更新证书${item}成功`);
+      this.logger.info(`----------- 更新证书${item}成功`);
     }
 
     this.logger.info("部署完成");
