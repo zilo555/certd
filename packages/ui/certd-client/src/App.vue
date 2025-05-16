@@ -3,7 +3,6 @@
     <FsFormProvider>
       <contextHolder />
       <router-view />
-      <MaxKBChat v-if="settingsStore.sysPublic.aiChatEnabled !== false" ref="chatBox" />
     </FsFormProvider>
   </AConfigProvider>
 </template>
@@ -49,7 +48,7 @@ localeChanged("zh-cn");
 provide("fn:router.reload", reload);
 provide("fn:locale.changed", localeChanged);
 
-const settingsStore = useSettingStore();
+
 const { isDark } = usePreferences();
 const { tokens } = useAntdDesignTokens();
 
@@ -74,13 +73,5 @@ const tokenTheme = computed(() => {
 // const settingStore = useSettingStore();
 // settingStore.init();
 
-const chatBox = ref();
-// onMounted(async () => {
-//   await util.sleep(2000);
-//   await chatBox.value.openChat({ q: "hello" });
-// });
-const openChat = (q: string) => {
-  chatBox.value.openChat({ q });
-};
-provide("fn:ai.open", openChat);
+
 </script>

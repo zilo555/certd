@@ -1,17 +1,16 @@
 <script lang="ts" setup>
 import { BasicLayout, LockScreen, UserDropdown } from "/@/vben/layouts";
 
-import { computed, onErrorCaptured, onMounted } from "vue";
-import { preferences } from "/@/vben/preferences";
-import { useAccessStore } from "/@/vben/stores";
+import { computed, onErrorCaptured, onMounted, provide, ref } from "vue";
 import { useUserStore } from "/@/store/user";
 import VipButton from "/@/components/vip-button/index.vue";
 import TutorialButton from "/@/components/tutorial/index.vue";
 import { useSettingStore } from "/@/store/settings";
 import PageFooter from "./components/footer/index.vue";
 import { useRouter } from "vue-router";
+import MaxKBChat from "/@/components/ai/index.vue";
+
 const userStore = useUserStore();
-const accessStore = useAccessStore();
 
 const router = useRouter();
 const menus = computed(() => [
@@ -56,6 +55,12 @@ onMounted(async () => {
 function goGithub() {
   window.open("https://github.com/certd/certd");
 }
+const settingsStore = useSettingStore();
+const chatBox = ref();
+const openChat = (q: string) => {
+  chatBox.value.openChat({ q });
+};
+provide("fn:ai.open", openChat);
 </script>
 
 <template>
@@ -79,6 +84,8 @@ function goGithub() {
     </template>
     <template #footer>
       <PageFooter></PageFooter>
+
+      <MaxKBChat v-if="settingsStore.sysPublic.aiChatEnabled !== false" ref="chatBox" />
     </template>
   </BasicLayout>
 </template>
