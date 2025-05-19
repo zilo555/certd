@@ -110,6 +110,7 @@ export class UpyunDeployToCdn extends AbstractTaskPlugin {
     this.logger.info(`登录成功`);
     const certId = await upyunClient.uploadCert(cookie, this.cert);
     this.logger.info(`上传证书成功：${certId}`);
+    await this.ctx.utils.sleep(5000);
     for (const item of this.cdnList) {
 
       const data :any= {
