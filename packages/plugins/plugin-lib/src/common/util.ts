@@ -38,6 +38,7 @@ export function createRemoteSelectInputDefine(opts?: {
   required?: boolean;
   rules?: any;
   mergeScript?: string;
+  search?: boolean;
 }) {
   const title = opts?.title || "请选择";
   const certDomainsInputKey = opts?.certDomainsInputKey || "certDomains";
@@ -47,6 +48,7 @@ export function createRemoteSelectInputDefine(opts?: {
   const type = opts?.type || "plugin";
   const watches = opts?.watches || [];
   const helper = opts?.helper || "请选择";
+  const search = opts?.search ?? false;
   let mode = "tags";
   if (opts.multi === false) {
     mode = undefined;
@@ -63,6 +65,7 @@ export function createRemoteSelectInputDefine(opts?: {
       type,
       typeName,
       action,
+      search,
       watches: [certDomainsInputKey, accessIdInputKey, ...watches],
     },
     rules: opts?.rules,
