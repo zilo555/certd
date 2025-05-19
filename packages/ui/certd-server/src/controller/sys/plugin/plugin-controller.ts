@@ -44,9 +44,6 @@ export class PluginController extends CrudController<PluginService> {
   async update(@Body(ALL) bean: any) {
 
     const res = await super.update(bean);
-      // 更新插件配置
-    const info = await this.service.info(bean.id)
-    await this.service.registerPlugin(info)
     return res
   }
 

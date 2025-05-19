@@ -204,12 +204,14 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
       },
       form: {
         onSuccess(opts: any) {
-          router.push({
-            name: "SysPluginEdit",
-            query: {
-              id: opts.res.id,
-            },
-          });
+          if (opts.res?.id) {
+            router.push({
+              name: "SysPluginEdit",
+              query: {
+                id: opts.res.id,
+              },
+            });
+          }
         },
       },
       columns: {

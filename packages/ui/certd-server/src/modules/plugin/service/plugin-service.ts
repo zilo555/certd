@@ -350,12 +350,15 @@ export class PluginService extends BaseService<PluginEntity> {
 
   async registerPlugin(plugin: PluginEntity) {
     const metadata = plugin.metadata ? yaml.load(plugin.metadata) : {};
+    const extra = plugin.extra ? yaml.load(plugin.extra) : {};
     const item = {
       ...plugin,
-      ...metadata
+      ...metadata,
+      ...extra
     };
     delete item.metadata;
     delete item.content;
+    delete item.extra;
     if (item.author) {
       item.name = item.author + "/" + item.name;
     }

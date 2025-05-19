@@ -84,7 +84,6 @@ provide("fn:ai.open", openChat);
     </template>
     <template #footer>
       <PageFooter></PageFooter>
-
       <MaxKBChat v-if="settingsStore.sysPublic.aiChatEnabled !== false" ref="chatBox" />
     </template>
   </BasicLayout>

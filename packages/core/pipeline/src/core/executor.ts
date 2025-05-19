@@ -218,7 +218,7 @@ export class Executor {
             returnType: ResultType.error,
             runnable: t,
           });
-          errorMessage += `任务${t.title}执行失败，错误详情:${e.message}；`;
+          errorMessage += `任务${t.title}执行失败，错误详情：${e.message}；`;
         }
       }
       if (errorList.length > 0) {
@@ -438,7 +438,7 @@ export class Executor {
         const runnableError = error as RunnableError;
         content = `流水线ID:${this.pipeline.id}，运行ID:${this.runtime.id}\n\n`;
         for (const re of runnableError.errors) {
-          content += ` - ${re.runnable.title} 执行失败\n  错误详情:${re.e.message}\n\n`;
+          content += ` - ${re.runnable.title} 执行失败，错误详情：${re.e?.error?.message}\n\n`;
         }
       } else {
         content = `流水线ID:${this.pipeline.id}，运行ID:${this.runtime.id}\n\n${this.currentStatusMap?.currentStep?.title} 执行失败\n\n错误详情:${error.message}`;

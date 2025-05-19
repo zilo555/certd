@@ -488,7 +488,7 @@ const idMainContent = ELEMENT_ID_MAIN_CONTENT;
         </template>
       </LayoutContent>
 
-      <LayoutFooter v-if="footerEnable" class="hidden md:block" :fixed="footerFixed" :height="footerHeight" :show="!isFullContent" :width="footerWidth" :z-index="zIndex">
+      <LayoutFooter v-if="footerEnable" class="hidden md:block" :fixed="footerFixed" :height="footerHeight" :show="!isFullContent" :width="footerWidth" :z-index="zIndex + 2">
         <slot name="footer"></slot>
       </LayoutFooter>
     </div>

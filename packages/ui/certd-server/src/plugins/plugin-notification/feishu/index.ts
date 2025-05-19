@@ -98,11 +98,11 @@ export class DingTalkNotification extends BaseNotification {
         if(nameIndex>0){
           name = id.substring(nameIndex+1)
         }
-        return `<at user_id="${id}">${name}</at>`
+        return `<at id=${id}>${name}</at>`
       }).join("");
     }
     if(this.isAtAll){
-      atText = `<at user_id="all">所有人</at>`
+      atText = `<at id=all>所有人</at>`
     }
 
     if (atText){
@@ -118,16 +118,78 @@ export class DingTalkNotification extends BaseNotification {
       }
     }
 
+    const cardBody = {
+      "msg_type": "interactive",
+      "card": {
+        "schema": "2.0",
+        "config": {
+          "update_multi": true,
+          "style": {
+            "text_size": {
+              "normal_v2": {
+                "default": "normal",
+                "pc": "normal",
+                "mobile": "heading"
+              }
+            }
+          }
+        },
+        "header": {
+          "title": {
+            "tag": "plain_text",
+            "content": body.title
+          },
+          "subtitle": {
+            "tag": "plain_text",
+            "content": ""
+          },
+          "template": body.errorMessage?"red":"green",
+          "padding": "12px 12px 12px 12px"
+        },
+        "body": {
+          "direction": "vertical",
+          "padding": "12px 12px 12px 12px",
+          "elements": [
+            {
+              "tag": "markdown",
+              "content": body.content+atText,
+              "text_align": "left",
+              "text_size": "normal_v2",
+              "margin": "0px 0px 0px 0px"
+            },
+            {
+              "tag": "button",
+              "text": {
+                "tag": "plain_text",
+                "content": "查看详情"
+              },
+              "type": "default",
+              "width": "default",
+              "size": "medium",
+              "behaviors": [
+                {
+                  "type": "open_url",
+                  "default_url": body.url,
+                  "pc_url": "",
+                  "ios_url": "",
+                  "android_url": ""
+                }
+              ],
+              "margin": "0px 0px 0px 0px"
+            }
+          ]
+        },
+
+      }
+    }
+
 
     const res = await this.http.request({
       url: webhook,
       method: 'POST',
       data: {
         ...sign,
-        content: {
-          text: `${body.title}\n${body.content}\n查看详情: ${body.url}${atText}`,
-        },
-        msg_type:"text"
+        ...cardBody
       },
     });
     if(res.code>100){
