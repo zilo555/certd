@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.5](https://github.com/certd/certd/compare/v1.34.4...v1.34.5) (2025-05-19)
+
+### Performance Improvements
+
+* 支持部署到宝塔aaWAF ([094565c](https://github.com/certd/certd/commit/094565ccd619ef671c6c11ce5fb7fd54a7a21d1c))
+
 ## [1.34.4](https://github.com/certd/certd/compare/v1.34.3...v1.34.4) (2025-05-16)
 
 ### Bug Fixes

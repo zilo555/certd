@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.5](https://github.com/certd/certd/compare/v1.34.4...v1.34.5) (2025-05-19)
+
+### Performance Improvements
+
+* 1panel增加授权测试按钮 ([566b12f](https://github.com/certd/certd/commit/566b12f5d14ce10e8f5cf1807c58f7bf27f0d199))
+* 优化钉钉通知标题颜色 ([a560999](https://github.com/certd/certd/commit/a560999d13eed18d08dd32ee530166569e3f8746))
+* 优化飞书通知为卡片模式 ([a818a3d](https://github.com/certd/certd/commit/a818a3d293e22fb46979bc77055c05621a6fed81))
+* 支持部署到宝塔aaWAF ([094565c](https://github.com/certd/certd/commit/094565ccd619ef671c6c11ce5fb7fd54a7a21d1c))
+* aaWaf、cdnfly站点选择支持查询 ([8af3463](https://github.com/certd/certd/commit/8af3463668a40b9b99febb02e3b4e0d9d8d719b4))
+
 ## [1.34.4](https://github.com/certd/certd/compare/v1.34.3...v1.34.4) (2025-05-16)
 
 ### Bug Fixes

@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.5](https://github.com/certd/certd/compare/v1.34.4...v1.34.5) (2025-05-19)
+
+### Performance Improvements
+
+* 优化钉钉通知标题颜色 ([a560999](https://github.com/certd/certd/commit/a560999d13eed18d08dd32ee530166569e3f8746))
+* 优化飞书通知为卡片模式 ([a818a3d](https://github.com/certd/certd/commit/a818a3d293e22fb46979bc77055c05621a6fed81))
+
 ## [1.34.4](https://github.com/certd/certd/compare/v1.34.3...v1.34.4) (2025-05-16)
 
 ### Bug Fixes
