@@ -7,7 +7,7 @@ export const siteInfoApi = {
     return await request({
       url: apiPrefix + "/page",
       method: "post",
-      data: query
+      data: query,
     });
   },
 
@@ -15,7 +15,7 @@ export const siteInfoApi = {
     return await request({
       url: apiPrefix + "/add",
       method: "post",
-      data: obj
+      data: obj,
     });
   },
 
@@ -23,7 +23,7 @@ export const siteInfoApi = {
     return await request({
       url: apiPrefix + "/update",
       method: "post",
-      data: obj
+      data: obj,
     });
   },
 
@@ -31,7 +31,7 @@ export const siteInfoApi = {
     return await request({
       url: apiPrefix + "/delete",
       method: "post",
-      params: { id }
+      params: { id },
     });
   },
 
@@ -39,20 +39,20 @@ export const siteInfoApi = {
     return await request({
       url: apiPrefix + "/info",
       method: "post",
-      params: { id }
+      params: { id },
     });
   },
   async DoCheck(id: number) {
     return await request({
       url: apiPrefix + "/check",
       method: "post",
-      data: { id }
+      data: { id },
     });
   },
   async CheckAll() {
     return await request({
       url: apiPrefix + "/checkAll",
-      method: "post"
+      method: "post",
     });
-  }
+  },
 };

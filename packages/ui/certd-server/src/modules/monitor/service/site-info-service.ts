@@ -10,6 +10,8 @@ import { PeerCertificate } from 'tls';
 import { NotificationService } from '../../pipeline/service/notification-service.js';
 import { isComm, isPlus } from '@certd/plus-core';
 import { UserSuiteService } from '@certd/commercial-core';
+import { UserSettingsService } from "../../mine/service/user-settings-service.js";
+import {  UserSiteMonitorSetting } from "../../mine/service/models.js";
 
 @Provide()
 @Scope(ScopeEnum.Request, { allowDowngrade: true })
@@ -25,6 +27,10 @@ export class SiteInfoService extends BaseService<SiteInfoEntity> {
 
   @Inject()
   userSuiteService: UserSuiteService;
+
+  @Inject()
+  userSettingsService: UserSettingsService;
+
 
   //@ts-ignore
   getRepository() {
@@ -235,5 +241,13 @@ export class SiteInfoService extends BaseService<SiteInfoEntity> {
       });
       await utils.sleep(200);
     }
+  }
+
+  async getSetting(userId: number){
+    return await this.userSettingsService.getSetting<UserSiteMonitorSetting>(userId, UserSiteMonitorSetting);
+  }
+
+  async saveSetting(userId: number, bean: UserSiteMonitorSetting) {
+    await this.userSettingsService.saveSetting(userId, bean);
   }
 }

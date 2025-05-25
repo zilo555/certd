@@ -19,3 +19,10 @@ export class UserTwoFactorSetting extends BaseSettings {
 }
 
 
+
+export class UserSiteMonitorSetting extends BaseSettings {
+  static __title__ = "站点监控设置";
+  static __key__ = "user.site.monitor";
+
+  notificationId?:number= 0;
+}

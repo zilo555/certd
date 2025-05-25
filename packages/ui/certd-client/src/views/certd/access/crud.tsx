@@ -35,10 +35,15 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
         pageRequest,
         addRequest,
         editRequest,
-        delRequest
+        delRequest,
+      },
+      table: {
+        remove: {
+          confirmMessage: "授权如果已经被使用，可能会导致流水线无法正常运行，请谨慎操作",
+        },
       },
       rowHandle: {
-        width: 200
+        width: 200,
       },
       columns: {
         id: {
@@ -46,24 +51,24 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           key: "id",
           type: "number",
           column: {
-            width: 100
+            width: 100,
           },
           form: {
-            show: false
-          }
+            show: false,
+          },
         },
         name: {
           title: "名称",
           type: "text",
           search: {
-            show: true
+            show: true,
           },
           form: {
-            rules: [{ required: true, message: "必填项" }]
+            rules: [{ required: true, message: "必填项" }],
           },
           column: {
-            width: 300
-          }
+            width: 300,
+          },
         },
         from: {
           title: "级别",
@@ -71,29 +76,29 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           dict: dict({
             data: [
               { label: "系统", value: "sys" },
-              { label: "用户", value: "user" }
-            ]
+              { label: "用户", value: "user" },
+            ],
           }),
           search: {
-            show: false
+            show: false,
           },
           form: {
-            show: false
+            show: false,
           },
           column: {
             width: 100,
             align: "center",
             component: {
-              color: "auto"
+              color: "auto",
             },
-            order: 10
+            order: 10,
           },
           valueBuilder: ({ row, key, value }) => {
             row[key] = row.userId > 0 ? "user" : "sys";
-          }
+          },
         },
-        ...commonColumnsDefine
-      }
-    }
+        ...commonColumnsDefine,
+      },
+    },
   };
 }

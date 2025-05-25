@@ -144,6 +144,17 @@ export const certdResources = [
             },
           },
           {
+            title: "站点监控设置",
+            name: "SiteMonitorSetting",
+            path: "/certd/monitor/setting",
+            component: "/certd/monitor/site/setting/index.vue",
+            meta: {
+              icon: "ion:videocam-outline",
+              auth: true,
+              isMenu: true,
+            },
+          },
+          {
             title: "认证安全设置",
             name: "UserSecurity",
             path: "/certd/mine/security",
