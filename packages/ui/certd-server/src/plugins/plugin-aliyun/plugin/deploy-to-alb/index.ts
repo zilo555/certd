@@ -1,5 +1,5 @@
 import { AbstractTaskPlugin, IsTaskPlugin, pluginGroups, RunStrategy, TaskInput } from '@certd/pipeline';
-import { CertInfo ,CertApplyPluginNames} from '@certd/plugin-cert';
+import { CertInfo ,CertApplyPluginNames, CertReader} from '@certd/plugin-cert';
 import { AliyunAccess, AliyunClient, AliyunSslClient, createCertDomainGetterInputDefine, createRemoteSelectInputDefine } from '@certd/plugin-lib';
 
 @IsTaskPlugin({
@@ -143,8 +143,9 @@ export class AliyunDeployCertToALB extends AbstractTaskPlugin {
         endpoint: this.casEndpoint,
       });
 
+      const certName = this.buildCertName(CertReader.getMainDomain(this.cert.crt))
       certId = await sslClient.uploadCert({
-        name: this.appendTimeSuffix('certd'),
+        name: certName,
         cert: this.cert,
       });
     }

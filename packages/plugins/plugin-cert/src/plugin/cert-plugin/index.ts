@@ -320,7 +320,7 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
         this.logger.info("当前正在使用 google EAB授权");
         eab = await this.getAccess(this.eabAccessId);
       } else if (this.googleCommonEabAccessId) {
-        this.logger.info("当前正在使用 google公共EAB授权");
+        this.logger.info("当前正在使用 google 公共EAB授权");
         eab = await this.getAccess(this.googleCommonEabAccessId, true);
       } else {
         throw new Error("google需要配置EAB授权或服务账号授权");

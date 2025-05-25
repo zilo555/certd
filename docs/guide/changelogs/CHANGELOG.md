@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.6](https://github.com/certd/certd/compare/v1.34.5...v1.34.6) (2025-05-25)
+
+### Bug Fixes
+
+* 修复公共插件配置修改不生效的bug，优化系统设置参数注入时机 ([e1e510c](https://github.com/certd/certd/commit/e1e510ce1e37a5ae82478226b6987a83f22d1ecb))
+* 修复又拍云 CDN 设置证书参数和强制 HTTPS 配置报错的bug ([7984b62](https://github.com/certd/certd/commit/7984b625ba6727132f205db8e25f790bce27b2f7))
+* 修复lego模式下每次都重新申请证书的bug ([f807b8c](https://github.com/certd/certd/commit/f807b8cb465cc329fa034ecbef94e18ef394f870))
+* 优化 RunnableError错误信息展示 ([36bc3ff](https://github.com/certd/certd/commit/36bc3ff22da93ba342c3c1103d7ee2bbcecf44f2))
+* **cert:** 修正证书过期时间计算逻辑 ([a3086e6](https://github.com/certd/certd/commit/a3086e6a5bec8b07f5e1d21a2ca8bd969c75bd5c))
+
+### Performance Improvements
+
+* 二次认证页面中，添加动态验证码输入框的焦点控制，提升用户体验 ([bb22f06](https://github.com/certd/certd/commit/bb22f062ed4ab4b5b71938270fe4cc666af6b8e7))
+* 添加阿里云 ESA证书部署插件 ([1db1ffd](https://github.com/certd/certd/commit/1db1ffde99ac7e4684fa606ebc4c327f829b3a26))
+* 站点证书监控增加通知设置 ([3422a1a](https://github.com/certd/certd/commit/3422a1a59fd0d2c0f17fa9c7e8988ac527ecfdd9))
+
 ## [1.34.5](https://github.com/certd/certd/compare/v1.34.4...v1.34.5) (2025-05-19)
 
 ### Performance Improvements

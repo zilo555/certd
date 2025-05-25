@@ -93,6 +93,16 @@ export class CertReader {
     return domains;
   }
 
+  static getMainDomain(crt: string) {
+    const { detail } = CertReader.readCertDetail(crt);
+    return detail.domains.commonName;
+  }
+
+  getMainDomain() {
+    const { detail } = this.getCrtDetail();
+    return detail.domains.commonName;
+  }
+
   saveToFile(type: "crt" | "key" | "pfx" | "der" | "oc" | "one" | "ic" | "jks", filepath?: string) {
     if (!this.cert[type]) {
       return;

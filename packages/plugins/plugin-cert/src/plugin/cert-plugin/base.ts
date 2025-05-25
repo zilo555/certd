@@ -81,6 +81,10 @@ export abstract class CertApplyBasePlugin extends CertApplyBaseConvertPlugin {
     }
   }
 
+  getCheckChangeInputKeys() {
+    //插件哪些字段参与校验是否需要更新
+    return ["domains", "sslProvider", "privateKeyType", "dnsProviderType", "pfxPassword"];
+  }
   /**
    * 是否更新证书
    */
@@ -91,7 +95,7 @@ export abstract class CertApplyBasePlugin extends CertApplyBaseConvertPlugin {
     //   return null;
     // }
 
-    const checkInputChanges = ["domains", "sslProvider", "privateKeyType", "dnsProviderType", "pfxPassword"];
+    const checkInputChanges = this.getCheckChangeInputKeys();
     const oldInput = JSON.stringify(pick(this.lastStatus?.input, checkInputChanges));
     const thisInput = JSON.stringify(pick(this, checkInputChanges));
     const inputChanged = oldInput !== thisInput;
@@ -145,7 +149,8 @@ export abstract class CertApplyBasePlugin extends CertApplyBaseConvertPlugin {
       throw new Error("过期时间不能为空");
     }
     // 检查有效期
-    const leftDays = dayjs(expires).diff(dayjs(), "day");
+    const leftDays = Math.floor((expires - dayjs().valueOf()) / (1000 * 60 * 60 * 24));
+    this.logger.info(`证书剩余天数：${leftDays}`);
     return {
       isWillExpire: leftDays <= maxDays,
       leftDays,

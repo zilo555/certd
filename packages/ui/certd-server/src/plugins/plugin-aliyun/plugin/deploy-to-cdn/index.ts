@@ -1,7 +1,7 @@
 import { AbstractTaskPlugin, IsTaskPlugin, pluginGroups, RunStrategy, TaskInput } from '@certd/pipeline';
 import { AliyunAccess, AliyunClient, AliyunSslClient, createCertDomainGetterInputDefine, createRemoteSelectInputDefine } from '@certd/plugin-lib';
 import { optionsUtils } from '@certd/basic/dist/utils/util.options.js';
-import { CertApplyPluginNames} from '@certd/plugin-cert';
+import { CertApplyPluginNames, CertReader } from "@certd/plugin-cert";
 @IsTaskPlugin({
   name: 'DeployCertToAliyunCDN',
   title: '阿里云-部署证书至CDN',
@@ -107,9 +107,11 @@ export class DeployCertToAliyunCDN extends AbstractTaskPlugin {
 
     let certId: any = this.cert;
 
-    const certName =  this.appendTimeSuffix(this.certName);
+    let certName =  this.appendTimeSuffix(this.certName);
 
     if (typeof this.cert === 'object') {
+      // @ts-ignore
+      const certName = this.buildCertName(CertReader.getMainDomain(this.cert.crt))
       certId = await sslClient.uploadCert({
         name:certName,
         cert: this.cert,

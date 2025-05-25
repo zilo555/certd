@@ -1,7 +1,9 @@
-import { ALL, Body, Controller, Inject, Post, Provide, Query } from '@midwayjs/core';
-import { Constants, CrudController } from '@certd/lib-server';
-import { AuthService } from '../../../modules/sys/authority/service/auth-service.js';
-import { SiteInfoService } from '../../../modules/monitor/service/site-info-service.js';
+import { ALL, Body, Controller, Inject, Post, Provide, Query } from "@midwayjs/core";
+import { Constants, CrudController } from "@certd/lib-server";
+import { AuthService } from "../../../modules/sys/authority/service/auth-service.js";
+import { SiteInfoService } from "../../../modules/monitor/service/site-info-service.js";
+import { UserSiteMonitorSetting } from "../../../modules/mine/service/models.js";
+import { merge } from "lodash-es";
 
 /**
  */
@@ -93,5 +95,24 @@ export class SiteInfoController extends CrudController<SiteInfoService> {
     const userId = this.getUserId();
     await this.service.checkAllByUsers(userId);
     return this.ok();
+  }
+
+
+
+  @Post("/setting/get", { summary: Constants.per.authOnly })
+  async get() {
+    const userId = this.getUserId();
+    const setting = await this.service.getSetting(userId)
+    return this.ok(setting);
+  }
+
+  @Post("/setting/save", { summary: Constants.per.authOnly })
+  async save(@Body(ALL) bean: any) {
+    const userId = this.getUserId();
+    const setting = new UserSiteMonitorSetting();
+    merge(setting, bean);
+
+    await this.service.saveSetting(userId, setting);
+    return this.ok({});
   }
 }

@@ -112,8 +112,11 @@ export class CertApplyLegoPlugin extends CertApplyBasePlugin {
   })
   privateKeyType!: PrivateKeyType;
 
-
   eab?: EabAccess;
+
+  getCheckChangeInputKeys() {
+    return ["domains", "privateKeyType", "dnsType"];
+  }
 
   async onInstance() {
     this.accessService = this.ctx.accessService;

@@ -54,7 +54,7 @@
     <a-form v-else ref="twoFactorFormRef" class="user-layout-login" :model="twoFactor" v-bind="layout">
       <div class="mb-10 flex flex-center">请打开您的Authenticator APP，获取动态验证码。</div>
       <a-form-item name="verifyCode">
-        <a-input v-model:value="twoFactor.verifyCode" placeholder="请输入动态验证码" allow-clear>
+        <a-input ref="verifyCodeInputRef" v-model:value="twoFactor.verifyCode" placeholder="请输入动态验证码" allow-clear @keydown.enter="handleTwoFactorSubmit">
           <template #prefix>
             <fs-icon icon="ion:lock-closed-outline"></fs-icon>
           </template>
@@ -71,7 +71,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, ref, toRaw } from "vue";
+import { defineComponent, nextTick, reactive, ref, toRaw } from "vue";
 import { useUserStore } from "/src/store/user";
 import { useSettingStore } from "/@/store/settings";
 import { utils } from "@fast-crud/fast-crud";
@@ -82,6 +82,7 @@ export default defineComponent({
   name: "LoginPage",
   components: { SmsCode, ImageCode },
   setup() {
+    const verifyCodeInputRef = ref();
     const loading = ref(false);
     const userStore = useUserStore();
     const settingStore = useSettingStore();
@@ -149,8 +150,11 @@ export default defineComponent({
       } catch (e: any) {
         //@ts-ignore
         if (e.code === 10020) {
+          //双重认证
           //@ts-ignore
           twoFactor.loginId = e.data;
+          await nextTick();
+          verifyCodeInputRef.value.focus();
         } else {
           throw e;
         }
@@ -188,6 +192,7 @@ export default defineComponent({
       hasRegisterTypeEnabled,
       twoFactor,
       handleTwoFactorSubmit,
+      verifyCodeInputRef,
     };
   },
 });

@@ -1,5 +1,5 @@
 import { AbstractTaskPlugin, IsTaskPlugin, pluginGroups, RunStrategy, TaskInput } from "@certd/pipeline";
-import { CertApplyPluginNames, CertInfo } from "@certd/plugin-cert";
+import { CertApplyPluginNames, CertInfo, CertReader } from "@certd/plugin-cert";
 import { AliyunAccess, createCertDomainGetterInputDefine, createRemoteSelectInputDefine } from "@certd/plugin-lib";
 
 @IsTaskPlugin({
@@ -141,9 +141,11 @@ export class AliyunDeployCertToFC extends AbstractTaskPlugin {
         bodyType: 'json',
       });
       // body params
+      const certName = this.buildCertName(CertReader.getMainDomain(this.cert.crt))
+
       const body: { [key: string]: any } = {
         certConfig: {
-          certName: this.appendTimeSuffix('certd_fc'),
+          certName: certName,
           certificate: this.cert.crt,
           privateKey: this.cert.key,
         },

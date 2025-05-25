@@ -21,6 +21,13 @@ const menus = computed(() => [
     icon: "fa-solid:book",
     text: "账号信息",
   },
+  {
+    handler: () => {
+      router.push("/certd/mine/security");
+    },
+    icon: "fluent:shield-keyhole-16-regular",
+    text: "认证安全设置",
+  },
 ]);
 
 const avatar = computed(() => {

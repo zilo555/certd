@@ -110,30 +110,44 @@ export class UpyunDeployToCdn extends AbstractTaskPlugin {
     this.logger.info(`登录成功`);
     const certId = await upyunClient.uploadCert(cookie, this.cert);
     this.logger.info(`上传证书成功：${certId}`);
-    await this.ctx.utils.sleep(5000);
     for (const item of this.cdnList) {
 
-      const data :any= {
+      this.logger.info(`开始部署证书：${item}`);
+
+      const data1 :any= {
+        crt_id: certId,
+        domain_name: item,
+      }
+
+      const res1=await upyunClient.doRequest({
+        cookie: cookie,
+        url: "https://console.upyun.com/api/https/migrate/domain",
+        method: "POST",
+        data: data1
+      });
+
+      this.logger.info(`设置证书成功：${JSON.stringify(res1)}`);
+
+      const data2 :any= {
         certificate_id: certId,
         domain: item,
       }
 
       if (this.forceHttps !== 'keep') {
-        data.force_https = Boolean(this.forceHttps);
+        data2.force_https = Boolean(this.forceHttps);
       }
       if (this.https !=='keep') {
-        data.https = Boolean(this.https);
+        data2.https = Boolean(this.https);
       }
-      this.logger.info(`开始部署证书：${item}`);
-      const res = await upyunClient.doRequest({
+
+      this.logger.info(`设置证书参数：${JSON.stringify(data2)}`);
+      const res2 = await upyunClient.doRequest({
         cookie: cookie,
         url: "https://console.upyun.com/api/https/certificate/manager",
         method: "POST",
-        data: data
+        data: data2
       });
-      this.logger.info(`部署成功：${JSON.stringify(res)}`);
-
-
+      this.logger.info(`设置证书参数成功：${JSON.stringify(res2)}`);
     }
 
     this.logger.info("部署成功");

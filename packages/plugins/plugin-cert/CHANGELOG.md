@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.6](https://github.com/certd/certd/compare/v1.34.5...v1.34.6) (2025-05-25)
+
+### Bug Fixes
+
+* 修复公共插件配置修改不生效的bug，优化系统设置参数注入时机 ([e1e510c](https://github.com/certd/certd/commit/e1e510ce1e37a5ae82478226b6987a83f22d1ecb))
+* 修复lego模式下每次都重新申请证书的bug ([f807b8c](https://github.com/certd/certd/commit/f807b8cb465cc329fa034ecbef94e18ef394f870))
+* **cert:** 修正证书过期时间计算逻辑 ([a3086e6](https://github.com/certd/certd/commit/a3086e6a5bec8b07f5e1d21a2ca8bd969c75bd5c))
+
+### Performance Improvements
+
+* 添加阿里云 ESA证书部署插件 ([1db1ffd](https://github.com/certd/certd/commit/1db1ffde99ac7e4684fa606ebc4c327f829b3a26))
+
 ## [1.34.5](https://github.com/certd/certd/compare/v1.34.4...v1.34.5) (2025-05-19)
 
 **Note:** Version bump only for package @certd/plugin-cert

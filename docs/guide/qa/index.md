@@ -1,12 +1,12 @@
 # 常见报错解决
 
 ## 1. getaddrinfo ENOTFOUND错误
-如果出现`getaddrinfo ENOTFOUND`错误，可以尝试在`docker-compose.yaml`中设置dns
+如果出现`getaddrinfo ENOTFOUND`/`getaddrinfo EAI_AGAIN`错误，可以尝试在`docker-compose.yaml`中设置dns
 ```yaml
 version: '3.3' # 兼容旧版docker-compose
 services:
   certd:
-    #↓↓↓↓ ------------ # 如果出现getaddrinfo ENOTFOUND错误，可以尝试设置dns
+    #↓↓↓↓ ------------ # 如果出现getaddrinfo ENOTFOUND 或 EAI_AGAIN错误，可以尝试设置dns
     dns:
       - 223.5.5.5      # 阿里云公共dns
       - 223.6.6.6

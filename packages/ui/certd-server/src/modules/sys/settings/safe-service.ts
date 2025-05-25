@@ -57,15 +57,12 @@ export class SafeService {
   async reloadHiddenStatus(immediate = false) {
     const hidden = await this.getHiddenSetting()
     if (hidden.enabled) {
-      logger.error("启动站点隐藏");
-      hiddenStatus.isHidden = false
-      if (immediate) {
-        hiddenStatus.isHidden = true;
-      }
+      logger.info("启动站点隐藏");
+      hiddenStatus.isHidden = immediate;
       const autoHiddenTimes = hidden.autoHiddenTimes || 5;
       hiddenStatus.startCheck(autoHiddenTimes);
     } else {
-      logger.error("关闭站点隐藏");
+      logger.info("当前站点隐藏已关闭");
       hiddenStatus.isHidden = false;
       hiddenStatus.stopCheck()
     }
