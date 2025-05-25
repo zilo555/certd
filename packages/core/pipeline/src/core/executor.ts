@@ -438,7 +438,7 @@ export class Executor {
         const runnableError = error as RunnableError;
         content = `流水线ID:${this.pipeline.id}，运行ID:${this.runtime.id}\n\n`;
         for (const re of runnableError.errors) {
-          content += ` - ${re.runnable.title} 执行失败，错误详情：${re.e?.error?.message}\n\n`;
+          content += ` - ${re.runnable.title} 执行失败，错误详情：${re.e.message || re.e?.error?.message}\n\n`;
         }
       } else {
         content = `流水线ID:${this.pipeline.id}，运行ID:${this.runtime.id}\n\n${this.currentStatusMap?.currentStep?.title} 执行失败\n\n错误详情:${error.message}`;
