@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.6](https://github.com/certd/certd/compare/v1.34.5...v1.34.6) (2025-05-25)
+
+### Bug Fixes
+
+* 修复公共插件配置修改不生效的bug，优化系统设置参数注入时机 ([e1e510c](https://github.com/certd/certd/commit/e1e510ce1e37a5ae82478226b6987a83f22d1ecb))
+* 优化 RunnableError错误信息展示 ([36bc3ff](https://github.com/certd/certd/commit/36bc3ff22da93ba342c3c1103d7ee2bbcecf44f2))
+
+### Performance Improvements
+
+* 添加阿里云 ESA证书部署插件 ([1db1ffd](https://github.com/certd/certd/commit/1db1ffde99ac7e4684fa606ebc4c327f829b3a26))
+
 ## [1.34.5](https://github.com/certd/certd/compare/v1.34.4...v1.34.5) (2025-05-19)
 
 ### Performance Improvements
