@@ -295,6 +295,12 @@ export class Executor {
     const pluginConfig = await this.options.pluginConfigService.getPluginConfig(pluginName);
     //从outputContext读取输入参数
     const input = cloneDeep(step.input);
+    const sysInput = pluginConfig.sysSetting?.input || {};
+    //注入系统设置参数
+    for (const sysInputKey in sysInput) {
+      input[sysInputKey] = sysInput[sysInputKey];
+    }
+
     Decorator.inject(define.input, instance, input, (item, key) => {
       if (item.component?.name === "output-selector") {
         const contextKey = input[key];
@@ -313,12 +319,6 @@ export class Executor {
         }
       }
     });
-
-    const sysInput = pluginConfig.sysSetting?.input || {};
-    //注入系统设置参数
-    for (const sysInputKey in sysInput) {
-      input[sysInputKey] = sysInput[sysInputKey];
-    }
 
     const newInputHash = hashUtils.md5(JSON.stringify(input));
     step.status!.inputHash = newInputHash;
@@ -438,7 +438,7 @@ export class Executor {
         const runnableError = error as RunnableError;
         content = `流水线ID:${this.pipeline.id}，运行ID:${this.runtime.id}\n\n`;
         for (const re of runnableError.errors) {
-          content += ` - ${re.runnable.title} 执行失败，错误详情：${re.e.message || re.e?.error?.message}\n\n`;
+          content += ` - ${re.runnable.title} 执行失败，错误详情：${re.e?.message || re.e?.error?.message}\n\n`;
         }
       } else {
         content = `流水线ID:${this.pipeline.id}，运行ID:${this.runtime.id}\n\n${this.currentStatusMap?.currentStep?.title} 执行失败\n\n错误详情:${error.message}`;
