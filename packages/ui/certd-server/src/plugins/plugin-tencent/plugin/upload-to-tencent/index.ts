@@ -1,6 +1,8 @@
-import { AbstractTaskPlugin, IsTaskPlugin, pluginGroups, RunStrategy, TaskInput, TaskOutput } from '@certd/pipeline';
-import dayjs from 'dayjs';
-import { CertApplyPluginNames} from '@certd/plugin-cert';
+import { AbstractTaskPlugin, IsTaskPlugin, pluginGroups, RunStrategy, TaskInput, TaskOutput } from "@certd/pipeline";
+import dayjs from "dayjs";
+import { CertApplyPluginNames, CertReader } from "@certd/plugin-cert";
+import { TencentAccess, TencentSslClient } from "@certd/plugin-lib";
+
 @IsTaskPlugin({
   name: 'UploadCertToTencent',
   title: '腾讯云-上传证书到腾讯云',
@@ -14,8 +16,8 @@ import { CertApplyPluginNames} from '@certd/plugin-cert';
   },
 })
 export class UploadCertToTencent extends AbstractTaskPlugin {
-  @TaskInput({ title: '证书名称' })
-  name!: string;
+  // @TaskInput({ title: '证书名称' })
+  // name!: string;
 
   @TaskInput({
     title: 'Access授权',
@@ -51,19 +53,19 @@ export class UploadCertToTencent extends AbstractTaskPlugin {
   }
 
   async execute(): Promise<void> {
-    const { accessId, name, cert } = this;
-    const accessProvider = await this.getAccess(accessId);
-    const certName = this.appendTimeSuffix(name || cert.domain);
-    const client = this.getClient(accessProvider);
+    const access = await this.getAccess<TencentAccess>(this.accessId);
+    const sslClient = new TencentSslClient({
+      access,
+      logger: this.logger,
+    });
 
-    const params = {
-      CertificatePublicKey: cert.crt,
-      CertificatePrivateKey: cert.key,
-      Alias: certName,
-    };
-    const ret = await client.UploadCertificate(params);
-    this.checkRet(ret);
-    this.logger.info('证书上传成功：tencentCertId=', ret.CertificateId);
+    const certReader = new CertReader(this.cert);
+    const tencentCertId = await sslClient.uploadToTencent({
+      certName: certReader.buildCertName(),
+      cert: this.cert,
+    });
+
+    this.logger.info('证书上传成功：tencentCertId=', tencentCertId);
 
     this.tencentCertId = ret.CertificateId;
   }

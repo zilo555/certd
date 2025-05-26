@@ -49,7 +49,7 @@ export class TencentSslClient {
     };
     const ret = await client.UploadCertificate(params);
     this.checkRet(ret);
-    this.logger.info("证书上传成功：tencentCertId=", ret.CertificateId);
+    this.logger.info(`证书[${opts.certName}]上传成功：tencentCertId=`, ret.CertificateId);
     await this.switchCertNotify([ret.CertificateId], true);
     return ret.CertificateId;
   }
