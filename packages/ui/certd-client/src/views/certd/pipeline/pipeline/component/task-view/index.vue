@@ -23,7 +23,12 @@
       </a-tab-pane>
     </a-tabs>
     <template #footer>
-      <fs-button v-if="settingsStore.sysPublic.aiChatEnabled !== false" key="aiChat" type="primary" icon="ion:color-wand-outline" @click="taskModal.onAiChat">AI分析</fs-button>
+      <a-tooltip title="AI分析异常">
+        <fs-button v-if="settingsStore.sysPublic.aiChatEnabled !== false" key="aiChat" type="primary" icon="ion:color-wand-outline" @click="taskModal.onAiChat">AI分析</fs-button>
+      </a-tooltip>
+      <a-tooltip title="强制重新执行此步骤">
+        <fs-button key="rerun" type="primary" text="重新运行" icon="icon-park-outline:replay-music" @click="triggerRun(activeKey)"></fs-button>
+      </a-tooltip>
       <fs-button key="cancel" icon="ion:close-circle-outline" @click="taskModal.onOk">关闭</fs-button>
       <fs-button key="submit" icon="ion:checkmark-circle-outline" type="primary" @click="taskModal.onOk">确定</fs-button>
     </template>

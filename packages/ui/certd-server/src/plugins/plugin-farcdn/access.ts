@@ -63,7 +63,7 @@ export class FarcdnAccess extends BaseAccess {
       }
     },
     encrypt: false,
-    required: true
+    required: false
   })
   httpProxy!: string;
 
@@ -80,7 +80,7 @@ export class FarcdnAccess extends BaseAccess {
 
   async onTestRequest() {
     try{
-      const data = await this.findSSLCertConfig(1);
+      const data = await this.findSSLCertConfig(2106);
       if (data) {
         return "ok";
       }
@@ -120,7 +120,7 @@ export class FarcdnAccess extends BaseAccess {
       sslCertId,
     };
     const res= await this.doRequest({
-      url: "/findSSLCertConfig",
+      url: "/api/source/findSSLCertConfig",
       data: params
     });
     this.ctx.logger.info(`找到证书${sslCertId}: name=${res.name},domain=${res.commonNames},dnsNames=${res.dnsNames}`);
@@ -181,6 +181,9 @@ export class FarcdnAccess extends BaseAccess {
       method: "POST",
       data: params,
       httpProxy: this.httpProxy||undefined,
+      logRes:true,
+      logParams:true,
+      logData:true,
     });
 
     if (res.code === "200") {

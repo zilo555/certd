@@ -97,10 +97,16 @@ export function createAxiosService({ logger }: { logger: Logger }) {
       if (config.logRes == null) {
         config.logRes = false;
       }
+      if (config.logData == null) {
+        config.logData = false;
+      }
 
       logger.info(`http request:${config.url}，method:${config.method}`);
       if (config.logParams !== false && config.params) {
         logger.info(`params:${JSON.stringify(config.params)}`);
+      }
+      if (config.logData !== false && config.data) {
+        logger.info(`data:${JSON.stringify(config.data)}`);
       }
       if (config.timeout == null) {
         config.timeout = 15000;
@@ -226,6 +232,7 @@ export type HttpRequestConfig<D = any> = {
   skipCheckRes?: boolean;
   logParams?: boolean;
   logRes?: boolean;
+  logData?: boolean;
   httpProxy?: string;
   returnOriginRes?: boolean;
 } & AxiosRequestConfig<D>;
