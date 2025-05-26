@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.7](https://github.com/certd/certd/compare/v1.34.6...v1.34.7) (2025-05-26)
+
+### Performance Improvements
+
+* 优化阿里云DCDN插件，支持多选 ([b091657](https://github.com/certd/certd/commit/b091657b5c537acf2442a2bfc345d0a77f5e2c50))
+* 支持部署到farcdn ([e08cf57](https://github.com/certd/certd/commit/e08cf57b72128998f487ab6469868052fbce0dba))
+
 ## [1.34.6](https://github.com/certd/certd/compare/v1.34.5...v1.34.6) (2025-05-25)
 
 ### Bug Fixes
