@@ -54,6 +54,21 @@ export class FarcdnAccess extends BaseAccess {
 
 
   @AccessInput({
+    title: "HttpProxy",
+    component: {
+      placeholder: "http://192.168.x.x:10811",
+      component: {
+        name: "a-input",
+        vModel: "value"
+      }
+    },
+    encrypt: false,
+    required: true
+  })
+  httpProxy!: string;
+
+
+  @AccessInput({
     title: "测试",
     component: {
       name: "api-test",
@@ -139,6 +154,7 @@ export class FarcdnAccess extends BaseAccess {
       keyData: req.cert.key,
       isOn: true,
       isCA: false,
+      serverName: oldCert.serverName,
       commonNames: [certReader.getMainDomain()],
       dnsNames: certReader.getAltNames(),
       timeBeginAt: detail.notBefore,
@@ -163,7 +179,8 @@ export class FarcdnAccess extends BaseAccess {
       url: req.url,
       baseURL:this.endpoint,
       method: "POST",
-      data: params
+      data: params,
+      httpProxy: this.httpProxy||undefined,
     });
 
     if (res.code === "200") {

@@ -44,7 +44,7 @@
       <a-form-item>
         <a-button type="primary" size="large" html-type="submit" :loading="loading" class="login-button">登录</a-button>
 
-        <div class="mt-2"><a href="https://certd.docmirror.cn/guide/use/forgotpasswd/" target="_blank">忘记管理员密码？</a></div>
+        <div v-if="!settingStore.isComm" class="mt-2"><a href="https://certd.docmirror.cn/guide/use/forgotpasswd/" target="_blank">忘记管理员密码？</a></div>
       </a-form-item>
 
       <a-form-item class="user-login-other">
@@ -178,6 +178,7 @@ export default defineComponent({
     function hasRegisterTypeEnabled() {
       return sysPublicSettings.registerEnabled && (sysPublicSettings.usernameRegisterEnabled || sysPublicSettings.emailRegisterEnabled);
     }
+
     return {
       loading,
       formState,
@@ -193,6 +194,7 @@ export default defineComponent({
       twoFactor,
       handleTwoFactorSubmit,
       verifyCodeInputRef,
+      settingStore,
     };
   },
 });
