@@ -78,7 +78,7 @@ export class FarcdnRefreshCert extends AbstractPlusTaskPlugin {
   }
 
   async onGetCertList() {
-    throw new Error("暂无查询证书列表接口");
+    throw new Error("暂无查询证书列表接口，您需要手动输入证书id");
     // const access = await this.getAccess<FarcdnAccess>(this.accessId);
 
     // const res = await access.doRequest({

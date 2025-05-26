@@ -70,9 +70,10 @@ export class FarcdnAccess extends BaseAccess {
         return "ok";
       }
     }catch (e) {
-      if(e.message.indexOf("null")){
+      if(e.message.indexOf("11111111")>-1){
         return "ok";
       }
+      throw e;
     }
 
     throw "测试失败，未知错误";
@@ -103,10 +104,12 @@ export class FarcdnAccess extends BaseAccess {
     const params = {
       sslCertId,
     };
-    return await this.doRequest({
+    const res= await this.doRequest({
       url: "/findSSLCertConfig",
       data: params
     });
+    this.ctx.logger.info(`找到证书${sslCertId}: name=${res.name},domain=${res.commonNames},dnsNames=${res.dnsNames}`);
+    return res
   }
 
   async updateSSLCert(req:{
@@ -163,10 +166,10 @@ export class FarcdnAccess extends BaseAccess {
       data: params
     });
 
-    if (res.data.code === 200) {
-      return res.data.data;
+    if (res.code === "200") {
+      return res.data;
     }
-    throw new Error(res.data.message);
+    throw new Error(res.message);
   }
 }
 

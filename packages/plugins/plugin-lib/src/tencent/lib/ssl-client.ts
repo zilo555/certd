@@ -50,7 +50,20 @@ export class TencentSslClient {
     const ret = await client.UploadCertificate(params);
     this.checkRet(ret);
     this.logger.info("证书上传成功：tencentCertId=", ret.CertificateId);
+    await this.switchCertNotify([ret.CertificateId], true);
     return ret.CertificateId;
+  }
+
+  async switchCertNotify(certIds: string[], disabled: boolean) {
+    const client = await this.getSslClient();
+    const params = {
+      CertificateIds: certIds,
+      SwitchStatus: disabled ? 1 : 0, //1是忽略通知，0是不忽略
+    };
+    const ret = await client.ModifyCertificatesExpiringNotificationSwitch(params);
+    this.checkRet(ret);
+    this.logger.info(`关闭证书${certIds}过期通知成功`);
+    return ret.RequestId;
   }
 
   async deployCertificateInstance(params: any) {

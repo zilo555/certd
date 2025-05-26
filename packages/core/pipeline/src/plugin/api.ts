@@ -228,12 +228,9 @@ export abstract class AbstractTaskPlugin implements ITaskPlugin {
   }
 
   buildCertName(domain: string) {
-    if (domain.includes("*")) {
-      domain = domain.replaceAll("*", "_");
-    }
+    domain = domain.replaceAll("*", "_").replaceAll(".", "_");
     return `${domain}_${dayjs().format("YYYYMMDDHHmmssSSS")}`;
   }
-
 
   async onRequest(req: PluginRequestHandleReq<any>) {
     if (!req.action) {

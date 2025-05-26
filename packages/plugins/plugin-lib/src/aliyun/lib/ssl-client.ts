@@ -83,7 +83,7 @@ export class AliyunSslClient {
       method: "POST",
     };
 
-    this.opts.logger.info("开始上传证书");
+    this.opts.logger.info(`开始上传证书：${req.name}`);
     const ret: any = await client.request("UploadUserCertificate", params, requestOption);
     this.checkRet(ret);
     this.opts.logger.info("证书上传成功：aliyunCertId=", ret.CertId);

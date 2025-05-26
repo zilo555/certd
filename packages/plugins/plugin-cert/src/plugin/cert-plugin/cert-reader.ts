@@ -93,6 +93,11 @@ export class CertReader {
     return domains;
   }
 
+  getAltNames() {
+    const { detail } = this.getCrtDetail();
+    return detail.domains.altNames;
+  }
+
   static getMainDomain(crt: string) {
     const { detail } = CertReader.readCertDetail(crt);
     return detail.domains.commonName;
@@ -174,8 +179,14 @@ export class CertReader {
   buildCertFileName(suffix: string, applyTime: any, prefix = "cert") {
     const detail = this.getCrtDetail();
     let domain = detail.detail.domains.commonName;
-    domain = domain.replace(".", "_").replace("*", "_");
+    domain = domain.replaceAll(".", "_").replaceAll("*", "_");
     const timeStr = dayjs(applyTime).format("YYYYMMDDHHmmss");
     return `${prefix}_${domain}_${timeStr}.${suffix}`;
+  }
+
+  buildCertName() {
+    let domain = this.getMainDomain();
+    domain = domain.replaceAll("*", "_").replaceAll("*", "_");
+    return `${domain}_${dayjs().format("YYYYMMDDHHmmssSSS")}`;
   }
 }
