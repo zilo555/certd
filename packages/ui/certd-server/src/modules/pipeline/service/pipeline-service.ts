@@ -38,7 +38,7 @@ import {CnameRecordService} from "../../cname/service/cname-record-service.js";
 import {PluginConfigGetter} from "../../plugin/service/plugin-config-getter.js";
 import dayjs from "dayjs";
 import {DbAdapter} from "../../db/index.js";
-import {isComm} from "@certd/plus-core";
+import {isComm, isPlus} from "@certd/plus-core";
 import {logger} from "@certd/basic";
 import {UrlService} from "./url-service.js";
 import {NotificationService} from "./notification-service.js";
@@ -429,6 +429,12 @@ export class PipelineService extends BaseService<PipelineEntity> {
     logger.info('当前定时器数量：', this.cron.getTaskSize());
   }
 
+  /**
+   *
+   * @param id
+   * @param triggerId =null手动启动
+   * @param stepId 如果传入ALL，清空所有状态
+   */
   async run(id: number, triggerId: string, stepId?: string) {
     const entity: PipelineEntity = await this.info(id);
     await this.doRun(entity, triggerId, stepId);
@@ -684,6 +690,42 @@ export class PipelineService extends BaseService<PipelineEntity> {
       { groupId }
     );
   }
+  async batchRerun(ids: number[], userId: any) {
+    if (!isPlus()){
+      throw new NeedVIPException("此功能需要升级专业版")
+    }
+
+    if (!userId || ids.length === 0) {
+      return;
+    }
+    const list = await this.repository.find({
+      select:{
+        id:true
+      },
+      where:{
+        id: In(ids),
+        userId
+      }
+    })
+
+     ids = list.map(item=>item.id)
+
+    //异步执行
+    this.startBatchRerun(ids)
+  }
+
+  async startBatchRerun(ids: number[]){
+    //20条一批
+    const batchSize = 20;
+    for (let i = 0; i < ids.length; i += batchSize) {
+      const batchIds = ids.slice(i, i + batchSize);
+      const batchPromises = batchIds.map(async (id)=>{
+        await this.run(id,null,"ALL")
+      });
+      await Promise.all(batchPromises)
+    }
+  }
+
 
   async getUserPipelineCount(userId) {
     return await this.repository.count({ where: { userId } });

@@ -122,4 +122,10 @@ export class PipelineController extends CrudController<PipelineService> {
     await this.service.batchUpdateGroup(ids, groupId, this.getUserId());
     return this.ok({});
   }
+
+  @Post('/batchRerun', { summary: Constants.per.authOnly })
+  async batchRerun(@Body('ids') ids: number[]) {
+    await this.service.batchRerun(ids, this.getUserId());
+    return this.ok({});
+  }
 }

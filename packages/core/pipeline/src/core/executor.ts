@@ -489,7 +489,15 @@ export class Executor {
     }
   }
 
+  /**
+   *
+   * @param stepId 如果==ALL 清除所有
+   */
   clearLastStatus(stepId: string) {
+    if (stepId === "ALL") {
+      this.lastStatusMap.clear();
+      return;
+    }
     this.lastStatusMap.clearById(stepId);
   }
 }

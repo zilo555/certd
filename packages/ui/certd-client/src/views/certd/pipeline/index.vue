@@ -9,6 +9,7 @@
           <span> 已选择 {{ selectedRowKeys.length }} 项 </span>
           <fs-button icon="ion:trash-outline" class="color-green" type="link" text="批量删除" @click="batchDelete"></fs-button>
           <change-group class="color-green" :selected-row-keys="selectedRowKeys" @change="groupChanged"></change-group>
+          <fs-button icon="icon-park-outline:replay-music" class="need-plus" type="link" text="强制重新运行" @click="batchRerun"></fs-button>
         </div>
       </div>
       <template #actionbar-right> </template>
@@ -65,6 +66,19 @@ function batchDelete() {
     async onOk() {
       await api.BatchDelete(selectedRowKeys.value);
       notification.success({ message: "删除成功" });
+      await crudExpose.doRefresh();
+      selectedRowKeys.value = [];
+    },
+  });
+}
+
+function batchRerun() {
+  Modal.confirm({
+    title: "确认强制重新运行吗",
+    content: "确定要强制重新运行选中流水线吗？(20条一批执行)",
+    async onOk() {
+      await api.BatchRerun(selectedRowKeys.value);
+      notification.success({ message: "任务已提交" });
       await crudExpose.doRefresh();
       selectedRowKeys.value = [];
     },

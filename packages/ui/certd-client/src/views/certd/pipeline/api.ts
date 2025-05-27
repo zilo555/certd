@@ -76,7 +76,7 @@ export async function Cancel(historyId: any) {
   });
 }
 
-export async function BatchUpdateGroup(pipelineIds: number[], groupId: number): Promise<CertInfo> {
+export async function BatchUpdateGroup(pipelineIds: number[], groupId: number): Promise<void> {
   return await request({
     url: apiPrefix + "/batchUpdateGroup",
     method: "post",
@@ -84,9 +84,16 @@ export async function BatchUpdateGroup(pipelineIds: number[], groupId: number): 
   });
 }
 
-export async function BatchDelete(pipelineIds: number[]): Promise<CertInfo> {
+export async function BatchDelete(pipelineIds: number[]): Promise<void> {
   return await request({
     url: apiPrefix + "/batchDelete",
+    method: "post",
+    data: { ids: pipelineIds },
+  });
+}
+export async function BatchRerun(pipelineIds: number[]): Promise<void> {
+  return await request({
+    url: apiPrefix + "/batchRerun",
     method: "post",
     data: { ids: pipelineIds },
   });
