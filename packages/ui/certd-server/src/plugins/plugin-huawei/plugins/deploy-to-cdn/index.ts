@@ -32,6 +32,14 @@ export class HauweiDeployCertToCDN extends AbstractTaskPlugin {
   certDomains!: string[];
 
   @TaskInput({
+    title: '企业项目ID',
+    helper: '华为云子账号必填，"all"表示查询所有项目',
+    required: false,
+    value:"all"
+  })
+  enterpriseProjectId!: string;
+
+  @TaskInput({
     title: 'Access授权',
     helper: '华为云授权AccessKeyId、AccessKeySecret',
     component: {
@@ -51,6 +59,8 @@ export class HauweiDeployCertToCDN extends AbstractTaskPlugin {
     })
   )
   domains!: string[];
+
+
 
   async execute(): Promise<void> {
     if (!this.cert) {
@@ -84,6 +94,9 @@ export class HauweiDeployCertToCDN extends AbstractTaskPlugin {
       this.logger.info('部署到域名:', domain);
 
       const queryReq =  new cdn.ShowDomainDetailByNameRequest(domain);
+      if(this.enterpriseProjectId){
+        queryReq.withEnterpriseProjectId(this.enterpriseProjectId)
+      }
       const domainDetail = await client.showDomainDetailByName(queryReq);
       //@ts-ignore
       const status = domainDetail.domain.domainStatus || domainDetail.domain.domain_status
@@ -94,6 +107,9 @@ export class HauweiDeployCertToCDN extends AbstractTaskPlugin {
       }
       try{
         const req = new cdn.UpdateDomainFullConfigRequest().withDomainName(domain).withBody(body);
+        if(this.enterpriseProjectId){
+          req.withEnterpriseProjectId(this.enterpriseProjectId)
+        }
         await client.updateDomainFullConfig(req);
         this.logger.info(`部署到域名${domain}完成:`);
       }catch (e) {
@@ -129,6 +145,7 @@ export class HauweiDeployCertToCDN extends AbstractTaskPlugin {
     const request = new cdn.ListDomainsRequest();
     request.pageNumber = 1;
     request.pageSize = 1000;
+    request.enterpriseProjectId = this.enterpriseProjectId || undefined;
     const result: any = await client.listDomains(request);
     if (!result || !result.domains || result.domains.length === 0) {
       throw new Error('未找到CDN域名，您可以手动输入');
