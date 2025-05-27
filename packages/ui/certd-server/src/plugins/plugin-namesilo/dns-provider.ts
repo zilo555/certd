@@ -44,7 +44,7 @@ export class NamesiloDnsProvider extends AbstractDnsProvider<NamesiloRecord> {
       },
     });
 
-    if (res.reply?.code !== '300') {
+    if (res.reply?.code !== '300' && res.reply?.code !== 300 && res.reply?.detail!=="success") {
       throw new Error(`${JSON.stringify(res.reply.detail)}`);
     }
     return res.reply;
@@ -93,7 +93,7 @@ export class NamesiloDnsProvider extends AbstractDnsProvider<NamesiloRecord> {
     const recordId = record.record_id;
     await this.doRequest('/api/dnsDeleteRecord', {
       domain: options.recordReq.domain,
-      record_id: recordId,
+      rrid: recordId,
     });
     this.logger.info(`删除域名解析成功:fullRecord=${fullRecord},value=${value}`);
   }
