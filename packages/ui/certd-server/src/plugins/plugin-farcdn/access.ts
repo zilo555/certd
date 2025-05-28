@@ -150,7 +150,7 @@ export class FarcdnAccess extends BaseAccess {
       keyData: req.cert.key,
       isOn: true,
       isCA: false,
-      serverName: oldCert.serverName,
+      serverName: oldCert.serverName || certReader.getMainDomain(),
       commonNames: [certReader.getMainDomain()],
       dnsNames: certReader.getAltNames(),
       timeBeginAt: detail.notBefore,
@@ -177,9 +177,6 @@ export class FarcdnAccess extends BaseAccess {
       method: "POST",
       data: params,
       httpProxy: this.httpProxy||undefined,
-      logRes:true,
-      logParams:true,
-      logData:true,
     });
 
     if (res.code === 200) {
