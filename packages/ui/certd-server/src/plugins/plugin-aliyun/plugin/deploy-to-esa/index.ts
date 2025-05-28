@@ -132,10 +132,12 @@ export class AliyunDeployCertToESA extends AbstractTaskPlugin {
           // 接口版本
           version: "2024-09-10",
           data: {
-            SiteId: siteId,
-            CasId: certId,
-            Type: "cas",
-            Name: certName
+             body:{
+               SiteId: siteId,
+               CasId: certId,
+               Type: "cas",
+               Name: certName
+             }
           }
         });
         this.logger.info(`部署站点[${siteId}]证书成功：${JSON.stringify(res)}`);
@@ -197,8 +199,10 @@ export class AliyunDeployCertToESA extends AbstractTaskPlugin {
       action: "ListCertificates",
       version: "2024-09-10",
       method: "GET",
-      query: {
-        SiteId: siteId
+      data:{
+        query: {
+          SiteId: siteId
+        }
       }
     });
 
@@ -212,10 +216,12 @@ export class AliyunDeployCertToESA extends AbstractTaskPlugin {
           version: "2024-09-10",
           // 接口 HTTP 方法
           method: "GET",
-          query: {
-            SiteId: siteId,
-            Id: item.id
-          }
+           data:{
+             query: {
+               SiteId: siteId,
+               Id: item.id
+             }
+           }
         });
         this.logger.info(`证书${item.Name}已删除`);
       }

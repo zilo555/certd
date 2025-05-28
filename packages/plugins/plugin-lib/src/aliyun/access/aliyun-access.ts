@@ -13,7 +13,6 @@ export type AliyunClientV2Req = {
   pathname?: `/`;
 
   data?: any;
-  query?: any;
 };
 export class AliyunClientV2 {
   access: AliyunAccess;
@@ -32,15 +31,15 @@ export class AliyunClientV2 {
       return this.client;
     }
     const $OpenApi = await import("@alicloud/openapi-client");
-    const Credential = await import("@alicloud/credentials");
-    //@ts-ignore
-    const credential = new Credential.default.default({
+    // const Credential = await import("@alicloud/credentials");
+    // //@ts-ignore
+    // const credential = new Credential.default.default({
+    //
+    //   type: "access_key",
+    // });
+    const config = new $OpenApi.Config({
       accessKeyId: this.access.accessKeyId,
       accessKeySecret: this.access.accessKeySecret,
-      type: "access_key",
-    });
-    const config = new $OpenApi.Config({
-      credential,
     });
     // Endpoint 请参考 https://api.aliyun.com/product/FC
     // config.endpoint = `esa.${this.regionId}.aliyuncs.com`;
@@ -76,10 +75,7 @@ export class AliyunClientV2 {
     });
 
     const runtime = new $Util.RuntimeOptions({});
-    const request = new $OpenApi.OpenApiRequest({
-      body: req.data,
-      query: req.query,
-    });
+    const request = new $OpenApi.OpenApiRequest(req.data);
     // 复制代码运行请自行打印 API 的返回值
     // 返回值实际为 Map 类型，可从 Map 中获得三类数据：响应体 body、响应头 headers、HTTP 返回的状态码 statusCode。
     const res = await client.callApi(params, request, runtime);

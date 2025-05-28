@@ -16,7 +16,6 @@
     "pub": "npm publish"
   },
   "dependencies": {
-    "@alicloud/credentials": "^2.4.3",
     "@alicloud/openapi-client": "^0.4.14",
     "@alicloud/pop-core": "^1.7.10",
     "@alicloud/tea-util": "^1.4.10",
