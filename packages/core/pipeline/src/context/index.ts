@@ -6,9 +6,9 @@ export type PipelineContext = IContext;
 export type PageReq = {
   offset?: number;
   limit?: number;
-  query?: string;
-  sortBy?: string;
-  sortOrder?: "asc" | "desc";
+  searchKey?: string;
+  // sortBy?: string;
+  // sortOrder?: "asc" | "desc";
 };
 
 export type PageRes = {

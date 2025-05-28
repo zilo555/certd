@@ -53,6 +53,7 @@ export class FarcdnRefreshCert extends AbstractPlusTaskPlugin {
     createRemoteSelectInputDefine({
       title: "证书Id",
       helper: "要更新的Farcdn证书id",
+
       action: FarcdnRefreshCert.prototype.onGetCertList.name
     })
   )

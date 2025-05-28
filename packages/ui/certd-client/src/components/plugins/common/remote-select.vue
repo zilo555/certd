@@ -19,6 +19,10 @@
             <a-divider style="margin: 4px 0" />
           </template>
           <v-nodes :vnodes="menu" />
+
+          <div v-if="pager" class="pager text-center p-5">
+            <a-pagination v-model:current="pagerRef.current" simple :total="pagerRef.total" :page-size="pagerRef.limit" />
+          </div>
         </template>
       </a-select>
       <div class="ml-5">
@@ -32,7 +36,7 @@
 </template>
 <script setup lang="ts">
 import { ComponentPropsType, doRequest } from "/@/components/plugins/lib";
-import { defineComponent, inject, ref, useAttrs, watch } from "vue";
+import { defineComponent, inject, ref, useAttrs, watch, Ref } from "vue";
 import { PluginDefine } from "@certd/pipeline";
 
 defineOptions({
@@ -54,7 +58,8 @@ const VNodes = defineComponent({
 const props = defineProps<
   {
     watches: string[];
-    search: boolean;
+    search?: boolean;
+    pager?: boolean;
   } & ComponentPropsType
 >();
 
@@ -73,6 +78,9 @@ const optionsRef = ref([]);
 const message = ref("");
 const hasError = ref(false);
 const loading = ref(false);
+const pagerRef: Ref = ref({
+  current: 1,
+});
 const getOptions = async () => {
   if (loading.value) {
     return;
@@ -107,6 +115,7 @@ const getOptions = async () => {
   loading.value = true;
   optionsRef.value = [];
 
+  const offset = (pagerRef.value.current - 1) * (pagerRef.value.limit ?? 100);
   try {
     const res = await doRequest(
       {
@@ -116,6 +125,8 @@ const getOptions = async () => {
         input,
         data: {
           searchKey: props.search ? searchKeyRef.value : "",
+          offset: offset,
+          limit: pagerRef.value.limit,
         },
       },
       {
@@ -126,10 +137,26 @@ const getOptions = async () => {
         showErrorNotify: false,
       }
     );
-    if (res && res.length > 0) {
+    const list = res?.list || res || [];
+    if (list.length > 0) {
       message.value = "获取数据成功，请从下拉框中选择";
     }
-    optionsRef.value = res;
+    optionsRef.value = list;
+    pagerRef.value.total = list.length;
+    if (props.pager) {
+      if (res.offset != null) {
+        pagerRef.value.offset = res.offset ?? 0;
+      }
+      if (res.limit != null) {
+        pagerRef.value.limit = res.limit ?? 100;
+      }
+      if (res.total != null) {
+        pagerRef.value.total = res.total ?? list.length;
+      }
+      const { offset, limit } = pagerRef.value;
+      pagerRef.value.current = offset % limit === 0 ? offset / limit + 1 : offset / limit;
+    }
+
     return res;
   } finally {
     loading.value = false;
@@ -151,27 +178,37 @@ async function refreshOptions() {
 }
 
 async function doSearch() {
+  pagerRef.value.current = 1;
   await refreshOptions();
 }
 
 watch(
   () => {
-    const values = [];
-
     const pluginType = getPluginType();
-    const { form } = getScope();
+    const { form, key } = getScope();
     const input = pluginType === "plugin" ? form.input : form;
-
-    for (const item of props.watches) {
-      values.push(input[item]);
+    const watches = {};
+    for (const key of props.watches) {
+      watches[key] = input[key];
     }
     return {
-      form: input,
-      watched: values,
+      form: watches,
+      key,
     };
   },
-  async () => {
-    await getOptions();
+  async (value, oldValue) => {
+    const { form } = value;
+    const oldForm = oldValue.form;
+    let changed = oldForm == null || optionsRef.value.length == 0;
+    for (const key of props.watches) {
+      if (form[key] != oldForm[key]) {
+        changed = true;
+        break;
+      }
+    }
+    if (changed) {
+      await getOptions();
+    }
   },
   {
     immediate: true,
