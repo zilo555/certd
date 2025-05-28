@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.8](https://github.com/certd/certd/compare/v1.34.7...v1.34.8) (2025-05-28)
+
+### Bug Fixes
+
+* 修复证书申请任务无法修改dns提供商类型的bug ([8802274](https://github.com/certd/certd/commit/88022747bebe2054223e0241d68d410771405e68))
+
 ## [1.34.7](https://github.com/certd/certd/compare/v1.34.6...v1.34.7) (2025-05-26)
 
 **Note:** Version bump only for package @certd/plugin-cert

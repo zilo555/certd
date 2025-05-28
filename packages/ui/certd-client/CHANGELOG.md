@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.8](https://github.com/certd/certd/compare/v1.34.7...v1.34.8) (2025-05-28)
+
+### Bug Fixes
+
+* 修复证书申请任务无法修改dns提供商类型的bug ([8802274](https://github.com/certd/certd/commit/88022747bebe2054223e0241d68d410771405e68))
+
+### Performance Improvements
+
+* 优化站点选择组件，切换选择时不刷新列表 ([3a14714](https://github.com/certd/certd/commit/3a147141b1a5d67c92a5ce88a5313eaa62859e03))
+* 优化站点ip检查 ([a463711](https://github.com/certd/certd/commit/a463711b03a20120f2a298be15d71ca152d27f21))
+* 站点监控支持监控IP ([9cc4c01](https://github.com/certd/certd/commit/9cc4c017ae646a18284e732769b82636feda01d3))
+* 支持批量重新运行 ([8189982](https://github.com/certd/certd/commit/818998259ddc75e722196ac5c365038818539b9b))
+
 ## [1.34.7](https://github.com/certd/certd/compare/v1.34.6...v1.34.7) (2025-05-26)
 
 **Note:** Version bump only for package @certd/ui-client

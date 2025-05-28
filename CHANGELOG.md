@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.8](https://github.com/certd/certd/compare/v1.34.7...v1.34.8) (2025-05-28)
+
+### Bug Fixes
+
+* 更新 1panel API 版本支持v1/v2设置 ([e6195ad](https://github.com/certd/certd/commit/e6195ade3ec54b138825b8d6738f86eb8afdd720))
+* 同步更新namesilo接口，修复无法创建和删除dns记录的问题 ([36b02c2](https://github.com/certd/certd/commit/36b02c2cec145c13d4ef29d49aba5b6b4f697df2))
+* 修复阿里云 esa 证书获取站点列表错误的问题 ([0c2ea5d](https://github.com/certd/certd/commit/0c2ea5da4c836f8a0df132a3f22d399bd9ee1de9))
+* 修复部署到华为cdn，子账号ak查询不到域名的bug ([ebb292a](https://github.com/certd/certd/commit/ebb292a2f7a425c1bc810f59468beb3f1d5bc3f0))
+* 修复证书申请任务无法修改dns提供商类型的bug ([8802274](https://github.com/certd/certd/commit/88022747bebe2054223e0241d68d410771405e68))
+
+### Performance Improvements
+
+* 关闭腾讯云证书通知提醒 ([231a875](https://github.com/certd/certd/commit/231a875bb481420c39bf76ec9ff4e50954ab9fe4))
+* 优化站点选择组件，切换选择时不刷新列表 ([3a14714](https://github.com/certd/certd/commit/3a147141b1a5d67c92a5ce88a5313eaa62859e03))
+* 优化站点ip检查 ([a463711](https://github.com/certd/certd/commit/a463711b03a20120f2a298be15d71ca152d27f21))
+* 站点监控支持监控IP ([9cc4c01](https://github.com/certd/certd/commit/9cc4c017ae646a18284e732769b82636feda01d3))
+* 支持批量重新运行 ([8189982](https://github.com/certd/certd/commit/818998259ddc75e722196ac5c365038818539b9b))
+* farcdn优化 ([a06ef07](https://github.com/certd/certd/commit/a06ef07178ed73c537e21c7d57e5e5144d2c056d))
+
 ## [1.34.7](https://github.com/certd/certd/compare/v1.34.6...v1.34.7) (2025-05-26)
 
 ### Performance Improvements

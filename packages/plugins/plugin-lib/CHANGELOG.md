@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.8](https://github.com/certd/certd/compare/v1.34.7...v1.34.8) (2025-05-28)
+
+### Bug Fixes
+
+* 修复阿里云 esa 证书获取站点列表错误的问题 ([0c2ea5d](https://github.com/certd/certd/commit/0c2ea5da4c836f8a0df132a3f22d399bd9ee1de9))
+
+### Performance Improvements
+
+* 关闭腾讯云证书通知提醒 ([231a875](https://github.com/certd/certd/commit/231a875bb481420c39bf76ec9ff4e50954ab9fe4))
+* 优化站点选择组件，切换选择时不刷新列表 ([3a14714](https://github.com/certd/certd/commit/3a147141b1a5d67c92a5ce88a5313eaa62859e03))
+
 ## [1.34.7](https://github.com/certd/certd/compare/v1.34.6...v1.34.7) (2025-05-26)
 
 **Note:** Version bump only for package @certd/plugin-lib
