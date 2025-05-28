@@ -1,7 +1,7 @@
 <template>
   <div class="notification-selector">
     <div class="flex-o w-100">
-      <fs-dict-select class="flex-1" :value="modelValue" :dict="optionsDictRef" :disabled="disabled" :render-label="renderLabel" :slots="selectSlots" :allow-clear="true" @update:value="onChange" />
+      <fs-dict-select class="flex-1" :value="modelValue" :dict="optionsDictRef" :disabled="disabled" :render-label="renderLabel" :slots="selectSlots" :allow-clear="true" v-bind="select" @update:value="onChange" />
       <fs-table-select
         ref="tableSelectRef"
         class="flex-0"
@@ -21,6 +21,7 @@
         :dialog="{ width: 960 }"
         :destroy-on-close="false"
         height="400px"
+        v-bind="tableSelect"
         @update:model-value="onChange"
         @dialog-closed="doRefresh"
       >
@@ -39,17 +40,20 @@ import { message } from "ant-design-vue";
 import { dict } from "@fast-crud/fast-crud";
 import createCrudOptions from "../crud";
 import { notificationProvide } from "/@/views/certd/notification/common";
+import { useUserStore } from "/@/store/user";
 
 defineOptions({
   name: "NotificationSelector",
 });
 
 const props = defineProps<{
-  modelValue?: number | string;
+  modelValue?: number | string | number[] | string[];
   type?: string;
   placeholder?: string;
   size?: string;
   disabled?: boolean;
+  select?: any;
+  tableSelect?: any;
 }>();
 
 const onChange = async (value: number) => {
@@ -118,9 +122,12 @@ function clear() {
   emitValue(null);
 }
 
+const userStore = useUserStore();
+
 async function emitValue(value: any) {
-  target.value = optionsDictRef.dataMap[value];
-  if (value !== 0 && pipeline?.value && target && pipeline.value.userId !== target.value.userId) {
+  // target.value = optionsDictRef.dataMap[value];
+  const userId = userStore.userInfo.id;
+  if (pipeline?.value && pipeline.value.userId !== userId) {
     message.error("对不起，您不能修改他人流水线的通知");
     return;
   }
@@ -134,6 +141,7 @@ watch(
   },
   async value => {
     await optionsDictRef.loadDict();
+    //@ts-ignore
     target.value = optionsDictRef.dataMap[value];
     emit("selectedChange", target.value);
   },
