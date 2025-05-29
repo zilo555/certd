@@ -85,7 +85,7 @@ export class GithubCheckRelease extends AbstractTaskPlugin {
         logger: this.logger,
         body: {
           title: `${this.repoName} 新版本 ${this.lastVersion} 发布`,
-          content: `${res.body}`,
+          content: `${res.body}\n\n >Certd：不止证书自动化，插件解锁无限可能！`,
           url: `https://github.com/${this.repoName}/releases/tag/${this.lastVersion}`,
         }
       })
