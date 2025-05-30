@@ -3,11 +3,12 @@ import { InjectEntityModel } from '@midwayjs/typeorm';
 import { Repository } from 'typeorm';
 import { SysSettingsEntity } from '../entity/sys-settings.js';
 import { BaseSettings, SysInstallInfo, SysPrivateSettings, SysPublicSettings, SysSecret, SysSecretBackup } from './models.js';
-import * as _ from 'lodash-es';
+
 import { BaseService } from '../../../basic/index.js';
 import { cache, logger, setGlobalProxy } from '@certd/basic';
 import * as dns from 'node:dns';
-
+import {mergeUtils} from "@certd/basic";
+const {merge} = mergeUtils;
 /**
  * 设置
  */
@@ -75,7 +76,7 @@ export class SysSettingsService extends BaseService<SysSettingsEntity> {
     }
     let newSetting: T = new type();
     const savedSettings = await this.getSettingByKey(key);
-    newSetting = _.merge(newSetting, savedSettings);
+    newSetting = merge(newSetting, savedSettings);
     await this.saveSetting(newSetting);
     cache.set(cacheKey, newSetting);
     return newSetting;

@@ -3,8 +3,8 @@ import { InjectEntityModel } from "@midwayjs/typeorm";
 import { Repository } from "typeorm";
 import { BaseService, BaseSettings } from "@certd/lib-server";
 import { UserSettingsEntity } from "../entity/user-settings.js";
-import { merge } from "lodash-es";
-
+import { mergeUtils } from "@certd/basic";
+const {merge} = mergeUtils
 /**
  * 授权
  */

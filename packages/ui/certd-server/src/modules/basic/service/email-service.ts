@@ -10,6 +10,7 @@ import { SendMailOptions } from 'nodemailer';
 import { UserSettingsService } from '../../mine/service/user-settings-service.js';
 import { PlusService, SysSettingsService, SysSiteInfo } from '@certd/lib-server';
 import { getEmailSettings } from '../../sys/settings/fix.js';
+import { UserEmailSetting } from "../../mine/service/models.js";
 
 export type EmailConfig = {
   host: string;
@@ -107,5 +108,25 @@ export class EmailService implements IEmailService {
       subject: '测试邮件,from certd',
       content: '测试邮件,from certd',
     });
+  }
+
+  async list(userId: any) {
+      const userEmailSetting = await  this.settingsService.getSetting<UserEmailSetting>(userId,UserEmailSetting)
+      return userEmailSetting.list;
+  }
+
+  async delete(userId: any, email: string) {
+    const userEmailSetting = await  this.settingsService.getSetting<UserEmailSetting>(userId,UserEmailSetting)
+    userEmailSetting.list = userEmailSetting.list.filter(item=>item !== email);
+    await this.settingsService.saveSetting(userId,userEmailSetting)
+  }
+  async add(userId: any, email: string) {
+    const userEmailSetting = await  this.settingsService.getSetting<UserEmailSetting>(userId,UserEmailSetting)
+    //如果已存在
+    if(userEmailSetting.list.includes(email)){
+      return
+    }
+    userEmailSetting.list.unshift(email)
+    await this.settingsService.saveSetting(userId,userEmailSetting)
   }
 }

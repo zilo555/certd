@@ -14,12 +14,14 @@ import FileInput from "./file-input.vue";
 import PemInput from "./pem-input.vue";
 import { defineAsyncComponent } from "vue";
 import NotificationSelector from "../views/certd/notification/notification-selector/index.vue";
+import EmailSelector from "./email-selector/index.vue";
 export default {
   install(app: any) {
     app.component(
       "CodeEditor",
       defineAsyncComponent(() => import("./code-editor/index.vue"))
     );
+    app.component("EmailSelector", EmailSelector);
     app.component("NotificationSelector", NotificationSelector);
     app.component("PiContainer", PiContainer);
     app.component("TextEditable", TextEditable);

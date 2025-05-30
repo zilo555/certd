@@ -8,7 +8,7 @@ export abstract class CertApplyBasePlugin extends CertApplyBaseConvertPlugin {
   @TaskInput({
     title: "邮箱",
     component: {
-      name: "a-input",
+      name: "email-selector",
       vModel: "value",
     },
     rules: [{ type: "email", message: "请输入正确的邮箱" }],
