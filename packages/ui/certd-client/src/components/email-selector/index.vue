@@ -61,8 +61,15 @@ async function addItem() {
     return;
   }
 
+  debugger;
+  if (emails.value.find(item => item.value === email)) {
+    notification.warning({
+      message: "此邮箱已存在",
+    });
+    return;
+  }
   await api.EmailAdd(email);
-  emails.value.push({
+  emails.value.unshift({
     value: email,
     label: email,
   });
