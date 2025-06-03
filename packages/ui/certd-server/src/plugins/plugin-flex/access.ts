@@ -78,7 +78,8 @@ export class FlexCDNAccess extends BaseAccess {
       vModel: "checked"
     },
     encrypt: false,
-    required: true
+    required: true,
+    value: false,
   })
   skipSslVerify!: boolean;
 

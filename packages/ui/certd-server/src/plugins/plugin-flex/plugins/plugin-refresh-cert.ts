@@ -3,6 +3,7 @@ import { CertApplyPluginNames, CertInfo } from "@certd/plugin-cert";
 import { createCertDomainGetterInputDefine, createRemoteSelectInputDefine } from "@certd/plugin-lib";
 import { FlexCDNAccess } from "../access.js";
 import { FlexCDNClient } from "../client.js";
+import crypto from 'crypto'
 
 @IsTaskPlugin({
   //命名规范，插件类型+功能（就是目录plugin-demo中的demo），大写字母开头，驼峰命名
@@ -61,6 +62,41 @@ export class FlexCDNRefreshCert extends AbstractTaskPlugin {
   async onInstance() {
   }
 
+  static parseCertInfo(certPem: string) {
+    const certificateArray = certPem
+      .trim()
+      .split('-----END CERTIFICATE-----')
+      .filter(cert => cert.trim() !== '')
+      .map(cert => (cert + '-----END CERTIFICATE-----').trim());
+
+    const currentInfo = new crypto.X509Certificate(certificateArray[0])
+
+    const dnsNames = currentInfo.subjectAltName.split(',')
+      .map(it => it.trim())
+      .filter(it => it.startsWith('DNS:'))
+      .map(it => it.substring(4))
+
+    const commonNames = certificateArray.map(it => {
+      const info = new crypto.X509Certificate(it)
+
+      const subjectCN = info.issuer.trim()
+        .split('\n')
+        .map(it => it.trim())
+        .find((part) => part.trim().startsWith('CN='))
+        ?.split('=')[1]
+        ?.trim();
+
+      return subjectCN
+    })
+
+    return {
+      commonNames: commonNames,
+      dnsNames: dnsNames,
+      timeBeginAt: Math.floor((new Date(currentInfo.validFrom)).getTime() / 1000),
+      timeEndAt: Math.floor((new Date(currentInfo.validTo)).getTime() / 1000),
+    }
+  }
+
   //插件执行方法
   async execute(): Promise<void> {
     const access: FlexCDNAccess = await this.getAccess<FlexCDNAccess>(this.accessId);
@@ -84,6 +120,8 @@ export class FlexCDNRefreshCert extends AbstractTaskPlugin {
       const sslCert = JSON.parse(this.ctx.utils.hash.base64Decode(res.sslCertJSON))
       this.logger.info(`证书信息：${sslCert.name}，${sslCert.dnsNames}`);
       const body = {
+        ...sslCert, // inherit old cert info like name and description
+        ...FlexCDNRefreshCert.parseCertInfo(this.cert.crt),
         name: sslCert.name,
         sslCertId: item,
         certData: this.ctx.utils.hash.base64(this.cert.crt),
