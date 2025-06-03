@@ -18,16 +18,31 @@ const OutputAppender = {
   },
 };
 
+let logFilePath = "./logs/app.log";
 export function resetLogConfigure() {
   // @ts-ignore
   log4js.configure({
-    appenders: { std: { type: "stdout" }, output: { type: OutputAppender } },
-    categories: { default: { appenders: ["std"], level: "info" }, pipeline: { appenders: ["std", "output"], level: "info" } },
+    appenders: {
+      std: { type: "stdout" },
+      output: { type: OutputAppender },
+      file: {
+        type: "dateFile",
+        filename: logFilePath,
+        keepFileExt: true,
+        compress: true,
+        numBackups: 3,
+      },
+    },
+    categories: { default: { appenders: ["std", "file"], level: "info" }, pipeline: { appenders: ["std", "file", "output"], level: "info" } },
   });
 }
 resetLogConfigure();
 export const logger = log4js.getLogger("default");
 
+export function resetLogFilePath(filePath: string) {
+  logFilePath = filePath;
+  resetLogConfigure();
+}
 export function buildLogger(write: (text: string) => void) {
   const logger = log4js.getLogger("pipeline");
   const _secrets: string[] = [];

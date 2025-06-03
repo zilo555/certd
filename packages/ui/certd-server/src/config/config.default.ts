@@ -19,6 +19,12 @@ import path from 'path';
 const env = process.env.NODE_ENV || 'development';
 
 const development = {
+  midwayLogger: {
+    default: {
+      dir: './logs',
+    },
+    // ...
+  },
   keys: 'certd',
   koa: {
     port: 7001,
