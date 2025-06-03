@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.9](https://github.com/certd/certd/compare/v1.34.8...v1.34.9) (2025-05-30)
+
+### Performance Improvements
+
+* 邮箱支持保存和选择 ([f7b0b44](https://github.com/certd/certd/commit/f7b0b44ef6044bec36510a6f0b06d8dca5bfce49))
+
 ## [1.34.8](https://github.com/certd/certd/compare/v1.34.7...v1.34.8) (2025-05-28)
 
 ### Bug Fixes

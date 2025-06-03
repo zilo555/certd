@@ -61,21 +61,23 @@ export class GithubCheckRelease extends AbstractTaskPlugin {
   }
 
   //插件执行方法
-  async execute(): Promise<void> {
+  async execute(): Promise<string> {
     const access = await this.getAccess<GithubAccess>(this.accessId);
-
     const res = await access.getRelease({repoName:this.repoName})
-
+    if(res == null){
+      throw new Error(`获取${this.repoName}最新版本失败`)
+    }
     const lastVersion = this.ctx.lastStatus?.status?.output?.lastVersion;
 
     if(res.tag_name == null || res.tag_name ==lastVersion){
       this.logger.info(`暂无更新，${res.tag_name}`);
-      return
+      return "skip"
     }
     //有更新
-    this.logger.info(`有更新,${lastVersion}->${res.tag_name}`)
+    this.logger.info(`有更新,${lastVersion??"0"}->${res.tag_name}`)
     this.lastVersion = res.tag_name;
 
+    const body = res.body.replaceAll("* ","- ")
     //发送通知
     for (const notificationId of this.notificationIds) {
       await this.ctx.notificationService.send({
@@ -85,7 +87,7 @@ export class GithubCheckRelease extends AbstractTaskPlugin {
         logger: this.logger,
         body: {
           title: `${this.repoName} 新版本 ${this.lastVersion} 发布`,
-          content: `${res.body}`,
+          content: `${body}\n\n > [Certd](https://certd.docmirror.cn)，不止证书自动化，插件解锁无限可能！\n\n`,
           url: `https://github.com/${this.repoName}/releases/tag/${this.lastVersion}`,
         }
       })

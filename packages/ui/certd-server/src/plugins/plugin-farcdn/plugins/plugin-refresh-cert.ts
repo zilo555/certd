@@ -1,8 +1,7 @@
-import { IsTaskPlugin, PageReq, pluginGroups, RunStrategy, TaskInput } from "@certd/pipeline";
+import { AbstractTaskPlugin, IsTaskPlugin, PageReq, pluginGroups, RunStrategy, TaskInput } from "@certd/pipeline";
 import { CertApplyPluginNames, CertInfo } from "@certd/plugin-cert";
 import { createCertDomainGetterInputDefine, createRemoteSelectInputDefine } from "@certd/plugin-lib";
 import { FarcdnAccess } from "../access.js";
-import { AbstractPlusTaskPlugin } from "@certd/plugin-plus";
 
 @IsTaskPlugin({
   //命名规范，插件类型+功能（就是目录plugin-demo中的demo），大写字母开头，驼峰命名
@@ -12,7 +11,7 @@ import { AbstractPlusTaskPlugin } from "@certd/plugin-plus";
   icon: "svg:icon-lucky",
   //插件分组
   group: pluginGroups.cdn.key,
-  needPlus: true,
+  needPlus: false,
   default: {
     //默认值配置照抄即可
     strategy: {
@@ -21,7 +20,7 @@ import { AbstractPlusTaskPlugin } from "@certd/plugin-plus";
   }
 })
 //类名规范，跟上面插件名称（name）一致
-export class FarcdnRefreshCert extends AbstractPlusTaskPlugin {
+export class FarcdnRefreshCert extends AbstractTaskPlugin {
   //证书选择，此项必须要有
   @TaskInput({
     title: "域名证书",

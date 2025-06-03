@@ -26,3 +26,10 @@ export class UserSiteMonitorSetting extends BaseSettings {
 
   notificationId?:number= 0;
 }
+
+export class UserEmailSetting extends BaseSettings {
+  static __title__ = "用户邮箱设置";
+  static __key__ = "user.email";
+
+  list:string[] = [];
+}

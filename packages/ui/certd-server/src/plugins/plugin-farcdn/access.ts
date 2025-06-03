@@ -153,8 +153,8 @@ export class FarcdnAccess extends BaseAccess {
       serverName: oldCert.serverName || certReader.getMainDomain(),
       commonNames: [certReader.getMainDomain()],
       dnsNames: certReader.getAltNames(),
-      timeBeginAt: detail.notBefore,
-      timeEndAt: detail.notAfter,
+      timeBeginAt: detail.notBefore.getTime(),
+      timeEndAt: detail.notAfter.getTime(),
       name: oldCert.name|| certReader.buildCertName(),
       description:oldCert.description||""
     }

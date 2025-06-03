@@ -55,14 +55,14 @@ export class QywxNotification extends BaseNotification {
      *      }
      *    }
      */
-
+    const color = body.errorMessage?'red':'green';
     await this.http.request({
       url: this.webhook,
       method: 'POST',
       data: {
-        msgtype: 'text',
-        text: {
-          content: `${body.title}\n${body.content}\n查看详情: ${body.url}`,
+        msgtype: 'markdown',
+        markdown: {
+          content: `<font color='${color}'>${body.title}</font>\n\n\n${body.content}\n\n[查看详情](${body.url})`,
           mentioned_list: this.mentionedList,
           mentioned_mobile_list: this.mentionedMobileList,
         },
