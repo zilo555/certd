@@ -23,14 +23,11 @@
       </a-tab-pane>
     </a-tabs>
     <template #footer>
-      <a-tooltip title="AI分析异常">
-        <fs-button v-if="settingsStore.sysPublic.aiChatEnabled !== false" key="aiChat" type="primary" icon="ion:color-wand-outline" @click="taskModal.onAiChat">AI分析</fs-button>
-      </a-tooltip>
-      <a-tooltip title="强制重新执行此步骤">
-        <fs-button key="rerun" type="primary" text="重新运行" icon="icon-park-outline:replay-music" @click="triggerRun(activeKey)"></fs-button>
-      </a-tooltip>
-      <fs-button key="cancel" icon="ion:close-circle-outline" @click="taskModal.onOk">关闭</fs-button>
-      <fs-button key="submit" icon="ion:checkmark-circle-outline" type="primary" @click="taskModal.onOk">确定</fs-button>
+      <fs-button v-if="settingsStore.sysPublic.aiChatEnabled !== false" key="aiChat" :tooltip="{ title: 'AI分析异常' }" type="primary" icon="ion:color-wand-outline" @click="taskModal.onAiChat">AI分析</fs-button>
+      <fs-button key="rerun" type="primary" :tooltip="{ title: '强制重新执行此步骤' }" text="重新运行" icon="icon-park-outline:replay-music" @click="triggerRun(activeKey)"></fs-button>
+      <fs-button key="downloadLogs" type="primary" :tooltip="{ title: '当前任务日志下载' }" icon="ion:arrow-down-circle-outline" @click="taskModal.onDownloadLogs">下载日志</fs-button>
+      <!--      <fs-button key="cancel" icon="ion:close-circle-outline" @click="taskModal.onOk">关闭</fs-button>-->
+      <fs-button key="submit" :tooltip="{ title: '关闭窗口' }" icon="ion:checkmark-circle-outline" type="primary" @click="taskModal.onOk">确定</fs-button>
     </template>
   </a-modal>
 </template>
@@ -41,6 +38,7 @@ import { RunHistory } from "../../type";
 import PiStatusShow from "/@/views/certd/pipeline/pipeline/component/status-show.vue";
 import { usePreferences } from "/@/vben/preferences";
 import { useSettingStore } from "/@/store/settings/index";
+import { notification } from "ant-design-vue";
 export default {
   name: "PiTaskView",
   components: { PiStatusShow },
@@ -55,6 +53,22 @@ export default {
       },
       onAiChat() {
         onAiChat();
+      },
+      onDownloadLogs() {
+        const logs = currentHistory.value?.logs[activeKey.value];
+        if (!logs || logs.length === 0) {
+          notification.warning({
+            message: "没有日志",
+          });
+          return;
+        }
+        const logText = logs.join("");
+        const blob = new Blob([logText], { type: "text/plain;charset=utf-8" });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "certd-task-log.txt";
+        a.click();
+        URL.revokeObjectURL(a.href);
       },
       cancelText: "关闭",
     });
