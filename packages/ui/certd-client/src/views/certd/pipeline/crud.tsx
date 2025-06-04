@@ -223,6 +223,7 @@ export default function ({ crudExpose, context: { groupDictRef, selectedRowKeys 
           play: {
             order: -999,
             title: "运行流水线",
+            tooltip: { title: "运行流水线" },
             type: "link",
             icon: "ant-design:play-circle-outlined",
             click({ row }) {
@@ -276,6 +277,7 @@ export default function ({ crudExpose, context: { groupDictRef, selectedRowKeys 
           viewCert: {
             order: 3,
             title: "查看证书",
+            tooltip: { title: "查看证书" },
             type: "link",
             icon: "ph:certificate",
             async click({ row }) {
@@ -286,6 +288,7 @@ export default function ({ crudExpose, context: { groupDictRef, selectedRowKeys 
             order: 4,
             type: "link",
             title: "下载证书",
+            tooltip: { title: "下载证书" },
             icon: "ant-design:download-outlined",
             async click({ row }) {
               await downloadCert(row);

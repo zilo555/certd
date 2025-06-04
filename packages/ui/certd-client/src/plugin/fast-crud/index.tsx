@@ -120,10 +120,10 @@ function install(app: App, options: any = {}) {
         rowHandle: {
           fixed: "right",
           buttons: {
-            view: { type: "link", text: null, icon: "ion:eye-outline" },
-            copy: { show: true, type: "link", text: null, icon: "ion:copy-outline" },
-            edit: { type: "link", text: null, icon: "ion:create-outline" },
-            remove: { type: "link", style: { color: "red" }, text: null, icon: "ion:trash-outline" },
+            view: { type: "link", text: null, icon: "ion:eye-outline", tooltip: { title: "查看" } },
+            copy: { show: true, type: "link", text: null, icon: "ion:copy-outline", tooltip: { title: "复制" } },
+            edit: { type: "link", text: null, icon: "ion:create-outline", tooltip: { title: "编辑" } },
+            remove: { type: "link", style: { color: "red" }, text: null, icon: "ion:trash-outline", tooltip: { title: "删除" } },
           },
           dropdown: {
             more: {

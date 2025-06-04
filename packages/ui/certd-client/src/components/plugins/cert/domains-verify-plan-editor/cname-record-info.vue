@@ -13,6 +13,9 @@
       </td>
       <td class="status center flex-center">
         <fs-values-format v-model="cnameRecord.status" :dict="statusDict" />
+        <a-tooltip v-if="row.error" :title="cnameRecord.error">
+          <fs-icon class="ml-5 color-red" icon="ion:warning-outline"></fs-icon>
+        </a-tooltip>
       </td>
       <td class="center">
         <template v-if="cnameRecord.status !== 'valid'">

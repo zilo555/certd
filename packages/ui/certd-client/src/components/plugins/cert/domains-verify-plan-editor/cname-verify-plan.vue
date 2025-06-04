@@ -21,7 +21,7 @@ import CnameRecordInfo from "/@/components/plugins/cert/domains-verify-plan-edit
 import { computed } from "vue";
 
 defineOptions({
-  name: "CnameVerifyPlan"
+  name: "CnameVerifyPlan",
 });
 
 const emit = defineEmits(["update:modelValue", "change"]);

@@ -122,7 +122,7 @@ export const certdResources = [
           },
 
           {
-            title: "OpenKey",
+            title: "开放接口密钥",
             name: "OpenKey",
             path: "/certd/open/openkey",
             component: "/certd/open/openkey/index.vue",

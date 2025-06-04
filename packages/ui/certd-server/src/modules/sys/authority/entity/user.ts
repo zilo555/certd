@@ -37,6 +37,10 @@ export class UserEntity {
 
   @Column({ comment: '状态 0:禁用 1：启用', default: 1 })
   status: number;
+
+  @Column({ name: 'valid_time', comment: '有效期', nullable: true })
+  validTime: number;
+
   @Column({
     name: 'create_time',
     comment: '创建时间',

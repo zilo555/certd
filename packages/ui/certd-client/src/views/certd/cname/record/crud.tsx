@@ -2,7 +2,7 @@ import * as api from "./api";
 import { useI18n } from "vue-i18n";
 import { Ref, ref } from "vue";
 import { useRouter } from "vue-router";
-import { AddReq, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, EditReq, UserPageQuery, UserPageRes } from "@fast-crud/fast-crud";
+import { AddReq, compute, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, EditReq, UserPageQuery, UserPageRes } from "@fast-crud/fast-crud";
 import { useUserStore } from "/@/store/user";
 import { useSettingStore } from "/@/store/settings";
 import { message } from "ant-design-vue";
@@ -31,7 +31,15 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
   const settingStore = useSettingStore();
   const selectedRowKeys: Ref<any[]> = ref([]);
   context.selectedRowKeys = selectedRowKeys;
-
+  const dictRef = dict({
+    data: [
+      { label: "待设置CNAME", value: "cname", color: "warning" },
+      { label: "验证中", value: "validating", color: "blue" },
+      { label: "验证成功", value: "valid", color: "green" },
+      { label: "验证失败", value: "failed", color: "red" },
+      { label: "验证超时", value: "timeout", color: "red" },
+    ],
+  });
   return {
     crudOptions: {
       settings: {
@@ -174,21 +182,25 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
         status: {
           title: "状态",
           type: "dict-select",
-          dict: dict({
-            data: [
-              { label: "待设置CNAME", value: "cname", color: "warning" },
-              { label: "验证中", value: "validating", color: "blue" },
-              { label: "验证成功", value: "valid", color: "green" },
-              { label: "验证失败", value: "failed", color: "red" },
-              { label: "验证超时", value: "timeout", color: "red" },
-            ],
-          }),
+          dict: dictRef,
           addForm: {
             show: false,
           },
           column: {
             width: 120,
             align: "center",
+            cellRender({ value, row }) {
+              return (
+                <div class={"flex flex-center"}>
+                  <fs-values-format modelValue={value} dict={dictRef}></fs-values-format>
+                  {row.error && (
+                    <a-tooltip title={row.error}>
+                      <fs-icon class={"ml-5 color-red"} icon="ion:warning-outline"></fs-icon>
+                    </a-tooltip>
+                  )}
+                </div>
+              );
+            },
           },
         },
         triggerValidate: {

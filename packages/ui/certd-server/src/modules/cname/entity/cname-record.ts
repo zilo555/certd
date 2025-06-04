@@ -26,6 +26,9 @@ export class CnameRecordEntity {
   @Column({ comment: '验证状态', length: 20 })
   status: string;
 
+  @Column({ comment: '错误信息' })
+  error: string
+
   @Column({
     comment: '创建时间',
     name: 'create_time',
