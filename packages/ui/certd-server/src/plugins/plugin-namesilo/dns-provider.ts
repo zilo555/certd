@@ -23,6 +23,11 @@ export class NamesiloDnsProvider extends AbstractDnsProvider<NamesiloRecord> {
     // 也可以通过ctx成员变量传递context
     this.access = this.ctx.access as NamesiloAccess;
   }
+  usePunyCode(): boolean {
+    //是否使用punycode来添加解析记录
+    //默认都使用原始中文域名来添加
+    return true;
+  }
 
   private async doRequest(url: string, params: any = null) {
     params = merge(
