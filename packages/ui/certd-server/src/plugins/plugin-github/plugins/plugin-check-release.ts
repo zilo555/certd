@@ -77,7 +77,10 @@ export class GithubCheckRelease extends AbstractTaskPlugin {
     this.logger.info(`有更新,${lastVersion??"0"}->${res.tag_name}`)
     this.lastVersion = res.tag_name;
 
-    const body = res.body.replaceAll("* ","- ")
+    // const body = res.body.replaceAll("* ","- ")
+    //仅每行开头的* 替换成 -， *号前面可以有空格
+    const body = res.body.replace(/^(\s*)\* /gm, "$1- ")
+
     if (this.notificationIds == null){
       this.notificationIds = [0]
     }

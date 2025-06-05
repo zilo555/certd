@@ -1,7 +1,7 @@
 <template>
   <div class="pi-group-selector flex full-w">
     <div class="flex-1">
-      <fs-dict-select :value="modelValue" :dict="groupDictRef" @update:value="doUpdate"></fs-dict-select>
+      <fs-dict-select :value="modelValue" :dict="groupDictRef" :allow-clear="true" @update:value="doUpdate"></fs-dict-select>
     </div>
 
     <fs-table-select
