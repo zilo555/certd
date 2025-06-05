@@ -91,7 +91,8 @@ export class FlexCDNRefreshCert extends AbstractTaskPlugin {
        *       timeEndAt: Math.floor((new Date(currentInfo.validTo)).getTime() / 1000),
        *
        */
-      const commonNames =[ certReader.detail.issuer.commonName]
+      const topCrt =  CertReader.readCertDetail(certReader.cert.ic)
+      const commonNames =[ topCrt.detail.issuer.commonName]
       const dnsNames = certReader.getAllDomains()
       const timeBeginAt = Math.floor(certReader.detail.notBefore.getTime()  / 1000);
       const timeEndAt = Math.floor(certReader.detail.notAfter.getTime()  / 1000);

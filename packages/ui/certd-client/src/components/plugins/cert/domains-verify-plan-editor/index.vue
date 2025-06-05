@@ -55,6 +55,7 @@
                   </div>
                   <div v-if="item.type === 'http'" class="plan-http">
                     <http-verify-plan v-model="item.httpVerifyPlan" @change="onPlanChanged" />
+                    <div class="helper">证书颁发机构将请求 https://yourdomain/.well-known/acme-challenge/xxxxxx 来验证域名所有权。</div>
                   </div>
                 </div>
               </td>
