@@ -1,11 +1,10 @@
 import { useFormWrapper } from "@fast-crud/fast-crud";
-import { useRouter } from "vue-router";
 
 import SiteIpCertMonitor from "./index.vue";
+import { siteIpApi } from "/@/views/certd/monitor/site/ip/api";
 
 export function useSiteIpMonitor() {
-  const { openDialog } = useFormWrapper();
-  const router = useRouter();
+  const { openDialog, openCrudFormDialog } = useFormWrapper();
 
   async function openSiteIpMonitorDialog(opts: { siteId: number }) {
     await openDialog({
@@ -34,7 +33,42 @@ export function useSiteIpMonitor() {
     });
   }
 
+  async function openSiteIpImportDialog(opts: { afterSubmit: any; siteId: any }) {
+    const { afterSubmit } = opts;
+    await openCrudFormDialog<any>({
+      crudOptions: {
+        columns: {
+          text: {
+            type: "textarea",
+            title: "IP列表",
+            form: {
+              helper: "IP或者CNAME域名，一行一个",
+              rules: [{ required: true, message: "请输入要导入的IP或域名" }],
+              component: {
+                placeholder: "192.168.1.2\ncname.foo.com",
+                rows: 8,
+              },
+              col: {
+                span: 24,
+              },
+            },
+          },
+        },
+        form: {
+          async doSubmit({ form }) {
+            return siteIpApi.Import({
+              ...form,
+              siteId: opts.siteId,
+            });
+          },
+          afterSubmit,
+        },
+      },
+    });
+  }
+
   return {
     openSiteIpMonitorDialog,
+    openSiteIpImportDialog,
   };
 }

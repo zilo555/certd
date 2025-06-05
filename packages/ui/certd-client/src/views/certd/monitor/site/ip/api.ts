@@ -68,4 +68,11 @@ export const siteIpApi = {
       },
     });
   },
+  async Import(form: any) {
+    return await request({
+      url: apiPrefix + "/import",
+      method: "post",
+      data: form,
+    });
+  },
 };

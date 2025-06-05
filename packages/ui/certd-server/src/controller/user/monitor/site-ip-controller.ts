@@ -111,5 +111,16 @@ export class SiteInfoController extends CrudController<SiteIpService> {
     return this.ok();
   }
 
+  @Post('/import', { summary: Constants.per.authOnly })
+  async doImport(@Body(ALL) body: any) {
+    const userId = this.getUserId();
+    await this.service.doImport({
+      text:body.text,
+      userId,
+      siteId:body.siteId
+    })
+    return this.ok();
+  }
+
 
 }

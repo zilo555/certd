@@ -56,6 +56,14 @@ export const siteInfoApi = {
     });
   },
 
+  async Import(form: any) {
+    return await request({
+      url: apiPrefix + "/import",
+      method: "post",
+      data: form,
+    });
+  },
+
   async DisabledChange(id: number, disabled: boolean) {
     return await request({
       url: apiPrefix + "/disabledChange",

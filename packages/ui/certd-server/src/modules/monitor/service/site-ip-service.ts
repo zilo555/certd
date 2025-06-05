@@ -182,7 +182,7 @@ export class SiteIpService extends BaseService<SiteIpEntity> {
       const finished = res.filter(item=>{
         return item!=null
       })
-      if (finished.length > 0) {
+      if (onFinish) {
         onFinish && onFinish(finished)
       }
     })
@@ -231,5 +231,51 @@ export class SiteIpService extends BaseService<SiteIpEntity> {
         //update
       ipCount:count
     })
+  }
+
+  async doImport(req: { text: string; userId:number, siteId:number }) {
+    if (!req.text) {
+      throw new Error("text is required");
+    }
+    if (!req.siteId) {
+      throw new Error("siteId is required");
+    }
+
+    const siteEntity = await this.siteInfoRepository.findOne({
+      where: {
+        id: req.siteId,
+        userId:req.userId
+      }
+    });
+    if (!siteEntity) {
+      throw new Error(`站点${req.siteId}不存在`);
+    }
+
+    const userId = siteEntity.userId;
+
+    const rows = req.text.split("\n");
+
+    const list = [];
+    for (const item of rows) {
+      if (!item) {
+        continue;
+      }
+      list.push({
+        ipAddress:item,
+        userId: userId,
+        siteId: req.siteId,
+        from: "import",
+        disabled:false,
+      });
+    }
+
+    const batchAdd = async (list: any[]) => {
+      for (const item of list) {
+        await this.add(item);
+      }
+
+      // await this.checkAllByUsers(req.userId);
+    };
+    await batchAdd(list);
   }
 }

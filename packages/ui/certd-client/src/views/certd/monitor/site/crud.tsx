@@ -8,6 +8,7 @@ import { useSettingStore } from "/@/store/settings";
 import { mySuiteApi } from "/@/views/certd/suite/mine/api";
 import { mitter } from "/@/utils/util.mitt";
 import { useSiteIpMonitor } from "./ip/use";
+import { useSiteImport } from "/@/views/certd/monitor/site/use";
 
 export default function ({ crudExpose, context }: CreateCrudOptionsProps): CreateCrudOptionsRet {
   const { t } = useI18n();
@@ -44,6 +45,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
   });
 
   const { openSiteIpMonitorDialog } = useSiteIpMonitor();
+  const { openSiteImportDialog } = useSiteImport();
   return {
     crudOptions: {
       request: {
@@ -95,6 +97,19 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
                 }
               }
               await crudExpose.openAdd({});
+            },
+          },
+          //导入按钮
+          import: {
+            show: true,
+            text: "批量导入",
+            type: "primary",
+            async click() {
+              openSiteImportDialog({
+                afterSubmit() {
+                  crudExpose.doRefresh();
+                },
+              });
             },
           },
         },
@@ -235,7 +250,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
                 },
               };
               return (
-                <a-popover placement="left" v-slots={slots} overlayStyle={{ maxWidth: "30%" }}>
+                <a-popover placement={"left"} v-slots={slots} overlayStyle={{ maxWidth: "30%" }}>
                   {row.certDomains}
                 </a-popover>
               );

@@ -4,13 +4,11 @@ import { AddReq, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, Edi
 import { siteIpApi } from "./api";
 import dayjs from "dayjs";
 import { Modal, notification } from "ant-design-vue";
-import { useSettingStore } from "/@/store/settings";
+import { useSiteIpMonitor } from "/@/views/certd/monitor/site/ip/use";
 
 export default function ({ crudExpose, context }: CreateCrudOptionsProps): CreateCrudOptionsRet {
-  const { t } = useI18n();
   const api = siteIpApi;
 
-  const { crudBinding } = crudExpose;
   const pageRequest = async (query: UserPageQuery): Promise<UserPageRes> => {
     if (!query.query) {
       query.query = {};
@@ -36,8 +34,6 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
     return res;
   };
 
-  const settingsStore = useSettingStore();
-
   const checkStatusDict = dict({
     data: [
       { label: "成功", value: "ok", color: "green" },
@@ -45,6 +41,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
       { label: "异常", value: "error", color: "red" },
     ],
   });
+  const { openSiteIpImportDialog } = useSiteIpMonitor();
   return {
     crudOptions: {
       request: {
@@ -73,6 +70,19 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           add: {
             async click() {
               await crudExpose.openAdd({});
+            },
+          },
+          import: {
+            show: true,
+            text: "批量导入",
+            type: "primary",
+            async click() {
+              openSiteIpImportDialog({
+                siteId: context.props.siteId,
+                afterSubmit() {
+                  crudExpose.doRefresh();
+                },
+              });
             },
           },
           load: {
@@ -295,6 +305,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             data: [
               { label: "同步", value: "sync", color: "green" },
               { label: "手动", value: "manual", color: "blue" },
+              { label: "导入", value: "import", color: "blue" },
             ],
           }),
           form: {

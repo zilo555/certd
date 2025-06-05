@@ -105,6 +105,17 @@ export class SiteInfoController extends CrudController<SiteInfoService> {
     await this.service.checkAllByUsers(userId);
     return this.ok();
   }
+
+  @Post('/import', { summary: Constants.per.authOnly })
+  async doImport(@Body(ALL) body: any) {
+    const userId = this.getUserId();
+    await this.service.doImport({
+      text:body.text,
+      userId
+    })
+    return this.ok();
+  }
+
   @Post('/ipCheckChange', { summary: Constants.per.authOnly })
   async ipCheckChange(@Body(ALL) bean: any) {
     const userId = this.getUserId();

@@ -168,7 +168,11 @@ https://afdian.com/a/greper
    1. 可以调整开源协议以使其更严格或更宽松。
    2. 可以用于商业用途。
 
+感谢以下贡献者做出的贡献。
 
+<a href="https://github.com/certd/certd/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=certd/certd" />
+</a>
 
 ## 九、 开源许可
 * 本项目遵循 GNU Affero General Public License（AGPL）开源协议。   
