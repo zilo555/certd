@@ -5,6 +5,7 @@ import path from "path";
 import { CertificateInfo, crypto } from "@certd/acme-client";
 import { ILogger } from "@certd/basic";
 import dayjs from "dayjs";
+import { uniq } from "lodash-es";
 
 export type CertReaderHandleContext = {
   reader: CertReader;
@@ -90,7 +91,8 @@ export class CertReader {
     const { detail } = this.getCrtDetail();
     const domains = [detail.domains.commonName];
     domains.push(...detail.domains.altNames);
-    return domains;
+    //去重
+    return uniq(domains);
   }
 
   getAltNames() {
