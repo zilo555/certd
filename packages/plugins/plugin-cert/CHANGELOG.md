@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.35.0](https://github.com/certd/certd/compare/v1.34.11...v1.35.0) (2025-06-05)
+
+### Features
+
+* **lego:** support for command options ([b84159f](https://github.com/certd/certd/commit/b84159f2f11531f058837c2e82d66499f3740f20))
+
 ## [1.34.11](https://github.com/certd/certd/compare/v1.34.10...v1.34.11) (2025-06-05)
 
 ### Bug Fixes

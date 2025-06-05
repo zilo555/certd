@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.35.0](https://github.com/certd/certd/compare/v1.34.11...v1.35.0) (2025-06-05)
+
+### Features
+
+* 完善注释 ([6702ca1](https://github.com/certd/certd/commit/6702ca10a17f5d7dbff789b039f7269496f66b97))
+* AWS 中国区 CloudFront 证书部署（IAM 证书） ([8a55bed](https://github.com/certd/certd/commit/8a55beda924b3be2a53b9ba80d9487cefa8bf887))
+
 ## [1.34.11](https://github.com/certd/certd/compare/v1.34.10...v1.34.11) (2025-06-05)
 
 ### Bug Fixes
