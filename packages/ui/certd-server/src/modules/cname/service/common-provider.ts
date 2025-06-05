@@ -1,6 +1,6 @@
 import {CreateRecordOptions, DnsProviderContext, IDnsProvider, RemoveRecordOptions} from '@certd/plugin-cert';
 import {PlusService} from '@certd/lib-server';
-
+import punycode from 'punycode.js'
 export type CommonCnameProvider = {
   id: number;
   domain: string;
@@ -23,6 +23,23 @@ export class CommonDnsProvider implements IDnsProvider {
     this.config = opts.config;
     this.plusService = opts.plusService;
   }
+
+  /**
+   * 中文转英文
+   * @param domain
+   */
+  punyCodeEncode(domain: string) {
+    return punycode.encode(domain);
+  }
+
+  /**
+   * 转中文域名
+   * @param domain
+   */
+  punyCodeDecode(domain: string) {
+    return punycode.decode(domain);
+  }
+
 
   usePunyCode(): boolean {
     return false

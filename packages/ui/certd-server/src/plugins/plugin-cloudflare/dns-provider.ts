@@ -26,6 +26,11 @@ export type CloudflareRecord = {
 })
 export class CloudflareDnsProvider extends AbstractDnsProvider<CloudflareRecord> {
   access!: CloudflareAccess;
+  usePunyCode(): boolean {
+    //是否使用punycode来添加解析记录
+    //默认都使用原始中文域名来添加
+    return true;
+  }
   async onInstance() {
     //一些初始化的操作
     // 也可以通过ctx成员变量传递context

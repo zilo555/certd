@@ -6,7 +6,7 @@ import { Challenge } from "@certd/acme-client/types/rfc8555";
 import { IContext } from "@certd/pipeline";
 import { ILogger, utils } from "@certd/basic";
 import { IDnsProvider, IDomainParser } from "../../dns-provider/index.js";
-import punycode from "node:punycode";
+import punycode from "punycode.js";
 import { IOssClient } from "@certd/plugin-lib";
 export type CnameVerifyPlan = {
   type?: string;
@@ -233,16 +233,18 @@ export class AcmeService {
     let dnsProvider = providers.dnsProvider;
     let fullRecord = `_acme-challenge.${fullDomain}`;
 
+    const origDomain = punycode.toUnicode(domain);
+    const origFullDomain = punycode.toUnicode(fullDomain);
     if (providers.domainsVerifyPlan) {
       //按照计划执行
-      const domainVerifyPlan = providers.domainsVerifyPlan[domain];
+      const domainVerifyPlan = providers.domainsVerifyPlan[origDomain];
       if (domainVerifyPlan) {
         if (domainVerifyPlan.type === "dns") {
           dnsProvider = domainVerifyPlan.dnsProvider;
         } else if (domainVerifyPlan.type === "cname") {
           const cnameVerifyPlan = domainVerifyPlan.cnameVerifyPlan;
           if (cnameVerifyPlan) {
-            const cname = cnameVerifyPlan[fullDomain];
+            const cname = cnameVerifyPlan[origFullDomain];
             if (cname) {
               dnsProvider = cname.dnsProvider;
               domain = await this.options.domainParser.parse(cname.domain);

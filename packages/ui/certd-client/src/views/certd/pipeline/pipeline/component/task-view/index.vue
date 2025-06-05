@@ -26,8 +26,8 @@
       <fs-button v-if="settingsStore.sysPublic.aiChatEnabled !== false" key="aiChat" :tooltip="{ title: 'AI分析异常' }" type="primary" icon="ion:color-wand-outline" @click="taskModal.onAiChat">AI分析</fs-button>
       <fs-button key="rerun" type="primary" :tooltip="{ title: '强制重新执行此步骤' }" text="重新运行" icon="icon-park-outline:replay-music" @click="triggerRun(activeKey)"></fs-button>
       <fs-button key="downloadLogs" type="primary" :tooltip="{ title: '当前任务日志下载' }" icon="ion:arrow-down-circle-outline" @click="taskModal.onDownloadLogs">下载日志</fs-button>
-      <!--      <fs-button key="cancel" icon="ion:close-circle-outline" @click="taskModal.onOk">关闭</fs-button>-->
-      <fs-button key="submit" :tooltip="{ title: '关闭窗口' }" icon="ion:checkmark-circle-outline" type="primary" @click="taskModal.onOk">确定</fs-button>
+      <fs-button key="cancel" :tooltip="{ title: '关闭窗口' }" icon="ion:close-circle-outline" @click="taskModal.onOk">关闭</fs-button>
+      <!--      <fs-button key="submit" :tooltip="{ title: '关闭窗口' }" icon="ion:checkmark-circle-outline" type="primary" @click="taskModal.onOk">确定</fs-button>-->
     </template>
   </a-modal>
 </template>

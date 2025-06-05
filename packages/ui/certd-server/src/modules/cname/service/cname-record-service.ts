@@ -12,7 +12,7 @@ import {CnameProviderEntity} from '../entity/cname-provider.js';
 import {CommonDnsProvider} from './common-provider.js';
 import {SubDomainService, SubDomainsGetter} from "../../pipeline/service/sub-domain-service.js";
 import {DomainParser} from "@certd/plugin-cert/dist/dns-provider/domain-parser.js";
-
+import punycode from 'punycode.js'
 type CnameCheckCacheValue = {
   validating: boolean;
   pass: boolean;
@@ -317,7 +317,15 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
       type: 'TXT',
       value: testRecordValue,
     };
+
     const dnsProvider = await buildDnsProvider();
+    if(dnsProvider.usePunyCode()){
+      //是否需要中文转英文
+      req.domain = dnsProvider.punyCodeEncode(req.domain)
+      req.fullRecord = dnsProvider.punyCodeEncode(req.fullRecord)
+      req.hostRecord = dnsProvider.punyCodeEncode(req.hostRecord)
+      req.value = dnsProvider.punyCodeEncode(req.value)
+    }
     const recordRes = await dnsProvider.createRecord(req);
     value.dnsProvider = dnsProvider;
     value.validating = true;
@@ -364,6 +372,7 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
       return
     }
     targetCnameDomain = targetCnameDomain.toLowerCase()
+    targetCnameDomain = punycode.toASCII(targetCnameDomain)
     if (cnameRecords.length > 0) {
       for (const cnameRecord of cnameRecords) {
         if(cnameRecord.toLowerCase() !== targetCnameDomain){

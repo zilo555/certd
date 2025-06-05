@@ -1,7 +1,7 @@
 import { CreateRecordOptions, DnsProviderContext, DnsProviderDefine, IDnsProvider, RemoveRecordOptions } from "./api.js";
 import { dnsProviderRegistry } from "./registry.js";
 import { HttpClient, ILogger } from "@certd/basic";
-
+import punycode from "punycode.js";
 export abstract class AbstractDnsProvider<T = any> implements IDnsProvider<T> {
   ctx!: DnsProviderContext;
   http!: HttpClient;
@@ -11,6 +11,22 @@ export abstract class AbstractDnsProvider<T = any> implements IDnsProvider<T> {
     //是否使用punycode来添加解析记录
     //默认都使用原始中文域名来添加
     return false;
+  }
+
+  /**
+   * 中文转英文
+   * @param domain
+   */
+  punyCodeEncode(domain: string) {
+    return punycode.toASCII(domain);
+  }
+
+  /**
+   * 转中文域名
+   * @param domain
+   */
+  punyCodeDecode(domain: string) {
+    return punycode.toUnicode(domain);
   }
 
   setCtx(ctx: DnsProviderContext) {
