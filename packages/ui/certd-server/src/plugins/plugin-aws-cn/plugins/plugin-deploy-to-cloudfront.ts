@@ -3,7 +3,6 @@ import { CertApplyPluginNames, CertInfo } from "@certd/plugin-cert";
 import { AwsCNAccess, AwsCNRegions } from "../access.js";
 import { AwsIAMClient } from "../libs/aws-iam-client.js";
 import { createCertDomainGetterInputDefine, createRemoteSelectInputDefine } from "@certd/plugin-lib";
-import { optionsUtils } from "@certd/basic/dist/utils/util.options.js";
 
 @IsTaskPlugin({
   name: 'AwsCNDeployToCloudFront',
@@ -158,7 +157,7 @@ export class AwsCNDeployToCloudFront extends AbstractTaskPlugin {
         domain: item.DomainName,
       };
     });
-    return optionsUtils.buildGroupOptions(options, this.certDomains);
+    return this.ctx.utils.options.buildGroupOptions(options, this.certDomains);
   }
 }
 
