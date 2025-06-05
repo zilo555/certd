@@ -58,6 +58,16 @@ export class ProxmoxAccess extends BaseAccess {
     encrypt: true,
   })
   password = '';
+
+  @AccessInput({
+    title: '领域',
+    component: {
+      placeholder: 'realm',
+    },
+    required: true,
+    encrypt: false,
+  })
+  realm = '';
 }
 
 new ProxmoxAccess();
