@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.11](https://github.com/certd/certd/compare/v1.34.10...v1.34.11) (2025-06-05)
+
+**Note:** Version bump only for package @certd/midway-flyway-js
+
 ## [1.34.10](https://github.com/certd/certd/compare/v1.34.9...v1.34.10) (2025-06-03)
 
 **Note:** Version bump only for package @certd/midway-flyway-js

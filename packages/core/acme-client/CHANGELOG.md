@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.11](https://github.com/publishlab/node-acme-client/compare/v1.34.10...v1.34.11) (2025-06-05)
+
+### Bug Fixes
+
+* 修复中文域名使用cname方式校验无法通过的问题 ([f7d5baa](https://github.com/publishlab/node-acme-client/commit/f7d5baa6d04cb83c572b06e62f885890cfa0143a))
+
+### Performance Improvements
+
+* 优化cname检查，当有冲突的cname记录时，给出提示 ([e639a8f](https://github.com/publishlab/node-acme-client/commit/e639a8f9f12640ffcca69f1a6a0324459924afbd))
+
 ## [1.34.10](https://github.com/publishlab/node-acme-client/compare/v1.34.9...v1.34.10) (2025-06-03)
 
 **Note:** Version bump only for package @certd/acme-client

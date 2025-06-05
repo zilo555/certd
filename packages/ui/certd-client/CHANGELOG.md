@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.11](https://github.com/certd/certd/compare/v1.34.10...v1.34.11) (2025-06-05)
+
+### Bug Fixes
+
+* 修复中文域名使用cname方式校验无法通过的问题 ([f7d5baa](https://github.com/certd/certd/commit/f7d5baa6d04cb83c572b06e62f885890cfa0143a))
+* 修复flexcdn部署证书的顶级CA名称显示 ([6467edb](https://github.com/certd/certd/commit/6467edb84324d7c80a85212675dbacedc459df83))
+
+### Performance Improvements
+
+* 分组选择支持清空选项 ([03e2e99](https://github.com/certd/certd/commit/03e2e9949837b34eb3ea56d14a9e8a5dabc96063))
+* 优化cname检查，当有冲突的cname记录时，给出提示 ([e639a8f](https://github.com/certd/certd/commit/e639a8f9f12640ffcca69f1a6a0324459924afbd))
+* 增加下载日志按钮 ([6ff509d](https://github.com/certd/certd/commit/6ff509d263c0182645b4692c10b5fedb192db964))
+* 站点监控支持批量导入域名和ip ([2d7729d](https://github.com/certd/certd/commit/2d7729dbe98f29088f5f317db2b52cc1ede223a6))
+* 支持设置用户有效期 ([6ac3bc5](https://github.com/certd/certd/commit/6ac3bc564f407dad2cd0b0b0744e887387aa5da3))
+
 ## [1.34.10](https://github.com/certd/certd/compare/v1.34.9...v1.34.10) (2025-06-03)
 
 ### Performance Improvements
