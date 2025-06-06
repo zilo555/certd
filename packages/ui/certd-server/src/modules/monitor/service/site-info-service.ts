@@ -334,7 +334,7 @@ export class SiteInfoService extends BaseService<SiteInfoEntity> {
           //设置了cron，跳过公共检查
           continue;
         }
-        retryTimes = setting.retryTimes
+        retryTimes = setting.retryTimes??retryTimes
       }
       this.doCheck(site,true,retryTimes).catch(e => {
         logger.error(`检查站点证书失败，${site.domain}`, e.message);

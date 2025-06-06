@@ -29,7 +29,7 @@ export type AliyunSslUploadCertReq = {
   cert: AliyunCertInfo;
 };
 
-export type CasCertInfo = { certId: number; certName: string; certIdentifier: string };
+export type CasCertInfo = { certId: number; certName: string; certIdentifier: string; notAfter: number };
 
 export class AliyunSslClient {
   opts: AliyunSslClientOpts;
@@ -68,6 +68,7 @@ export class AliyunSslClient {
       certId: certId,
       certName: res.Name,
       certIdentifier: res.CertIdentifier,
+      notAfter: res.NotAfter,
     };
   }
 
@@ -147,5 +148,9 @@ export class AliyunSslClient {
     const res = await client.request(action, params, requestOption);
     this.checkRet(res);
     return res;
+  }
+
+  async deleteCert(certId: any) {
+    await this.doRequest("DeleteUserCertificate", { CertId: certId }, { method: "POST" });
   }
 }

@@ -54,7 +54,7 @@ export class AliyunClientV2 {
 
     const $OpenApi = await import("@alicloud/openapi-client");
     const $Util = await import("@alicloud/tea-util");
-
+    const OpenApiUtil = await import("@alicloud/openapi-util");
     const params = new $OpenApi.Params({
       // 接口名称
       action: req.action,
@@ -74,6 +74,10 @@ export class AliyunClientV2 {
       bodyType: "json",
     });
 
+    if (req.data?.query) {
+      //@ts-ignore
+      req.data.query = OpenApiUtil.default.default.query(req.data.query);
+    }
     const runtime = new $Util.RuntimeOptions({});
     const request = new $OpenApi.OpenApiRequest(req.data);
     // 复制代码运行请自行打印 API 的返回值
