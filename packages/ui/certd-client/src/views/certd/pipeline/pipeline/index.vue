@@ -1,18 +1,28 @@
 <template>
   <fs-page v-if="pipeline" class="page-pipeline-edit">
     <template #header>
-      <div class="title">
+      <div class="title flex-1">
         <fs-button class="back" icon="ion:chevron-back-outline" @click="goBack"></fs-button>
         <text-editable v-model="pipeline.title" :hover-show="false" :disabled="!editMode"></text-editable>
       </div>
-      <div class="more">
-        <template v-if="editMode">
-          <a-button type="primary" :loading="saveLoading" @click="save">保存</a-button>
-          <a-button class="ml-5" @click="cancel">取消</a-button>
-        </template>
-        <template v-else>
-          <a-button type="primary" @click="edit">编辑</a-button>
-        </template>
+      <div class="more flex items-center flex-1 justify-end">
+        <div class="flex items-center hidden md:block">
+          <a-tag v-if="nextTriggerTimes" color="blue">下次执行时间：{{ nextTriggerTimes }}</a-tag>
+        </div>
+        <div class="basis-40 flex justify-end mr-10">
+          <template v-if="editMode">
+            <fs-button type="primary" :loading="saveLoading" @click="save">保存</fs-button>
+            <fs-button class="ml-5" @click="cancel">取消</fs-button>
+          </template>
+          <template v-else>
+            <fs-button icon="ant-design:edit-outlined" type="primary" @click="edit">编辑</fs-button>
+          </template>
+        </div>
+
+        <div v-if="isCert" class="flex items-center hidden md:block">
+          <fs-button icon="ant-design:eye-outlined" class="mr-5" type="primary" text="查看证书" @click="viewCert(pipeline.id)"> </fs-button>
+          <fs-button icon="ant-design:download-outlined" class="mr-5" type="primary" text="下载证书" @click="downloadCert(pipeline.id)"> </fs-button>
+        </div>
       </div>
     </template>
 
@@ -255,7 +265,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, onUnmounted, provide, Ref, ref, watch } from "vue";
+import { defineComponent, onMounted, onUnmounted, provide, Ref, ref, watch, computed } from "vue";
 import { useRouter } from "vue-router";
 import PiTaskForm from "./component/task-form/index.vue";
 import PiTriggerForm from "./component/trigger-form/index.vue";
@@ -275,6 +285,8 @@ import { useUserStore } from "/@/store/user";
 import TaskShortcuts from "./component/shortcut/task-shortcuts.vue";
 import { eachSteps, findStep } from "../utils";
 import { PluginGroups } from "/@/store/plugin";
+import { getCronNextTimes } from "/@/components/cron-editor/utils";
+import { useCertViewer } from "/@/views/certd/pipeline/use";
 
 export default defineComponent({
   name: "PipelineEdit",
@@ -308,6 +320,22 @@ export default defineComponent({
     const histories: Ref<RunHistory[]> = ref([]);
 
     const currentHistory: Ref<any> = ref({});
+
+    const nextTriggerTimes = computed(() => {
+      const triggers = pipeline.value.triggers;
+      if (!triggers || triggers.length === 0) {
+        return null;
+      }
+      let nextTimes: any = [];
+      for (const item of triggers) {
+        if (!item.props?.cron) {
+          continue;
+        }
+        const ret = getCronNextTimes(item.props?.cron, 1);
+        nextTimes.push(...ret);
+      }
+      return nextTimes.join("，");
+    });
 
     const router = useRouter();
     function goBack() {
@@ -735,6 +763,7 @@ export default defineComponent({
         }
       };
       const edit = () => {
+        debugger;
         pipeline.value = _.cloneDeep(currentPipeline.value);
         currentHistory.value = null;
         toggleEditMode(true);
@@ -838,7 +867,12 @@ export default defineComponent({
       };
     });
 
+    const { viewCert, downloadCert } = useCertViewer();
+    const isCert = computed(() => {
+      return currentPipeline.value?.type?.startsWith("cert");
+    });
     return {
+      isCert,
       pipeline,
       currentHistory,
       histories,
@@ -852,6 +886,9 @@ export default defineComponent({
       ...useHistory(),
       ...useNotification(),
       ...useScroll(),
+      nextTriggerTimes,
+      viewCert,
+      downloadCert,
     };
   },
 });

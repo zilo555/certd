@@ -16,6 +16,7 @@
 import parser from "cron-parser";
 import { computed, ref } from "vue";
 import dayjs from "dayjs";
+import { getCronNextTimes } from "/@/components/cron-editor/utils";
 defineOptions({
   name: "CronEditor",
 });
@@ -84,10 +85,10 @@ const nextTime = computed(() => {
   if (props.modelValue == null) {
     return "请先设置正确的cron表达式";
   }
+
   try {
-    const interval = parser.parseExpression(props.modelValue);
-    const next = interval.next().getTime();
-    return dayjs(next).format("YYYY-MM-DD HH:mm:ss");
+    const nextTimes = getCronNextTimes(props.modelValue, 2);
+    return nextTimes.join("，");
   } catch (e) {
     console.log(e);
     return "请先设置正确的cron表达式";

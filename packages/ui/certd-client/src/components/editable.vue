@@ -76,7 +76,7 @@ export default {
 .text-editable {
   flex: 1;
   line-height: 34px;
-
+  overflow: hidden;
   span.fs-iconify {
     display: inline-flex;
     justify-content: center;

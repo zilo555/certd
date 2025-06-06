@@ -110,6 +110,7 @@ export class PipelineService extends BaseService<PipelineEntity> {
   }
 
   async add(bean: PipelineEntity) {
+    bean.status = ResultType.none
     await this.save(bean);
     return bean;
   }
@@ -191,6 +192,9 @@ export class PipelineService extends BaseService<PipelineEntity> {
       await this.checkMaxPipelineCount(bean, pipeline, domains);
     }
 
+    if (!bean.status ){
+      bean.status = ResultType.none;
+    }
     if (!isUpdate) {
       //如果是添加，先保存一下，获取到id，更新pipeline.id
       await this.addOrUpdate(bean);

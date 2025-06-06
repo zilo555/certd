@@ -34,6 +34,8 @@ const pipelineOptions: PipelineOptions = {
         stages: [],
         triggers: [],
         ...JSON.parse(detail.pipeline.content || "{}"),
+        type: detail.pipeline.type,
+        from: detail.pipeline.from,
       },
     } as PipelineDetail;
   },

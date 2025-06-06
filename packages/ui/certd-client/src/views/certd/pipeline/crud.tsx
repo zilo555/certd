@@ -5,17 +5,15 @@ import { useRouter } from "vue-router";
 import { AddReq, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, EditReq, UserPageQuery, UserPageRes, useUi } from "@fast-crud/fast-crud";
 import { statusUtil } from "/@/views/certd/pipeline/pipeline/utils/util.status";
 import { Modal, notification } from "ant-design-vue";
-import { env } from "/@/utils/util.env";
 import { useUserStore } from "/@/store/user";
 import dayjs from "dayjs";
 import { useSettingStore } from "/@/store/settings";
 import { cloneDeep } from "lodash-es";
-import { useModal } from "/@/use/use-modal";
-import CertView from "./cert-view.vue";
 import { eachStages } from "./utils";
 import { setRunnableIds, useCertPipelineCreator } from "/@/views/certd/pipeline/certd-form/use";
 import { useCertUpload } from "/@/views/certd/pipeline/cert-upload/use";
 import GroupSelector from "/@/views/certd/pipeline/group/group-selector.vue";
+import { useCertViewer } from "/@/views/certd/pipeline/use";
 
 export default function ({ crudExpose, context: { groupDictRef, selectedRowKeys } }: CreateCrudOptionsProps): CreateCrudOptionsRet {
   const router = useRouter();
@@ -61,59 +59,7 @@ export default function ({ crudExpose, context: { groupDictRef, selectedRowKeys 
     return res;
   };
 
-  const model = useModal();
-  const viewCert = async (row: any) => {
-    const cert = await api.GetCert(row.id);
-    if (!cert) {
-      notification.error({ message: "请先运行一次流水线" });
-      return;
-    }
-
-    model.success({
-      title: "查看证书",
-      maskClosable: true,
-      okText: "关闭",
-      width: 800,
-      content: () => {
-        return <CertView cert={cert}></CertView>;
-      },
-    });
-  };
-
-  const downloadCert = async (row: any) => {
-    const files = await api.GetFiles(row.id);
-    model.success({
-      title: "点击链接下载",
-      maskClosable: true,
-      okText: "关闭",
-      content: () => {
-        const children = [];
-        for (const file of files) {
-          const downloadUrl = `${env.API}/pi/history/download?pipelineId=${row.id}&fileId=${file.id}`;
-          children.push(
-            <div>
-              <div class={"flex-o m-5"}>
-                <fs-icon icon={"ant-design:cloud-download-outlined"} class={"mr-5 fs-16"}></fs-icon>
-                <a href={downloadUrl} target={"_blank"}>
-                  {file.filename}
-                </a>
-              </div>
-            </div>
-          );
-        }
-
-        if (children.length === 0) {
-          return <div>暂无文件下载</div>;
-        }
-
-        return (
-          <div class={"mt-3"}>
-            <div> {children}</div>
-          </div>
-        );
-      },
-    });
-  };
+  const { viewCert, downloadCert } = useCertViewer();
   const userStore = useUserStore();
   const settingStore = useSettingStore();
 
@@ -208,6 +154,10 @@ export default function ({ crudExpose, context: { groupDictRef, selectedRowKeys 
       },
       table: {
         scroll: { x: 1500 },
+        remove: {
+          confirmTitle: "确定要删除吗？",
+          confirmMessage: "将删除该流水线相关的所有数据，包括执行历史、证书文件、证书仓库记录等",
+        },
       },
       tabs: {
         name: "groupId",
@@ -281,7 +231,7 @@ export default function ({ crudExpose, context: { groupDictRef, selectedRowKeys 
             type: "link",
             icon: "ph:certificate",
             async click({ row }) {
-              await viewCert(row);
+              await viewCert(row.id);
             },
           },
           download: {
@@ -291,7 +241,7 @@ export default function ({ crudExpose, context: { groupDictRef, selectedRowKeys 
             tooltip: { title: "下载证书" },
             icon: "ant-design:download-outlined",
             async click({ row }) {
-              await downloadCert(row);
+              await downloadCert(row.id);
             },
           },
           remove: {
