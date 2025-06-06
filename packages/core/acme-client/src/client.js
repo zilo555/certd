@@ -90,10 +90,12 @@ const defaultOpts = {
  */
 
 class AcmeClient {
+    sslProvider
     constructor(opts) {
         if (!Buffer.isBuffer(opts.accountKey)) {
             opts.accountKey = Buffer.from(opts.accountKey);
         }
+        this.sslProvider = opts.sslProvider;
 
         this.opts = { ...defaultOpts, ...opts };
         this.backoffOpts = {

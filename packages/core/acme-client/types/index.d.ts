@@ -66,6 +66,7 @@ export interface ClientAutoOptions {
     challengePriority?: string[];
     preferredChain?: string;
     signal?: AbortSignal;
+    profile?:string;
 }
 
 export class Client {

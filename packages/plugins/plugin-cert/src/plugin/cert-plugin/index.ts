@@ -249,6 +249,30 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
   privateKeyType!: PrivateKeyType;
 
   @TaskInput({
+    title: "证书配置",
+    value: "classic",
+    component: {
+      name: "a-select",
+      vModel: "value",
+      options: [
+        { value: "classic", label: "经典（classic）" },
+        { value: "tlsserver", label: "TLS服务器（tlsserver）" },
+        { value: "shortlived", label: "短暂的（shortlived）" },
+      ],
+    },
+    helper: "如无特殊需求，默认即可",
+    required: false,
+    mergeScript: `
+    return {
+        show: ctx.compute(({form})=>{
+            return form.sslProvider === 'letsencrypt'
+        })
+    }
+    `,
+  })
+  certProfile!: string;
+
+  @TaskInput({
     title: "使用代理",
     value: false,
     component: {
@@ -395,6 +419,7 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
         csrInfo,
         isTest: false,
         privateKeyType: this.privateKeyType,
+        profile: this.certProfile,
       });
 
       const certInfo = this.formatCerts(cert);

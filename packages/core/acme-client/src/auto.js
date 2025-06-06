@@ -75,6 +75,9 @@ export default async (client, userOpts) => {
 
     log("[auto] Placing new certificate order with ACME provider");
     const orderPayload = { identifiers: uniqueDomains.map((d) => ({ type: "dns", value: d })) };
+    if (opts.profile && client.sslProvider === 'letsencrypt' ){
+        orderPayload.profile = opts.profile;
+    }
     const order = await client.createOrder(orderPayload);
     const authorizations = await client.getAuthorizations(order);
 

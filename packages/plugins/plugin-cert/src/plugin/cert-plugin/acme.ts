@@ -327,8 +327,9 @@ export class AcmeService {
     csrInfo: any;
     isTest?: boolean;
     privateKeyType?: string;
+    profile?: string;
   }): Promise<CertInfo> {
-    const { email, isTest, csrInfo, dnsProvider, domainsVerifyPlan } = options;
+    const { email, isTest, csrInfo, dnsProvider, domainsVerifyPlan, profile } = options;
     const client: acme.Client = await this.getAcmeClient(email, isTest);
 
     let domains = options.domains;
@@ -400,6 +401,7 @@ export class AcmeService {
         return await this.challengeRemoveFn(authz, challenge, keyAuthorization, recordReq, recordRes, dnsProvider, httpUploader);
       },
       signal: this.options.signal,
+      profile,
     });
 
     const crtString = crt.toString();
