@@ -58,7 +58,7 @@ export class HttpsServer {
       opts.app.callback()
     );
     this.server = httpServer;
-    const hostname = '0.0.0.0';
+    const hostname = '::';
     // A function that runs in the context of the http server
     // and reports what type of server listens on which port
     function listeningReporter() {
