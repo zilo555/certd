@@ -763,7 +763,6 @@ export default defineComponent({
         }
       };
       const edit = () => {
-        debugger;
         pipeline.value = _.cloneDeep(currentPipeline.value);
         currentHistory.value = null;
         toggleEditMode(true);
