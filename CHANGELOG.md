@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.35.1](https://github.com/certd/certd/compare/v1.35.0...v1.35.1) (2025-06-07)
+
+### Bug Fixes
+
+* 某些证书提供商的证书确实commonName导致无法转换证书的问题 ([ac87bc5](https://github.com/certd/certd/commit/ac87bc57e957ea4679707bfd38d6840e26319bed))
+* 修复站点监控通知渠道设置无效的bug ([a00453c](https://github.com/certd/certd/commit/a00453c83a58114ce2873dd6e6aaf313f1ce0f87))
+
+### Performance Improvements
+
+* 修改 HTTPS 服务器监听地址 ([e1cf64a](https://github.com/certd/certd/commit/e1cf64ae16d4abfe4299ff16d5088c30cf3c6365))
+* 优化流水线页面，增加下次执行时间、查看证书显示 ([c820315](https://github.com/certd/certd/commit/c8203154094fae3d17198747f49f5f41ddf29a4e))
+* 站点证书监控支持定时设置，重试次数设置 ([d3c2f8e](https://github.com/certd/certd/commit/d3c2f8eb436e670772d14a54acd6b541c5aa3978))
+* 证书申请支持letencrypt profile选项 ([2eb0e54](https://github.com/certd/certd/commit/2eb0e54909d8ad36708e07c12fd598998159bc43))
+* aliyun alb支持部署扩展证书 ([2a19b61](https://github.com/certd/certd/commit/2a19b61b7a78620c06396c2cc37cc77d738b6d12))
+
 # [1.35.0](https://github.com/certd/certd/compare/v1.34.11...v1.35.0) (2025-06-05)
 
 ### Features

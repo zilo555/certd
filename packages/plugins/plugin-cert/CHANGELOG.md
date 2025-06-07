@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.35.1](https://github.com/certd/certd/compare/v1.35.0...v1.35.1) (2025-06-07)
+
+### Bug Fixes
+
+* 某些证书提供商的证书确实commonName导致无法转换证书的问题 ([ac87bc5](https://github.com/certd/certd/commit/ac87bc57e957ea4679707bfd38d6840e26319bed))
+
+### Performance Improvements
+
+* 证书申请支持letencrypt profile选项 ([2eb0e54](https://github.com/certd/certd/commit/2eb0e54909d8ad36708e07c12fd598998159bc43))
+
 # [1.35.0](https://github.com/certd/certd/compare/v1.34.11...v1.35.0) (2025-06-05)
 
 ### Features

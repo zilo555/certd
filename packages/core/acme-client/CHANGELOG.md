@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.35.1](https://github.com/publishlab/node-acme-client/compare/v1.35.0...v1.35.1) (2025-06-07)
+
+### Performance Improvements
+
+* 证书申请支持letencrypt profile选项 ([2eb0e54](https://github.com/publishlab/node-acme-client/commit/2eb0e54909d8ad36708e07c12fd598998159bc43))
+
 # [1.35.0](https://github.com/publishlab/node-acme-client/compare/v1.34.11...v1.35.0) (2025-06-05)
 
 **Note:** Version bump only for package @certd/acme-client

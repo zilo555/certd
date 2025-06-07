@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.35.1](https://github.com/certd/certd/compare/v1.35.0...v1.35.1) (2025-06-07)
+
+### Performance Improvements
+
+* 优化流水线页面，增加下次执行时间、查看证书显示 ([c820315](https://github.com/certd/certd/commit/c8203154094fae3d17198747f49f5f41ddf29a4e))
+* 站点证书监控支持定时设置，重试次数设置 ([d3c2f8e](https://github.com/certd/certd/commit/d3c2f8eb436e670772d14a54acd6b541c5aa3978))
+
 # [1.35.0](https://github.com/certd/certd/compare/v1.34.11...v1.35.0) (2025-06-05)
 
 **Note:** Version bump only for package @certd/ui-client

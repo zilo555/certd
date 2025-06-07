@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.35.1](https://github.com/certd/certd/compare/v1.35.0...v1.35.1) (2025-06-07)
+
+### Performance Improvements
+
+* aliyun alb支持部署扩展证书 ([2a19b61](https://github.com/certd/certd/commit/2a19b61b7a78620c06396c2cc37cc77d738b6d12))
+
 # [1.35.0](https://github.com/certd/certd/compare/v1.34.11...v1.35.0) (2025-06-05)
 
 **Note:** Version bump only for package @certd/plugin-lib
