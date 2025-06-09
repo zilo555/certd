@@ -153,4 +153,17 @@ export class AliyunSslClient {
   async deleteCert(certId: any) {
     await this.doRequest("DeleteUserCertificate", { CertId: certId }, { method: "POST" });
   }
+
+  getCasRegionFromEndpoint(endpoint: string) {
+    /**
+     * {value: 'cas.aliyuncs.com', label: '中国大陆'},
+     *         {value: 'cas.ap-southeast-1.aliyuncs.com', label: '新加坡'},
+     *         {value: 'cas.eu-central-1.aliyuncs.com', label: '德国（法兰克福）'},
+     */
+    const region = endpoint.replace(".aliyuncs.com", "").replace("cas.", "");
+    if (region === "cas") {
+      return "cn-hangzhou";
+    }
+    return region;
+  }
 }
