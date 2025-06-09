@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.35.2](https://github.com/certd/certd/compare/v1.35.1...v1.35.2) (2025-06-09)
+
+### Bug Fixes
+
+* 修复阿里云新加坡clb无法部署证书的bug ([c1fbc8c](https://github.com/certd/certd/commit/c1fbc8cd68ae020ef342e4e92f4d9b4869ca1ead))
+* 修复阿里云新加坡clb无法部署证书的bug ([3e84e11](https://github.com/certd/certd/commit/3e84e116e863b54c6b4d7db160af372dacc5857f))
+* 修复检查github release 插件无法保存最后版本的bug ([a92107c](https://github.com/certd/certd/commit/a92107cc47133883b099d5228b06373e84c8bb50))
+* 修复站点监控定时器多次添加的bug ([9361679](https://github.com/certd/certd/commit/936167972fe83e519bc01a0dd961d9c0635d24ab))
+
+### Performance Improvements
+
+* 阿里云dns操作增加重试机制 ([424fd96](https://github.com/certd/certd/commit/424fd96615c05e949af8c837c261c1400bdffba2))
+* 优化阿里云nlb支持部署扩展证书 ([9cbdfda](https://github.com/certd/certd/commit/9cbdfda829b231733d54c66c5024d46e6fc11af3))
+* 子域名托管帮助链接优化为打开新窗口 ([7c0cdd1](https://github.com/certd/certd/commit/7c0cdd169e2f943e703e433677f2f437d4aa02ee))
+* history增加触发类型显示 ([7f6070c](https://github.com/certd/certd/commit/7f6070c960ed7bf02add5ab36436de6573f2f1fa))
+
 ## [1.35.1](https://github.com/certd/certd/compare/v1.35.0...v1.35.1) (2025-06-07)
 
 ### Bug Fixes
