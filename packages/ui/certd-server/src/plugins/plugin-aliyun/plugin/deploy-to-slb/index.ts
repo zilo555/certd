@@ -229,13 +229,11 @@ export class AliyunDeployCertToSLB extends AbstractTaskPlugin {
   }
 
   async uploadServerCert(client: any, aliyunCert: CasCertInfo) {
-
-    const casRegion = client.getCasRegionFromEndpoint(this.casEndpoint);
     const params = {
       RegionId: this.regionId,
       AliCloudCertificateId: aliyunCert.certId,
       AliCloudCertificateName: aliyunCert.certName,
-      AliCloudCertificateRegionId: casRegion
+      AliCloudCertificateRegionId: aliyunCert.casRegion
     };
 
     const res = await client.request('UploadServerCertificate', params);
