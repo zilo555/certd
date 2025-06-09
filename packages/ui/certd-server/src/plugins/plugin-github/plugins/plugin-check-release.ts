@@ -71,6 +71,7 @@ export class GithubCheckRelease extends AbstractTaskPlugin {
 
     if(res.tag_name == null || res.tag_name ==lastVersion){
       this.logger.info(`暂无更新，${res.tag_name}`);
+      this.lastVersion = res.tag_name || lastVersion;
       return "skip"
     }
     //有更新
