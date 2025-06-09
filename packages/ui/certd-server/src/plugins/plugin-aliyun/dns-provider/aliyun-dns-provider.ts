@@ -109,6 +109,11 @@ export class AliyunDnsProvider extends AbstractDnsProvider {
       if (e.code === 'DomainRecordDuplicate') {
         return;
       }
+      if(e.code === "LastOperationNotFinished"){
+        this.logger.info('上一个操作还未完成，5s后重试')
+        await this.ctx.utils.sleep(5000)
+        return this.createRecord(options)
+      }
       this.logger.info('添加域名解析出错', e);
       this.resolveError(e, options);
     }
@@ -131,10 +136,18 @@ export class AliyunDnsProvider extends AbstractDnsProvider {
     const requestOption = {
       method: 'POST',
     };
-
-    const ret = await this.client.request('DeleteDomainRecord', params, requestOption);
-    this.logger.info('删除域名解析成功:', fullRecord, value, ret.RecordId);
-    return ret.RecordId;
+    try{
+      const ret = await this.client.request('DeleteDomainRecord', params, requestOption);
+      this.logger.info('删除域名解析成功:', fullRecord, value, ret.RecordId);
+      return ret.RecordId;
+    }catch (e) {
+      if(e.code === "LastOperationNotFinished"){
+        this.logger.info('上一个操作还未完成，5s后重试')
+        await this.ctx.utils.sleep(5000)
+        return this.removeRecord(options)
+      }
+      throw e
+    }
   }
 }
 
