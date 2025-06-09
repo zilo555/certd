@@ -497,7 +497,7 @@ export class PipelineService extends BaseService<PipelineEntity> {
     };
 
     const userId = entity.userId;
-    const historyId = await this.historyService.start(entity);
+    const historyId = await this.historyService.start(entity,triggerType);
     const userIsAdmin = await this.userService.isAdmin(userId);
     const user: UserInfo = {
       id: userId,

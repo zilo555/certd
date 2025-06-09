@@ -60,12 +60,13 @@ export class HistoryService extends BaseService<HistoryEntity> {
     return new HistoryDetail(entity, log);
   }
 
-  async start(pipeline: PipelineEntity) {
+  async start(pipeline: PipelineEntity,triggerType:string) {
     const bean = {
       userId: pipeline.userId,
       pipelineId: pipeline.id,
       title: pipeline.title,
       status: 'start',
+      triggerType
     };
     const { id } = await this.add(bean);
     //清除大于pipeline.keepHistoryCount的历史记录

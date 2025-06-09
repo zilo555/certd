@@ -2,9 +2,10 @@ import * as api from "./api";
 import { useI18n } from "vue-i18n";
 import { computed, Ref, ref } from "vue";
 import { useRouter } from "vue-router";
-import { AddReq, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, EditReq, UserPageQuery, UserPageRes, utils } from "@fast-crud/fast-crud";
+import { AddReq, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, EditReq, UserPageQuery, UserPageRes, utils } from "@fast-crud/fast-crud";
 import { useUserStore } from "/@/store/user";
 import { useSettingStore } from "/@/store/settings";
+import { statusUtil } from "/@/views/certd/pipeline/pipeline/utils/util.status";
 
 export default function ({ crudExpose, context }: CreateCrudOptionsProps): CreateCrudOptionsRet {
   const router = useRouter();
@@ -141,6 +142,50 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             cellRender: ({ row, value }) => {
               return <router-link to={{ path: "/certd/pipeline/detail", query: { id: row.pipelineId, editMode: false, historyId: row.id } }}>{value}</router-link>;
             },
+          },
+        },
+        triggerType: {
+          title: "触发类型",
+          type: "dict-select",
+          search: {
+            show: true,
+          },
+          dict: dict({
+            data: [
+              { value: "user", label: "手动执行" },
+              { value: "timer", label: "定时执行" },
+            ],
+          }),
+          form: {
+            show: false,
+            value: "custom",
+          },
+          column: {
+            sorter: true,
+            width: 90,
+            align: "center",
+            show: true,
+            component: {
+              color: "auto",
+            },
+          },
+        },
+        status: {
+          title: "状态",
+          type: "dict-select",
+          search: {
+            show: true,
+          },
+          dict: dict({
+            data: statusUtil.getOptions(),
+          }),
+          form: {
+            show: false,
+          },
+          column: {
+            sorter: true,
+            width: 120,
+            align: "center",
           },
         },
         createTime: {

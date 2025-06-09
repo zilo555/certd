@@ -16,6 +16,9 @@ export class HistoryEntity {
   @Column({ comment: '结果状态', length: 20, nullable: true })
   status: string;
 
+  @Column({ name: 'trigger_type',comment: '触发类型', length: 20, nullable: true })
+  triggerType: string;
+
   @Column({
     name: 'end_time',
     comment: '结束时间',
