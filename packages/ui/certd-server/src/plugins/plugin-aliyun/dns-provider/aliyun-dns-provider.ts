@@ -101,7 +101,6 @@ export class AliyunDnsProvider extends AbstractDnsProvider {
     const requestOption = {
       method: 'POST',
     };
-
     try {
       const ret = await this.client.request('AddDomainRecord', params, requestOption);
       this.logger.info('添加域名解析成功:', JSON.stringify(options), ret.RecordId);

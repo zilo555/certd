@@ -6,8 +6,28 @@
         <text-editable v-model="pipeline.title" :hover-show="false" :disabled="!editMode"></text-editable>
       </div>
       <div class="more flex items-center flex-1 justify-end">
+        <div v-if="isCert" class="flex items-center hidden md:block">
+          <a-tag class="mr-5 pointer" color="green" type="primary" text="查看证书" @click="viewCert(pipeline.id)">
+            <span class="flex"><fs-icon icon="ant-design:eye-outlined"></fs-icon> 查看证书</span>
+          </a-tag>
+          <a-tag class="mr-5 pointer" color="green" type="primary" text="下载证书" @click="downloadCert(pipeline.id)">
+            <span class="flex"> <fs-icon icon="ant-design:download-outlined"></fs-icon> 下载证书 </span>
+          </a-tag>
+        </div>
+
         <div class="flex items-center hidden md:block">
-          <a-tag v-if="nextTriggerTimes" color="blue">下次执行时间：{{ nextTriggerTimes }}</a-tag>
+          <a-tag v-if="nextTriggerTimes" color="blue">
+            <span class="flex">
+              <fs-icon icon="ant-design:time-outline"></fs-icon>
+              下次执行时间：{{ nextTriggerTimes }}
+            </span>
+          </a-tag>
+          <a-tag v-else-if="nextTriggerTimes === false" color="red">
+            <span class="flex">
+              <fs-icon icon="ant-design:time-outline"></fs-icon>
+              未设置触发源，不会自动执行
+            </span>
+          </a-tag>
         </div>
         <div class="basis-40 flex justify-end mr-10">
           <template v-if="editMode">
@@ -17,11 +37,6 @@
           <template v-else>
             <fs-button icon="ant-design:edit-outlined" type="primary" @click="edit">编辑</fs-button>
           </template>
-        </div>
-
-        <div v-if="isCert" class="flex items-center hidden md:block">
-          <fs-button icon="ant-design:eye-outlined" class="mr-5" type="primary" text="查看证书" @click="viewCert(pipeline.id)"> </fs-button>
-          <fs-button icon="ant-design:download-outlined" class="mr-5" type="primary" text="下载证书" @click="downloadCert(pipeline.id)"> </fs-button>
         </div>
       </div>
     </template>
@@ -251,7 +266,7 @@
                 @cancel="historyCancel()"
               ></pi-history-timeline-item>
             </template>
-            <a-empty v-if="histories.length === 0"> </a-empty>
+            <a-empty v-if="histories.length === 0"></a-empty>
           </a-timeline>
         </a-page-header>
       </div>
@@ -291,7 +306,17 @@ import { useCertViewer } from "/@/views/certd/pipeline/use";
 export default defineComponent({
   name: "PipelineEdit",
   // eslint-disable-next-line vue/no-unused-components
-  components: { FsIcon, PiHistoryTimelineItem, PiTaskForm, PiTriggerForm, PiTaskView, PiStatusShow, PiNotificationForm, VDraggable, TaskShortcuts },
+  components: {
+    FsIcon,
+    PiHistoryTimelineItem,
+    PiTaskForm,
+    PiTriggerForm,
+    PiTaskView,
+    PiStatusShow,
+    PiNotificationForm,
+    VDraggable,
+    TaskShortcuts,
+  },
   props: {
     pipelineId: {
       type: [Number, String],
@@ -324,7 +349,7 @@ export default defineComponent({
     const nextTriggerTimes = computed(() => {
       const triggers = pipeline.value.triggers;
       if (!triggers || triggers.length === 0) {
-        return null;
+        return false;
       }
       let nextTimes: any = [];
       for (const item of triggers) {
@@ -338,6 +363,7 @@ export default defineComponent({
     });
 
     const router = useRouter();
+
     function goBack() {
       router.back();
     }
@@ -393,8 +419,10 @@ export default defineComponent({
       }
       return true;
     }
+
     const intervalLoadHistoryRef = ref();
     const isLoadingHistory = ref(false);
+
     function watchNewHistoryList() {
       intervalLoadHistoryRef.value = setInterval(async () => {
         if (isLoadingHistory.value) {
@@ -418,6 +446,7 @@ export default defineComponent({
         }
       }, 3000);
     }
+
     onMounted(() => {
       watchNewHistoryList();
     });
@@ -448,7 +477,15 @@ export default defineComponent({
           return;
         }
         const detail: PipelineDetail = await props.options.getPipelineDetail({ pipelineId: value });
-        currentPipeline.value = _.merge({ title: "新管道流程", stages: [], triggers: [], notifications: [] }, detail.pipeline);
+        currentPipeline.value = _.merge(
+          {
+            title: "新管道流程",
+            stages: [],
+            triggers: [],
+            notifications: [],
+          },
+          detail.pipeline
+        );
         pipeline.value = currentPipeline.value;
         await loadHistoryList(true);
       },
@@ -563,6 +600,7 @@ export default defineComponent({
       function isLastStage(index: number) {
         return false;
       }
+
       return {
         stageAdd,
         isLastStage,
@@ -682,6 +720,7 @@ export default defineComponent({
       }
 
       const validateErrors: Ref = ref({});
+
       function addValidateError(taskId: string, error: any) {
         const errors = validateErrors.value[taskId] || [];
         validateErrors.value[taskId] = errors;
@@ -736,6 +775,7 @@ export default defineComponent({
       function hasValidateError(taskId: string) {
         return validateErrors.value[taskId] != null;
       }
+
       const save = async (offEdit = true) => {
         doValidate();
 
@@ -799,9 +839,11 @@ export default defineComponent({
       };
 
       const logsCollapse = ref(false);
+
       function toggleLogsCollapse() {
         logsCollapse.value = !logsCollapse.value;
       }
+
       return {
         historyView,
         historyCancel,
@@ -900,9 +942,11 @@ export default defineComponent({
       text-overflow: ellipsis;
       text-wrap: nowrap;
       display: flex;
+
       .back {
         margin-right: 10px;
       }
+
       .text-editable {
         width: 300px;
       }
@@ -912,47 +956,57 @@ export default defineComponent({
   .pi-status-show {
     display: inline-flex;
   }
+
   .fs-page-content {
     overflow-x: auto;
   }
+
   .layout {
     width: 100%;
     height: 100%;
     position: relative;
     display: flex;
     overflow-x: hidden;
+
     .layout-left {
       flex: 1;
       height: 100%;
     }
+
     .layout-right {
       width: 350px;
       height: 100%;
     }
   }
+
   .pipeline-container {
     width: 100%;
     height: 100%;
     position: relative;
     overflow: auto;
   }
+
   .pipeline {
     position: absolute;
     left: 0;
     top: 0;
     height: 100%;
+
     .stages {
       display: flex;
       overflow: auto;
       min-width: 100%;
       height: 100%;
+
       .stage {
         width: 300px;
         border-right: 1px solid #c7c7c7;
+
         .is-add {
           visibility: hidden;
           color: gray;
         }
+
         &:hover .is-add {
           visibility: visible;
         }
@@ -961,11 +1015,13 @@ export default defineComponent({
           padding: 20px;
           color: gray;
           display: flex;
+
           .stage-move-handle {
             cursor: move;
             margin-left: 4px;
           }
         }
+
         //.sortable-ghost {
         //  .line {
         //    visibility: hidden;
@@ -979,6 +1035,7 @@ export default defineComponent({
 
           &.line-left {
             left: 25px;
+
             .flow-line {
               border-right: 0;
             }
@@ -986,6 +1043,7 @@ export default defineComponent({
 
           &.line-right {
             right: 25px;
+
             .flow-line {
               border-left: 0;
             }
@@ -996,6 +1054,7 @@ export default defineComponent({
             border: 1px solid #c7c7c7;
             border-top: 0;
           }
+
           .add-stage-btn {
             display: inline-flex;
             visibility: hidden;
@@ -1005,6 +1064,7 @@ export default defineComponent({
             bottom: -12px;
             left: -12px;
             z-index: 100;
+
             &:hover {
               color: #1890ff;
             }
@@ -1017,6 +1077,7 @@ export default defineComponent({
 
             &.line-left {
               left: 0;
+
               .flow-line {
                 border-right: 0;
                 border-left: 0;
@@ -1025,6 +1086,7 @@ export default defineComponent({
 
             &.line-right {
               right: 0;
+
               .flow-line {
                 border-left: 0;
                 border-right: 0;
@@ -1044,13 +1106,16 @@ export default defineComponent({
             }
           }
         }
+
         &.last-stage {
           .line {
             width: 50% !important;
             right: auto;
+
             .flow-line {
               border-right: 0;
             }
+
             .add-stage-btn {
               visibility: hidden;
             }
@@ -1074,6 +1139,7 @@ export default defineComponent({
                 }
               }
             }
+
             .task {
               display: flex;
               flex-direction: column;
@@ -1086,6 +1152,7 @@ export default defineComponent({
                 &.in-edit {
                   margin-right: 28px;
                 }
+
                 &.disabled {
                 }
               }
@@ -1097,12 +1164,15 @@ export default defineComponent({
                 //font-size: 18px;
                 cursor: pointer;
                 z-index: 10;
+
                 &:hover {
                   color: #1890ff;
                 }
+
                 &.copy {
                   right: 30px;
                 }
+
                 &.drag {
                   right: 10px;
                   cursor: move;
@@ -1114,6 +1184,7 @@ export default defineComponent({
               }
 
               position: relative;
+
               .shortcut {
                 position: absolute;
                 bottom: -10px;
@@ -1128,6 +1199,7 @@ export default defineComponent({
 
   .layout-right {
     position: relative;
+
     &.collapsed {
       margin-right: -350px;
     }

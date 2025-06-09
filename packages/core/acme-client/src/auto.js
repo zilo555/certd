@@ -216,12 +216,16 @@ export default async (client, userOpts) => {
         return promise;
     }
 
-    async function runPromisePa(tasks, waitTime = 5000) {
+    async function runPromisePa(tasks, waitTime = 8000) {
         const results = [];
+        let j = 0
         // eslint-disable-next-line no-await-in-loop,no-restricted-syntax
         for (const task of tasks) {
+            j++
+            log(`开始第${j}个任务`);
             results.push(task());
             // eslint-disable-next-line no-await-in-loop
+            log(`wait ${waitTime}s`)
             await wait(waitTime);
         }
         return Promise.all(results);
@@ -245,6 +249,7 @@ export default async (client, userOpts) => {
                 log(`跳过本地验证（skipChallengeVerification=true），等待 60s`);
                 await wait(60 * 1000);
             } else {
+                log("开始本地校验")
                 await runPromisePa(localVerifyTasks, 1000);
                 log(`本地校验完成，等待${waitDnsDiffuseTime}s`)
                 await wait(waitDnsDiffuseTime * 1000)

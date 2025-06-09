@@ -18,7 +18,7 @@
           <div class="helper">监控请求重试次数</div>
         </a-form-item>
         <a-form-item label="监控定时设置" :name="['cron']">
-          <div class="flex">
+          <div class="flex flex-baseline">
             <cron-editor v-model="formState.cron" :disabled="!settingsStore.isPlus" :allow-every-min="userStore.isAdmin" />
             <vip-button class="ml-5" mode="button"></vip-button>
           </div>
@@ -71,7 +71,7 @@ const doSave = async (form: any) => {
 <style lang="less">
 .page-user-settings {
   .user-settings-form {
-    width: 600px;
+    width: 700px;
     margin: 20px;
   }
 }
