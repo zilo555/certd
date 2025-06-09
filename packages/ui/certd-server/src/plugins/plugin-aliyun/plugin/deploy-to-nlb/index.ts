@@ -1,6 +1,13 @@
 import { AbstractTaskPlugin, IsTaskPlugin, pluginGroups, RunStrategy, TaskInput } from '@certd/pipeline';
 import { CertInfo, CertReader } from "@certd/plugin-cert";
-import { AliyunAccess, AliyunClient, AliyunSslClient, createCertDomainGetterInputDefine, createRemoteSelectInputDefine } from '@certd/plugin-lib';
+import {
+  AliyunAccess,
+  AliyunClient,
+  AliyunClientV2,
+  AliyunSslClient,
+  createCertDomainGetterInputDefine,
+  createRemoteSelectInputDefine
+} from "@certd/plugin-lib";
 import { CertApplyPluginNames} from '@certd/plugin-cert';
 @IsTaskPlugin({
   name: 'AliyunDeployCertToNLB',
@@ -29,6 +36,23 @@ export class AliyunDeployCertToNLB extends AbstractTaskPlugin {
 
   @TaskInput(createCertDomainGetterInputDefine({ props: { required: false } }))
   certDomains!: string[];
+
+
+  @TaskInput({
+    title: '证书接入点',
+    helper: '不会选就保持默认即可',
+    value: 'cas.aliyuncs.com',
+    component: {
+      name: 'a-select',
+      options: [
+        { value: 'cas.aliyuncs.com', label: '中国大陆' },
+        { value: 'cas.ap-southeast-1.aliyuncs.com', label: '新加坡' },
+        { value: 'cas.eu-central-1.aliyuncs.com', label: '德国（法兰克福）' },
+      ],
+    },
+    required: true,
+  })
+  casEndpoint!: string;
 
   @TaskInput({
     title: 'Access授权',
@@ -74,21 +98,30 @@ export class AliyunDeployCertToNLB extends AbstractTaskPlugin {
   )
   listeners!: string[];
 
+
+
+
   @TaskInput({
-    title: '证书接入点',
-    helper: '不会选就保持默认即可',
-    value: 'cas.aliyuncs.com',
-    component: {
-      name: 'a-select',
-      options: [
-        { value: 'cas.aliyuncs.com', label: '中国大陆' },
-        { value: 'cas.ap-southeast-1.aliyuncs.com', label: '新加坡' },
-        { value: 'cas.eu-central-1.aliyuncs.com', label: '德国（法兰克福）' },
-      ],
-    },
-    required: true,
-  })
-  casEndpoint!: string;
+      title: "部署证书类型",
+      value: "default",
+      component: {
+        name: "a-select",
+        vModel: "value",
+        options: [
+          {
+            label: "默认证书",
+            value: "default"
+          },
+          {
+            label: "扩展证书",
+            value: "extension"
+          }
+        ]
+      },
+      required: true
+    }
+  )
+  deployType: string = "default";
 
   async onInstance() {}
 
@@ -110,24 +143,137 @@ export class AliyunDeployCertToNLB extends AbstractTaskPlugin {
     this.logger.info(`开始部署证书到阿里云(nlb)`);
     const access = await this.getAccess<AliyunAccess>(this.accessId);
     const certId = await this.getAliyunCertId(access);
+    const nlbClientV2 = this.getNLBClientV2(access);
+    if (this.deployType === "extension") {
+      //部署扩展证书
+      await this.deployExtensionCert(nlbClientV2, certId);
+    } else {
+      const client = await this.getLBClient(access, this.regionId);
+      await this.deployDefaultCert(certId, client);
+    }
 
-    const client = await this.getLBClient(access, this.regionId);
+    await this.ctx.utils.sleep(10000)
+    for (const listener of this.listeners) {
+      await this.clearInvalidCert(nlbClientV2, listener);
+    }
 
+    this.logger.info('执行完成');
+  }
+
+  async deployExtensionCert(client: AliyunClientV2, certId: any) {
+    for (const listenerId of this.listeners) {
+      this.logger.info(`开始部署监听器${listenerId}的扩展证书`);
+      await client.doRequest({
+        // 接口名称
+        action: "AssociateAdditionalCertificatesWithListener",
+        // 接口版本
+        version: "2022-04-30",
+        data: {
+          body: {
+            ListenerId: listenerId,
+            RegionId: this.regionId,
+            "AdditionalCertificateIds.1":  certId
+          }
+        }
+      });
+
+      this.logger.info(`部署监听器${listenerId}的扩展证书成功`);
+    }
+  }
+
+
+  async deployDefaultCert(certId: any, client: AliyunClient) {
     for (const listener of this.listeners) {
       //查询原来的证书
       const params: any = {
         RegionId: this.regionId,
         ListenerId: listener,
-        CertificateIds: [certId],
+        CertificateIds:[certId], //旧sdk
       };
 
       const res = await client.request('UpdateListenerAttribute', params);
       this.checkRet(res);
       this.logger.info(`部署${listener}监听器证书成功`, JSON.stringify(res));
-
-      //删除旧证书关联
     }
-    this.logger.info('执行完成');
+  }
+
+
+  getNLBClientV2(access: AliyunAccess) {
+    return access.getClient(`nlb.${this.regionId}.aliyuncs.com`);
+  }
+
+  async clearInvalidCert(client: AliyunClientV2, listener: string) {
+    this.logger.info(`开始清理监听器${listener}的过期证书`);
+    const req = {
+      // 接口名称
+      action: "ListListenerCertificates",
+      // 接口版本
+      version: "2022-04-30",
+      data: {
+        body: {
+          ListenerId: listener,
+          RegionId: this.regionId
+        }
+      }
+    };
+    const res = await client.doRequest(req);
+    const list = res.Certificates;
+    if (list.length === 0) {
+      this.logger.info(`监听器${listener}没有绑定证书`);
+      return
+    }
+
+    const sslClient = new AliyunSslClient({
+      access: client.access,
+      logger: this.logger,
+      endpoint: this.casEndpoint
+    });
+
+
+    const certIds = [];
+    for (const item of list) {
+      if (item.Status !== "Associated") {
+        continue;
+      }
+      if (item.IsDefault) {
+        continue;
+      }
+      certIds.push( parseInt(item.CertificateId));
+    }
+    //检查是否过期，过期则删除
+    const invalidCertIds = [];
+    for (const certId of certIds) {
+      const res = await sslClient.getCertInfo(certId);
+      if (res.notAfter < new Date().getTime()) {
+        invalidCertIds.push(certId);
+      }
+    }
+    if (invalidCertIds.length === 0) {
+      this.logger.info(`监听器${listener}没有过期的证书`);
+      return
+    }
+    this.logger.info(`开始解绑过期的证书:${invalidCertIds}`);
+
+    const ids:any = {}
+    let i = 0
+    for (const certId of invalidCertIds) {
+      i++
+      ids[`AdditionalCertificateIds.${i}`] = certId;
+    }
+    await client.doRequest({
+      // 接口名称
+      action: "DissociateAdditionalCertificatesFromListener",
+      // 接口版本
+      version: "2022-04-30",
+      data: {
+        body: {
+          ListenerId: listener,
+          RegionId: this.regionId,
+          ...ids
+        }
+      }
+    });
+    this.logger.info(`解绑过期证书成功`);
   }
 
   async getAliyunCertId(access: AliyunAccess) {

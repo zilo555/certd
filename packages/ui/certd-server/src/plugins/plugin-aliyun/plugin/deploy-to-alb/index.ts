@@ -114,10 +114,11 @@ export class AliyunDeployCertToALB extends AbstractTaskPlugin {
             value: "extension"
           }
         ]
-      }
+      },
+      required: true
     }
   )
-  deployType!: string;
+  deployType: string = "default";
 
 
   async onInstance() {
@@ -146,14 +147,18 @@ export class AliyunDeployCertToALB extends AbstractTaskPlugin {
     const access = await this.getAccess<AliyunAccess>(this.accessId);
     const certId = await this.getAliyunCertId(access);
 
-
+    //部署扩展证书
+    const albClientV2 = this.getALBClientV2(access);
     if (this.deployType === "extension") {
-      //部署扩展证书
-      const client = this.getALBClientV2(access);
-      await this.deployExtensionCert(client, certId);
+      await this.deployExtensionCert(albClientV2, certId);
     } else {
       const client = await this.getLBClient(access, this.regionId);
       await this.deployDefaultCert(certId, client);
+    }
+
+    await this.ctx.utils.sleep(10000)
+    for (const listener of this.listeners) {
+      await this.clearInvalidCert(albClientV2, listener);
     }
 
 
@@ -200,15 +205,10 @@ export class AliyunDeployCertToALB extends AbstractTaskPlugin {
 
       this.logger.info(`部署监听器${listenerId}的扩展证书成功`);
     }
-
-    await this.ctx.utils.sleep(10000)
-
-    for (const listener of this.listeners) {
-      await this.clearInvalidCert(client, listener);
-    }
   }
 
   async clearInvalidCert(client: AliyunClientV2, listener: string) {
+    this.logger.info(`开始清理监听器${listener}的过期证书`);
     const req = {
       // 接口名称
       action: "ListListenerCertificates",

@@ -29,7 +29,7 @@ export type AliyunSslUploadCertReq = {
   cert: AliyunCertInfo;
 };
 
-export type CasCertInfo = { certId: number; certName: string; certIdentifier: string; notAfter: number };
+export type CasCertInfo = { certId: number; certName: string; certIdentifier: string; notAfter: number; casRegion: string };
 
 export class AliyunSslClient {
   opts: AliyunSslClientOpts;
@@ -69,6 +69,7 @@ export class AliyunSslClient {
       certName: res.Name,
       certIdentifier: res.CertIdentifier,
       notAfter: res.NotAfter,
+      casRegion: this.getCasRegionFromEndpoint(this.opts.endpoint),
     };
   }
 
@@ -155,6 +156,9 @@ export class AliyunSslClient {
   }
 
   getCasRegionFromEndpoint(endpoint: string) {
+    if (!endpoint) {
+      return "cn-hangzhou";
+    }
     /**
      * {value: 'cas.aliyuncs.com', label: '中国大陆'},
      *         {value: 'cas.ap-southeast-1.aliyuncs.com', label: '新加坡'},
