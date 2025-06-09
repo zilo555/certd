@@ -85,6 +85,8 @@ export class Cron {
     }
     this.logger.info(`[cron] register cron : [${req.name}] ,${req.cron}`);
 
+    this.remove(req.name)
+
     const task = new CronTask(req, this.logger);
     this.queue.push(task);
     this.logger.info('当前定时任务数量：', this.getTaskSize());
