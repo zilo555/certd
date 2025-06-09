@@ -18,13 +18,13 @@
         <div class="flex items-center hidden md:block">
           <a-tag v-if="nextTriggerTimes" color="blue">
             <span class="flex">
-              <fs-icon icon="ant-design:time-outline"></fs-icon>
+              <fs-icon icon="ion:time-outline"></fs-icon>
               下次执行时间：{{ nextTriggerTimes }}
             </span>
           </a-tag>
           <a-tag v-else-if="nextTriggerTimes === false" color="red">
             <span class="flex">
-              <fs-icon icon="ant-design:time-outline"></fs-icon>
+              <fs-icon icon="ion:caret-forward-circle-outline"></fs-icon>
               未设置触发源，不会自动执行
             </span>
           </a-tag>
