@@ -1,6 +1,6 @@
 import { Inject, Provide, Scope, ScopeEnum } from '@midwayjs/core';
 import { InjectEntityModel } from '@midwayjs/typeorm';
-import { MoreThan, Not, Repository } from 'typeorm';
+import {In, MoreThan, Not, Repository} from 'typeorm';
 import { UserEntity } from '../entity/user.js';
 import * as _ from 'lodash-es';
 import { BaseService, CommonException, Constants, FileService, SysInstallInfo, SysSettingsService } from '@certd/lib-server';
@@ -15,6 +15,8 @@ import { DbAdapter } from '../../../db/index.js';
 import { simpleNanoId, utils } from '@certd/basic';
 
 export type RegisterType = 'username' | 'mobile' | 'email';
+
+export const AdminRoleId = 1
 /**
  * 系统用户
  */
@@ -275,7 +277,7 @@ export class UserService extends BaseService<UserEntity> {
       },
     });
     const roleIds = userRoles.map(item => item.roleId);
-    if (roleIds.includes(1)) {
+    if (roleIds.includes(AdminRoleId)) {
       return true;
     }
   }
@@ -312,5 +314,24 @@ export class UserService extends BaseService<UserEntity> {
       .getRawMany();
 
     return result;
+  }
+
+  async getAdmins() {
+      const admins = await this.userRoleService.find({
+        where: {
+          roleId: AdminRoleId,
+        },
+      });
+
+      const userIds = admins.map(item => item.userId);
+      return await this.repository.find({
+        where: {
+          id: In(userIds),
+          status: 1,
+        },
+        order: {
+          updateTime: 'DESC',
+        },
+      })
   }
 }
