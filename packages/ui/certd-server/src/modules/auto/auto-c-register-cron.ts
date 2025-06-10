@@ -88,7 +88,7 @@ export class AutoCRegisterCron {
     // 添加plus即将到期检查任务
     this.cron.register({
       name: 'plus-expire-check',
-      cron: `0 10 9 * * *`,
+      cron: `0 10 9 * * *`, // 一天只能检查一次，否则会重复发送通知
       job: async () => {
         const plusInfo = getPlusInfo()
         if (!plusInfo.originVipType || plusInfo.originVipType==="free" ) {
