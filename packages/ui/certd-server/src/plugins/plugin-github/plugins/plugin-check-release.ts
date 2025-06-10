@@ -1,5 +1,6 @@
 import { AbstractTaskPlugin, IsTaskPlugin, pluginGroups, RunStrategy, TaskInput, TaskOutput } from "@certd/pipeline";
 import { GithubAccess } from "../access.js";
+import {SshClient} from "@certd/plugin-lib";
 
 @IsTaskPlugin({
   //命名规范，插件类型+功能（就是目录plugin-demo中的demo），大写字母开头，驼峰命名
@@ -56,6 +57,31 @@ export class GithubCheckRelease extends AbstractTaskPlugin {
   lastVersion?: string;
 
 
+  @TaskInput({
+    title: '主机登录配置',
+    helper: '登录',
+    component: {
+      name: 'access-selector',
+      type: 'ssh',
+    },
+    required: false,
+  })
+  sshAccessId!: string;
+
+  @TaskInput({
+    title: 'shell脚本命令',
+    component: {
+      name: 'a-textarea',
+      vModel: 'value',
+      rows: 6,
+      placeholder: `#拉取最新版镜像\ndocker pull greper/certd:latest \n#重建容器 \nnohup sh -c 'sleep 10; cd ~/deploy/certd/ ; docker compose down; docker compose up -d' >/dev/null & `,
+    },
+    helper: '有新版本后执行命令，比如：拉取最新版镜像，然后重建容器\n注意：自己升级自己需要使用nobup配合sleep',
+    required: false,
+  })
+  script!: string;
+
+
   //插件实例化时执行的方法
   async onInstance() {
   }
@@ -100,6 +126,19 @@ export class GithubCheckRelease extends AbstractTaskPlugin {
       })
     }
 
+    if (this.script != null && this.script.trim() != "") {
+      const connectConf = await this.getAccess(this.sshAccessId);
+      const sshClient = new SshClient(this.logger);
+      const scripts = this.script.split('\n');
+      await sshClient.exec({
+        connectConf,
+        script: scripts,
+        env: {
+          REPO: this.repoName,
+          LAST_VERSION: this.lastVersion,
+        }
+      });
+    }
 
   }
 
