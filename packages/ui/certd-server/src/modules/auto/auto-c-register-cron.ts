@@ -88,7 +88,7 @@ export class AutoCRegisterCron {
     // 添加plus即将到期检查任务
     this.cron.register({
       name: 'plus-expire-check',
-      cron: `0 * * * * *`,
+      cron: `0 10 9 * * *`,
       job: async () => {
         const plusInfo = getPlusInfo()
         if (!plusInfo.originVipType || plusInfo.originVipType==="free" ) {
