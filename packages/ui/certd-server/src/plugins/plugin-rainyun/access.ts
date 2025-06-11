@@ -22,6 +22,7 @@ export class RainyunAccess extends BaseAccess {
         vModel: "value"
       }
     },
+    helper:"https://app.rainyun.com/account/settings/api-key",
     encrypt: true,
     required: true
   })
@@ -48,7 +49,10 @@ export class RainyunAccess extends BaseAccess {
   async getDomainList(req:{offset?:number,size?:number,query?:string}){
     const size = req.size ?? 20;
     const offset = req.offset ?? 0;
-    const page = offset % size === 0 ? offset / size : Math.floor(offset / size) + 1;
+    let page = Math.floor(offset / size);
+    if(offset % size === 0 ){
+      page++
+    }
     const options ={
       page: page,
       perPage: size,
@@ -57,11 +61,8 @@ export class RainyunAccess extends BaseAccess {
       },
     }
     return await this.doRequest({
-      url: "/product/domain/",
+      url: `/product/domain/?options=${encodeURIComponent(JSON.stringify(options))}`,
       method: "GET",
-      params: {
-        options: JSON.stringify(options)
-      }
     });
   }
 
@@ -73,7 +74,7 @@ export class RainyunAccess extends BaseAccess {
       data: req.data,
       params:  req.params,
       headers:{
-        "x-api-key": this.apiKey
+        "X-Api-Key": this.apiKey
       },
       // httpProxy: this.httpProxy||undefined,
     });
