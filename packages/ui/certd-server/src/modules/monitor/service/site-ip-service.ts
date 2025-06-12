@@ -88,7 +88,7 @@ export class SiteIpService extends BaseService<SiteIpEntity> {
     await this.updateIpCount(entity.id)
   }
 
-  async check(ipId: number, domain: string, port: number) {
+  async check(ipId: number, domain: string, port: number,retryTimes = null) {
     if(!ipId){
       return
     }
@@ -105,7 +105,7 @@ export class SiteIpService extends BaseService<SiteIpEntity> {
       const res = await siteTester.test({
         host: domain,
         port: port,
-        retryTimes: 3,
+        retryTimes : retryTimes??3,
         ipAddress: entity.ipAddress
       });
 
@@ -154,7 +154,7 @@ export class SiteIpService extends BaseService<SiteIpEntity> {
     }
   }
 
-  async checkAll(siteInfo: SiteInfoEntity,onFinish?: (e: any) => void) {
+  async checkAll(siteInfo: SiteInfoEntity,retryTimes = null,onFinish?: (e: any) => void) {
     const siteId = siteInfo.id;
     const ips = await this.repository.find({
       where: {
@@ -167,7 +167,7 @@ export class SiteIpService extends BaseService<SiteIpEntity> {
     for (const item of ips) {
       const func = async () => {
         try {
-          return await this.check(item.id, domain, port);
+          return await this.check(item.id, domain, port,retryTimes);
         } catch (e) {
           logger.error("check site item error", e);
           return {

@@ -104,7 +104,7 @@ export class SiteInfoService extends BaseService<SiteInfoEntity> {
    * @param notify
    * @param retryTimes
    */
-  async doCheck(site: SiteInfoEntity, notify = true, retryTimes = 3) {
+  async doCheck(site: SiteInfoEntity, notify = true, retryTimes = null) {
     if (!site?.domain) {
       throw new Error("站点域名不能为空");
     }
@@ -152,7 +152,7 @@ export class SiteInfoService extends BaseService<SiteInfoEntity> {
 
 
       //检查ip
-      await this.checkAllIp(site);
+      await this.checkAllIp(site,retryTimes);
 
       if (!notify) {
         return;
@@ -181,7 +181,7 @@ export class SiteInfoService extends BaseService<SiteInfoEntity> {
     }
   }
 
-  async checkAllIp(site: SiteInfoEntity) {
+  async checkAllIp(site: SiteInfoEntity,retryTimes = null) {
     if (!site.ipCheck) {
       return;
     }
@@ -225,7 +225,7 @@ export class SiteInfoService extends BaseService<SiteInfoEntity> {
         logger.error("send notify error", e);
       }
     };
-    await this.siteIpService.checkAll(site, onFinished);
+    await this.siteIpService.checkAll(site, retryTimes,onFinished);
   }
 
   /**
@@ -234,7 +234,7 @@ export class SiteInfoService extends BaseService<SiteInfoEntity> {
    * @param notify
    * @param retryTimes
    */
-  async check(id: number, notify = false, retryTimes = 3) {
+  async check(id: number, notify = false, retryTimes = null) {
     const site = await this.info(id);
     if (!site) {
       throw new Error("站点不存在");
@@ -326,7 +326,6 @@ export class SiteInfoService extends BaseService<SiteInfoEntity> {
       return setting;
     }
     for (const site of sites) {
-      let retryTimes = 3;
       const setting = await getFromCache(site.userId)
       if (isCommon) {
         //公共的检查，排除有设置cron的用户
@@ -334,8 +333,8 @@ export class SiteInfoService extends BaseService<SiteInfoEntity> {
           //设置了cron，跳过公共检查
           continue;
         }
-        retryTimes = setting.retryTimes??retryTimes
       }
+      let retryTimes = setting?.retryTimes
       this.doCheck(site,true,retryTimes).catch(e => {
         logger.error(`检查站点证书失败，${site.domain}`, e.message);
       });

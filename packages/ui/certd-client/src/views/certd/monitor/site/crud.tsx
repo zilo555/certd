@@ -130,7 +130,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
               await api.DoCheck(row.id);
               await crudExpose.doRefresh();
               notification.success({
-                message: "检查完成",
+                message: "检查任务已提交，请稍后刷新查看结果",
               });
             },
           },

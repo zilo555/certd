@@ -59,7 +59,8 @@ export class TelegramNotification extends BaseNotification {
   skipSslVerify: boolean;
 
   replaceText(text: string) {
-    return text.replaceAll('.', '\\.').replaceAll('*', '\\*');
+    // .*()<> 等都需要用\\进行替换
+    return text.replace(/[\\.*()<>]/g, '\\$&');
   }
   async send(body: NotificationBody) {
     if (!this.botToken || !this.chatId) {
