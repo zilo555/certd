@@ -121,9 +121,13 @@ export abstract class BaseNotification implements INotification {
   async onTestRequest() {
     return await this.doSend({
       userId: 0,
-      title: "【Certd】测试通知【*.foo.com】，标题长度测试、测试、测试",
-      content: `测试通知,*.foo.com
+      title: "【标题】测试通知【*.foo.com】，标题长度测试、测试、测试",
+      content: `测试通知
+域名测试: *.foo.com
 换行测试
+(括号测试)
+<尖括号测试>
+[中括号测试]
       `,
       pipeline: {
         id: 1,
