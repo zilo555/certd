@@ -60,10 +60,24 @@ export class RainyunAccess extends BaseAccess {
         "domains.Domain": req.query??""
       },
     }
-    return await this.doRequest({
+    const res = await this.doRequest({
       url: `/product/domain/?options=${encodeURIComponent(JSON.stringify(options))}`,
       method: "GET",
     });
+
+    return {
+      total: res.TotalRecords,
+      list: res.Records || []
+    }
+  }
+
+
+  async getDomainId(domain:string){
+    const res = await this.getDomainList({query: domain,size:1});
+    if (res.list.length === 0) {
+      throw new Error(`域名${domain}不存在 `  );
+    }
+    return res.list[0].ID;
   }
 
   async doRequest(req:HttpRequestConfig){
