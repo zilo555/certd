@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.35.4](https://github.com/certd/certd/compare/v1.35.3...v1.35.4) (2025-06-13)
+
+### Performance Improvements
+
+* 支持s3 access做测试 ([f00aeac](https://github.com/certd/certd/commit/f00aeacb8b5c81f0bafa4c1b76723dec2b6b7784))
+
 ## [1.35.3](https://github.com/certd/certd/compare/v1.35.2...v1.35.3) (2025-06-12)
 
 ### Bug Fixes
