@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.35.3](https://github.com/certd/certd/compare/v1.35.2...v1.35.3) (2025-06-12)
+
+### Bug Fixes
+
+* 修复消息内容存在()<>等括号情况下无法发送tg通知的bug ([c937583](https://github.com/certd/certd/commit/c937583a50d8513d76adead3648f83eee2fcc6f9))
+
 ## [1.35.2](https://github.com/certd/certd/compare/v1.35.1...v1.35.2) (2025-06-09)
 
 **Note:** Version bump only for package @certd/pipeline

@@ -1,5 +1,6 @@
 import {AccessInput, BaseAccess, IsAccess} from "@certd/pipeline";
 import {HttpRequestConfig} from "@certd/basic";
+import { CertInfo } from "@certd/plugin-cert";
 
 
 /**
@@ -41,13 +42,13 @@ export class RainyunAccess extends BaseAccess {
   testRequest = true;
 
   async onTestRequest() {
-      await this.getDomainList({});
+      await this.getDomainList({limit:1});
       return "ok"
   }
 
   // {"columnFilters":{"domains.Domain":"domain"},"sort":[],"page":1,"perPage":20}
-  async getDomainList(req:{offset?:number,size?:number,query?:string}){
-    const size = req.size ?? 20;
+  async getDomainList(req:{offset?:number,limit?:number,query?:string}){
+    const size = req.limit ?? 20;
     const offset = req.offset ?? 0;
     let page = Math.floor(offset / size);
     if(offset % size === 0 ){
@@ -60,10 +61,70 @@ export class RainyunAccess extends BaseAccess {
         "domains.Domain": req.query??""
       },
     }
-    return await this.doRequest({
+    const res = await this.doRequest({
       url: `/product/domain/?options=${encodeURIComponent(JSON.stringify(options))}`,
       method: "GET",
     });
+
+    return {
+      total: res.TotalRecords,
+      list: res.Records || [],
+      limit: size,
+      offset: offset
+    }
+  }
+
+
+  async getCertList(req:{offset?:number,limit?:number,query?:string}){
+    const size = req.limit ?? 20;
+    const offset = req.offset ?? 0;
+    let page = Math.floor(offset / size);
+    if(offset % size === 0 ){
+      page++
+    }
+    const options ={
+      columnFilters: {
+        Domain: req.query??""
+      },
+      sort:[],
+      page: page,
+      perPage: size,
+
+    }
+    const res = await this.doRequest({
+      url: `product/sslcenter/?options=${encodeURIComponent(JSON.stringify(options))}`,
+      method: "GET",
+    });
+
+    return {
+      total: res.TotalRecords,
+      list: res.Records || [],
+      limit: size,
+      offset: offset
+    }
+  }
+
+  async doCertReplace(req:{certId:number,cert:CertInfo}){
+
+    // /product/sslcenter/{id}
+    return await this.doRequest({
+      url: `product/sslcenter/${req.certId}`,
+      method: "PUT",
+      data: {
+        cert: req.cert.crt,
+        key: req.cert.key,
+      }
+    });
+
+  }
+
+
+  async getDomainId(domain:string){
+    const res = await this.getDomainList({query: domain,limit:1});
+    if (res.list.length === 0) {
+      throw new Error(`域名${domain}不存在`  );
+    }
+    return res.list[0].id;
   }
 
   async doRequest(req:HttpRequestConfig){

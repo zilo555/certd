@@ -49,38 +49,38 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
         pageRequest,
         addRequest,
         editRequest,
-        delRequest
+        delRequest,
       },
       toolbar: {
-        show: false
+        show: false,
       },
       search: {
-        show: false
+        show: false,
       },
       form: {
         wrapper: {
-          width: "1050px"
-        }
+          width: "1050px",
+        },
       },
       rowHandle: {
-        width: 200
+        width: 200,
       },
       table: {
         scroll: {
-          x: 800
+          x: 800,
         },
         rowSelection: {
           type: "radio",
           selectedRowKeys: selectedRowKey,
-          onChange: onSelectChange
+          onChange: onSelectChange,
         },
         customRow: (record: any) => {
           return {
             onClick: () => {
               onSelectChange([record.id]);
-            } // 点击行
+            }, // 点击行
           };
-        }
+        },
       },
       columns: {
         id: {
@@ -88,25 +88,25 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           key: "id",
           type: "number",
           column: {
-            width: 50
+            width: 50,
           },
           form: {
-            show: false
-          }
+            show: false,
+          },
         },
         name: {
           title: "名称",
           search: {
-            show: true
+            show: true,
           },
           type: ["text"],
           form: {
             rules: [{ required: true, message: "请填写名称" }],
-            helper: "随便填，当多个相同类型的授权时，便于区分"
+            helper: "随便填，当多个相同类型的授权时，便于区分",
           },
           column: {
-            width: 200
-          }
+            width: 200,
+          },
         },
         from: {
           title: "级别",
@@ -114,29 +114,29 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           dict: dict({
             data: [
               { label: "系统", value: "sys" },
-              { label: "用户", value: "user" }
-            ]
+              { label: "用户", value: "user" },
+            ],
           }),
           search: {
-            show: false
+            show: false,
           },
           form: {
-            show: false
+            show: false,
           },
           column: {
             width: 100,
             align: "center",
             component: {
-              color: "auto"
+              color: "auto",
             },
-            order: 10
+            order: 10,
           },
           valueBuilder: ({ row, key, value }) => {
             row[key] = row.userId > 0 ? "user" : "sys";
-          }
+          },
         },
-        ...commonColumnsDefine
-      }
-    }
+        ...commonColumnsDefine,
+      },
+    },
   };
 }

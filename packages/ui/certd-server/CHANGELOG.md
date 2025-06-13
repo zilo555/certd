@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.35.3](https://github.com/certd/certd/compare/v1.35.2...v1.35.3) (2025-06-12)
+
+### Bug Fixes
+
+* 修复重试次数设置无效的bug ([e2099ac](https://github.com/certd/certd/commit/e2099ac9ca344bc70bfa4219002e9138708973ae))
+
+### Performance Improvements
+
+* 支持雨云dns解析 ([8354348](https://github.com/certd/certd/commit/83543487e7418683bd79cfe3b9e0d792bdb977f7))
+* 支持雨云dns解析以及雨云证书更新 ([43c7a19](https://github.com/certd/certd/commit/43c7a1984926f5d4647760cc134bb0aede3a7b7a))
+* github 版本检查支持执行脚本 ([bad3504](https://github.com/certd/certd/commit/bad3504d4a15e6989b967b66aa9da8c6981f25bf))
+
 ## [1.35.2](https://github.com/certd/certd/compare/v1.35.1...v1.35.2) (2025-06-09)
 
 ### Bug Fixes

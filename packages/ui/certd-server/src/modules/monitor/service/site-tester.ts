@@ -18,7 +18,7 @@ export type SiteTestRes = {
 export class SiteTester {
   async test(req: SiteTestReq): Promise<SiteTestRes> {
     logger.info("测试站点:", JSON.stringify(req));
-    const maxRetryTimes = req.retryTimes ?? 3;
+    const maxRetryTimes = req.retryTimes==null ? 3 : req.retryTimes;
     let tryCount = 0;
     let result: SiteTestRes = {};
     while (true) {
@@ -28,12 +28,12 @@ export class SiteTester {
       } catch (e) {
         tryCount++;
         if (tryCount > maxRetryTimes) {
-          logger.error(`测试站点出错，重试${maxRetryTimes}次。`, e.message);
+          logger.error(`测试站点出错，已超过最大重试次数（${maxRetryTimes}）`, e.message);
           throw e;
         }
         //指数退避
         const time = 2 ** tryCount;
-        logger.error(`测试站点出错，${time}s后重试`, e);
+        logger.error(`测试站点出错，${time}s后重试(${tryCount}/${maxRetryTimes})`, e);
         await utils.sleep(time * 1000);
       }
     }

@@ -1,7 +1,7 @@
 {
   "name": "@certd/basic",
   "private": false,
-  "version": "1.35.2",
+  "version": "1.35.3",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -45,5 +45,5 @@
     "tslib": "^2.8.1",
     "typescript": "^5.4.2"
   },
-  "gitHead": "f252871fb892af015c99052e3728fb0a0535b012"
+  "gitHead": "d15dfafd5d8c74c1a51c859b2586c26ca01e3bf8"
 }
