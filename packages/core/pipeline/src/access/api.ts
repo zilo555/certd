@@ -37,6 +37,7 @@ export type AccessContext = {
   http: HttpClient;
   logger: ILogger;
   utils: typeof utils;
+  accessService: IAccessService;
 };
 
 export abstract class BaseAccess implements IAccess {

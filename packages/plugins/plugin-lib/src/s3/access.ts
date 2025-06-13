@@ -1,4 +1,6 @@
 import { AccessInput, BaseAccess, IsAccess } from "@certd/pipeline";
+import { ossClientFactory } from "../oss/index.js";
+import S3OssClientImpl from "../oss/impls/s3.js";
 
 /**
  * 这个注解将注册一个授权配置
@@ -82,6 +84,32 @@ export class S3Access extends BaseAccess {
     required: true,
   })
   bucket!: string;
+
+  @AccessInput({
+    title: "测试",
+    component: {
+      name: "api-test",
+      action: "TestRequest",
+    },
+    helper: "点击测试接口是否正常",
+  })
+  testRequest = true;
+
+  async onTestRequest() {
+    const client: S3OssClientImpl = await ossClientFactory.createOssClientByType("s3", {
+      access: this,
+      rootDir: "",
+      ctx: {
+        accessService: this.ctx.accessService,
+        logger: this.ctx.logger,
+        utils: this.ctx.utils,
+      },
+    });
+
+    await client.listDir("/");
+
+    return "ok";
+  }
 }
 
 new S3Access();

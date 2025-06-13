@@ -1,16 +1,16 @@
-import { Inject, Provide, Scope, ScopeEnum } from '@midwayjs/core';
-import { InjectEntityModel } from '@midwayjs/typeorm';
-import { Repository } from 'typeorm';
-import { BaseService, PageReq, PermissionException, ValidateException } from '../../../index.js';
-import { AccessEntity } from '../entity/access.js';
-import { AccessDefine, accessRegistry, newAccess } from '@certd/pipeline';
-import { EncryptService } from './encrypt-service.js';
+import {Inject, Provide, Scope, ScopeEnum} from '@midwayjs/core';
+import {InjectEntityModel} from '@midwayjs/typeorm';
+import {Repository} from 'typeorm';
+import {AccessGetter, BaseService, PageReq, PermissionException, ValidateException} from '../../../index.js';
+import {AccessEntity} from '../entity/access.js';
+import {AccessDefine, accessRegistry, newAccess} from '@certd/pipeline';
+import {EncryptService} from './encrypt-service.js';
 
 /**
  * 授权
  */
 @Provide()
-@Scope(ScopeEnum.Request, { allowDowngrade: true })
+@Scope(ScopeEnum.Request, {allowDowngrade: true})
 export class AccessService extends BaseService<AccessEntity> {
   @InjectEntityModel(AccessEntity)
   repository: Repository<AccessEntity>;
@@ -95,6 +95,7 @@ export class AccessService extends BaseService<AccessEntity> {
     param.encryptSetting = JSON.stringify(encryptSetting);
     param.setting = JSON.stringify(json);
   }
+
   /**
    * 修改
    * @param param 数据
@@ -140,7 +141,8 @@ export class AccessService extends BaseService<AccessEntity> {
       id: entity.id,
       ...setting,
     };
-    return await newAccess(entity.type, input);
+    const accessGetter = new AccessGetter(userId, this.getById.bind(this));
+    return await newAccess(entity.type, input,accessGetter);
   }
 
   async getById(id: any, userId: number): Promise<any> {

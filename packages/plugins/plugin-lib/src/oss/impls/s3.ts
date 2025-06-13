@@ -54,6 +54,9 @@ export default class S3OssClientImpl extends BaseOssClient<S3Access> {
       Prefix: dirKey, // The name of the object. For example, 'sample_upload.txt'.
     };
     const res = await this.client.send(new ListObjectsCommand({ ...params }));
+    if (!res.Contents) {
+      return [];
+    }
     return res.Contents.map(item => {
       return {
         path: item.Key,

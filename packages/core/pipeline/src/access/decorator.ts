@@ -1,5 +1,5 @@
 // src/decorator/memoryCache.decorator.ts
-import { AccessContext, AccessDefine, AccessInputDefine } from "./api.js";
+import { AccessContext, AccessDefine, AccessInputDefine, IAccessService } from "./api.js";
 import { Decorator } from "../decorator/index.js";
 import * as _ from "lodash-es";
 import { accessRegistry } from "./registry.js";
@@ -41,7 +41,7 @@ export function AccessInput(input?: AccessInputDefine): PropertyDecorator {
   };
 }
 
-export async function newAccess(type: string, input: any, ctx?: AccessContext) {
+export async function newAccess(type: string, input: any, accessService: IAccessService, ctx?: AccessContext) {
   const register = accessRegistry.get(type);
   if (register == null) {
     throw new Error(`access ${type} not found`);
@@ -58,6 +58,7 @@ export async function newAccess(type: string, input: any, ctx?: AccessContext) {
       http,
       logger,
       utils,
+      accessService,
     };
   }
   access.setCtx(ctx);

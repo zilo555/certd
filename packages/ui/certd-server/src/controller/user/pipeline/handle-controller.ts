@@ -1,5 +1,5 @@
 import {ALL, Body, Controller, Inject, Post, Provide} from '@midwayjs/core';
-import {AccessService, BaseController, Constants} from '@certd/lib-server';
+import {AccessGetter, AccessService, BaseController, Constants} from '@certd/lib-server';
 import {
   AccessRequestHandleReq,
   IAccessService,
@@ -33,6 +33,7 @@ export class HandleController extends BaseController {
 
   @Post('/access', { summary: Constants.per.authOnly })
   async accessRequest(@Body(ALL) body: AccessRequestHandleReq) {
+    const userId = this.getUserId();
     let inputAccess = body.input.access;
     if (body.input.id > 0) {
       const oldEntity = await this.accessService.info(body.input.id);
@@ -48,8 +49,8 @@ export class HandleController extends BaseController {
         inputAccess = this.accessService.decryptAccessEntity(param);
       }
     }
-
-    const access = await newAccess(body.typeName, inputAccess);
+    const accessGetter = new AccessGetter(userId, this.accessService.getById.bind(this.accessService));
+    const access = await newAccess(body.typeName, inputAccess,accessGetter);
 
     const res = await access.onRequest(body);
 
