@@ -123,6 +123,19 @@ export class PipelineController extends CrudController<PipelineService> {
     return this.ok({});
   }
 
+
+  @Post('/batchUpdateTrigger', { summary: Constants.per.authOnly })
+  async batchUpdateTrigger(@Body('ids') ids: number[], @Body('trigger') trigger: any) {
+    await this.service.batchUpdateTrigger(ids, trigger, this.getUserId());
+    return this.ok({});
+  }
+
+  @Post('/batchUpdateNotification', { summary: Constants.per.authOnly })
+  async batchUpdateNotification(@Body('ids') ids: number[], @Body('notification') notification: any) {
+    await this.service.batchUpdateNotifications(ids, notification, this.getUserId());
+    return this.ok({});
+  }
+
   @Post('/batchRerun', { summary: Constants.per.authOnly })
   async batchRerun(@Body('ids') ids: number[]) {
     await this.service.batchRerun(ids, this.getUserId());

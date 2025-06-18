@@ -84,6 +84,23 @@ export async function BatchUpdateGroup(pipelineIds: number[], groupId: number): 
   });
 }
 
+export async function BatchUpdateTrigger(pipelineIds: number[], trigger: any): Promise<void> {
+  return await request({
+    url: apiPrefix + "/batchUpdateTrigger",
+    method: "post",
+    data: { ids: pipelineIds, trigger },
+  });
+}
+
+export async function BatchUpdateNotificaiton(pipelineIds: number[], notification: any): Promise<void> {
+  return await request({
+    url: apiPrefix + "/batchUpdateNotification",
+    method: "post",
+    data: { ids: pipelineIds, notification },
+  });
+}
+
+
 export async function BatchDelete(pipelineIds: number[]): Promise<void> {
   return await request({
     url: apiPrefix + "/batchDelete",
@@ -98,6 +115,8 @@ export async function BatchRerun(pipelineIds: number[]): Promise<void> {
     data: { ids: pipelineIds },
   });
 }
+
+
 
 export async function GetFiles(pipelineId: number) {
   return await request({

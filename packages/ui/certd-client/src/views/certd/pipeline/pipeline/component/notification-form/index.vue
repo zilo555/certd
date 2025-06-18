@@ -24,17 +24,17 @@
                 disabled: !editMode,
                 options: [
                   { value: 'email', label: '邮件' },
-                  { value: 'other', label: '其他通知方式' }
-                ]
+                  { value: 'other', label: '其他通知方式' },
+                ],
               },
-              rules: [{ required: true, message: '此项必填' }]
+              rules: [{ required: true, message: '此项必填' }],
             }"
           />
           <fs-form-item
             v-model="currentNotification.when"
             :item="{
               title: '触发时机',
-              key: 'type',
+              key: 'when',
               value: ['error'],
               component: {
                 name: 'a-select',
@@ -45,11 +45,11 @@
                   { value: 'start', label: '开始时' },
                   { value: 'success', label: '成功时' },
                   { value: 'turnToSuccess', label: '失败转成功时' },
-                  { value: 'error', label: '失败时' }
-                ]
+                  { value: 'error', label: '失败时' },
+                ],
               },
               helper: `建议仅选择'失败时'和'失败转成功'两种即可`,
-              rules: [{ required: true, message: '此项必填' }]
+              rules: [{ required: true, message: '此项必填' }],
             }"
           />
           <pi-notification-form-email v-if="currentNotification.type === 'email'" ref="optionsRef" v-model:options="currentNotification.options"></pi-notification-form-email>
@@ -59,14 +59,14 @@
             v-model="currentNotification.notificationId"
             :item="{
               title: '通知配置',
-              key: 'type',
+              key: 'notificationId',
               component: {
                 disabled: !editMode,
                 name: NotificationSelector,
-                onSelectedChange
+                onSelectedChange,
               },
               helper: '请选择通知方式',
-              rules: [{ required: true, message: '此项必填' }]
+              rules: [{ required: true, message: '此项必填' }],
             }"
           />
         </a-form>
@@ -96,8 +96,8 @@ export default {
   props: {
     editMode: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   emits: ["update"],
   setup(props: any, context: any) {
@@ -118,23 +118,23 @@ export default {
           {
             type: "string",
             required: true,
-            message: "请选择类型"
-          }
+            message: "请选择类型",
+          },
         ],
         when: [
           {
             type: "string",
             required: true,
-            message: "请选择通知时机"
-          }
+            message: "请选择通知时机",
+          },
         ],
         notificationId: [
           {
             type: "number",
             required: true,
-            message: "请选择通知配置"
-          }
-        ]
+            message: "请选择通知配置",
+          },
+        ],
       });
 
       const notificationDrawerShow = () => {
@@ -195,7 +195,7 @@ export default {
           async onOk() {
             callback.value("delete");
             notificationDrawerClose();
-          }
+          },
         });
       };
 
@@ -222,21 +222,21 @@ export default {
         notificationDelete,
         rules,
         blankFn,
-        optionsRef
+        optionsRef,
       };
     }
 
     return {
       ...useNotificationForm(),
       labelCol: { span: 6 },
-      wrapperCol: { span: 16 }
+      wrapperCol: { span: 16 },
     };
   },
   computed: {
     NotificationSelector() {
       return NotificationSelector;
-    }
-  }
+    },
+  },
 };
 </script>
 

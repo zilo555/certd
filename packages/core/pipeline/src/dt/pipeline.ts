@@ -52,7 +52,9 @@ export type Stage = Runnable & {
 export type Trigger = {
   id: string;
   title: string;
-  cron: string;
+  props: {
+    cron: string;
+  };
   type: string;
 };
 
@@ -78,14 +80,13 @@ export type EmailOptions = {
   receivers: string[];
 };
 export type NotificationWhen = "error" | "success" | "turnToSuccess" | "start";
-export type NotificationType = "email" | "url";
+export type NotificationType = "email" | "other";
 export type Notification = {
   type: NotificationType;
   when: NotificationWhen[];
-  options: EmailOptions;
+  options?: EmailOptions;
   notificationId: number;
   title: string;
-  subType: string;
 };
 
 export type Pipeline = Runnable & {

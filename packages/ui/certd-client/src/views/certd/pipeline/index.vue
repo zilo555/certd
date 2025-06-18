@@ -7,9 +7,11 @@
       <div v-if="selectedRowKeys.length > 0" class="batch-actions">
         <div class="batch-actions-inner">
           <span> 已选择 {{ selectedRowKeys.length }} 项 </span>
-          <fs-button icon="ion:trash-outline" class="color-green" type="link" text="批量删除" @click="batchDelete"></fs-button>
-          <change-group class="color-green" :selected-row-keys="selectedRowKeys" @change="groupChanged"></change-group>
+          <fs-button icon="ion:trash-outline" class="color-red" type="link" text="批量删除" @click="batchDelete"></fs-button>
           <fs-button icon="icon-park-outline:replay-music" class="need-plus" type="link" text="强制重新运行" @click="batchRerun"></fs-button>
+          <change-group class="color-green" :selected-row-keys="selectedRowKeys" @change="batchFinished"></change-group>
+          <change-notification class="color-green" :selected-row-keys="selectedRowKeys" @change="batchFinished"></change-notification>
+          <change-trigger class="color-green" :selected-row-keys="selectedRowKeys" @change="batchFinished"></change-trigger>
         </div>
       </div>
       <template #actionbar-right> </template>
@@ -26,8 +28,10 @@ import { dict, useFs } from "@fast-crud/fast-crud";
 import createCrudOptions from "./crud";
 import PiCertdForm from "./certd-form/index.vue";
 import ChangeGroup from "./components/change-group.vue";
+import ChangeTrigger from "./components/change-trigger.vue";
 import { Modal, notification } from "ant-design-vue";
 import * as api from "./api";
+import ChangeNotification from "/@/views/certd/pipeline/components/change-notification.vue";
 
 defineOptions({
   name: "PipelineManager",
@@ -55,7 +59,7 @@ onActivated(async () => {
   await crudExpose.doRefresh();
 });
 
-function groupChanged() {
+function batchFinished() {
   crudExpose.doRefresh();
   selectedRowKeys.value = [];
 }

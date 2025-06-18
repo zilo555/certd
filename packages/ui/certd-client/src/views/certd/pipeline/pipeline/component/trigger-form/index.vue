@@ -1,12 +1,5 @@
 <template>
-  <a-drawer
-    v-model:open="triggerDrawerVisible"
-    placement="right"
-    :closable="true"
-    width="650px"
-    class="pi-trigger-form"
-    @after-open-change="triggerDrawerOnAfterVisibleChange"
-  >
+  <a-drawer v-model:open="triggerDrawerVisible" placement="right" :closable="true" width="650px" class="pi-trigger-form" @after-open-change="triggerDrawerOnAfterVisibleChange">
     <template #title>
       <div>
         编辑触发器
@@ -26,9 +19,9 @@
               component: {
                 name: 'a-input',
                 vModel: 'value',
-                disabled: !editMode
+                disabled: !editMode,
               },
-              rules: [{ required: true, message: '此项必填' }]
+              rules: [{ required: true, message: '此项必填' }],
             }"
           />
 
@@ -42,9 +35,9 @@
                 name: 'a-select',
                 vModel: 'value',
                 disabled: !editMode,
-                options: [{ value: 'timer', label: '定时' }]
+                options: [{ value: 'timer', label: '定时' }],
               },
-              rules: [{ required: true, message: '此项必填' }]
+              rules: [{ required: true, message: '此项必填' }],
             }"
           />
 
@@ -56,10 +49,10 @@
               component: {
                 disabled: !editMode,
                 name: 'cron-editor',
-                vModel: 'modelValue'
+                vModel: 'modelValue',
               },
               helper: '点击上面的按钮，选择每天几点定时执行。\n建议设置为每天触发一次，证书未到期之前任务会跳过，不会重复执行',
-              rules: [{ required: true, message: '此项必填' }]
+              rules: [{ required: true, message: '此项必填' }],
             }"
           />
         </a-form>
@@ -84,8 +77,8 @@ export default {
   props: {
     editMode: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   emits: ["update"],
   setup(props, context) {
@@ -105,9 +98,9 @@ export default {
           {
             type: "string",
             required: true,
-            message: "请输入名称"
-          }
-        ]
+            message: "请输入名称",
+          },
+        ],
       });
 
       const triggerDrawerShow = () => {
@@ -117,7 +110,7 @@ export default {
         triggerDrawerVisible.value = false;
       };
 
-      const triggerDrawerOnAfterVisibleChange = (val) => {
+      const triggerDrawerOnAfterVisibleChange = val => {
         console.log("triggerDrawerOnAfterVisibleChange", val);
       };
 
@@ -128,7 +121,7 @@ export default {
         triggerDrawerShow();
       };
 
-      const triggerAdd = (emit) => {
+      const triggerAdd = emit => {
         mode.value = "add";
         const trigger = { id: nanoid(), title: "定时触发", type: "timer", props: {} };
         triggerOpen(trigger, emit);
@@ -144,7 +137,7 @@ export default {
         triggerOpen(trigger, emit);
       };
 
-      const triggerSave = async (e) => {
+      const triggerSave = async e => {
         console.log("currentTriggerSave", currentTrigger.value);
         try {
           await triggerFormRef.value.validate();
@@ -164,7 +157,7 @@ export default {
           async onOk() {
             callback.value("delete");
             triggerDrawerClose();
-          }
+          },
         });
       };
 
@@ -185,16 +178,16 @@ export default {
         triggerSave,
         triggerDelete,
         rules,
-        blankFn
+        blankFn,
       };
     }
 
     return {
       ...useTriggerForm(),
       labelCol: { span: 6 },
-      wrapperCol: { span: 16 }
+      wrapperCol: { span: 16 },
     };
-  }
+  },
 };
 </script>
 

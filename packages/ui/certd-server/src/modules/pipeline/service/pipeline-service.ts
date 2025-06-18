@@ -17,7 +17,7 @@ import {
   Executor,
   IAccessService,
   ICnameProxyService,
-  INotificationService,
+  INotificationService, Notification,
   Pipeline,
   ResultType,
   RunHistory,
@@ -45,6 +45,7 @@ import {NotificationService} from "./notification-service.js";
 import {UserSuiteEntity, UserSuiteService} from "@certd/commercial-core";
 import {CertInfoService} from "../../monitor/service/cert-info-service.js";
 import {TaskServiceBuilder} from "./task-service-getter.js";
+import {nanoid} from "nanoid";
 
 const runningTasks: Map<string | number, Executor> = new Map();
 
@@ -149,8 +150,17 @@ export class PipelineService extends BaseService<PipelineEntity> {
     const info = await this.info(pipelineId);
     if (info && !info.disabled) {
       const pipeline = JSON.parse(info.content);
-      // 手动触发，不要await
-      this.registerTriggers(pipeline);
+      this.registerTriggers(pipeline,false);
+    }
+  }
+
+  public async registerTrigger(info:PipelineEntity) {
+    if (info == null) {
+      return;
+    }
+    if (info && !info.disabled) {
+      const pipeline = JSON.parse(info.content);
+      this.registerTriggers(pipeline,false);
     }
   }
 
@@ -174,10 +184,11 @@ export class PipelineService extends BaseService<PipelineEntity> {
       //修改
       old = await this.info(bean.id);
     }
-    const pipeline = JSON.parse(bean.content || '{}');
-    RunnableCollection.initPipelineRunnableType(pipeline);
     const isUpdate = bean.id > 0 && old != null;
 
+
+    const pipeline = JSON.parse(bean.content || '{}');
+    RunnableCollection.initPipelineRunnableType(pipeline);
     let domains = [];
     if (pipeline.stages) {
       RunnableCollection.each(pipeline.stages, (runnable: any) => {
@@ -199,22 +210,32 @@ export class PipelineService extends BaseService<PipelineEntity> {
       //如果是添加，先保存一下，获取到id，更新pipeline.id
       await this.addOrUpdate(bean);
     }
-    await this.clearTriggers(bean.id);
+
+    await this.doUpdatePipelineJson(bean, pipeline);
+
+    //保存域名信息到certInfo表
+    let fromType = 'pipeline';
+    if (bean.type === 'cert_upload') {
+      fromType = 'upload';
+    }
+    await this.certInfoService.updateDomains(pipeline.id, pipeline.userId || bean.userId, domains, fromType);
+    return bean;
+  }
+
+  /**
+   * 更新Pipeline， 包括trigger
+   * @param bean
+   * @param pipeline
+   */
+  async doUpdatePipelineJson(bean: PipelineEntity, pipeline:Pipeline) {
+    await this.clearTriggers(bean);
     if (pipeline.title) {
       bean.title = pipeline.title;
     }
     pipeline.id = bean.id;
     bean.content = JSON.stringify(pipeline);
     await this.addOrUpdate(bean);
-    await this.registerTriggerById(bean.id);
-
-    //保存域名信息到certInfo表
-    let fromType = 'pipeline';
-    if(bean.type === 'cert_upload') {
-      fromType = 'upload';
-    }
-    await this.certInfoService.updateDomains(pipeline.id, pipeline.userId || bean.userId, domains,fromType);
-    return bean;
+    await this.registerTrigger(bean);
   }
 
   private async checkMaxPipelineCount(bean: PipelineEntity, pipeline: Pipeline, domains: string[]) {
@@ -375,11 +396,16 @@ export class PipelineService extends BaseService<PipelineEntity> {
     await this.certInfoService.deleteByPipelineId(id);
   }
 
-  async clearTriggers(id: number) {
+  async clearTriggers(id: number | PipelineEntity) {
     if (id == null) {
       return;
     }
-    const pipeline = await this.info(id);
+    let pipeline:PipelineEntity = null
+    if (typeof id === 'number') {
+      pipeline = await this.info(id);
+    }else{
+      pipeline = id
+    }
     if (!pipeline) {
       return;
     }
@@ -703,6 +729,58 @@ export class PipelineService extends BaseService<PipelineEntity> {
       { groupId }
     );
   }
+
+
+  async batchUpdateTrigger(ids: number[], trigger: any, userId: any){
+
+    const list = await this.find({
+      where:{
+        id: In(ids),
+        userId
+      }
+    })
+
+    for (const item of list) {
+      const pipeline = JSON.parse(item.content);
+      pipeline.triggers = [{
+        id: nanoid(),
+        title: '定时触发',
+        ...trigger
+      }]
+      await this.doUpdatePipelineJson(item,pipeline)
+    }
+
+  }
+
+  async batchUpdateNotifications(ids: number[], notification: Notification, userId: any){
+
+    const list = await this.find({
+      where:{
+        id: In(ids),
+        userId
+      }
+    })
+
+    for (const item of list) {
+      const pipeline = JSON.parse(item.content);
+      pipeline.notifications = [{
+        id: nanoid(),
+        title: '通知',
+        /**
+         * type: NotificationType;
+         *   when: NotificationWhen[];
+         *   options: EmailOptions;
+         *   notificationId: number;
+         *   title: string;
+         *   subType: string;
+         */
+        type: "other",
+        ...notification
+      }]
+      await this.doUpdatePipelineJson(item,pipeline)
+    }
+  }
+
   async batchRerun(ids: number[], userId: any) {
     if (!isPlus()){
       throw new NeedVIPException("此功能需要升级专业版")
