@@ -17,6 +17,7 @@ export function createCertDomainGetterInputDefine(opts?: { certInputKey?: string
           }
         }
         `,
+      template:false,
       required: true,
     },
     opts?.props

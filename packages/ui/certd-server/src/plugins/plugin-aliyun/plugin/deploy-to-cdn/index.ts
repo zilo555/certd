@@ -38,6 +38,7 @@ export class DeployCertToAliyunCDN extends AbstractTaskPlugin {
       name: 'output-selector',
       from: [...CertApplyPluginNames, 'uploadCertToAliyun'],
     },
+    template:false,
     required: true,
   })
   cert!: string;

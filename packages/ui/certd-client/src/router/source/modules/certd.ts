@@ -33,6 +33,24 @@ export const certdResources = [
         },
       },
       {
+        title: "流水线模版",
+        name: "PipelineTemplate",
+        path: "/certd/pipeline/template",
+        component: "/certd/pipeline/template/index.vue",
+        meta: {
+          isMenu: true,
+        },
+      },
+      {
+        title: "流水线模版编辑",
+        name: "PipelineTemplateEdit",
+        path: "/certd/pipeline/template/edit",
+        component: "/certd/pipeline/template/edit.vue",
+        meta: {
+          isMenu: false,
+        },
+      },
+      {
         title: "执行历史记录",
         name: "PipelineHistory",
         path: "/certd/history",

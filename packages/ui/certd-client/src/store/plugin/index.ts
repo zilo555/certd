@@ -157,5 +157,8 @@ export const usePluginStore = defineStore({
     async getPluginConfig(query: any) {
       return await api.GetPluginConfig(query);
     },
+    getPluginDefineSync(name: string) {
+      return this.group.get(name);
+    },
   },
 });
