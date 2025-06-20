@@ -185,8 +185,6 @@ export default {
       }
 
       detail.value = { nodes };
-
-      console.log("nodes", nodes);
     };
 
     const taskViewClose = () => {
