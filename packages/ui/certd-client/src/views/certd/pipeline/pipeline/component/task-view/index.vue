@@ -119,6 +119,31 @@ export default {
           logs: [],
         });
       }
+
+      async function scrollBottom(node: any, force = false) {
+        let el = document.querySelector(`.pi-task-view-logs.id-${node.node.id}`);
+        if (!el) {
+          return;
+        }
+        //判断当前是否在底部
+        let isBottom = true;
+        if (el) {
+          isBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 5;
+        }
+        if (force) {
+          isBottom = true;
+        }
+        await nextTick();
+        el = document.querySelector(`.pi-task-view-logs.id-${node.node.id}`);
+        //如果在底部则滚动到底部
+        if (isBottom && el) {
+          el?.scrollTo({
+            top: el.scrollHeight,
+            behavior: "smooth",
+          });
+        }
+      }
+
       for (let node of nodes) {
         if (currentHistory?.value?.logs != null) {
           node.logs = computed(() => {
@@ -146,30 +171,12 @@ export default {
               return node.logs.value.length;
             },
             async () => {
-              let el = document.querySelector(`.pi-task-view-logs.id-${node.node.id}`);
-              if (!el) {
-                return;
-              }
-              //判断当前是否在底部
-              let isBottom = true;
-              if (el) {
-                isBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 5;
-                console.log("isBottom", isBottom, el.scrollHeight, el.scrollTop, el.clientHeight);
-              }
-              await nextTick();
-              el = document.querySelector(`.pi-task-view-logs.id-${node.node.id}`);
-              //如果在底部则滚动到底部
-              if (isBottom && el) {
-                el?.scrollTo({
-                  top: el.scrollHeight,
-                  behavior: "smooth",
-                });
-              }
-            },
-            {
-              immediate: true,
+              await scrollBottom(node);
             }
           );
+          nextTick(() => {
+            scrollBottom(node, true);
+          });
         }
       }
 
