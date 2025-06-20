@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.35.5](https://github.com/certd/certd/compare/v1.35.4...v1.35.5) (2025-06-20)
+
+### Bug Fixes
+
+* 腾讯云授权支持设置是否国际站，部署到EO插件支持国际站 ([5cd3968](https://github.com/certd/certd/commit/5cd3968929acef333cf30d3b20cf21cea6c82c5f))
+* 修复邮箱包含.号校验失败的bug ([65dcae7](https://github.com/certd/certd/commit/65dcae79f8faa7a6cb425e10a0fdb6758b0719f3))
+
+### Performance Improvements
+
+* 首次打开任务日志查看页面，自动滚动到底部 ([43fee42](https://github.com/certd/certd/commit/43fee42198e8697185b427b1fa3eb79409603393))
+* 支持批量修改通知和定时 ([e11b3be](https://github.com/certd/certd/commit/e11b3becfd4abe6547e84d09adc38ebd6e1c4b87))
+
 ## [1.35.4](https://github.com/certd/certd/compare/v1.35.3...v1.35.4) (2025-06-13)
 
 ### Performance Improvements
