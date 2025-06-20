@@ -17,7 +17,7 @@ const props = withDefaults(
   {
     modelValue: 0,
     edit: false,
-    fontSize: 14
+    fontSize: 14,
   }
 );
 
@@ -26,7 +26,7 @@ const style = computed(() => {
     return {};
   }
   return {
-    fontSize: props.fontSize + "px"
+    fontSize: props.fontSize + "px",
   };
 });
 

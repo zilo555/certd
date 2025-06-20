@@ -41,7 +41,7 @@ export class TencentAccess extends BaseAccess {
         },
       ],
     },
-    encrypt: true,
+    encrypt: false,
     rules: [{ required: true, message: "该项必填" }],
   })
   accountType: string;

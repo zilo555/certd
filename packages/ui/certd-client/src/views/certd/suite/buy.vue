@@ -50,7 +50,7 @@ loadProducts();
 const orderModalRef = ref<any>(null);
 async function doOrder(req: any) {
   await orderModalRef.value.open({
-    ...req
+    ...req,
   });
 }
 
