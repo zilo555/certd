@@ -118,6 +118,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             show: false,
           },
           form: {
+            show: false,
             component: {
               valuesFormat: {
                 labelFormatter: (item: any) => {

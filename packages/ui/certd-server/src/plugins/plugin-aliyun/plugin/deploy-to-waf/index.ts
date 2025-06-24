@@ -132,6 +132,7 @@ export class AliyunDeployCertToWaf extends AbstractTaskPlugin {
     const client = await this.getWafClient(access);
     const instanceId = await this.getInstanceId(client);
     for (const siteDomain of this.cnameDomains) {
+      this.logger.info('开始部署', siteDomain);
       const params = {
         RegionId: this.regionId,
         InstanceId: instanceId,
@@ -140,6 +141,9 @@ export class AliyunDeployCertToWaf extends AbstractTaskPlugin {
       const siteDetail = await client.request('DescribeDomainDetail', params);
       this.logger.info('站点详情', JSON.stringify(siteDetail));
       const listen = siteDetail.Listen;
+      if (!listen) {
+        throw new Error(`没有找到${siteDomain}的监听器`);
+      }
       /**
        * "HttpsPorts": [
        *       443
