@@ -185,4 +185,93 @@ export default {
 	download: {
 		title: "Download Certificate"
 	},
+	source: "Source Code",
+	github: "GitHub",
+	gitee: "Gitee",
+	cron: {
+		clearTip: "Clear Selection",
+		nextTrigger: "Next Trigger Time",
+		tip: "Please set a valid cron expression first"
+	},
+	cronForm: {
+		title: "Scheduled Script",
+		helper: "Click the button above to select the time for daily execution.\nIt is recommended to run once a day. Tasks will be skipped if the certificate is not expiring.",
+		required: "This field is required"
+	},
+	email: {
+		title: "Recipient Email",
+		helper: "Enter your recipient email addresses. Multiple addresses are supported.",
+		required: "This field is required"
+	},
+	plugin: {
+		selectTitle: "Certificate Apply Plugin",
+		jsAcme: "JS-ACME: Easy to use, powerful features [Recommended]",
+		legoAcme: "Lego-ACME: Based on Lego, supports a wide range of DNS providers, suitable for users familiar with Lego"
+	},
+	pipelineForm: {
+		createTitle: "Create Certificate Pipeline",
+		moreParams: "More Parameters",
+		triggerCronTitle: "Scheduled Trigger",
+		triggerCronHelper:
+			"Click the button above to choose a daily execution time.\nIt is recommended to trigger once per day. The task will be skipped if the certificate has not expired and will not be executed repeatedly.",
+		notificationTitle: "Failure Notification",
+		notificationHelper: "Get real-time alerts when the task fails",
+		groupIdTitle: "Pipeline Group"
+	},
+	notificationDefault: "Use Default Notification",
+	monitor: {
+		title: "Site Certificate Monitoring",
+		description: "Check website certificates' expiration at 0:00 daily; reminders sent 10 days before expiration (using default notification channel);",
+		settingLink: "Site Monitoring Settings",
+		limitInfo: "Basic edition limited to 1, professional and above unlimited, current",
+		checkAll: "Check All",
+		confirmTitle: "Confirm",
+		confirmContent: "Confirm to trigger check for all site certificates?",
+		checkSubmitted: "Check task submitted",
+		pleaseRefresh: "Please refresh the page later to see the results",
+		siteName: "Site Name",
+		enterSiteName: "Please enter the site name",
+		domain: "Domain",
+		enterDomain: "Please enter the domain",
+		enterValidDomain: "Please enter a valid domain",
+		httpsPort: "HTTPS Port",
+		enterPort: "Please enter the port",
+		certInfo: "Certificate Info",
+		issuer: "Issuer",
+		certDomains: "Certificate Domains",
+		certProvider: "Issuer",
+		certStatus: "Certificate Status",
+		status: {
+			ok: "Valid",
+			expired: "Expired",
+		},
+		certExpiresTime: "Certificate Expiration",
+		expired: "expired",
+		days: "days",
+		lastCheckTime: "Last Check Time",
+		disabled: "Enable/Disable",
+		ipCheck: "Enable IP Check",
+		selectRequired: "Please select",
+		ipCheckConfirm: "Are you sure to {status} IP check?",
+		ipCount: "IP Count",
+		checkStatus: "Check Status",
+		pipelineId: "Linked Pipeline ID",
+		certInfoId: "Certificate ID",
+		checkSubmittedRefresh: "Check task submitted. Please refresh later to view the result.",
+		ipManagement: "IP Management",
+		bulkImport: "Bulk Import",
+		basicLimitError: "Basic version allows only one monitoring site. Please upgrade to the Pro version.",
+		limitExceeded: "Sorry, you can only create up to {max} monitoring records. Please purchase or upgrade your plan.",
+	},
+	checkStatus: {
+		success: "Success",
+		checking: "Checking",
+		error: "Error",
+	},
+	domainList: {
+		title: "Domain List",
+		helper: "Format: domain:port:name, one per line. Port and name are optional.\nExamples:\nwww.baidu.com:443:Baidu\nwww.taobao.com::Taobao\nwww.google.com",
+		required: "Please enter domains to import",
+		placeholder: "www.baidu.com:443:Baidu\nwww.taobao.com::Taobao\nwww.google.com\n",
+	},
 };

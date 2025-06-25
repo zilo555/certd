@@ -191,4 +191,93 @@ export default {
 	download: {
 		title: "下载证书"
 	},
+	source: "源码",
+	github: "github",
+	gitee: "gitee",
+	cron: {
+		clearTip: "清除选择",
+		nextTrigger: "下次触发时间",
+		tip: "请先设置正确的cron表达式"
+	},
+	cronForm: {
+		title: "定时脚本",
+		helper: "点击上面的按钮，选择每天几点定时执行。\n建议设置为每天触发一次，证书未到期之前任务会跳过，不会重复执行",
+		required: "此项必填"
+	},
+	email: {
+		title: "收件邮箱",
+		helper: "输入你的收件邮箱地址，支持多个邮箱",
+		required: "此项必填"
+	},
+	plugin: {
+		selectTitle: "证书申请插件",
+		jsAcme: "JS-ACME：使用简单方便，功能强大【推荐】",
+		legoAcme: "Lego-ACME：基于Lego实现，支持海量DNS提供商，熟悉LEGO的用户可以使用"
+	},
+	pipelineForm: {
+		createTitle: "创建证书流水线",
+		moreParams: "更多参数",
+		triggerCronTitle: "定时触发",
+		triggerCronHelper:
+			"点击上面的按钮，选择每天几点定时执行。\n建议设置为每天触发一次，证书未到期之前任务会跳过，不会重复执行",
+		notificationTitle: "失败通知",
+		notificationHelper: "任务执行失败实时提醒",
+		groupIdTitle: "流水线分组"
+	},
+	notificationDefault: "使用默认通知",
+	monitor: {
+		title: "站点证书监控",
+		description: "每天0点，检查网站证书的过期时间，到期前10天时将发出提醒（使用默认通知渠道）;",
+		settingLink: "站点监控设置",
+		limitInfo: "基础版限制1条，专业版以上无限制，当前",
+		checkAll: "检查全部",
+		confirmTitle: "确认",
+		confirmContent: "确认触发检查全部站点证书吗?",
+		checkSubmitted: "检查任务已提交",
+		pleaseRefresh: "请稍后刷新页面查看结果",
+		siteName: "站点名称",
+		enterSiteName: "请输入站点名称",
+		domain: "网站域名",
+		enterDomain: "请输入域名",
+		enterValidDomain: "请输入正确的域名",
+		httpsPort: "HTTPS端口",
+		enterPort: "请输入端口",
+		certInfo: "证书信息",
+		issuer: "证书颁发机构",
+		certDomains: "证书域名",
+		certProvider: "颁发机构",
+		certStatus: "证书状态",
+		status: {
+			ok: "正常",
+			expired: "过期",
+		},
+		certExpiresTime: "证书到期时间",
+		expired: "过期",
+		days: "天",
+		lastCheckTime: "上次检查时间",
+		disabled: "禁用启用",
+		ipCheck: "开启IP检查",
+		selectRequired: "请选择",
+		ipCheckConfirm: "确定{status}IP检查？",
+		ipCount: "IP数量",
+		checkStatus: "检查状态",
+		pipelineId: "关联流水线ID",
+		certInfoId: "证书ID",
+		checkSubmittedRefresh: "检查任务已提交，请稍后刷新查看结果",
+		ipManagement: "IP管理",
+		bulkImport: "批量导入",
+		basicLimitError: "基础版只能添加一个监控站点，请赞助升级专业版",
+		limitExceeded: "对不起，您最多只能创建条{max}监控记录，请购买或升级套餐",
+	},
+	checkStatus: {
+		success: "成功",
+		checking: "检查中",
+		error: "异常",
+	},
+	domainList: {
+		title: "域名列表",
+		helper: "格式【域名:端口:名称】，一行一个，其中端口、名称可以省略\n比如：\nwww.baidu.com:443:百度\nwww.taobao.com::淘宝\nwww.google.com",
+		required: "请输入要导入的域名",
+		placeholder: "www.baidu.com:443:百度\nwww.taobao.com::淘宝\nwww.google.com\n",
+	},
 };

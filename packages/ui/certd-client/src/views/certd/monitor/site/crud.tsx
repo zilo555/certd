@@ -11,505 +11,513 @@ import { useSiteIpMonitor } from "./ip/use";
 import { useSiteImport } from "/@/views/certd/monitor/site/use";
 
 export default function ({ crudExpose, context }: CreateCrudOptionsProps): CreateCrudOptionsRet {
-  const { t } = useI18n();
-  const api = siteInfoApi;
-  const { crudBinding } = crudExpose;
-  const pageRequest = async (query: UserPageQuery): Promise<UserPageRes> => {
-    return await api.GetList(query);
-  };
-  const editRequest = async (req: EditReq) => {
-    const { form, row } = req;
-    form.id = row.id;
-    const res = await api.UpdateObj(form);
-    return res;
-  };
-  const delRequest = async (req: DelReq) => {
-    const { row } = req;
-    return await api.DelObj(row.id);
-  };
+	const { t } = useI18n();
+	const api = siteInfoApi;
+	const { crudBinding } = crudExpose;
+	const pageRequest = async (query: UserPageQuery): Promise<UserPageRes> => {
+		return await api.GetList(query);
+	};
+	const editRequest = async (req: EditReq) => {
+		const { form, row } = req;
+		form.id = row.id;
+		const res = await api.UpdateObj(form);
+		return res;
+	};
+	const delRequest = async (req: DelReq) => {
+		const { row } = req;
+		return await api.DelObj(row.id);
+	};
 
-  const addRequest = async (req: AddReq) => {
-    const { form } = req;
-    const res = await api.AddObj(form);
-    return res;
-  };
+	const addRequest = async (req: AddReq) => {
+		const { form } = req;
+		const res = await api.AddObj(form);
+		return res;
+	};
 
-  const settingsStore = useSettingStore();
+	const settingsStore = useSettingStore();
 
-  const checkStatusDict = dict({
-    data: [
-      { label: "成功", value: "ok", color: "green" },
-      { label: "检查中", value: "checking", color: "blue" },
-      { label: "异常", value: "error", color: "red" },
-    ],
-  });
+	const checkStatusDict = dict({
+		data: [
+			{ label: t("checkStatus.success"), value: "ok", color: "green" },
+			{ label: t("checkStatus.checking"), value: "checking", color: "blue" },
+			{ label: t("checkStatus.error"), value: "error", color: "red" },
+		],
+	});
 
-  const { openSiteIpMonitorDialog } = useSiteIpMonitor();
-  const { openSiteImportDialog } = useSiteImport();
-  return {
-    crudOptions: {
-      request: {
-        pageRequest,
-        addRequest,
-        editRequest,
-        delRequest,
-      },
-      form: {
-        labelCol: {
-          //固定label宽度
-          span: null,
-          style: {
-            width: "100px",
-          },
-        },
-        col: {
-          span: 22,
-        },
-        wrapper: {
-          width: 600,
-        },
-      },
-      actionbar: {
-        buttons: {
-          add: {
-            async click() {
-              if (!settingsStore.isPlus) {
-                //非plus
-                if (crudBinding.value.data.length >= 1) {
-                  notification.error({
-                    message: "基础版只能添加一个监控站点，请赞助升级专业版",
-                  });
-                  mitter.emit("openVipModal");
-                  return;
-                }
-              }
 
-              //检查是否监控站点数量超出限制
-              if (settingsStore.isComm && settingsStore.suiteSetting.enabled) {
-                //检查数量是否超限
-                const suiteDetail = await mySuiteApi.SuiteDetailGet();
-                const max = suiteDetail.monitorCount.max;
-                if (max != -1 && max <= suiteDetail.monitorCount.used) {
-                  notification.error({
-                    message: `对不起，您最多只能创建条${max}监控记录，请购买或升级套餐`,
-                  });
-                  return;
-                }
-              }
-              await crudExpose.openAdd({});
-            },
-          },
-          //导入按钮
-          import: {
-            show: true,
-            text: "批量导入",
-            type: "primary",
-            async click() {
-              openSiteImportDialog({
-                afterSubmit() {
-                  crudExpose.doRefresh();
-                },
-              });
-            },
-          },
-        },
-      },
-      rowHandle: {
-        fixed: "right",
-        width: 240,
-        buttons: {
-          check: {
-            order: 0,
-            type: "link",
-            text: null,
-            tooltip: {
-              title: "立即检查",
-            },
-            icon: "ion:play-sharp",
-            click: async ({ row }) => {
-              await api.DoCheck(row.id);
-              await crudExpose.doRefresh();
-              notification.success({
-                message: "检查任务已提交，请稍后刷新查看结果",
-              });
-            },
-          },
-          ipCheck: {
-            order: 10,
-            type: "link",
-            text: null,
-            show: compute(({ row }) => {
-              return row.ipCheck === true;
-            }),
-            tooltip: {
-              title: "IP管理",
-            },
-            icon: "entypo:address",
-            click: async ({ row }) => {
-              openSiteIpMonitorDialog({ siteId: row.id });
-            },
-          },
-        },
-      },
-      tabs: {
-        name: "disabled",
-        show: true,
-      },
-      columns: {
-        id: {
-          title: "ID",
-          key: "id",
-          type: "number",
-          search: {
-            show: false,
-          },
-          column: {
-            width: 80,
-            align: "center",
-          },
-          form: {
-            show: false,
-          },
-        },
-        name: {
-          title: "站点名称",
-          search: {
-            show: true,
-          },
-          type: "text",
-          form: {
-            rules: [{ required: true, message: "请输入站点名称" }],
-          },
-          column: {
-            width: 160,
-          },
-        },
-        domain: {
-          title: "网站域名",
-          search: {
-            show: true,
-          },
-          type: "text",
-          form: {
-            rules: [
-              { required: true, message: "请输入域名" },
-              //@ts-ignore
-              { type: "domains", message: "请输入正确的域名" },
-            ],
-          },
-          column: {
-            width: 230,
-            sorter: true,
-            cellRender({ value, row }) {
-              const url = `https://${value}:${row.httpsPort}`;
-              return (
-                <a-tooltip title={value} placement="left">
-                  <fs-copyable modelValue={value}>
-                    <a target="_blank" href={url}>
-                      {value}:{row.httpsPort}
-                    </a>
-                  </fs-copyable>
-                </a-tooltip>
-              );
-            },
-          },
-        },
-        httpsPort: {
-          title: "HTTPS端口",
-          search: {
-            show: false,
-          },
-          type: "number",
-          form: {
-            value: 443,
-            rules: [{ required: true, message: "请输入端口" }],
-          },
-          column: {
-            width: 100,
-            show: false,
-          },
-        },
-        certInfo: {
-          title: "证书信息",
-          type: "text",
-          form: { show: false },
-          column: {
-            width: 200,
-            sorter: false,
-            show: true,
-            conditionalRender: false,
-            cellRender({ value, row }) {
-              const slots = {
-                content() {
-                  return (
-                    <div>
-                      <div>证书颁发机构：{row.certProvider}</div>
-                      <div>证书域名：{row.certDomains}</div>
-                    </div>
-                  );
-                },
-              };
-              return (
-                <a-popover placement={"left"} v-slots={slots} overlayStyle={{ maxWidth: "30%" }}>
-                  {row.certDomains}
-                </a-popover>
-              );
-            },
-          },
-        },
-        certDomains: {
-          title: "证书域名",
-          search: {
-            show: true,
-          },
-          type: "text",
-          form: {
-            show: false,
-          },
-          column: {
-            width: 200,
-            sorter: true,
-            show: false,
-            cellRender({ value }) {
-              return (
-                <a-tooltip title={value} placement="left">
-                  {value}
-                </a-tooltip>
-              );
-            },
-          },
-        },
-        certProvider: {
-          title: "颁发机构",
-          search: {
-            show: false,
-          },
-          type: "text",
-          form: {
-            show: false,
-          },
-          column: {
-            width: 200,
-            sorter: true,
-            show: false,
-            cellRender({ value }) {
-              return <a-tooltip title={value}>{value}</a-tooltip>;
-            },
-          },
-        },
-        certStatus: {
-          title: "证书状态",
-          search: {
-            show: true,
-          },
-          type: "dict-select",
-          dict: dict({
-            data: [
-              { label: "正常", value: "ok", color: "green" },
-              { label: "过期", value: "expired", color: "red" },
-            ],
-          }),
-          form: {
-            show: false,
-          },
-          column: {
-            width: 100,
-            sorter: true,
-            show: true,
-            align: "center",
-          },
-        },
-        certExpiresTime: {
-          title: "证书到期时间",
-          search: {
-            show: false,
-          },
-          type: "date",
-          form: {
-            show: false,
-          },
-          column: {
-            sorter: true,
-            cellRender({ value }) {
-              if (!value) {
-                return "-";
-              }
-              const expireDate = dayjs(value).format("YYYY-MM-DD");
-              const leftDays = dayjs(value).diff(dayjs(), "day");
-              const color = leftDays < 20 ? "red" : "#389e0d";
-              const percent = (leftDays / 90) * 100;
-              return <a-progress title={expireDate + "过期"} percent={percent} strokeColor={color} format={(percent: number) => `${leftDays}天`} />;
-            },
-          },
-        },
-        lastCheckTime: {
-          title: "上次检查时间",
-          search: {
-            show: false,
-          },
-          type: "datetime",
-          form: {
-            show: false,
-          },
-          column: {
-            sorter: true,
-            width: 155,
-          },
-        },
-        disabled: {
-          title: "禁用启用",
-          search: {
-            show: false,
-          },
-          type: "dict-switch",
-          dict: dict({
-            data: [
-              { label: "启用", value: false, color: "green" },
-              { label: "禁用", value: true, color: "red" },
-            ],
-          }),
-          form: {
-            value: false,
-          },
-          column: {
-            width: 100,
-            sorter: true,
-            align: "center",
-            component: {
-              name: "fs-dict-switch",
-              vModel: "checked",
-              on: {
-                async change({ row, $event }) {
-                  await api.DisabledChange(row.id, $event);
-                  await crudExpose.doRefresh();
-                },
-              },
-            },
-          },
-        },
-        ipCheck: {
-          title: "开启IP检查",
-          type: "dict-switch",
-          dict: dict({
-            data: [
-              { label: "启用", value: true, color: "green" },
-              { label: "禁用", value: false, color: "gray" },
-            ],
-          }),
-          form: {
-            value: false,
-            rules: [{ required: true, message: "请选择" }],
-          },
-          column: {
-            align: "center",
-            width: 100,
-            conditionalRender: false,
-            component: {
-              name: "fs-dict-switch",
-              vModel: "checked",
-              on: {
-                change({ row, $event }) {
-                  Modal.confirm({
-                    title: "提示",
-                    content: `确定${$event ? "开启" : "关闭"}IP检查？`,
-                    onOk: async () => {
-                      await api.IpCheckChange(row.id, $event);
-                      await crudExpose.doRefresh();
-                      if ($event) {
-                        openSiteIpMonitorDialog({ siteId: row.id });
-                      }
-                    },
-                    onCancel: async () => {
-                      await crudExpose.doRefresh();
-                    },
-                  });
-                },
-              },
-            },
-          },
-        } as ColumnCompositionProps,
-        ipCount: {
-          title: "IP数量",
-          search: {
-            show: false,
-          },
-          type: "text",
-          form: {
-            show: false,
-          },
-          column: {
-            width: 100,
-            sorter: true,
-            align: "center",
-          },
-        },
-        checkStatus: {
-          title: "检查状态",
-          search: {
-            show: false,
-          },
-          type: "dict-select",
-          dict: checkStatusDict,
-          form: {
-            show: false,
-          },
-          column: {
-            width: 100,
-            align: "center",
-            sorter: true,
-            cellRender({ value, row, key }) {
-              return (
-                <a-tooltip title={row.error}>
-                  <fs-values-format v-model={value} dict={checkStatusDict}></fs-values-format>
-                </a-tooltip>
-              );
-            },
-          },
-        },
-        // error: {
-        //   title: "错误信息",
-        //   search: {
-        //     show: false
-        //   },
-        //   type: "text",
-        //   form: {
-        //     show: false
-        //   },
-        //   column: {
-        //     width: 200,
-        //     sorter: true,
-        //     cellRender({ value }) {
-        //       return <a-tooltip title={value}>{value}</a-tooltip>;
-        //     }
-        //   }
-        // },
-        pipelineId: {
-          title: "关联流水线id",
-          search: {
-            show: false,
-          },
-          form: { show: false },
-          type: "number",
-          column: {
-            width: 200,
-            sorter: true,
-            show: false,
-          },
-        },
-        certInfoId: {
-          title: "证书id",
-          search: {
-            show: false,
-          },
-          type: "number",
-          form: { show: false },
-          column: {
-            width: 100,
-            sorter: true,
-            show: false,
-          },
-        },
-      },
-    },
-  };
+	const { openSiteIpMonitorDialog } = useSiteIpMonitor();
+	const { openSiteImportDialog } = useSiteImport();
+	return {
+		crudOptions: {
+			request: {
+				pageRequest,
+				addRequest,
+				editRequest,
+				delRequest,
+			},
+			form: {
+				labelCol: {
+					//固定label宽度
+					span: null,
+					style: {
+						width: "100px",
+					},
+				},
+				col: {
+					span: 22,
+				},
+				wrapper: {
+					width: 600,
+				},
+			},
+			actionbar: {
+				buttons: {
+					add: {
+						async click() {
+							if (!settingsStore.isPlus) {
+								// 非plus
+								if (crudBinding.value.data.length >= 1) {
+									notification.error({
+										message: t("certd.monitor.basicLimitError"),
+									});
+									mitter.emit("openVipModal");
+									return;
+								}
+							}
+
+
+							//检查是否监控站点数量超出限制
+							if (settingsStore.isComm && settingsStore.suiteSetting.enabled) {
+								// 检查数量是否超限
+								const suiteDetail = await mySuiteApi.SuiteDetailGet();
+								const max = suiteDetail.monitorCount.max;
+								if (max != -1 && max <= suiteDetail.monitorCount.used) {
+									notification.error({
+										message: t("certd.monitor.limitExceeded", { max }),
+									});
+									return;
+								}
+							}
+
+							await crudExpose.openAdd({});
+						},
+					},
+					//导入按钮
+					import: {
+						show: true,
+						text: t("certd.monitor.bulkImport"),
+						type: "primary",
+						async click() {
+							openSiteImportDialog({
+								afterSubmit() {
+									crudExpose.doRefresh();
+								},
+							});
+						},
+					},
+				},
+			},
+			rowHandle: {
+				fixed: "right",
+				width: 240,
+				buttons: {
+					check: {
+						order: 0,
+						type: "link",
+						text: null,
+						tooltip: {
+							title: "立即检查",
+						},
+						icon: "ion:play-sharp",
+						click: async ({ row }) => {
+							await api.DoCheck(row.id);
+							await crudExpose.doRefresh();
+							notification.success({
+								message: t("certd.monitor.checkSubmittedRefresh"),
+							});
+						},
+					},
+					ipCheck: {
+						order: 10,
+						type: "link",
+						text: null,
+						show: compute(({ row }) => row.ipCheck === true),
+						tooltip: {
+							title: t("certd.monitor.ipManagement"),
+						},
+						icon: "entypo:address",
+						click: async ({ row }) => {
+							openSiteIpMonitorDialog({ siteId: row.id });
+						},
+					},
+				},
+			},
+			tabs: {
+				name: "disabled",
+				show: true,
+			},
+			columns: {
+				id: {
+					title: "ID",
+					key: "id",
+					type: "number",
+					search: {
+						show: false,
+					},
+					column: {
+						width: 80,
+						align: "center",
+					},
+					form: {
+						show: false,
+					},
+				},
+				name: {
+					title: t("certd.monitor.siteName"),
+					search: {
+						show: true,
+					},
+					type: "text",
+					form: {
+						rules: [{ required: true, message: t("certd.monitor.enterSiteName") }],
+					},
+					column: {
+						width: 160,
+					},
+				},
+				domain: {
+					title: t("certd.monitor.domain"),
+					search: {
+						show: true,
+					},
+					type: "text",
+					form: {
+						rules: [
+							{ required: true, message: t("certd.monitor.enterDomain") },
+							// @ts-ignore
+							{ type: "domains", message: t("certd.monitor.enterValidDomain") },
+						],
+					},
+					column: {
+						width: 230,
+						sorter: true,
+						cellRender({ value, row }) {
+							const url = `https://${value}:${row.httpsPort}`;
+							return (
+								<a-tooltip title={value} placement="left">
+									<fs-copyable modelValue={value}>
+										<a target="_blank" href={url}>
+											{value}:{row.httpsPort}
+										</a>
+									</fs-copyable>
+								</a-tooltip>
+							);
+						},
+					},
+				},
+				httpsPort: {
+					title: t("certd.monitor.httpsPort"),
+					search: {
+						show: false,
+					},
+					type: "number",
+					form: {
+						value: 443,
+						rules: [{ required: true, message: t("certd.monitor.enterPort") }],
+					},
+					column: {
+						width: 100,
+						show: false,
+					},
+				},
+				certInfo: {
+					title: t("certd.monitor.certInfo"),
+					type: "text",
+					form: { show: false },
+					column: {
+						width: 200,
+						sorter: false,
+						show: true,
+						conditionalRender: false,
+						cellRender({ value, row }) {
+							const slots = {
+								content() {
+									return (
+										<div>
+											<div>{t("certd.monitor.issuer")}: {row.certProvider}</div>
+											<div>{t("certd.monitor.certDomains")}: {row.certDomains}</div>
+										</div>
+									);
+								},
+							};
+							return (
+								<a-popover placement={"left"} v-slots={slots} overlayStyle={{ maxWidth: "30%" }}>
+									{row.certDomains}
+								</a-popover>
+							);
+						},
+					},
+				},
+				certDomains: {
+					title: t("certd.monitor.certDomains"),
+					search: {
+						show: true,
+					},
+					type: "text",
+					form: {
+						show: false,
+					},
+					column: {
+						width: 200,
+						sorter: true,
+						show: false,
+						cellRender({ value }) {
+							return (
+								<a-tooltip title={value} placement="left">
+									{value}
+								</a-tooltip>
+							);
+						},
+					},
+				},
+				certProvider: {
+					title: t("certd.monitor.certProvider"),
+					search: {
+						show: false,
+					},
+					type: "text",
+					form: {
+						show: false,
+					},
+					column: {
+						width: 200,
+						sorter: true,
+						show: false,
+						cellRender({ value }) {
+							return <a-tooltip title={value}>{value}</a-tooltip>;
+						},
+					},
+				},
+				certStatus: {
+					title: t("certd.monitor.certStatus"),
+					search: {
+						show: true,
+					},
+					type: "dict-select",
+					dict: dict({
+						data: [
+							{ label: t("certd.monitor.status.ok"), value: "ok", color: "green" },
+							{ label: t("certd.monitor.status.expired"), value: "expired", color: "red" },
+						],
+					}),
+					form: {
+						show: false,
+					},
+					column: {
+						width: 100,
+						sorter: true,
+						show: true,
+						align: "center",
+					},
+				},
+				certExpiresTime: {
+					title: t("certd.monitor.certExpiresTime"),
+					search: {
+						show: false,
+					},
+					type: "date",
+					form: {
+						show: false,
+					},
+					column: {
+						sorter: true,
+						cellRender({ value }) {
+							if (!value) {
+								return "-";
+							}
+							const expireDate = dayjs(value).format("YYYY-MM-DD");
+							const leftDays = dayjs(value).diff(dayjs(), "day");
+							const color = leftDays < 20 ? "red" : "#389e0d";
+							const percent = (leftDays / 90) * 100;
+							return (
+								<a-progress
+									title={expireDate + t("certd.monitor.expired")}
+									percent={percent}
+									strokeColor={color}
+									format={(percent: number) => `${leftDays}${t("certd.monitor.days")}`}
+								/>
+							);
+						},
+					},
+				},
+				lastCheckTime: {
+					title: t("certd.monitor.lastCheckTime"),
+					search: {
+						show: false,
+					},
+					type: "datetime",
+					form: {
+						show: false,
+					},
+					column: {
+						sorter: true,
+						width: 155,
+					},
+				},
+				disabled: {
+					title: t("certd.monitor.disabled"),
+					search: {
+						show: false,
+					},
+					type: "dict-switch",
+					dict: dict({
+						data: [
+							{ label: t("common.enabled"), value: false, color: "green" },
+							{ label: t("common.disabled"), value: true, color: "red" },
+						],
+					}),
+					form: {
+						value: false,
+					},
+					column: {
+						width: 100,
+						sorter: true,
+						align: "center",
+						component: {
+							name: "fs-dict-switch",
+							vModel: "checked",
+							on: {
+								async change({ row, $event }) {
+									await api.DisabledChange(row.id, $event);
+									await crudExpose.doRefresh();
+								},
+							},
+						},
+					},
+				},
+				ipCheck: {
+					title: t("certd.monitor.ipCheck"),
+					type: "dict-switch",
+					dict: dict({
+						data: [
+							{ label: t("common.enabled"), value: true, color: "green" },
+							{ label: t("common.disabled"), value: false, color: "gray" },
+						],
+					}),
+					form: {
+						value: false,
+						rules: [{ required: true, message: t("certd.monitor.selectRequired") }],
+					},
+					column: {
+						align: "center",
+						width: 100,
+						conditionalRender: false,
+						component: {
+							name: "fs-dict-switch",
+							vModel: "checked",
+							on: {
+								change({ row, $event }) {
+									Modal.confirm({
+										title: t("common.confirm"),
+										content: t("certd.monitor.ipCheckConfirm", { status: $event ? t("common.enabled") : t("common.disabled") }),
+										onOk: async () => {
+											await api.IpCheckChange(row.id, $event);
+											await crudExpose.doRefresh();
+											if ($event) {
+												openSiteIpMonitorDialog({ siteId: row.id });
+											}
+										},
+										onCancel: async () => {
+											await crudExpose.doRefresh();
+										},
+									});
+								},
+							},
+						},
+					}
+				} as ColumnCompositionProps,
+				ipCount: {
+					title: t("certd.monitor.ipCount"),
+					search: {
+						show: false,
+					},
+					type: "text",
+					form: {
+						show: false,
+					},
+					column: {
+						width: 100,
+						sorter: true,
+						align: "center",
+					},
+				},
+				checkStatus: {
+					title: t("certd.monitor.checkStatus"),
+					search: {
+						show: false,
+					},
+					type: "dict-select",
+					dict: checkStatusDict,
+					form: {
+						show: false,
+					},
+					column: {
+						width: 100,
+						align: "center",
+						sorter: true,
+						cellRender({ value, row }) {
+							return (
+								<a-tooltip title={row.error}>
+									<fs-values-format v-model={value} dict={checkStatusDict}></fs-values-format>
+								</a-tooltip>
+							);
+						},
+					},
+				},
+				// error: {
+				//   title: "错误信息",
+				//   search: {
+				//     show: false
+				//   },
+				//   type: "text",
+				//   form: {
+				//     show: false
+				//   },
+				//   column: {
+				//     width: 200,
+				//     sorter: true,
+				//     cellRender({ value }) {
+				//       return <a-tooltip title={value}>{value}</a-tooltip>;
+				//     }
+				//   }
+				// },
+				pipelineId: {
+					title: t("certd.monitor.pipelineId"),
+					search: {
+						show: false,
+					},
+					form: { show: false },
+					type: "number",
+					column: {
+						width: 200,
+						sorter: true,
+						show: false,
+					},
+				},
+				certInfoId: {
+					title: t("certd.monitor.certInfoId"),
+					search: {
+						show: false,
+					},
+					type: "number",
+					form: { show: false },
+					column: {
+						width: 100,
+						sorter: true,
+						show: false,
+					},
+				},
+			},
+		},
+	};
 }

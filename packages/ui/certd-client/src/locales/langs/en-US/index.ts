@@ -5,6 +5,7 @@ import tutorial from './tutorial';
 import preferences from './preferences';
 import ui from './ui';
 import guide from './guide';
+import common from './common';
 
 export default {
 	certd,
@@ -13,5 +14,6 @@ export default {
 	ui,
 	tutorial,
 	preferences,
-	guide
+	guide,
+	common
 };

@@ -11,323 +11,328 @@ import * as api from "../api";
 import { PluginGroup, usePluginStore } from "/@/store/plugin";
 import { createNotificationApi } from "/@/views/certd/notification/api";
 import GroupSelector from "../group/group-selector.vue";
+import { useI18n } from "vue-i18n";
+
 
 export function setRunnableIds(pipeline: any) {
-  const idMap: any = {};
-  function createId(oldId: any) {
-    if (oldId == null) {
-      return nanoid();
-    }
-    const newId = nanoid();
-    idMap[oldId] = newId;
-    return newId;
-  }
-  if (pipeline.stages) {
-    for (const stage of pipeline.stages) {
-      stage.id = createId(stage.id);
-      if (stage.tasks) {
-        for (const task of stage.tasks) {
-          task.id = createId(task.id);
-          if (task.steps) {
-            for (const step of task.steps) {
-              step.id = createId(step.id);
-            }
-          }
-        }
-      }
-    }
-  }
+	const { t } = useI18n();
+	const idMap: any = {};
+	function createId(oldId: any) {
+		if (oldId == null) {
+			return nanoid();
+		}
+		const newId = nanoid();
+		idMap[oldId] = newId;
+		return newId;
+	}
+	if (pipeline.stages) {
+		for (const stage of pipeline.stages) {
+			stage.id = createId(stage.id);
+			if (stage.tasks) {
+				for (const task of stage.tasks) {
+					task.id = createId(task.id);
+					if (task.steps) {
+						for (const step of task.steps) {
+							step.id = createId(step.id);
+						}
+					}
+				}
+			}
+		}
+	}
 
-  for (const trigger of pipeline.triggers) {
-    trigger.id = nanoid();
-  }
-  for (const notification of pipeline.notifications) {
-    notification.id = nanoid();
-  }
+	for (const trigger of pipeline.triggers) {
+		trigger.id = nanoid();
+	}
+	for (const notification of pipeline.notifications) {
+		notification.id = nanoid();
+	}
 
-  let content = JSON.stringify(pipeline);
-  for (const key in idMap) {
-    content = content.replaceAll(key, idMap[key]);
-  }
-  return JSON.parse(content);
+	let content = JSON.stringify(pipeline);
+	for (const key in idMap) {
+		content = content.replaceAll(key, idMap[key]);
+	}
+	return JSON.parse(content);
 }
 
 export function useCertPipelineCreator() {
-  const { openCrudFormDialog } = useFormWrapper();
+	const { t } = useI18n();
+	const { openCrudFormDialog } = useFormWrapper();
 
-  const pluginStore = usePluginStore();
-  const router = useRouter();
+	const pluginStore = usePluginStore();
+	const router = useRouter();
 
-  function createCrudOptions(certPlugins: any[], getFormData: any, doSubmit: any): CreateCrudOptionsRet {
-    const inputs: any = {};
-    const moreParams = [];
-    for (const plugin of certPlugins) {
-      for (const inputKey in plugin.input) {
-        if (inputs[inputKey]) {
-          //如果两个插件有的字段，直接显示
-          inputs[inputKey].form.show = true;
-          continue;
-        }
-        const inputDefine = cloneDeep(plugin.input[inputKey]);
-        if (!inputDefine.required && !inputDefine.maybeNeed) {
-          moreParams.push(inputKey);
-          // continue;
-        }
-        useReference(inputDefine);
-        inputs[inputKey] = {
-          title: inputDefine.title,
-          form: {
-            ...inputDefine,
-            show: compute(ctx => {
-              const form = getFormData();
-              if (!form) {
-                return false;
-              }
+	function createCrudOptions(certPlugins: any[], getFormData: any, doSubmit: any): CreateCrudOptionsRet {
+		const inputs: any = {};
+		const moreParams = [];
+		for (const plugin of certPlugins) {
+			for (const inputKey in plugin.input) {
+				if (inputs[inputKey]) {
+					//如果两个插件有的字段，直接显示
+					inputs[inputKey].form.show = true;
+					continue;
+				}
+				const inputDefine = cloneDeep(plugin.input[inputKey]);
+				if (!inputDefine.required && !inputDefine.maybeNeed) {
+					moreParams.push(inputKey);
+					// continue;
+				}
+				useReference(inputDefine);
+				inputs[inputKey] = {
+					title: inputDefine.title,
+					form: {
+						...inputDefine,
+						show: compute(ctx => {
+							const form = getFormData();
+							if (!form) {
+								return false;
+							}
 
-              let inputDefineShow = true;
-              if (inputDefine.show != null) {
-                const computeShow = inputDefine.show as any;
-                if (computeShow === false) {
-                  inputDefineShow = false;
-                } else if (computeShow && computeShow.computeFn) {
-                  inputDefineShow = computeShow.computeFn({ form });
-                }
-              }
-              return form?.certApplyPlugin === plugin.name && inputDefineShow;
-            }),
-          },
-        };
-      }
-    }
+							let inputDefineShow = true;
+							if (inputDefine.show != null) {
+								const computeShow = inputDefine.show as any;
+								if (computeShow === false) {
+									inputDefineShow = false;
+								} else if (computeShow && computeShow.computeFn) {
+									inputDefineShow = computeShow.computeFn({ form });
+								}
+							}
+							return form?.certApplyPlugin === plugin.name && inputDefineShow;
+						}),
+					},
+				};
+			}
+		}
 
-    const pluginStore = usePluginStore();
-    const randomHour = Math.floor(Math.random() * 6);
-    const randomMin = Math.floor(Math.random() * 60);
+		const pluginStore = usePluginStore();
+		const randomHour = Math.floor(Math.random() * 6);
+		const randomMin = Math.floor(Math.random() * 60);
 
-    const groupDictRef = dict({
-      url: "/pi/pipeline/group/all",
-      value: "id",
-      label: "name",
-    });
+		const groupDictRef = dict({
+			url: "/pi/pipeline/group/all",
+			value: "id",
+			label: "name",
+		});
 
-    return {
-      crudOptions: {
-        form: {
-          doSubmit,
-          wrapper: {
-            width: 1350,
-            saveRemind: false,
-            title: "创建证书流水线",
-          },
-          group: {
-            groups: {
-              more: {
-                header: "更多参数",
-                columns: moreParams,
-                collapsed: true,
-              },
-            },
-          },
-        },
-        columns: {
-          certApplyPlugin: {
-            title: "证书申请插件",
-            type: "dict-select",
-            dict: dict({
-              data: [
-                { value: "CertApply", label: "JS-ACME" },
-                { value: "CertApplyLego", label: "Lego-ACME" },
-              ],
-            }),
-            form: {
-              order: 0,
-              value: "CertApply",
-              helper: {
-                render: () => {
-                  return (
-                    <ul>
-                      <li>JS-ACME：使用简单方便，功能强大【推荐】</li>
-                      <li>Lego-ACME：基于Lego实现，支持海量DNS提供商，熟悉LEGO的用户可以使用</li>
-                    </ul>
-                  );
-                },
-              },
-              valueChange: {
-                handle: async ({ form, value }) => {
-                  const config = await pluginStore.getPluginConfig({
-                    name: value,
-                    type: "builtIn",
-                  });
-                  if (config.sysSetting?.input) {
-                    merge(form, config.sysSetting.input);
-                  }
-                },
-                immediate: true,
-              },
-            },
-          },
-          ...inputs,
-          triggerCron: {
-            title: "定时触发",
-            type: "text",
-            form: {
-              value: `0 ${randomMin} ${randomHour} * * *`,
-              component: {
-                name: "cron-editor",
-                vModel: "modelValue",
-                placeholder: "0 0 4 * * *",
-              },
-              helper: "点击上面的按钮，选择每天几点定时执行。\n建议设置为每天触发一次，证书未到期之前任务会跳过，不会重复执行",
-              order: 100,
-            },
-          },
-          notification: {
-            title: "失败通知",
-            type: "text",
-            form: {
-              value: 0,
-              component: {
-                name: NotificationSelector,
-                vModel: "modelValue",
-                on: {
-                  selectedChange({ $event, form }) {
-                    form.notificationTarget = $event;
-                  },
-                },
-              },
-              order: 101,
-              helper: "任务执行失败实时提醒",
-            },
-          },
-          groupId: {
-            title: "流水线分组",
-            type: "dict-select",
-            dict: groupDictRef,
-            form: {
-              component: {
-                name: GroupSelector,
-                vModel: "modelValue",
-              },
-              order: 9999,
-            },
-          },
-        },
-      },
-    };
-  }
+		return {
+			crudOptions: {
+				form: {
+					doSubmit,
+					wrapper: {
+						width: 1350,
+						saveRemind: false,
+						title: t("certd.pipelineForm.createTitle"),
+					},
+					group: {
+						groups: {
+							more: {
+								header: t("certd.pipelineForm.moreParams"),
+								columns: moreParams,
+								collapsed: true,
+							},
+						},
+					},
+				},
+				columns: {
+					certApplyPlugin: {
+						title: t("certd.plugin.selectTitle"),
+						type: "dict-select",
+						dict: dict({
+							data: [
+								{ value: "CertApply", label: "JS-ACME" },
+								{ value: "CertApplyLego", label: "Lego-ACME" },
+							],
+						}),
+						form: {
+							order: 0,
+							value: "CertApply",
+							helper: {
+								render: () => {
+									return (
+										<ul>
+											<li>{t("certd.plugin.jsAcme")}</li>
+											<li>{t("certd.plugin.legoAcme")}</li>
+										</ul>
+									);
+								},
+							},
+							valueChange: {
+								handle: async ({ form, value }) => {
+									const config = await pluginStore.getPluginConfig({
+										name: value,
+										type: "builtIn",
+									});
+									if (config.sysSetting?.input) {
+										merge(form, config.sysSetting.input);
+									}
+								},
+								immediate: true,
+							},
+						},
+					},
+					...inputs,
+					triggerCron: {
+						title: t("certd.pipelineForm.triggerCronTitle"),
+						type: "text",
+						form: {
+							value: `0 ${randomMin} ${randomHour} * * *`,
+							component: {
+								name: "cron-editor",
+								vModel: "modelValue",
+								placeholder: "0 0 4 * * *",
+							},
+							helper: t("certd.pipelineForm.triggerCronHelper"),
+							order: 100,
+						},
+					},
+					notification: {
+						title: t("certd.pipelineForm.notificationTitle"),
+						type: "text",
+						form: {
+							value: 0,
+							component: {
+								name: NotificationSelector,
+								vModel: "modelValue",
+								on: {
+									selectedChange({ $event, form }) {
+										form.notificationTarget = $event;
+									},
+								},
+							},
+							order: 101,
+							helper: t("certd.pipelineForm.notificationHelper"),
+						},
+					},
+					groupId: {
+						title: t("certd.pipelineForm.groupIdTitle"),
+						type: "dict-select",
+						dict: groupDictRef,
+						form: {
+							component: {
+								name: GroupSelector,
+								vModel: "modelValue",
+							},
+							order: 9999,
+						},
+					}
 
-  async function getCertPlugins() {
-    const pluginGroup = await pluginStore.getGroups();
-    const pluginGroups: { [key: string]: PluginGroup } = pluginGroup.groups;
-    const certPluginGroup = pluginGroups.cert;
+				},
+			},
+		};
+	}
 
-    const certPlugins = [];
-    for (const plugin of certPluginGroup.plugins) {
-      const detail: any = await pluginStore.getPluginDefine(plugin.name);
-      certPlugins.push(detail);
-    }
-    return certPlugins;
-  }
+	async function getCertPlugins() {
+		const pluginGroup = await pluginStore.getGroups();
+		const pluginGroups: { [key: string]: PluginGroup } = pluginGroup.groups;
+		const certPluginGroup = pluginGroups.cert;
 
-  async function openAddCertdPipelineDialog(req: { defaultGroupId?: number }) {
-    //检查是否流水线数量超出限制
-    await checkPipelineLimit();
+		const certPlugins = [];
+		for (const plugin of certPluginGroup.plugins) {
+			const detail: any = await pluginStore.getPluginDefine(plugin.name);
+			certPlugins.push(detail);
+		}
+		return certPlugins;
+	}
 
-    const wrapperRef = ref();
-    function getFormData() {
-      if (!wrapperRef.value) {
-        return null;
-      }
-      return wrapperRef.value.getFormData();
-    }
+	async function openAddCertdPipelineDialog(req: { defaultGroupId?: number }) {
+		//检查是否流水线数量超出限制
+		await checkPipelineLimit();
 
-    async function doSubmit({ form }: any) {
-      // const certDetail = readCertDetail(form.cert.crt);
-      // 添加certd pipeline
-      const triggers = [];
-      if (form.triggerCron) {
-        triggers.push({ title: "定时触发", type: "timer", props: { cron: form.triggerCron } });
-      }
-      const notifications = [];
-      if (form.notification != null) {
-        notifications.push({
-          type: "custom",
-          when: ["error", "turnToSuccess", "success"],
-          notificationId: form.notification,
-          title: form.notificationTarget?.name || "自定义通知",
-        });
-      }
-      const pluginInput = omit(form, ["triggerCron", "notification", "notificationTarget", "certApplyPlugin", "groupId"]);
-      let pipeline = {
-        title: form.domains[0] + "证书自动化",
-        runnableType: "pipeline",
-        stages: [
-          {
-            title: "证书申请阶段",
-            maxTaskCount: 1,
-            runnableType: "stage",
-            tasks: [
-              {
-                title: "证书申请任务",
-                runnableType: "task",
-                steps: [
-                  {
-                    title: "申请证书",
-                    runnableType: "step",
-                    input: {
-                      renewDays: 35,
-                      ...pluginInput,
-                    },
-                    strategy: {
-                      runStrategy: 0, // 正常执行
-                    },
-                    type: form.certApplyPlugin,
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-        triggers,
-        notifications,
-      };
-      pipeline = setRunnableIds(pipeline);
+		const wrapperRef = ref();
+		function getFormData() {
+			if (!wrapperRef.value) {
+				return null;
+			}
+			return wrapperRef.value.getFormData();
+		}
 
-      /**
-       *  // cert: 证书; backup: 备份; custom:自定义;
-       *   type: string;
-       *   // custom: 自定义; monitor: 监控;
-       *   from: string;
-       */
-      const groupId = form.groupId;
-      const id = await api.Save({
-        title: pipeline.title,
-        content: JSON.stringify(pipeline),
-        keepHistoryCount: 30,
-        type: "cert",
-        groupId,
-      });
-      if (form.email) {
-        try {
-          //创建一个默认的邮件通知
-          const notificationApi = createNotificationApi();
-          await notificationApi.GetOrCreateDefault({ email: form.email });
-        } catch (e) {
-          console.error(e);
-        }
-      }
-      message.success("创建成功,请添加证书部署任务");
-      router.push({ path: "/certd/pipeline/detail", query: { id, editMode: "true" } });
-    }
-    const certPlugins = await getCertPlugins();
-    const { crudOptions } = createCrudOptions(certPlugins, getFormData, doSubmit);
-    //@ts-ignore
-    crudOptions.columns.groupId.form.value = req.defaultGroupId || undefined;
-    const wrapper = await openCrudFormDialog({ crudOptions });
-    wrapperRef.value = wrapper;
-  }
+		async function doSubmit({ form }: any) {
+			// const certDetail = readCertDetail(form.cert.crt);
+			// 添加certd pipeline
+			const triggers = [];
+			if (form.triggerCron) {
+				triggers.push({ title: "定时触发", type: "timer", props: { cron: form.triggerCron } });
+			}
+			const notifications = [];
+			if (form.notification != null) {
+				notifications.push({
+					type: "custom",
+					when: ["error", "turnToSuccess", "success"],
+					notificationId: form.notification,
+					title: form.notificationTarget?.name || "自定义通知",
+				});
+			}
+			const pluginInput = omit(form, ["triggerCron", "notification", "notificationTarget", "certApplyPlugin", "groupId"]);
+			let pipeline = {
+				title: form.domains[0] + "证书自动化",
+				runnableType: "pipeline",
+				stages: [
+					{
+						title: "证书申请阶段",
+						maxTaskCount: 1,
+						runnableType: "stage",
+						tasks: [
+							{
+								title: "证书申请任务",
+								runnableType: "task",
+								steps: [
+									{
+										title: "申请证书",
+										runnableType: "step",
+										input: {
+											renewDays: 35,
+											...pluginInput,
+										},
+										strategy: {
+											runStrategy: 0, // 正常执行
+										},
+										type: form.certApplyPlugin,
+									},
+								],
+							},
+						],
+					},
+				],
+				triggers,
+				notifications,
+			};
+			pipeline = setRunnableIds(pipeline);
 
-  return {
-    openAddCertdPipelineDialog,
-  };
+			/**
+			 *  // cert: 证书; backup: 备份; custom:自定义;
+			 *   type: string;
+			 *   // custom: 自定义; monitor: 监控;
+			 *   from: string;
+			 */
+			const groupId = form.groupId;
+			const id = await api.Save({
+				title: pipeline.title,
+				content: JSON.stringify(pipeline),
+				keepHistoryCount: 30,
+				type: "cert",
+				groupId,
+			});
+			if (form.email) {
+				try {
+					//创建一个默认的邮件通知
+					const notificationApi = createNotificationApi();
+					await notificationApi.GetOrCreateDefault({ email: form.email });
+				} catch (e) {
+					console.error(e);
+				}
+			}
+			message.success("创建成功,请添加证书部署任务");
+			router.push({ path: "/certd/pipeline/detail", query: { id, editMode: "true" } });
+		}
+		const certPlugins = await getCertPlugins();
+		const { crudOptions } = createCrudOptions(certPlugins, getFormData, doSubmit);
+		//@ts-ignore
+		crudOptions.columns.groupId.form.value = req.defaultGroupId || undefined;
+		const wrapper = await openCrudFormDialog({ crudOptions });
+		wrapperRef.value = wrapper;
+	}
+
+	return {
+		openAddCertdPipelineDialog,
+	};
 }
