@@ -1,5 +1,9 @@
 <template>
-  <div v-if="!settingStore.isComm || userStore.isAdmin" class="layout-vip isPlus" @click="openUpgrade">
+  <div
+    v-if="!settingStore.isComm || userStore.isAdmin"
+    class="layout-vip isPlus"
+    @click="openUpgrade"
+  >
     <contextHolder />
     <fs-icon icon="mingcute:vip-1-line" :title="text.title" />
 
@@ -20,6 +24,9 @@ import { useSettingStore } from "/@/store/settings";
 import { useRouter } from "vue-router";
 import { useUserStore } from "/@/store/user";
 import { mitter } from "/@/utils/util.mitt";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const settingStore = useSettingStore();
 const props = withDefaults(
@@ -39,56 +46,56 @@ const text = computed<Text>(() => {
   const map = {
     isComm: {
       comm: {
-        name: `${vipLabel}已开通`,
-        title: "到期时间：" + expireTime.value,
+        name: t("vip.comm.name", { vipLabel }),
+        title: t("vip.comm.title", { expire: expireTime.value }),
       },
       button: {
-        name: `${vipLabel}已开通`,
-        title: "到期时间：" + expireTime.value,
+        name: t("vip.comm.name", { vipLabel }),
+        title: t("vip.comm.title", { expire: expireTime.value }),
       },
       icon: {
         name: "",
-        title: `${vipLabel}已开通`,
+        title: t("vip.comm.name", { vipLabel }),
       },
       nav: {
-        name: `${vipLabel}`,
-        title: "到期时间：" + expireTime.value,
+        name: t("vip.comm.nav", { vipLabel }),
+        title: t("vip.comm.title", { expire: expireTime.value }),
       },
     },
     isPlus: {
       comm: {
-        name: "商业版功能",
-        title: "升级商业版，获取商业授权",
+        name: t("vip.plus.name"),
+        title: t("vip.plus.title"),
       },
       button: {
-        name: `${vipLabel}已开通`,
-        title: "到期时间：" + expireTime.value,
+        name: t("vip.comm.name", { vipLabel }),
+        title: t("vip.comm.title", { expire: expireTime.value }),
       },
       icon: {
         name: "",
-        title: `${vipLabel}已开通`,
+        title: t("vip.comm.name", { vipLabel }),
       },
       nav: {
-        name: `${vipLabel}`,
-        title: "到期时间：" + expireTime.value,
+        name: t("vip.comm.nav", { vipLabel }),
+        title: t("vip.comm.title", { expire: expireTime.value }),
       },
     },
     free: {
       comm: {
-        name: "商业版功能",
-        title: "升级商业版，获取商业授权",
+        name: t("vip.free.comm.name"),
+        title: t("vip.free.comm.title"),
       },
       button: {
-        name: "专业版功能",
-        title: "升级专业版，享受更多VIP特权",
+        name: t("vip.free.button.name"),
+        title: t("vip.free.button.title"),
       },
       icon: {
         name: "",
-        title: "专业版功能",
+        title: t("vip.free.button.name"),
       },
       nav: {
-        name: "基础版",
-        title: "升级专业版，享受更多VIP特权",
+        name: t("vip.free.nav.name"),
+        title: t("vip.free.nav.title"),
       },
     },
   };
@@ -100,6 +107,7 @@ const text = computed<Text>(() => {
     return map.free[props.mode];
   }
 });
+
 
 const expireTime = computed(() => {
   if (settingStore.isPlus) {

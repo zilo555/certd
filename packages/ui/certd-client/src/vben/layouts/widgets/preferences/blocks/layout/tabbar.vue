@@ -3,7 +3,7 @@ import type { SelectOption } from '/@/vben/types';
 
 import { computed } from 'vue';
 
-import { $t } from '/@/vben/locales';
+import { $t } from '/@/locales';
 
 import NumberFieldItem from '../number-field-item.vue';
 import SelectItem from '../select-item.vue';

@@ -2,7 +2,7 @@
 import { computed, reactive, ref } from "vue";
 
 import { LockKeyhole } from "../../../icons";
-import { $t, useI18n } from "../../../locales";
+import { $t, useI18n } from "/@/locales";
 import { storeToRefs, useLockStore } from "../../../stores";
 
 import { useScrollLock } from "../../../composables";

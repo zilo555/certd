@@ -6,7 +6,7 @@ import type { VbenDropdownMenuItem } from "/@/vben//shadcn-ui";
 import { computed } from "vue";
 
 import { InspectionPanel, PanelLeft, PanelRight } from "/@/vben/icons";
-import { $t } from "/@/vben/locales";
+import { $t } from "/@/locales";
 import { preferences, updatePreferences, usePreferences } from "/@/vben/preferences";
 
 import { VbenDropdownRadioMenu, VbenIconButton } from "/@/vben//shadcn-ui";

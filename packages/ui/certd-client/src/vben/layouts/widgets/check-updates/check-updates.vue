@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from "vue";
 
-import { $t } from "../../../locales";
+import { $t } from "/@/locales";
 
 import { useVbenModal } from "../../../popup-ui";
 

@@ -3,8 +3,7 @@ import App from "./App.vue";
 // import Antd from "ant-design-vue";
 import Antd from "./plugin/antdv-async/index";
 import "./style/common.less";
-import { loadMessages } from "./i18n";
-import { i18n } from "/@/vben/locales";
+import { i18n, loadLocaleMessages } from "/@/locales"
 import components from "./components";
 import router from "./router";
 import plugin from "./plugin/";
@@ -16,15 +15,15 @@ import { initPreferences } from "/@/vben/preferences";
 // import "./components/code-editor/import-works";
 // @ts-ignore
 async function bootstrap() {
-  const app = createApp(App);
-  // app.use(Antd);
-  app.use(Antd);
-  await setupVben(app, { loadMessages, router });
-  app.use(router);
-  // app.use(i18n);
-  // app.use(store);
-  app.use(components);
-  app.use(plugin, { i18n });
+	const app = createApp(App);
+	// app.use(Antd);
+	app.use(Antd);
+	await setupVben(app, { loadLocaleMessages, router });
+	app.use(router);
+	// app.use(i18n);
+	// app.use(store);
+	app.use(components);
+	app.use(plugin, { i18n });
 
   const envMode = util.env.MODE;
   const namespace = `${import.meta.env.VITE_APP_NAMESPACE}-${envMode}`;

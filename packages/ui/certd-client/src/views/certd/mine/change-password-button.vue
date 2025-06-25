@@ -1,9 +1,14 @@
 <template>
-  <a-button v-if="showButton" type="primary" @click="open">修改密码</a-button>
+  <a-button v-if="showButton" type="primary" @click="open">
+    {{ $t("passwordForm.changePasswordButton") }}
+  </a-button>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 import { CrudOptions, useColumns, useFormWrapper } from "@fast-crud/fast-crud";
 import * as api from "/@/views/certd/mine/api";
 import { notification } from "ant-design-vue";
@@ -17,23 +22,24 @@ let passwordFormRef = ref();
 
 const validatePass1 = async (rule: any, value: any) => {
   if (value === "") {
-    throw new Error("请输入密码");
+    throw new Error(t("passwordForm.enterPassword"));
   }
   const formData = passwordFormRef.value.getFormData();
   if (formData.confirmNewPassword !== "") {
     passwordFormRef.value.formRef.formRef.validateFields(["confirmNewPassword"]);
   }
   if (formData.password === formData.newPassword) {
-    throw new Error("新密码不能和旧密码相同");
+    throw new Error(t("passwordForm.newPasswordNotSameOld"));
   }
 };
 const validatePass2 = async (rule: any, value: any) => {
   if (value === "") {
-    throw new Error("请再次输入密码");
+    throw new Error(t("passwordForm.enterPasswordAgain"));
   } else if (value !== passwordFormRef.value.getFormData().newPassword) {
-    throw new Error("两次输入密码不一致!");
+    throw new Error(t("passwordForm.passwordsNotMatch"));
   }
 };
+
 const userStore = useUserStore();
 const { openDialog } = useFormWrapper();
 const { buildFormOptions } = useColumns();
@@ -43,7 +49,7 @@ const passwordFormOptions: CrudOptions = {
       span: 24,
     },
     wrapper: {
-      title: "修改密码",
+      title: t("passwordForm.title"),
       width: "500px",
     },
     async doSubmit({ form }) {
@@ -52,34 +58,37 @@ const passwordFormOptions: CrudOptions = {
       await userStore.loadUserInfo();
     },
     async afterSubmit() {
-      notification.success({ message: "修改成功" });
+      notification.success({ message: t("passwordForm.successMessage") });
     },
   },
   columns: {
     password: {
-      title: "旧密码",
+      title: t("passwordForm.oldPassword"),
       type: "password",
       form: {
-        rules: [{ required: true, message: "请输入旧密码" }],
+        rules: [{ required: true, message: t("passwordForm.oldPasswordRequired") }],
       },
     },
     newPassword: {
-      title: "新密码",
+      title: t("passwordForm.newPassword"),
       type: "password",
       form: {
         rules: [
-          { required: true, message: "请输入确认密码" },
+          { required: true, message: t("passwordForm.newPasswordRequired") },
           //@ts-ignore
           { validator: validatePass1, trigger: "blur" },
         ],
       },
     },
     confirmNewPassword: {
-      title: "确认新密码",
+      title: t("passwordForm.confirmNewPassword"),
       type: "password",
       form: {
         rules: [
-          { required: true, message: "请输入确认密码" },
+          {
+            required: true,
+            message: t("passwordForm.confirmNewPasswordRequired"),
+          },
           //@ts-ignore
           { validator: validatePass2, trigger: "blur" },
         ],

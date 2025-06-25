@@ -1,13 +1,13 @@
 <template>
   <a-dropdown>
-    <div class="fs-user-info">您好，{{ userStore.getUserInfo?.nickName || userStore.getUserInfo?.username }}</div>
+    <div class="fs-user-info">{{ t('user.greeting') }}，{{ userStore.getUserInfo?.nickName || userStore.getUserInfo?.username }}</div>
     <template #overlay>
       <a-menu>
         <a-menu-item>
-          <div @click="goUserProfile">账号信息</div>
+          <div @click="goUserProfile">{{ t('user.profile') }}</div>
         </a-menu-item>
         <a-menu-item>
-          <div @click="doLogout">注销登录</div>
+          <div @click="doLogout">{{ t('user.logout') }}</div>
         </a-menu-item>
       </a-menu>
     </template>

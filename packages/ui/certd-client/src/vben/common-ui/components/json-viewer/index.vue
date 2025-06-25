@@ -14,7 +14,7 @@ import { computed, useAttrs } from 'vue';
 // @ts-ignore
 import VueJsonViewer from 'vue-json-viewer';
 
-import { $t } from '/@/vben/locales';
+import { $t } from '/@/locales';
 
 import { isBoolean } from '/@/vben/shared/utils';
 

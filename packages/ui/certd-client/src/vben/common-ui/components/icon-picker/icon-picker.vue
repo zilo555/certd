@@ -5,7 +5,7 @@ import { computed, ref, watch, watchEffect } from 'vue';
 
 import { usePagination } from '/@/vben/hooks';
 import { EmptyIcon, Grip, listIcons } from '/@/vben/icons';
-import { $t } from '/@/vben/locales';
+import { $t } from '/@/locales';
 
 import {
   Button,

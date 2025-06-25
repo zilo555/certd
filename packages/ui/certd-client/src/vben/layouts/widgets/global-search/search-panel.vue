@@ -5,7 +5,7 @@ import { nextTick, onMounted, ref, shallowRef, watch } from "vue";
 import { useRouter } from "vue-router";
 
 import { SearchX, X } from "../../../icons";
-import { $t } from "../../../locales";
+import { $t } from "/@/locales";
 import { mapTree, traverseTreeValues, uniqueByField } from "../../../utils";
 
 import { VbenIcon, VbenScrollbar } from "../../../shadcn-ui";

@@ -2,7 +2,7 @@
 import { computed } from "vue";
 
 import { Settings } from "/@/vben/icons";
-import { $t, loadLocaleMessages } from "/@/vben/locales";
+import { $t, loadLocaleMessages } from "/@/locales";
 import { preferences, updatePreferences } from "/@/vben/preferences";
 import { capitalizeFirstLetter } from "/@/vben/utils";
 

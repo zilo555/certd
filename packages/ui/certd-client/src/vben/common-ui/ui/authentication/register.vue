@@ -6,7 +6,7 @@ import type { VbenFormSchema } from '/@/vben/form-ui';
 import { computed, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 
-import { $t } from '/@/vben/locales';
+import { $t } from '/@/locales';
 
 import { useVbenForm } from '/@/vben/form-ui';
 import { VbenButton } from '/@/vben/shadcn-ui';

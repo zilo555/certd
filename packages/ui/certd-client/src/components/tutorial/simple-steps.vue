@@ -4,6 +4,9 @@
 
 <script lang="ts" setup>
 import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 type Step = {
   title: string;
@@ -13,15 +16,9 @@ type Step = {
 import { ref } from "vue";
 
 const steps = ref<Step[]>([
-  {
-    title: "创建证书流水线"
-  },
-  {
-    title: "添加部署任务"
-  },
-  {
-    title: "定时运行"
-  }
+  { title: t('certd.steps.createPipeline') },
+  { title: t('certd.steps.addTask') },
+  { title: t('certd.steps.scheduledRun') }
 ]);
 
 const router = useRouter();

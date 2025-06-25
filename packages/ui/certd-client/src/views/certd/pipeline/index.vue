@@ -1,14 +1,14 @@
 <template>
   <fs-page class="page-cert">
     <template #header>
-      <div class="title">我的流水线</div>
+      <div class="title">{{ t("certd.myPipelines") }}</div>
     </template>
     <fs-crud ref="crudRef" v-bind="crudBinding">
       <div v-if="selectedRowKeys.length > 0" class="batch-actions">
         <div class="batch-actions-inner">
-          <span> 已选择 {{ selectedRowKeys.length }} 项 </span>
-          <fs-button icon="ion:trash-outline" class="color-red" type="link" text="批量删除" @click="batchDelete"></fs-button>
-          <fs-button icon="icon-park-outline:replay-music" class="need-plus" type="link" text="强制重新运行" @click="batchRerun"></fs-button>
+          <span>{{ t("certd.selectedCount", { count: selectedRowKeys.length }) }}</span>
+          <fs-button icon="ion:trash-outline" class="color-red" type="link" :text="t('certd.batchDelete')" @click="batchDelete"></fs-button>
+          <fs-button icon="icon-park-outline:replay-music" class="need-plus" type="link" :text="t('certd.batchForceRerun')" @click="batchRerun"></fs-button>
           <change-group class="color-green" :selected-row-keys="selectedRowKeys" @change="batchFinished"></change-group>
           <change-notification class="color-green" :selected-row-keys="selectedRowKeys" @change="batchFinished"></change-notification>
           <change-trigger class="color-green" :selected-row-keys="selectedRowKeys" @change="batchFinished"></change-trigger>
@@ -16,11 +16,12 @@
       </div>
       <template #actionbar-right> </template>
       <template #form-bottom>
-        <div>申请证书</div>
+        <div>{{ t("certd.applyCertificate") }}</div>
       </template>
     </fs-crud>
   </fs-page>
 </template>
+
 
 <script lang="ts" setup>
 import { onActivated, onMounted, ref } from "vue";
@@ -31,6 +32,9 @@ import ChangeGroup from "./components/change-group.vue";
 import ChangeTrigger from "./components/change-trigger.vue";
 import { Modal, notification } from "ant-design-vue";
 import * as api from "./api";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 import ChangeNotification from "/@/views/certd/pipeline/components/change-notification.vue";
 
 defineOptions({
