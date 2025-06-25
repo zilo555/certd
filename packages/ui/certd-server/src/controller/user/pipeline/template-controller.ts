@@ -74,4 +74,10 @@ export class TemplateController extends CrudController<TemplateService> {
     const detail = await this.service.detail(id, this.getUserId());
     return this.ok(detail);
   }
+  @Post('/createPipelineByTemplate', { summary: Constants.per.authOnly })
+  async createPipelineByTemplate(@Body(ALL) body: any) {
+    body.userId = this.getUserId();
+    const res = await this.service.createPipelineByTemplate(body);
+    return this.ok(res);
+  }
 }

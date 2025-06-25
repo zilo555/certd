@@ -45,10 +45,11 @@ export class TemplateService extends BaseService<TemplateEntity> {
       let newPipeline = cloneDeep(pipelineEntity)
       //创建pipeline模版
       newPipeline.id = undefined;
-      newPipeline.title = template.title+"模版流水线"
+      newPipeline.title = template.title + "模版流水线"
       newPipeline.templateId = template.id
+      newPipeline.isTemplate = true
 
-      const pipelineJson:Pipeline = JSON.parse(newPipeline.content)
+      const pipelineJson: Pipeline = JSON.parse(newPipeline.content)
       delete pipelineJson.triggers
       pipelineJson.id = template.id
       pipelineJson.userId = template.userId
@@ -56,7 +57,7 @@ export class TemplateService extends BaseService<TemplateEntity> {
       newPipeline.content = JSON.stringify(pipelineJson)
       newPipeline = await tx.getRepository(PipelineEntity).save(newPipeline)
 
-      const update :any= {}
+      const update: any = {}
       update.id = template.id
       update.pipelineId = newPipeline.id
       await tx.getRepository(TemplateEntity).save(update)
@@ -86,19 +87,40 @@ export class TemplateService extends BaseService<TemplateEntity> {
       pipeline,
     }
   }
+
   async batchDelete(ids: number[], userId: number) {
 
-    const where :any= {
+    const where: any = {
       id: In(ids),
     }
     if (userId > 0) {
       where.userId = userId
     }
-    const list = await this.getRepository().find({where })
+    const list = await this.getRepository().find({where})
     ids = list.map(item => item.id)
     const pipelineIds = list.map(item => item.pipelineId)
     await this.delete(ids);
-    await this.pipelineService.batchDelete(pipelineIds,userId)
+    await this.pipelineService.batchDelete(pipelineIds, userId)
+  }
+
+  async createPipelineByTemplate(body: PipelineEntity) {
+    const templateId = body.templateId;
+    const template = await this.info(templateId);
+
+    if (!template && template.userId !== body.userId) {
+      throw new Error('模板不存在');
+    }
+
+    const tempPipeline = await this.pipelineService.info(template.pipelineId)
+
+    const newPipeline = {
+      type: tempPipeline.type,
+      from : "template",
+      keepHistoryCount: tempPipeline.keepHistoryCount,
+      ... body,
+    }
+
+    await this.pipelineService.save(newPipeline)
   }
 }
 

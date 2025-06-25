@@ -12,6 +12,25 @@ import { PluginGroup, usePluginStore } from "/@/store/plugin";
 import { createNotificationApi } from "/@/views/certd/notification/api";
 import GroupSelector from "../group/group-selector.vue";
 
+export function fillPipelineByDefaultForm(pipeline: any, form: any) {
+  const triggers = [];
+  if (form.triggerCron) {
+    triggers.push({ title: "定时触发", type: "timer", props: { cron: form.triggerCron } });
+  }
+  const notifications = [];
+  if (form.notification != null) {
+    notifications.push({
+      type: "custom",
+      when: ["error", "turnToSuccess", "success"],
+      notificationId: form.notification,
+      title: form.notificationTarget?.name || "自定义通知",
+    });
+  }
+  pipeline.triggers = triggers;
+  pipeline.notifications = notifications;
+  return pipeline;
+}
+
 export function setRunnableIds(pipeline: any) {
   const idMap: any = {};
   function createId(oldId: any) {
@@ -244,21 +263,8 @@ export function useCertPipelineCreator() {
     async function doSubmit({ form }: any) {
       // const certDetail = readCertDetail(form.cert.crt);
       // 添加certd pipeline
-      const triggers = [];
-      if (form.triggerCron) {
-        triggers.push({ title: "定时触发", type: "timer", props: { cron: form.triggerCron } });
-      }
-      const notifications = [];
-      if (form.notification != null) {
-        notifications.push({
-          type: "custom",
-          when: ["error", "turnToSuccess", "success"],
-          notificationId: form.notification,
-          title: form.notificationTarget?.name || "自定义通知",
-        });
-      }
       const pluginInput = omit(form, ["triggerCron", "notification", "notificationTarget", "certApplyPlugin", "groupId"]);
-      let pipeline = {
+      let pipeline: any = {
         title: form.domains[0] + "证书自动化",
         runnableType: "pipeline",
         stages: [
@@ -288,17 +294,11 @@ export function useCertPipelineCreator() {
             ],
           },
         ],
-        triggers,
-        notifications,
       };
-      pipeline = setRunnableIds(pipeline);
 
-      /**
-       *  // cert: 证书; backup: 备份; custom:自定义;
-       *   type: string;
-       *   // custom: 自定义; monitor: 监控;
-       *   from: string;
-       */
+      pipeline = fillPipelineByDefaultForm(pipeline, form);
+
+      pipeline = setRunnableIds(pipeline);
       const groupId = form.groupId;
       const id = await api.Save({
         title: pipeline.title,

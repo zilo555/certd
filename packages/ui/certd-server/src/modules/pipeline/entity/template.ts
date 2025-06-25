@@ -23,6 +23,8 @@ export class TemplateEntity {
 
   @Column({ name: 'title', comment: '标题' })
   title: string;
+  @Column({ name: 'desc', comment: '说明' })
+  desc: string;
 
   @Column({ comment: '配置', length: 40960 })
   content: string;

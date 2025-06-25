@@ -56,4 +56,12 @@ export const templateApi = {
       method: "post",
     });
   },
+
+  async CreatePipelineByTemplate(data: any) {
+    return await request({
+      url: apiPrefix + "/createPipelineByTemplate",
+      method: "post",
+      data,
+    });
+  },
 };

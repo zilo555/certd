@@ -1,5 +1,5 @@
 <template>
-  <a-form ref="templateFormRef" class="template-form w-full" :model="templateForm" :label-col="labelCol" :wrapper-col="wrapperCol">
+  <a-form ref="formRef" class="template-form w-full" :model="templateForm" :label-col="labelCol" :wrapper-col="wrapperCol">
     <template v-for="(item, key) in templateFormColumns" :key="key">
       <fs-form-item v-if="item.show !== false" :model-value="get(templateForm, key)" :item="item" :get-context-fn="getScopeFunc(key)" @update:model-value="set(templateForm, key, $event)" />
     </template>
@@ -14,7 +14,7 @@ import { usePluginStore } from "/@/store/plugin";
 defineOptions({
   name: "TemplateForm",
 });
-
+const formRef = ref();
 const props = defineProps<{
   input: any;
   pipeline: any;
@@ -61,9 +61,14 @@ function getScopeFunc(inputKey: string) {
   };
 }
 
+async function validate() {
+  return await formRef.value.validate();
+}
+
 defineExpose({
   getForm() {
     return templateForm;
   },
+  validate,
 });
 </script>

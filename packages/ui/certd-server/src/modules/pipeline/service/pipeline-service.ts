@@ -119,7 +119,7 @@ export class PipelineService extends BaseService<PipelineEntity> {
 
   async page(pageReq: PageReq<PipelineEntity>) {
     //模版流水线不要被查询出来
-    set(pageReq,"query.templateId",0)
+    set(pageReq,"query.isTemplate",false)
     const result = await super.page(pageReq);
     await this.fillLastVars(result.records);
 

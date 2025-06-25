@@ -146,8 +146,12 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
                 toolbar: {
                   show: false,
                 },
-                tabs: {
-                  name: "type",
+                columns: {
+                  title: {
+                    column: {
+                      cellRender: null,
+                    },
+                  },
                 },
               },
             },
