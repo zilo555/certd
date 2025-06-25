@@ -150,4 +150,39 @@ export default {
 		manual: "Manual Execution",
 		timer: "Scheduled Execution",
 	},
+	sysResources: {
+		sysRoot: "System Management",
+		sysConsole: "Console",
+		sysSettings: "System Settings",
+		cnameSetting: "CNAME Service Settings",
+		emailSetting: "Email Server Settings",
+		siteSetting: "Site Personalization",
+		headerMenus: "Top Menu Settings",
+		sysAccess: "System-level Authorization",
+		sysPlugin: "Plugin Management",
+		sysPluginEdit: "Edit Plugin",
+		sysPluginConfig: "Certificate Plugin Configuration",
+		accountBind: "Account Binding",
+		permissionManager: "Permission Management",
+		roleManager: "Role Management",
+		userManager: "User Management",
+		suiteManager: "Suite Management",
+		suiteSetting: "Suite Settings",
+		orderManager: "Order Management",
+		userSuites: "User Suites",
+	},
+	certificateRepo: {
+		title: "Certificate Repository",
+		sub: "Certificates generated from pipeline"
+	},
+
+	certificateNotGenerated: "Certificate not yet generated, please run the pipeline first",
+	viewCertificateTitle: "View Certificate",
+	close: "Close",
+	viewCert: {
+		title: "View Certificate"
+	},
+	download: {
+		title: "Download Certificate"
+	},
 };

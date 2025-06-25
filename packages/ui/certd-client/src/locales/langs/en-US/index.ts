@@ -4,6 +4,7 @@ import vip from './vip';
 import tutorial from './tutorial';
 import preferences from './preferences';
 import ui from './ui';
+import guide from './guide';
 
 export default {
 	certd,
@@ -11,5 +12,6 @@ export default {
 	vip,
 	ui,
 	tutorial,
-	preferences
+	preferences,
+	guide
 };

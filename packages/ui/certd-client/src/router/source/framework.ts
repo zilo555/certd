@@ -1,7 +1,7 @@
 import LayoutBasic from "/@/layout/layout-basic.vue";
 
 import type { RouteRecordRaw } from "vue-router";
-import i18n from '../../locales/i18n';
+import i18n from '/@/locales/i18n';
 
 import { mergeRouteModules } from "/@/vben/utils";
 const dynamicRouteFiles = import.meta.glob("./modules/**/*.ts*", {

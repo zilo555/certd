@@ -1,30 +1,33 @@
 <template>
-  <fs-page>
-    <template #header>
-      <div class="title">
-        证书仓库
-        <span class="sub">从流水线生成的证书</span>
-      </div>
-    </template>
-    <fs-crud ref="crudRef" v-bind="crudBinding"> </fs-crud>
-  </fs-page>
+	<fs-page>
+		<template #header>
+			<div class="title">
+				{{ t("certd.certificateRepo.title") }}
+				<span class="sub">{{ t("certd.certificateRepo.sub") }}</span>
+			</div>
+		</template>
+		<fs-crud ref="crudRef" v-bind="crudBinding"> </fs-crud>
+	</fs-page>
 </template>
 
 <script lang="ts" setup>
 import { onActivated, onMounted } from "vue";
 import { useFs } from "@fast-crud/fast-crud";
 import createCrudOptions from "./crud";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 defineOptions({
-  name: "CertStore",
+	name: "CertStore",
 });
 const { crudBinding, crudRef, crudExpose } = useFs({ createCrudOptions, context: {} });
 
 // 页面打开后获取列表数据
 onMounted(() => {
-  crudExpose.doRefresh();
+	crudExpose.doRefresh();
 });
 onActivated(() => {
-  crudExpose.doRefresh();
+	crudExpose.doRefresh();
 });
 </script>
