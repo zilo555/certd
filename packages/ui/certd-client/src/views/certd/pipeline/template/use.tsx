@@ -67,6 +67,34 @@ export function createExtraColumns() {
   };
 }
 
+export async function createPipelineByTemplate(opts: { templateId: number; title: string; groupId?: string; pipeline: any; templateForm: any; keepHistoryCount?: number }) {
+  const { title, groupId, pipeline, templateForm, keepHistoryCount, templateId } = opts;
+  //填充模版参数
+  const steps: any = {};
+  eachSteps(pipeline, (step: any) => {
+    steps[step.id] = step;
+  });
+
+  for (const stepId in templateForm) {
+    const step = steps[stepId];
+    const tempStep = templateForm[stepId];
+    if (step) {
+      for (const key in tempStep) {
+        step.input[key] = tempStep[key];
+      }
+    }
+  }
+
+  pipeline.title = title;
+  return await templateApi.CreatePipelineByTemplate({
+    title,
+    content: JSON.stringify(pipeline),
+    keepHistoryCount: keepHistoryCount ?? 30,
+    groupId,
+    templateId,
+  });
+}
+
 export function useTemplate() {
   const { openCrudFormDialog } = useFormWrapper();
 
@@ -102,28 +130,12 @@ export function useTemplate() {
       let newPipeline = cloneDeep(pipeline);
       newPipeline = fillPipelineByDefaultForm(newPipeline, form);
       //填充模版参数
-      const steps: any = {};
-      eachSteps(newPipeline, (step: any) => {
-        steps[step.id] = step;
-      });
-
-      for (const inputKey in tempInputs) {
-        const [stepId, key] = inputKey.split(".");
-        const step = steps[stepId];
-        if (step) {
-          step.input[key] = tempInputs[inputKey];
-        }
-      }
-
-      const title = form.title;
-      newPipeline.title = title;
-      const groupId = form.groupId;
-      const { id } = await templateApi.CreatePipelineByTemplate({
-        title,
-        content: JSON.stringify(newPipeline),
-        keepHistoryCount: 30,
-        groupId,
+      const { id } = await createPipelineByTemplate({
         templateId: detail.template.id,
+        templateForm: tempInputs,
+        pipeline: newPipeline,
+        title: form.title,
+        groupId: form.groupId,
       });
       if (req.onCreated) {
         req.onCreated({ id });

@@ -20,8 +20,8 @@ import { templateApi } from "../api";
 import { createFormOptions } from "/@/views/certd/pipeline/template/import/form";
 import { cloneDeep } from "lodash-es";
 import { fillPipelineByDefaultForm } from "/@/views/certd/pipeline/certd-form/use";
-import { eachSteps } from "/@/views/certd/pipeline/utils";
-
+import { createPipelineByTemplate } from "/@/views/certd/pipeline/template/use";
+import { notification, Modal } from "ant-design-vue";
 const route = useRoute();
 const templateId = route.query.templateId as string;
 
@@ -59,44 +59,44 @@ async function doImport() {
 
   const importTableRef = formRef.value.getComponentRef("templateProps");
 
-  const templateList = importTableRef.value.getData();
+  const templateList = importTableRef.getData();
 
-  for (let i = 0; i < templateList.length; i++) {
-    const tempInputs = templateList[i];
-    const title = tempInputs.title;
-    delete tempInputs.title;
+  const progress = ref({ total: templateList.length, current: 0 });
+  async function requestImport() {
+    for (let i = 0; i < templateList.length; i++) {
+      const tempInputs = templateList[i];
+      const title = tempInputs.title;
+      delete tempInputs.title;
 
-    let newPipeline = cloneDeep(detail.value.pipeline);
-    newPipeline = fillPipelineByDefaultForm(newPipeline, form);
-    //填充模版参数
-    const steps: any = {};
-    eachSteps(newPipeline, (step: any) => {
-      steps[step.id] = step;
-    });
+      let newPipeline = cloneDeep(detail.value.pipeline);
+      newPipeline = fillPipelineByDefaultForm(newPipeline, form);
 
-    for (const inputKey in tempInputs) {
-      const [stepId, key] = inputKey.split(".");
-      const step = steps[stepId];
-      if (step) {
-        step.input[key] = tempInputs[inputKey];
-      }
+      await createPipelineByTemplate({
+        templateId: parseInt(templateId),
+        templateForm: tempInputs,
+        pipeline: newPipeline,
+        title: title,
+        groupId: form.groupId,
+      });
+      progress.value.current = progress.value.current + 1;
     }
-
-    newPipeline.title = title;
-    const groupId = form.groupId;
-
-    await templateApi.CreatePipelineByTemplate({
-      title,
-      content: JSON.stringify(newPipeline),
-      keepHistoryCount: 30,
-      groupId,
-      templateId: parseInt(templateId),
-      pipeline: {
-        title: form.title,
-        templateProps: templateList,
-      },
+    notification.success({
+      message: "导入完成",
     });
+
+    importTableRef.clear();
   }
+  requestImport();
+  Modal.info({
+    title: "导入中",
+    content() {
+      return (
+        <div>
+          当前导入进度： {progress.value.current} / {progress.value.total}
+        </div>
+      );
+    },
+  });
 }
 </script>
 

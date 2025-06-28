@@ -22,7 +22,6 @@
   </fs-page>
 </template>
 
-
 <script lang="ts" setup>
 import { onActivated, onMounted, ref } from "vue";
 import { dict, useFs } from "@fast-crud/fast-crud";

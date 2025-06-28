@@ -133,5 +133,12 @@ async function loadLocaleMessages(lang: SupportedLanguagesType) {
 
   return setI18nLanguage(lang);
 }
+
+export function useI18n() {
+  return {
+    t: i18n.global.t,
+    locale: i18n.global.locale,
+  };
+}
 export { i18n, loadLocaleMessages, loadLocalesMap, loadLocalesMapFromDir, setupI18n, setI18nLanguage };
 export default i18n;

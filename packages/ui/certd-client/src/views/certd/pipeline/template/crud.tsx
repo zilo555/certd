@@ -77,27 +77,27 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
         buttons: {
           edit: { show: false },
           copy: { show: false },
-          use: {
-            text: null,
-            title: "使用此模版创建流水线",
-            icon: "ion:duplicate-outline",
-            click({ row }) {
-              openCreateFromTemplateDialog({
-                templateId: row.id,
-                onCreated: ({ id }) => {
-                  router.push({ path: "/certd/pipeline/detail", query: { id, editMode: true } });
-                },
-              });
-            },
-          },
-          import: {
-            text: null,
-            title: "批量导入创建",
-            icon: "ion:duplicate",
-            click({ row }) {
-              router.push({ path: "/certd/pipeline/template/import", query: { templateId: row.id } });
-            },
-          },
+          // use: {
+          //   text: null,
+          //   title: "使用此模版创建流水线",
+          //   icon: "ion:duplicate-outline",
+          //   click({ row }) {
+          //     openCreateFromTemplateDialog({
+          //       templateId: row.id,
+          //       onCreated: ({ id }) => {
+          //         router.push({ path: "/certd/pipeline/detail", query: { id, editMode: "true" } });
+          //       },
+          //     });
+          //   },
+          // },
+          // import: {
+          //   text: null,
+          //   title: "批量导入创建",
+          //   icon: "ion:duplicate",
+          //   click({ row }) {
+          //     router.push({ path: "/certd/pipeline/template/import", query: { templateId: row.id } });
+          //   },
+          // },
         },
       },
       columns: {
@@ -124,11 +124,19 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           search: {
             show: true,
           },
+          form: {
+            rules: [{ required: true, message: "请输入模版名称" }],
+          },
           column: {
             width: 400,
             sorter: true,
             cellRender({ row, value }) {
-              return <router-link to={{ path: "/certd/pipeline/template/edit", query: { templateId: row.id } }}>{value}</router-link>;
+              return (
+                <router-link class={"flex items-center"} to={{ path: "/certd/pipeline/template/edit", query: { templateId: row.id } }}>
+                  <fs-icon icon={"ion:create-outline"}></fs-icon>
+                  <span class={"ml-5"}> {value}</span>
+                </router-link>
+              );
             },
           },
         },
@@ -179,6 +187,46 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
                   },
                 },
               },
+            },
+          },
+        },
+        useCreate: {
+          title: "使用此模版",
+          form: { show: false },
+          column: {
+            conditionalRender: false,
+            width: 400,
+            cellRender({ row }) {
+              function create() {
+                openCreateFromTemplateDialog({
+                  templateId: row.id,
+                  onCreated: ({ id }) => {
+                    router.push({ path: "/certd/pipeline/detail", query: { id, editMode: "true" } });
+                  },
+                });
+              }
+              return (
+                <a class={"flex items-center"} onClick={create}>
+                  <fs-icon icon={"ion:duplicate-outline"}></fs-icon>
+                  <span class={"ml-5"}>创建单个流水线</span>
+                </a>
+              );
+            },
+          },
+        },
+        useImport: {
+          title: "使用此模版",
+          form: { show: false },
+          column: {
+            conditionalRender: false,
+            width: 400,
+            cellRender({ row }) {
+              return (
+                <router-link class={"flex items-center"} to={{ path: "/certd/pipeline/template/import", query: { templateId: row.id } }}>
+                  <fs-icon icon={"ion:duplicate"}></fs-icon>
+                  <span class={"ml-5"}>批量创建流水线</span>
+                </router-link>
+              );
             },
           },
         },

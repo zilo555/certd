@@ -112,7 +112,9 @@ async function getTemplateDetail() {
   }
   const res = await templateApi.GetDetail(parseInt(templateId));
   detail.value = res;
-  templateProps.value = JSON.parse(res.template.content ?? "{input:{}}");
+  if (res.template.content) {
+    templateProps.value = JSON.parse(res.template.content);
+  }
 }
 
 const pluginStore = usePluginStore();

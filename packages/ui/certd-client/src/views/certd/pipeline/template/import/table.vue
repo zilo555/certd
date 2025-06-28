@@ -91,7 +91,10 @@ onMounted(async () => {
   await pluginStore.init();
   await nextTick();
   const steps = getStepsMap(props.detail.pipeline);
-  templateProps.value = JSON.parse(props.detail.template?.content ?? "{input:{}}");
+  if (props.detail.template?.content) {
+    templateProps.value = JSON.parse(props.detail.template?.content);
+  }
+
   appendCrudOptions({ ...buildColumns(steps) });
   crudBinding.value.data = [];
   await crudExpose.editable.enable({ mode: "row" });
@@ -100,6 +103,9 @@ onMounted(async () => {
 defineExpose({
   getData() {
     return crudBinding.value.data;
+  },
+  clear() {
+    crudBinding.value.data = [];
   },
 });
 </script>
