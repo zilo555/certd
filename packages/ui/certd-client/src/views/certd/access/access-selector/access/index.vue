@@ -15,13 +15,13 @@ export default defineComponent({
   props: {
     type: {
       type: String,
-      default: "aliyun"
+      default: "aliyun",
     },
     from: {
       type: String, //user | sys
-      default: "user"
+      default: "user",
     },
-    modelValue: {}
+    modelValue: {},
   },
   emits: ["update:modelValue"],
   setup(props, ctx) {
@@ -39,7 +39,7 @@ export default defineComponent({
       () => {
         return props.type;
       },
-      (value) => {
+      value => {
         console.log("access type changed:", value);
         onTypeChanged(value);
       }
@@ -51,9 +51,9 @@ export default defineComponent({
 
     return {
       crudBinding,
-      crudRef
+      crudRef,
     };
-  }
+  },
 });
 </script>
 <style lang="less">

@@ -89,7 +89,7 @@ function loadLocalesMapFromDir(regexp: RegExp, modules: Record<string, () => Pro
  * @param locale
  */
 function setI18nLanguage(locale: Locale) {
-  // setAntdvLocale(locale);
+  setAntdvLocale(locale);
   //@ts-ignore
   i18n.global.locale.value = locale;
 

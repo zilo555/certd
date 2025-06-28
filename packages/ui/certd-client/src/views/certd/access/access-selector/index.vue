@@ -28,28 +28,28 @@ export default defineComponent({
   props: {
     modelValue: {
       type: [Number, String],
-      default: null
+      default: null,
     },
     type: {
       type: String,
-      default: "aliyun"
+      default: "aliyun",
     },
     placeholder: {
       type: String,
-      default: "请选择"
+      default: "请选择",
     },
     size: {
       type: String,
-      default: "middle"
+      default: "middle",
     },
     from: {
       type: String, //user | sys
-      default: "user"
+      default: "user",
     },
     disabled: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   emits: ["update:modelValue", "change", "selectedChange"],
   setup(props, ctx) {
@@ -92,7 +92,7 @@ export default defineComponent({
       () => {
         return props.modelValue;
       },
-      async (value) => {
+      async value => {
         selectedId.value = null;
         target.value = null;
         if (value == null) {
@@ -101,7 +101,7 @@ export default defineComponent({
         await refreshTarget(value);
       },
       {
-        immediate: true
+        immediate: true,
       }
     );
 
@@ -114,11 +114,11 @@ export default defineComponent({
       () => {
         return props.type;
       },
-      async (value) => {
+      async value => {
         await refreshProviderDefine(value);
       },
       {
-        immediate: true
+        immediate: true,
       }
     );
 
@@ -134,7 +134,7 @@ export default defineComponent({
         console.log("choose ok:", selectedId.value);
         emitValue(selectedId.value);
         chooseForm.show = false;
-      }
+      },
     });
 
     return {
@@ -142,9 +142,9 @@ export default defineComponent({
       target,
       selectedId,
       providerDefine,
-      chooseForm
+      chooseForm,
     };
-  }
+  },
 });
 </script>
 <style lang="less">

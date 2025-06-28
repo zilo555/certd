@@ -189,6 +189,7 @@ watch(
     const input = pluginType === "plugin" ? form.input : form;
     const watches = {};
     for (const key of props.watches) {
+      //@ts-ignore
       watches[key] = input[key];
     }
     return {
@@ -198,10 +199,11 @@ watch(
   },
   async (value, oldValue) => {
     const { form } = value;
-    const oldForm = oldValue.form;
+    const oldForm = oldValue?.form;
     let changed = oldForm == null || optionsRef.value.length == 0;
     for (const key of props.watches) {
-      if (form[key] != oldForm[key]) {
+      //@ts-ignore
+      if (oldForm && form[key] != oldForm[key]) {
         changed = true;
         break;
       }

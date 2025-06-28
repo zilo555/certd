@@ -95,9 +95,12 @@ export function getCommonColumnDefine(crudExpose: any, typeRef: any, api: any) {
           },
           renderLabel(item: any) {
             return (
-              <span class={"flex-o"}>
-                <fs-icon icon={item.icon} class={"mr-5 fs-16 color-blue"} />
-                {item.label}
+              <span class={"flex flex-between items-center"}>
+                <span class={"flex items-center"}>
+                  <fs-icon icon={item.icon} class={"mr-5 fs-16 color-blue"} />
+                  {item.label}
+                </span>
+                <span>{item.value}</span>
               </span>
             );
           },
