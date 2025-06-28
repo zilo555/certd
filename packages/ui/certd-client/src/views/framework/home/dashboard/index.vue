@@ -11,19 +11,21 @@
         <div class="text">
           <div class="left">
             <div>
-              <span>您好，{{ userInfo.nickName || userInfo.username }}， 欢迎使用 【{{ siteInfo.title }}】</span>
+              <span>{{ t('certd.dashboard.greeting', { name: userInfo.nickName || userInfo.username, site: siteInfo.title }) }}</span>
             </div>
             <div class="flex-o flex-wrap profile-badges">
               <a-tooltip :title="deltaTimeTip">
                 <a-badge :dot="deltaTimeWarning">
-                  <a-tag :color="deltaTimeWarning ? 'red' : 'green'" class="flex-inline pointer"> <fs-icon icon="ion:time-outline"></fs-icon> {{ now }}</a-tag>
+                  <a-tag :color="deltaTimeWarning ? 'red' : 'green'" class="flex-inline pointer">
+                    <fs-icon icon="ion:time-outline"></fs-icon> {{ now }}
+                  </a-tag>
                 </a-badge>
               </a-tooltip>
 
               <template v-if="userStore.isAdmin">
                 <a-divider type="vertical" />
                 <a-badge :dot="hasNewVersion">
-                  <a-tag color="blue" class="flex-inline pointer mr-0" :title="'最新版本:' + latestVersion" @click="openUpgradeUrl()">
+                  <a-tag color="blue" class="flex-inline pointer mr-0" :title="t('certd.dashboard.latestVersion', { version: latestVersion })" @click="openUpgradeUrl()">
                     <fs-icon icon="ion:rocket-outline" class="mr-5"></fs-icon>
                     v{{ version }}
                   </a-tag>
@@ -37,7 +39,7 @@
               </template>
               <template v-if="settingsStore.isPlus && settingsStore.sysPublic.userValidTimeEnabled === true && userInfo.validTime">
                 <a-divider type="vertical" />
-                <valid-time-format class="flex-o" prefix="账户有效期：" :model-value="userInfo.validTime" />
+                <valid-time-format class="flex-o" :prefix="t('certd.dashboard.validUntil')" :model-value="userInfo.validTime" />
               </template>
             </div>
           </div>
@@ -46,9 +48,9 @@
 
       <div class="suggest hidden md:block">
         <tutorial-button class="flex-center mt-2">
-          <a-tooltip title="点击查看详细教程">
+          <a-tooltip :title="t('certd.dashboard.tutorialTooltip')">
             <a-tag color="blue" class="flex-center">
-              仅需3步，全自动申请部署证书
+              {{ t('certd.dashboard.tutorialText') }}
               <fs-icon class="font-size-16 ml-5" icon="mingcute:question-line"></fs-icon>
             </a-tag>
           </a-tooltip>
@@ -59,9 +61,10 @@
     <div v-if="!settingStore.isComm" class="warning">
       <a-alert type="warning" show-icon>
         <template #message>
-          证书和授权为敏感信息，不要使用来历不明的在线Certd服务和镜像，以免泄露；请务必私有化部署使用，认准官方版本发布渠道：
-          <a class="ml-5 flex-inline" href="https://gitee.com/certd/certd" target="_blank">gitee</a>、 <a class="ml-5 flex-inline" href="https://github.com/certd/certd" target="_blank">github</a>、
-          <a class="ml-5 flex-inline" href="https://certd.docmirror.cn" target="_blank">帮助文档</a>
+          {{ t('certd.dashboard.alertMessage') }}
+          <a class="ml-5 flex-inline" href="https://gitee.com/certd/certd" target="_blank">gitee</a>、
+          <a class="ml-5 flex-inline" href="https://github.com/certd/certd" target="_blank">github</a>、
+          <a class="ml-5 flex-inline" href="https://certd.docmirror.cn" target="_blank">{{ t('certd.dashboard.helpDoc') }}</a>
         </template>
       </a-alert>
     </div>
@@ -69,30 +72,32 @@
     <div class="statistic-data m-20">
       <a-row :gutter="20" class="flex-wrap">
         <a-col :md="6" :xs="24">
-          <statistic-card title="证书流水线数量" :count="count.pipelineCount">
+          <statistic-card :title="t('certd.dashboard.pipelineCount')" :count="count.pipelineCount">
             <template v-if="count.pipelineCount === 0" #default>
               <div class="flex-center flex-1 flex-col">
-                <div style="font-size: 18px; font-weight: 700">您还没有证书流水线</div>
-                <fs-button type="primary" class="mt-10" icon="ion:add-circle-outline" @click="goPipeline">立即创建</fs-button>
+                <div style="font-size: 18px; font-weight: 700">{{ t('certd.dashboard.noPipeline') }}</div>
+                <fs-button type="primary" class="mt-10" icon="ion:add-circle-outline" @click="goPipeline">{{ t('certd.dashboard.createNow') }}</fs-button>
               </div>
             </template>
             <template #footer>
-              <router-link to="/certd/pipeline" class="flex"><fs-icon icon="ion:settings-outline" class="mr-5 fs-16" /> 管理流水线</router-link>
+              <router-link to="/certd/pipeline" class="flex">
+                <fs-icon icon="ion:settings-outline" class="mr-5 fs-16" /> {{ t('certd.dashboard.managePipeline') }}
+              </router-link>
             </template>
           </statistic-card>
         </a-col>
         <a-col :md="6" :xs="24">
-          <statistic-card title="流水线状态" :footer="false">
+          <statistic-card :title="t('certd.dashboard.pipelineStatus')" :footer="false">
             <pie-count v-if="count.pipelineStatusCount" :data="count.pipelineStatusCount"></pie-count>
           </statistic-card>
         </a-col>
         <a-col :md="6" :xs="24">
-          <statistic-card title="最近运行统计" :footer="false">
-            <day-count v-if="count.historyCountPerDay" :data="count.historyCountPerDay" title="运行次数"></day-count>
+          <statistic-card :title="t('certd.dashboard.recentRun')" :footer="false">
+            <day-count v-if="count.historyCountPerDay" :data="count.historyCountPerDay" :title="t('certd.dashboard.runCount')"></day-count>
           </statistic-card>
         </a-col>
         <a-col :md="6" :xs="24">
-          <statistic-card title="最快到期证书">
+          <statistic-card :title="t('certd.dashboard.expiringCerts')">
             <expiring-list v-if="count.expiringList" :data="count.expiringList"></expiring-list>
           </statistic-card>
         </a-col>
@@ -102,7 +107,8 @@
     <div v-if="pluginGroups" class="plugin-list">
       <a-card>
         <template #title>
-          已支持的部署任务总览 <a-tag color="green">{{ pluginGroups.groups.all.plugins.length }}</a-tag>
+          {{ t('certd.dashboard.supportedTasks') }}
+          <a-tag color="green">{{ pluginGroups.groups.all.plugins.length }}</a-tag>
         </template>
         <a-row :gutter="10">
           <a-col v-for="item of pluginGroups.groups.all.plugins" :key="item.name" class="plugin-item-col" :xl="4" :md="6" :xs="24">
@@ -130,6 +136,7 @@
   </div>
 </template>
 
+
 <script lang="ts" setup>
 import { FsIcon } from "@fast-crud/fast-crud";
 import SimpleSteps from "/@/components/tutorial/simple-steps.vue";
@@ -148,6 +155,8 @@ import { UserInfoRes } from "/@/store/user/api.user";
 import { GetStatisticCount } from "/@/views/framework/home/dashboard/api";
 import { useRouter } from "vue-router";
 import * as api from "./api";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 import { usePluginStore } from "/@/store/plugin";
 defineOptions({
   name: "DashboardUser",

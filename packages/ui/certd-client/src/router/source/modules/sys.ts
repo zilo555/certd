@@ -1,10 +1,11 @@
 import LayoutPass from "/@/layout/layout-pass.vue";
 import { useSettingStore } from "/@/store/settings";
 import aboutResource from "/@/router/source/modules/about";
+import i18n from "/@/locales/i18n";
 
 export const sysResources = [
   {
-    title: "系统管理",
+    title: "certd.sysResources.sysRoot",
     name: "SysRoot",
     path: "/sys",
     redirect: "/sys/settings",
@@ -15,7 +16,7 @@ export const sysResources = [
     },
     children: [
       {
-        title: "控制台",
+        title: "certd.sysResources.sysConsole",
         name: "SysConsole",
         path: "/sys/console",
         component: "/sys/console/index.vue",
@@ -30,7 +31,7 @@ export const sysResources = [
       },
 
       {
-        title: "系统设置",
+        title: "certd.sysResources.sysSettings",
         name: "SysSettings",
         path: "/sys/settings",
         component: "/sys/settings/index.vue",
@@ -40,7 +41,7 @@ export const sysResources = [
         },
       },
       {
-        title: "CNAME服务设置",
+        title: "certd.sysResources.cnameSetting",
         name: "CnameSetting",
         path: "/sys/cname/provider",
         component: "/sys/cname/provider/index.vue",
@@ -51,7 +52,7 @@ export const sysResources = [
         },
       },
       {
-        title: "邮件服务器设置",
+        title: "certd.sysResources.emailSetting",
         name: "EmailSetting",
         path: "/sys/settings/email",
         component: "/sys/settings/email/index.vue",
@@ -62,7 +63,7 @@ export const sysResources = [
         },
       },
       {
-        title: "站点个性化",
+        title: "certd.sysResources.siteSetting",
         name: "SiteSetting",
         path: "/sys/site",
         component: "/sys/site/index.vue",
@@ -76,7 +77,7 @@ export const sysResources = [
         },
       },
       {
-        title: "顶部菜单设置",
+        title: "certd.sysResources.headerMenus",
         name: "HeaderMenus",
         path: "/sys/settings/header-menus",
         component: "/sys/settings/header-menus/index.vue",
@@ -91,7 +92,7 @@ export const sysResources = [
         },
       },
       {
-        title: "系统级授权",
+        title: "certd.sysResources.sysAccess",
         name: "SysAccess",
         path: "/sys/access",
         component: "/sys/access/index.vue",
@@ -106,7 +107,7 @@ export const sysResources = [
         },
       },
       {
-        title: "插件管理",
+        title: "certd.sysResources.sysPlugin",
         name: "SysPlugin",
         path: "/sys/plugin",
         component: "/sys/plugin/index.vue",
@@ -117,7 +118,7 @@ export const sysResources = [
         },
       },
       {
-        title: "编辑插件",
+        title: "certd.sysResources.sysPluginEdit",
         name: "SysPluginEdit",
         path: "/sys/plugin/edit",
         component: "/sys/plugin/edit.vue",
@@ -129,7 +130,7 @@ export const sysResources = [
         },
       },
       {
-        title: "证书插件配置",
+        title: "certd.sysResources.sysPluginConfig",
         name: "SysPluginConfig",
         path: "/sys/plugin/config",
         component: "/sys/plugin/config.vue",
@@ -143,7 +144,7 @@ export const sysResources = [
         },
       },
       {
-        title: "账号绑定",
+        title: "certd.sysResources.accountBind",
         name: "AccountBind",
         path: "/sys/account",
         component: "/sys/account/index.vue",
@@ -154,19 +155,18 @@ export const sysResources = [
         },
       },
       {
-        title: "权限管理",
+        title: "certd.sysResources.permissionManager",
         name: "PermissionManager",
         path: "/sys/authority/permission",
         component: "/sys/authority/permission/index.vue",
         meta: {
           icon: "ion:list-outline",
-          //需要校验权限
           permission: "sys:auth:per:view",
           keepAlive: true,
         },
       },
       {
-        title: "角色管理",
+        title: "certd.sysResources.roleManager",
         name: "RoleManager",
         path: "/sys/authority/role",
         component: "/sys/authority/role/index.vue",
@@ -177,7 +177,7 @@ export const sysResources = [
         },
       },
       {
-        title: "用户管理",
+        title: "certd.sysResources.userManager",
         name: "UserManager",
         path: "/sys/authority/user",
         component: "/sys/authority/user/index.vue",
@@ -189,7 +189,7 @@ export const sysResources = [
       },
 
       {
-        title: "套餐管理",
+        title: "certd.sysResources.suiteManager",
         name: "SuiteManager",
         path: "/sys/suite",
         redirect: "/sys/suite/setting",
@@ -204,7 +204,7 @@ export const sysResources = [
         },
         children: [
           {
-            title: "套餐设置",
+            title: "certd.sysResources.suiteSetting",
             name: "SuiteSetting",
             path: "/sys/suite/setting",
             component: "/sys/suite/setting/index.vue",
@@ -218,7 +218,7 @@ export const sysResources = [
             },
           },
           {
-            title: "订单管理",
+            title: "certd.sysResources.orderManager",
             name: "OrderManager",
             path: "/sys/suite/trade",
             component: "/sys/suite/trade/index.vue",
@@ -233,7 +233,7 @@ export const sysResources = [
             },
           },
           {
-            title: "用户套餐",
+            title: "certd.sysResources.userSuites",
             name: "UserSuites",
             path: "/sys/suite/user-suite",
             component: "/sys/suite/user-suite/index.vue",

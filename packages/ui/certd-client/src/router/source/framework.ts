@@ -1,6 +1,7 @@
 import LayoutBasic from "/@/layout/layout-basic.vue";
 
 import type { RouteRecordRaw } from "vue-router";
+import i18n from "/@/locales/i18n";
 
 import { mergeRouteModules } from "/@/vben/utils";
 const dynamicRouteFiles = import.meta.glob("./modules/**/*.ts*", {
@@ -11,7 +12,7 @@ const dynamicRouteFiles = import.meta.glob("./modules/**/*.ts*", {
 const dynamicRoutes: RouteRecordRaw[] = mergeRouteModules(dynamicRouteFiles);
 export const frameworkResource = [
   {
-    title: "框架",
+    title: "certd.framework.title",
     name: "root",
     path: "/",
     redirect: "/index",
@@ -22,7 +23,7 @@ export const frameworkResource = [
     },
     children: [
       {
-        title: "首页",
+        title: "certd.framework.home",
         name: "index",
         path: "/index",
         component: "/framework/home/index.vue",
@@ -39,4 +40,5 @@ export const frameworkResource = [
     ],
   },
 ];
+
 console.assert(frameworkResource.length === 1, "frameworkResource数组长度只能为1，你只能配置framework路由的子路由");

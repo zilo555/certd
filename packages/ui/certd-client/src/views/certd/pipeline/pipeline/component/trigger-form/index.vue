@@ -2,9 +2,11 @@
   <a-drawer v-model:open="triggerDrawerVisible" placement="right" :closable="true" width="650px" class="pi-trigger-form" @after-open-change="triggerDrawerOnAfterVisibleChange">
     <template #title>
       <div>
-        编辑触发器
+        {{ t("certd.editTrigger") }}
         <a-button v-if="mode === 'edit'" @click="triggerDelete()">
-          <template #icon><DeleteOutlined /></template>
+          <template #icon>
+            <DeleteOutlined />
+          </template>
         </a-button>
       </div>
     </template>
@@ -14,45 +16,45 @@
           <fs-form-item
             v-model="currentTrigger.title"
             :item="{
-              title: '触发器名称',
+              title: t('certd.triggerName'),
               key: 'title',
               component: {
                 name: 'a-input',
                 vModel: 'value',
                 disabled: !editMode,
               },
-              rules: [{ required: true, message: '此项必填' }],
+              rules: [{ required: true, message: t('certd.requiredField') }],
             }"
           />
 
           <fs-form-item
             v-model="currentTrigger.type"
             :item="{
-              title: '类型',
+              title: t('certd.type'),
               key: 'type',
               value: 'timer',
               component: {
                 name: 'a-select',
                 vModel: 'value',
                 disabled: !editMode,
-                options: [{ value: 'timer', label: '定时' }],
+                options: [{ value: 'timer', label: t('certd.schedule') }],
               },
-              rules: [{ required: true, message: '此项必填' }],
+              rules: [{ required: true, message: t('certd.requiredField') }],
             }"
           />
 
           <fs-form-item
             v-model="currentTrigger.props.cron"
             :item="{
-              title: '定时脚本',
+              title: t('certd.cronForm.title'),
               key: 'props.cron',
               component: {
                 disabled: !editMode,
                 name: 'cron-editor',
                 vModel: 'modelValue',
               },
-              helper: '点击上面的按钮，选择每天几点定时执行。\n建议设置为每天触发一次，证书未到期之前任务会跳过，不会重复执行',
-              rules: [{ required: true, message: '此项必填' }],
+              helper: t('certd.cronForm.helper'),
+              rules: [{ required: true, message: t('certd.cronForm.required') }],
             }"
           />
         </a-form>
@@ -71,6 +73,7 @@
 import { message, Modal } from "ant-design-vue";
 import { inject, ref } from "vue";
 import * as _ from "lodash-es";
+import { useI18n } from "/src/locales/";
 import { nanoid } from "nanoid";
 export default {
   name: "PiTriggerForm",
@@ -86,6 +89,7 @@ export default {
      *  trigger drawer
      * @returns
      */
+    const { t } = useI18n();
     function useTriggerForm() {
       const mode = ref("add");
       const callback = ref();
@@ -98,7 +102,7 @@ export default {
           {
             type: "string",
             required: true,
-            message: "请输入名称",
+            message: t("certd.enterName"),
           },
         ],
       });
@@ -123,7 +127,7 @@ export default {
 
       const triggerAdd = emit => {
         mode.value = "add";
-        const trigger = { id: nanoid(), title: "定时触发", type: "timer", props: {} };
+        const trigger = { id: nanoid(), title: t("certd.timerTrigger"), type: "timer", props: {} };
         triggerOpen(trigger, emit);
       };
 
@@ -152,8 +156,8 @@ export default {
 
       const triggerDelete = () => {
         Modal.confirm({
-          title: "确认",
-          content: `确定要删除此触发器吗？`,
+          title: t("certd.confirm"),
+          content: t("certd.confirmDeleteTrigger"),
           async onOk() {
             callback.value("delete");
             triggerDrawerClose();

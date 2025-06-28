@@ -2,7 +2,7 @@
 import type { ThemeModeType } from "/@/vben/types";
 
 import { MoonStar, Sun, SunMoon } from "/@/vben/icons";
-import { $t } from "/@/vben/locales";
+import { $t } from "/@/locales";
 import { preferences, updatePreferences, usePreferences } from "/@/vben/preferences";
 
 import { ToggleGroup, ToggleGroupItem, VbenTooltip } from "/@/vben//shadcn-ui";

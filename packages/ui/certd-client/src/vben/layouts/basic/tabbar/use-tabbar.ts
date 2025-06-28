@@ -9,7 +9,7 @@ import { useRoute, useRouter } from "vue-router";
 
 import { useContentMaximize, useTabs } from "../../../hooks";
 import { ArrowLeftToLine, ArrowRightLeft, ArrowRightToLine, ExternalLink, FoldHorizontal, Fullscreen, Minimize2, Pin, PinOff, RotateCw, X } from "../../../icons";
-import { $t, useI18n } from "../../../locales";
+import { $t, useI18n } from "/@/locales";
 import { useAccessStore, useTabbarStore } from "../../../stores";
 import { filterTree } from "../../../utils";
 

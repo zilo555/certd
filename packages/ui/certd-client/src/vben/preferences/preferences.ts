@@ -1,22 +1,18 @@
-import type { DeepPartial } from '/@/vben/typings';
+import type { DeepPartial } from "/@/vben/typings";
 
-import type { InitialOptions, Preferences } from './types';
+import type { InitialOptions, Preferences } from "./types";
 
-import { markRaw, reactive, readonly, watch } from 'vue';
+import { markRaw, reactive, readonly, watch } from "vue";
 
-import { StorageManager } from '/@/vben/shared/cache';
-import { isMacOs, merge } from '/@/vben/shared/utils';
+import { StorageManager } from "/@/vben/shared/cache";
+import { isMacOs, merge } from "/@/vben/shared/utils";
 
-import {
-  breakpointsTailwind,
-  useBreakpoints,
-  useDebounceFn,
-} from '@vueuse/core';
+import { breakpointsTailwind, useBreakpoints, useDebounceFn } from "@vueuse/core";
 
-import { defaultPreferences } from './config';
-import { updateCSSVariables } from './update-css-variables';
+import { defaultPreferences } from "./config";
+import { updateCSSVariables } from "./update-css-variables";
 
-const STORAGE_KEY = 'preferences';
+const STORAGE_KEY = "preferences";
 const STORAGE_KEY_LOCALE = `${STORAGE_KEY}-locale`;
 const STORAGE_KEY_THEME = `${STORAGE_KEY}-theme`;
 
@@ -33,14 +29,11 @@ class PreferenceManager {
     this.cache = new StorageManager();
 
     // 避免频繁的操作缓存
-    this.savePreferences = useDebounceFn(
-      (preference: Preferences) => this._savePreferences(preference),
-      150,
-    );
+    this.savePreferences = useDebounceFn((preference: Preferences) => this._savePreferences(preference), 150);
   }
 
   clearCache() {
-    [STORAGE_KEY, STORAGE_KEY_LOCALE, STORAGE_KEY_THEME].forEach((key) => {
+    [STORAGE_KEY, STORAGE_KEY_LOCALE, STORAGE_KEY_THEME].forEach(key => {
       this.cache?.removeItem(key);
     });
   }
@@ -73,7 +66,7 @@ class PreferenceManager {
       {},
       // overrides,
       this.loadCachedPreferences() || {},
-      this.initialPreferences,
+      this.initialPreferences
     );
 
     // 更新偏好设置
@@ -103,7 +96,7 @@ class PreferenceManager {
     // 保存重置后的偏好设置
     this.savePreferences(this.state);
     // 从存储中移除偏好设置项
-    [STORAGE_KEY, STORAGE_KEY_THEME, STORAGE_KEY_LOCALE].forEach((key) => {
+    [STORAGE_KEY, STORAGE_KEY_THEME, STORAGE_KEY_LOCALE].forEach(key => {
       this.cache?.removeItem(key);
     });
     this.updatePreferences(this.state);
@@ -145,17 +138,14 @@ class PreferenceManager {
       updateCSSVariables(this.state);
     }
 
-    if (
-      Reflect.has(appUpdates, 'colorGrayMode') ||
-      Reflect.has(appUpdates, 'colorWeakMode')
-    ) {
+    if (Reflect.has(appUpdates, "colorGrayMode") || Reflect.has(appUpdates, "colorWeakMode")) {
       this.updateColorMode(this.state);
     }
   }
 
   private initPlatform() {
     const dom = document.documentElement;
-    dom.dataset.platform = isMacOs() ? 'macOs' : 'window';
+    dom.dataset.platform = isMacOs() ? "macOs" : "window";
   }
 
   /**
@@ -183,25 +173,23 @@ class PreferenceManager {
 
     // 监听断点，判断是否移动端
     const breakpoints = useBreakpoints(breakpointsTailwind);
-    const isMobile = breakpoints.smaller('md');
+    const isMobile = breakpoints.smaller("md");
     watch(
       () => isMobile.value,
-      (val) => {
+      val => {
         this.updatePreferences({
           app: { isMobile: val },
         });
       },
-      { immediate: true },
+      { immediate: true }
     );
 
     // 监听系统主题偏好设置变化
-    window
-      .matchMedia('(prefers-color-scheme: dark)')
-      .addEventListener('change', ({ matches: isDark }) => {
-        this.updatePreferences({
-          theme: { mode: isDark ? 'dark' : 'light' },
-        });
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches: isDark }) => {
+      this.updatePreferences({
+        theme: { mode: isDark ? "dark" : "light" },
       });
+    });
   }
 
   /**
@@ -212,14 +200,10 @@ class PreferenceManager {
     if (preference.app) {
       const { colorGrayMode, colorWeakMode } = preference.app;
       const dom = document.documentElement;
-      const COLOR_WEAK = 'invert-mode';
-      const COLOR_GRAY = 'grayscale-mode';
-      colorWeakMode
-        ? dom.classList.add(COLOR_WEAK)
-        : dom.classList.remove(COLOR_WEAK);
-      colorGrayMode
-        ? dom.classList.add(COLOR_GRAY)
-        : dom.classList.remove(COLOR_GRAY);
+      const COLOR_WEAK = "invert-mode";
+      const COLOR_GRAY = "grayscale-mode";
+      colorWeakMode ? dom.classList.add(COLOR_WEAK) : dom.classList.remove(COLOR_WEAK);
+      colorGrayMode ? dom.classList.add(COLOR_GRAY) : dom.classList.remove(COLOR_GRAY);
     }
   }
 }

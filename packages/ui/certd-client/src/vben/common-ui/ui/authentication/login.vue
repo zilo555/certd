@@ -8,7 +8,7 @@ import type { AuthenticationProps } from './types';
 import { computed, onMounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import { $t } from '/@/vben/locales';
+import { $t } from '/@/locales';
 
 import { useVbenForm } from '/@/vben/form-ui';
 import { VbenButton, VbenCheckbox } from '/@/vben/shadcn-ui';

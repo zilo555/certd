@@ -2,7 +2,7 @@
 import type { NotificationItem } from "./types";
 
 import { Bell, MailCheck } from "/@/vben/icons";
-import { $t } from "/@/vben/locales";
+import { $t } from "/@/locales";
 
 import { VbenButton, VbenIconButton, VbenPopover, VbenScrollbar } from "/@/vben//shadcn-ui";
 

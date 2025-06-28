@@ -2,8 +2,10 @@
 import { ref } from "vue";
 import { getCommonColumnDefine } from "/@/views/certd/access/common";
 import { AddReq, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, EditReq, UserPageQuery, UserPageRes } from "@fast-crud/fast-crud";
+import { useI18n } from "vue-i18n";
 
 export default function ({ crudExpose, context }: CreateCrudOptionsProps): CreateCrudOptionsRet {
+  const { t } = useI18n();
   const { crudBinding } = crudExpose;
   const { props, ctx, api } = context;
   const lastResRef = ref();
@@ -95,26 +97,26 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           },
         },
         name: {
-          title: "名称",
+          title: t("certd.name"),
           search: {
             show: true,
           },
           type: ["text"],
           form: {
-            rules: [{ required: true, message: "请填写名称" }],
-            helper: "随便填，当多个相同类型的授权时，便于区分",
+            rules: [{ required: true, message: t("certd.pleaseEnterName") }],
+            helper: t("certd.nameHelper"),
           },
           column: {
             width: 200,
           },
         },
         from: {
-          title: "级别",
+          title: t("certd.level"),
           type: "dict-select",
           dict: dict({
             data: [
-              { label: "系统", value: "sys" },
-              { label: "用户", value: "user" },
+              { label: t("certd.system"), value: "sys" },
+              { label: t("certd.usera"), value: "user" },
             ],
           }),
           search: {

@@ -1,11 +1,11 @@
 <template>
   <fs-page class="page-cert">
     <template #header>
-      <div class="title">流水线执行记录</div>
+      <div class="title">{{ t("certd.pipelineExecutionRecords") }}</div>
     </template>
     <fs-crud ref="crudRef" v-bind="crudBinding">
       <template #pagination-left>
-        <a-tooltip title="批量删除">
+        <a-tooltip :title="t('certd.batchDelete')">
           <fs-button icon="DeleteOutlined" @click="handleBatchDelete"></fs-button>
         </a-tooltip>
       </template>
@@ -13,12 +13,16 @@
   </fs-page>
 </template>
 
+
 <script lang="ts" setup>
 import { onActivated, onMounted } from "vue";
 import { useFs } from "@fast-crud/fast-crud";
 import createCrudOptions from "./crud";
 import { message, Modal } from "ant-design-vue";
 import { DeleteBatch } from "./api";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 defineOptions({
   name: "PipelineHistory",
@@ -29,17 +33,17 @@ const selectedRowKeys = context.selectedRowKeys;
 const handleBatchDelete = () => {
   if (selectedRowKeys.value?.length > 0) {
     Modal.confirm({
-      title: "确认",
-      content: `确定要批量删除这${selectedRowKeys.value.length}条记录吗`,
+      title: t("certd.confirm"),
+      content: t("certd.confirmBatchDeleteContent", { count: selectedRowKeys.value.length }),
       async onOk() {
         await DeleteBatch(selectedRowKeys.value);
-        message.info("删除成功");
+        message.info(t("certd.deleteSuccess"));
         crudExpose.doRefresh();
         selectedRowKeys.value = [];
       },
     });
   } else {
-    message.error("请先勾选记录");
+    message.error(t("certd.pleaseSelectRecords"));
   }
 };
 

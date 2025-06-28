@@ -6,7 +6,7 @@ import type { MenuRecordRaw } from "../../types";
 import { computed, useSlots, watch } from "vue";
 
 import { useRefresh } from "../../hooks";
-import { $t, i18n } from "../../locales";
+import { $t, i18n } from "/@/locales";
 import { preferences, updatePreferences, usePreferences } from "../../preferences";
 import { useLockStore } from "../../stores";
 import { cloneDeep, mapTree } from "../../utils";

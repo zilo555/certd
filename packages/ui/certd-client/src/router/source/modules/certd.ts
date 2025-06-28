@@ -1,9 +1,10 @@
 import { useSettingStore } from "/@/store/settings";
 import aboutResource from "/@/router/source/modules/about";
+import i18n from "/@/locales/i18n";
 
 export const certdResources = [
   {
-    title: "证书自动化",
+    title: "certd.title",
     name: "CertdRoot",
     path: "/certd",
     redirect: "/certd/pipeline",
@@ -14,7 +15,7 @@ export const certdResources = [
     },
     children: [
       {
-        title: "证书自动化流水线",
+        title: "certd.pipeline",
         name: "PipelineManager",
         path: "/certd/pipeline",
         component: "/certd/pipeline/index.vue",
@@ -24,7 +25,7 @@ export const certdResources = [
         },
       },
       {
-        title: "编辑流水线",
+        title: "certd.pipelineEdit",
         name: "PipelineEdit",
         path: "/certd/pipeline/detail",
         component: "/certd/pipeline/detail.vue",
@@ -33,7 +34,7 @@ export const certdResources = [
         },
       },
       {
-        title: "执行历史记录",
+        title: "certd.history",
         name: "PipelineHistory",
         path: "/certd/history",
         component: "/certd/history/index.vue",
@@ -71,7 +72,7 @@ export const certdResources = [
         },
       },
       {
-        title: "证书仓库",
+        title: "certd.certStore",
         name: "CertStore",
         path: "/certd/monitor/cert",
         component: "/certd/monitor/cert/index.vue",
@@ -83,7 +84,7 @@ export const certdResources = [
         },
       },
       {
-        title: "站点证书监控",
+        title: "certd.siteMonitor",
         name: "SiteCertMonitor",
         path: "/certd/monitor/site",
         component: "/certd/monitor/site/index.vue",
@@ -94,7 +95,7 @@ export const certdResources = [
         },
       },
       {
-        title: "设置",
+        title: "certd.settings",
         name: "MineSetting",
         path: "/certd/setting",
         redirect: "/certd/access",
@@ -105,7 +106,7 @@ export const certdResources = [
         },
         children: [
           {
-            title: "授权管理",
+            title: "certd.accessManager",
             name: "AccessManager",
             path: "/certd/access",
             component: "/certd/access/index.vue",
@@ -116,7 +117,7 @@ export const certdResources = [
             },
           },
           {
-            title: "CNAME记录管理",
+            title: "certd.cnameRecord",
             name: "CnameRecord",
             path: "/certd/cname/record",
             component: "/certd/cname/record/index.vue",
@@ -127,7 +128,7 @@ export const certdResources = [
             },
           },
           {
-            title: "子域名托管设置",
+            title: "certd.subDomain",
             name: "SubDomain",
             path: "/certd/pipeline/subDomain",
             component: "/certd/pipeline/sub-domain/index.vue",
@@ -138,7 +139,7 @@ export const certdResources = [
             },
           },
           {
-            title: "流水线分组管理",
+            title: "certd.pipelineGroup",
             name: "PipelineGroupManager",
             path: "/certd/pipeline/group",
             component: "/certd/pipeline/group/index.vue",
@@ -148,9 +149,8 @@ export const certdResources = [
               keepAlive: true,
             },
           },
-
           {
-            title: "开放接口密钥",
+            title: "certd.openKey",
             name: "OpenKey",
             path: "/certd/open/openkey",
             component: "/certd/open/openkey/index.vue",
@@ -161,7 +161,7 @@ export const certdResources = [
             },
           },
           {
-            title: "通知设置",
+            title: "certd.notification",
             name: "NotificationManager",
             path: "/certd/notification",
             component: "/certd/notification/index.vue",
@@ -172,7 +172,7 @@ export const certdResources = [
             },
           },
           {
-            title: "站点监控设置",
+            title: "certd.siteMonitorSetting",
             name: "SiteMonitorSetting",
             path: "/certd/monitor/setting",
             component: "/certd/monitor/site/setting/index.vue",
@@ -183,7 +183,7 @@ export const certdResources = [
             },
           },
           {
-            title: "认证安全设置",
+            title: "certd.userSecurity",
             name: "UserSecurity",
             path: "/certd/mine/security",
             component: "/certd/mine/security/index.vue",
@@ -194,7 +194,7 @@ export const certdResources = [
             },
           },
           {
-            title: "账号信息",
+            title: "certd.userProfile",
             name: "UserProfile",
             path: "/certd/mine/user-profile",
             component: "/certd/mine/user-profile.vue",
@@ -206,9 +206,8 @@ export const certdResources = [
           },
         ],
       },
-
       {
-        title: "套餐",
+        title: "certd.suite",
         name: "SuiteProduct",
         path: "/certd/suite",
         redirect: "/certd/suite/mine",
@@ -222,7 +221,7 @@ export const certdResources = [
         },
         children: [
           {
-            title: "我的套餐",
+            title: "certd.mySuite",
             name: "MySuite",
             path: "/certd/suite/mine",
             component: "/certd/suite/mine/index.vue",
@@ -236,7 +235,7 @@ export const certdResources = [
             },
           },
           {
-            title: "套餐购买",
+            title: "certd.suiteBuy",
             name: "SuiteProductBuy",
             path: "/certd/suite/buy",
             component: "/certd/suite/buy.vue",
@@ -250,7 +249,7 @@ export const certdResources = [
             },
           },
           {
-            title: "我的订单",
+            title: "certd.myTrade",
             name: "MyTrade",
             path: "/certd/trade",
             component: "/certd/trade/index.vue",
@@ -265,7 +264,7 @@ export const certdResources = [
             },
           },
           {
-            title: "支付返回",
+            title: "certd.paymentReturn",
             name: "PaymentReturn",
             path: "/certd/payment/return/:type",
             component: "/certd/payment/return.vue",
@@ -277,17 +276,6 @@ export const certdResources = [
           },
         ],
       },
-
-      // {
-      //   title: "邮箱设置",
-      //   name: "EmailSetting",
-      //   path: "/sys/settings/email",
-      //   component: "/sys/settings/email-setting.vue",
-      //   meta: {
-      //     icon: "ion:mail-outline",
-      //     auth: true
-      //   }
-      // },
     ],
   },
 ];

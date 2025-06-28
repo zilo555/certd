@@ -3,7 +3,7 @@ import type { Recordable } from "../../../types";
 
 import { computed, reactive } from "vue";
 
-import { $t } from "../../../locales";
+import { $t } from "/@/locales";
 
 import { useVbenForm, z } from "../../../form-ui";
 import { useVbenModal } from "../../../popup-ui";

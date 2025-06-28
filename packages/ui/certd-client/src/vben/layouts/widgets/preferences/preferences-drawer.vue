@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { SupportedLanguagesType } from "/@/vben/locales";
+import type { SupportedLanguagesType } from "/@/locales";
 import type {
   BreadcrumbStyleType,
   BuiltinThemeType,
@@ -17,7 +17,7 @@ import type { SegmentedItem } from "/@/vben//shadcn-ui";
 import { computed, ref } from "vue";
 
 import { Copy, RotateCw, X } from "/@/vben/icons";
-import { $t, loadLocaleMessages } from "/@/vben/locales";
+import { $t, loadLocaleMessages } from "/@/locales";
 import { clearPreferencesCache, preferences, resetPreferences, usePreferences } from "/@/vben/preferences";
 
 import { useVbenDrawer } from "/@/vben//popup-ui";

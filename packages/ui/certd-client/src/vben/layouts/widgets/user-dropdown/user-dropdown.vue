@@ -7,7 +7,7 @@ import { computed, useTemplateRef, watch } from "vue";
 
 import { useHoverToggle } from "/@/vben/hooks";
 import { LockKeyhole, LogOut } from "/@/vben/icons";
-import { $t } from "/@/vben/locales";
+import { $t } from "/@/locales";
 import { preferences, usePreferences } from "/@/vben/preferences";
 import { useLockStore } from "/@/vben/stores";
 import { isWindowsOs } from "/@/vben/utils";

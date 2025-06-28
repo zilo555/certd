@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import * as api from "./api.plugin";
 import { DynamicType, FormItemProps } from "@fast-crud/fast-crud";
-
+import { i18n } from "/src/locales/i18n";
 interface PluginState {
   group?: PluginGroups;
 }
@@ -31,8 +31,10 @@ export type PluginDefine = {
 export class PluginGroups {
   groups!: { [key: string]: PluginGroup };
   map!: { [key: string]: PluginDefine };
+  t: any;
   constructor(groups: { [key: string]: PluginGroup }) {
     this.groups = groups;
+    this.t = i18n.global.t;
     this.initGroup(groups);
     this.initMap();
   }
@@ -40,7 +42,7 @@ export class PluginGroups {
   private initGroup(groups: { [p: string]: PluginGroup }) {
     const all: PluginGroup = {
       key: "all",
-      title: "全部",
+      title: this.t("certd.all"),
       order: 0,
       plugins: [],
       icon: "material-symbols:border-all-rounded",

@@ -12,7 +12,7 @@ async function generateAccess(options: GenerateMenuAndRoutesOptions) {
 
   const layoutMap: ComponentRecordType = {
     BasicLayout,
-    IFrameView
+    IFrameView,
   } as any;
 
   return await generateAccessible(preferences.app.accessMode, {
@@ -28,7 +28,7 @@ async function generateAccess(options: GenerateMenuAndRoutesOptions) {
     forbiddenComponent,
     // 如果 route.meta.menuVisibleWithForbidden = true
     layoutMap,
-    pageMap
+    pageMap,
   });
 }
 

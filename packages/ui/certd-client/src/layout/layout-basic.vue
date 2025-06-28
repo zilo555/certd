@@ -9,6 +9,9 @@ import { useSettingStore } from "/@/store/settings";
 import PageFooter from "./components/footer/index.vue";
 import { useRouter } from "vue-router";
 import MaxKBChat from "/@/components/ai/index.vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const userStore = useUserStore();
 
@@ -19,14 +22,14 @@ const menus = computed(() => [
       router.push("/certd/mine/user-profile");
     },
     icon: "fa-solid:book",
-    text: "账号信息",
+    text: t("certd.accountInfo"),
   },
   {
     handler: () => {
       router.push("/certd/mine/security");
     },
     icon: "fluent:shield-keyhole-16-regular",
-    text: "认证安全设置",
+    text: t("certd.securitySettings"),
   },
 ]);
 

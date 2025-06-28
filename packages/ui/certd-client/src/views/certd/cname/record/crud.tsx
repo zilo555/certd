@@ -8,271 +8,272 @@ import { useSettingStore } from "/@/store/settings";
 import { message } from "ant-design-vue";
 import CnameTip from "/@/components/plugins/cert/domains-verify-plan-editor/cname-tip.vue";
 export default function ({ crudExpose, context }: CreateCrudOptionsProps): CreateCrudOptionsRet {
-  const router = useRouter();
-  const { t } = useI18n();
-  const pageRequest = async (query: UserPageQuery): Promise<UserPageRes> => {
-    return await api.GetList(query);
-  };
-  const editRequest = async ({ form, row }: EditReq) => {
-    form.id = row.id;
-    const res = await api.UpdateObj(form);
-    return res;
-  };
-  const delRequest = async ({ row }: DelReq) => {
-    return await api.DelObj(row.id);
-  };
+	const router = useRouter();
+	const { t } = useI18n();
+	const pageRequest = async (query: UserPageQuery): Promise<UserPageRes> => {
+		return await api.GetList(query);
+	};
+	const editRequest = async ({ form, row }: EditReq) => {
+		form.id = row.id;
+		const res = await api.UpdateObj(form);
+		return res;
+	};
+	const delRequest = async ({ row }: DelReq) => {
+		return await api.DelObj(row.id);
+	};
 
-  const addRequest = async ({ form }: AddReq) => {
-    const res = await api.AddObj(form);
-    return res;
-  };
+	const addRequest = async ({ form }: AddReq) => {
+		const res = await api.AddObj(form);
+		return res;
+	};
 
-  const userStore = useUserStore();
-  const settingStore = useSettingStore();
-  const selectedRowKeys: Ref<any[]> = ref([]);
-  context.selectedRowKeys = selectedRowKeys;
-  const dictRef = dict({
-    data: [
-      { label: "待设置CNAME", value: "cname", color: "warning" },
-      { label: "验证中", value: "validating", color: "blue" },
-      { label: "验证成功", value: "valid", color: "green" },
-      { label: "验证失败", value: "failed", color: "red" },
-      { label: "验证超时", value: "timeout", color: "red" },
-    ],
-  });
-  return {
-    crudOptions: {
-      settings: {
-        plugins: {
-          //这里使用行选择插件，生成行选择crudOptions配置，最终会与crudOptions合并
-          rowSelection: {
-            enabled: true,
-            order: -2,
-            before: true,
-            // handle: (pluginProps,useCrudProps)=>CrudOptions,
-            props: {
-              multiple: true,
-              crossPage: true,
-              selectedRowKeys,
-            },
-          },
-        },
-      },
-      request: {
-        pageRequest,
-        addRequest,
-        editRequest,
-        delRequest,
-      },
-      tabs: {
-        name: "status",
-        show: true,
-      },
-      rowHandle: {
-        minWidth: 200,
-        fixed: "right",
-      },
-      columns: {
-        id: {
-          title: "ID",
-          key: "id",
-          type: "number",
-          column: {
-            width: 80,
-          },
-          form: {
-            show: false,
-          },
-        },
-        domain: {
-          title: "被代理域名",
-          type: "text",
-          search: {
-            show: true,
-          },
-          editForm: {
-            component: {
-              disabled: true,
-            },
-          },
-        },
-        hostRecord: {
-          title: "主机记录",
-          type: "text",
-          form: {
-            show: false,
-          },
-          column: {
-            width: 250,
-            cellRender: ({ value }) => {
-              return <fs-copyable v-model={value} />;
-            },
-          },
-        },
-        recordValue: {
-          title: "请设置CNAME",
-          type: "copyable",
-          form: {
-            show: false,
-          },
-          column: {
-            width: 500,
-          },
-        },
-        cnameProviderId: {
-          title: "CNAME服务",
-          type: "dict-select",
-          dict: dict({
-            url: "/cname/provider/list",
-            value: "id",
-            label: "domain",
-          }),
-          form: {
-            component: {
-              onDictChange: ({ form, dict }: any) => {
-                if (!form.cnameProviderId) {
-                  const list = dict.data.filter((item: any) => {
-                    return !item.disabled;
-                  });
-                  let item = list.find((item: any) => item.isDefault);
-                  if (!item && list.length > 0) {
-                    item = list[0];
-                  }
-                  if (item) {
-                    form.cnameProviderId = item.id;
-                  }
-                }
-              },
-              renderLabel(item: any) {
-                if (item.title) {
-                  return `${item.domain}<${item.title}>`;
-                } else {
-                  return item.domain;
-                }
-              },
-            },
-            helper: {
-              render() {
-                const closeForm = () => {
-                  crudExpose.getFormWrapperRef().close();
-                };
-                return (
-                  <div>
-                    默认提供公共CNAME服务，您还可以
-                    <router-link to={"/sys/cname/provider"} onClick={closeForm}>
-                      自定义CNAME服务
-                    </router-link>
-                  </div>
-                );
-              },
-            },
-          },
-          column: {
-            width: 120,
-            align: "center",
-            cellRender({ value }) {
-              if (value < 0) {
-                return <a-tag color={"green"}>公共CNAME</a-tag>;
-              } else {
-                return <a-tag color={"blue"}>自定义CNAME</a-tag>;
-              }
-            },
-          },
-        },
-        status: {
-          title: "状态",
-          type: "dict-select",
-          dict: dictRef,
-          addForm: {
-            show: false,
-          },
-          column: {
-            width: 120,
-            align: "center",
-            cellRender({ value, row }) {
-              return (
-                <div class={"flex flex-center"}>
-                  <fs-values-format modelValue={value} dict={dictRef}></fs-values-format>
-                  {row.error && (
-                    <a-tooltip title={row.error}>
-                      <fs-icon class={"ml-5 color-red"} icon="ion:warning-outline"></fs-icon>
-                    </a-tooltip>
-                  )}
-                </div>
-              );
-            },
-          },
-        },
-        triggerValidate: {
-          title: "验证",
-          type: "text",
-          form: {
-            show: false,
-          },
-          column: {
-            conditionalRenderDisabled: true,
-            width: 130,
-            align: "center",
-            cellRender({ row, value }) {
-              if (row.status === "valid") {
-                return "-";
-              }
+	const userStore = useUserStore();
+	const settingStore = useSettingStore();
+	const selectedRowKeys: Ref<any[]> = ref([]);
+	context.selectedRowKeys = selectedRowKeys;
+	const dictRef = dict({
+		data: [
+			{ label: t('certd.pending_cname_setup'), value: "cname", color: "warning" },
+			{ label: t('certd.validating'), value: "validating", color: "blue" },
+			{ label: t('certd.validation_successful'), value: "valid", color: "green" },
+			{ label: t('certd.validation_failed'), value: "failed", color: "red" },
+			{ label: t('certd.validation_timed_out'), value: "timeout", color: "red" },
+		],
+	});
+	return {
+		crudOptions: {
+			settings: {
+				plugins: {
+					//这里使用行选择插件，生成行选择crudOptions配置，最终会与crudOptions合并
+					rowSelection: {
+						enabled: true,
+						order: -2,
+						before: true,
+						// handle: (pluginProps,useCrudProps)=>CrudOptions,
+						props: {
+							multiple: true,
+							crossPage: true,
+							selectedRowKeys,
+						},
+					},
+				},
+			},
+			request: {
+				pageRequest,
+				addRequest,
+				editRequest,
+				delRequest,
+			},
+			tabs: {
+				name: "status",
+				show: true,
+			},
+			rowHandle: {
+				minWidth: 200,
+				fixed: "right",
+			},
+			columns: {
+				id: {
+					title: "ID",
+					key: "id",
+					type: "number",
+					column: {
+						width: 80,
+					},
+					form: {
+						show: false,
+					},
+				},
+				domain: {
+					title: t('certd.proxied_domain'),
+					type: "text",
+					search: {
+						show: true,
+					},
+					editForm: {
+						component: {
+							disabled: true,
+						},
+					},
+				},
+				hostRecord: {
+					title: t('certd.host_record'),
+					type: "text",
+					form: {
+						show: false,
+					},
+					column: {
+						width: 250,
+						cellRender: ({ value }) => {
+							return <fs-copyable v-model={value} />;
+						},
+					},
+				},
+				recordValue: {
+					title: t('certd.please_set_cname'),
+					type: "copyable",
+					form: {
+						show: false,
+					},
+					column: {
+						width: 500,
+					},
+				},
+				cnameProviderId: {
+					title: t('certd.cname_service'),
+					type: "dict-select",
+					dict: dict({
+						url: "/cname/provider/list",
+						value: "id",
+						label: "domain",
+					}),
+					form: {
+						component: {
+							onDictChange: ({ form, dict }: any) => {
+								if (!form.cnameProviderId) {
+									const list = dict.data.filter((item: any) => {
+										return !item.disabled;
+									});
+									let item = list.find((item: any) => item.isDefault);
+									if (!item && list.length > 0) {
+										item = list[0];
+									}
+									if (item) {
+										form.cnameProviderId = item.id;
+									}
+								}
+							},
+							renderLabel(item: any) {
+								if (item.title) {
+									return `${item.domain}<${item.title}>`;
+								} else {
+									return item.domain;
+								}
+							},
+						},
+						helper: {
+							render() {
+								const closeForm = () => {
+									crudExpose.getFormWrapperRef().close();
+								};
+								return (
+									<div>
+										{t('certd.default_public_cname')}
+										<router-link to={"/sys/cname/provider"} onClick={closeForm}>
+											{t('certd.customize_cname')}
+										</router-link>
+									</div>
+								);
+							},
+						},
+					},
+					column: {
+						width: 120,
+						align: "center",
+						cellRender({ value }) {
+							if (value < 0) {
+								return <a-tag color={"green"}>{t('certd.public_cname')}</a-tag>;
+							} else {
+								return <a-tag color={"blue"}>{t('certd.custom_cname')}</a-tag>;
+							}
+						},
+					},
+				},
+				status: {
+					title: t('certd.fields.status'),
+					type: "dict-select",
+					dict: dictRef,
+					addForm: {
+						show: false,
+					},
+					column: {
+						width: 120,
+						align: "center",
+						cellRender({ value, row }) {
+							return (
+								<div class={"flex flex-center"}>
+									<fs-values-format modelValue={value} dict={dictRef}></fs-values-format>
+									{row.error && (
+										<a-tooltip title={row.error}>
+											<fs-icon class={"ml-5 color-red"} icon="ion:warning-outline"></fs-icon>
+										</a-tooltip>
+									)}
+								</div>
+							);
+						},
+					},
+				},
+				triggerValidate: {
+					title: t('certd.validate'),
+					type: "text",
+					form: {
+						show: false,
+					},
+					column: {
+						conditionalRenderDisabled: true,
+						width: 130,
+						align: "center",
+						cellRender({ row, value }) {
+							if (row.status === "valid") {
+								return "-";
+							}
 
-              async function doVerify() {
-                row._validating_ = true;
-                try {
-                  const res = await api.DoVerify(row.id);
-                  if (res === true) {
-                    message.success("验证成功");
-                    row.status = "valid";
-                  } else if (res === false) {
-                    message.success("验证超时");
-                    row.status = "timeout";
-                  } else {
-                    message.success("开始验证，请耐心等待");
-                  }
-                  await crudExpose.doRefresh();
-                } catch (e: any) {
-                  console.error(e);
-                  message.error(e.message);
-                } finally {
-                  row._validating_ = false;
-                }
-              }
-              return (
-                <div>
-                  <a-button onClick={doVerify} loading={row._validating_} size={"small"} type={"primary"}>
-                    点击验证
-                  </a-button>
-                  <CnameTip record={row} />
-                </div>
-              );
-            },
-          },
-        },
-        createTime: {
-          title: "创建时间",
-          type: "datetime",
-          form: {
-            show: false,
-          },
-          column: {
-            sorter: true,
-            width: 160,
-            align: "center",
-          },
-        },
-        updateTime: {
-          title: "更新时间",
-          type: "datetime",
-          form: {
-            show: false,
-          },
-          column: {
-            show: true,
-          },
-        },
-      },
-    },
-  };
+							async function doVerify() {
+								row._validating_ = true;
+								try {
+									const res = await api.DoVerify(row.id);
+									if (res === true) {
+										message.success(t('certd.validation_successful'));
+										row.status = "valid";
+									} else if (res === false) {
+										message.success(t('certd.validation_timed_out'));
+										row.status = "timeout";
+									} else {
+										message.success(t('certd.validation_started'));
+									}
+									await crudExpose.doRefresh();
+								} catch (e: any) {
+									console.error(e);
+									message.error(e.message);
+								} finally {
+									row._validating_ = false;
+								}
+							}
+
+							return (
+								<div>
+									<a-button onClick={doVerify} loading={row._validating_} size={"small"} type={"primary"}>
+										{t('certd.click_to_validate')}
+									</a-button>
+									<CnameTip record={row} />
+								</div>
+							);
+						},
+					},
+				},
+				createTime: {
+					title: t('certd.create_time'),
+					type: "datetime",
+					form: {
+						show: false,
+					},
+					column: {
+						sorter: true,
+						width: 160,
+						align: "center",
+					},
+				},
+				updateTime: {
+					title: t('certd.update_time'),
+					type: "datetime",
+					form: {
+						show: false,
+					},
+					column: {
+						show: true,
+					},
+				},
+			},
+		},
+	};
 }

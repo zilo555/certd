@@ -2,7 +2,7 @@
 import type { CaptchaPoint, PointSelectionCaptchaProps } from '../types';
 
 import { RotateCw } from '/@/vben/icons';
-import { $t } from '/@/vben/locales';
+import { $t } from '/@/locales';
 
 import { VbenButton, VbenIconButton } from '/@/vben/shadcn-ui';
 

@@ -195,6 +195,7 @@ watch(
     const input = (pluginType === "plugin" ? form?.input : form) || {};
     const watches = {};
     for (const key of props.watches) {
+      //@ts-ignore
       watches[key] = input[key];
     }
     return {

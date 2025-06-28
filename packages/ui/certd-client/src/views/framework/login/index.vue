@@ -3,18 +3,18 @@
     <a-form v-if="!twoFactor.loginId" ref="formRef" class="user-layout-login" name="custom-validation" :model="formState" v-bind="layout" @finish="handleFinish" @finish-failed="handleFinishFailed">
       <!--      <div class="login-title">登录</div>-->
       <a-tabs v-model:active-key="formState.loginType" :tab-bar-style="{ textAlign: 'center', borderBottom: 'unset' }">
-        <a-tab-pane key="password" tab="密码登录" :disabled="sysPublicSettings.passwordLoginEnabled !== true">
+        <a-tab-pane key="password" :tab="t('authentication.passwordTab')" :disabled="sysPublicSettings.passwordLoginEnabled !== true">
           <template v-if="formState.loginType === 'password'">
             <!--      <div class="login-title">登录</div>-->
             <a-form-item required has-feedback name="username" :rules="rules.username">
-              <a-input v-model:value="formState.username" placeholder="请输入用户名/邮箱/手机号" autocomplete="off">
+              <a-input v-model:value="formState.username" :placeholder="t('authentication.usernamePlaceholder')" autocomplete="off">
                 <template #prefix>
                   <fs-icon icon="ion:phone-portrait-outline"></fs-icon>
                 </template>
               </a-input>
             </a-form-item>
             <a-form-item has-feedback name="password" :rules="rules.password">
-              <a-input-password v-model:value="formState.password" placeholder="请输入密码" autocomplete="off">
+              <a-input-password v-model:value="formState.password" :placeholder="t('authentication.passwordPlaceholder')" autocomplete="off">
                 <template #prefix>
                   <fs-icon icon="ion:lock-closed-outline"></fs-icon>
                 </template>
@@ -22,15 +22,16 @@
             </a-form-item>
           </template>
         </a-tab-pane>
-        <a-tab-pane key="sms" tab="短信验证码登录" :disabled="sysPublicSettings.smsLoginEnabled !== true">
+        <a-tab-pane v-if="sysPublicSettings.smsLoginEnabled === true" key="sms" :tab="t('authentication.smsTab')">
           <template v-if="formState.loginType === 'sms'">
             <a-form-item has-feedback name="mobile" :rules="rules.mobile">
-              <a-input v-model:value="formState.mobile" placeholder="请输入手机号" autocomplete="off">
+              <a-input v-model:value="formState.mobile" :placeholder="t('authentication.mobilePlaceholder')" autocomplete="off">
                 <template #prefix>
                   <fs-icon icon="ion:phone-portrait-outline"></fs-icon>
                 </template>
               </a-input>
             </a-form-item>
+
             <a-form-item has-feedback name="imgCode">
               <image-code v-model:value="formState.imgCode" v-model:random-str="formState.randomStr"></image-code>
             </a-form-item>
@@ -42,13 +43,24 @@
         </a-tab-pane>
       </a-tabs>
       <a-form-item>
-        <a-button type="primary" size="large" html-type="submit" :loading="loading" class="login-button">登录</a-button>
+        <a-button type="primary" size="large" html-type="submit" :loading="loading" class="login-button">
+          {{ t("authentication.loginButton") }}
+        </a-button>
 
-        <div v-if="!settingStore.isComm" class="mt-2"><a href="https://certd.docmirror.cn/guide/use/forgotpasswd/" target="_blank">忘记管理员密码？</a></div>
+        <div v-if="!settingStore.isComm" class="mt-2">
+          <a href="https://certd.docmirror.cn/guide/use/forgotpasswd/" target="_blank">
+            {{ t("authentication.forgotAdminPassword") }}
+          </a>
+        </div>
       </a-form-item>
 
       <a-form-item class="user-login-other">
-        <router-link v-if="hasRegisterTypeEnabled()" class="register" :to="{ name: 'register' }"> 注册 </router-link>
+        <div class="flex flex-between justify-between items-center">
+          <language-toggle class="color-blue"></language-toggle>
+          <router-link v-if="hasRegisterTypeEnabled()" class="register" :to="{ name: 'register' }">
+            {{ t("authentication.registerLink") }}
+          </router-link>
+        </div>
       </a-form-item>
     </a-form>
     <a-form v-else ref="twoFactorFormRef" class="user-layout-login" :model="twoFactor" v-bind="layout">
@@ -77,11 +89,14 @@ import { useSettingStore } from "/@/store/settings";
 import { utils } from "@fast-crud/fast-crud";
 import ImageCode from "/@/views/framework/login/image-code.vue";
 import SmsCode from "/@/views/framework/login/sms-code.vue";
+import { useI18n } from "/@/locales";
+import { LanguageToggle } from "/@/vben/layouts";
 
 export default defineComponent({
   name: "LoginPage",
-  components: { SmsCode, ImageCode },
+  components: { LanguageToggle, SmsCode, ImageCode },
   setup() {
+    const { t } = useI18n();
     const verifyCodeInputRef = ref();
     const loading = ref(false);
     const userStore = useUserStore();
@@ -180,6 +195,7 @@ export default defineComponent({
     }
 
     return {
+      t,
       loading,
       formState,
       formRef,
@@ -202,9 +218,11 @@ export default defineComponent({
 
 <style lang="less">
 @import "../../../style/theme/index.less";
+
 .login-page.main {
   //margin: 20px !important;
   margin-bottom: 100px;
+
   .user-layout-login {
     //label {
     //  font-size: 14px;
@@ -216,6 +234,7 @@ export default defineComponent({
       text-align: center;
       margin: 20px;
     }
+
     .getCaptcha {
       display: block;
       width: 100%;
@@ -224,10 +243,12 @@ export default defineComponent({
     .image-code {
       height: 34px;
     }
+
     .input-right {
       width: 160px;
       margin-left: 10px;
     }
+
     .forge-password {
       font-size: 14px;
     }
@@ -261,13 +282,16 @@ export default defineComponent({
         float: right;
       }
     }
+
     .fs-icon {
       color: rgba(0, 0, 0, 0.45);
       margin-right: 4px;
     }
+
     .ant-input-affix-wrapper {
       line-height: 1.8 !important;
       font-size: 14px !important;
+
       > * {
         line-height: 1.8 !important;
         font-size: 14px !important;

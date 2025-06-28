@@ -6,7 +6,7 @@
 <script lang="ts" setup>
 import { computed, inject, ref } from "vue";
 defineOptions({
-  name: "SecretPlainGetter"
+  name: "SecretPlainGetter",
 });
 
 const props = defineProps<{

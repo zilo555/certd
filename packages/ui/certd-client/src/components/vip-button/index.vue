@@ -1,15 +1,15 @@
 <template>
-  <div v-if="!settingStore.isComm || userStore.isAdmin" class="layout-vip isPlus" @click="openUpgrade">
-    <contextHolder />
-    <fs-icon icon="mingcute:vip-1-line" :title="text.title" />
+	<div v-if="!settingStore.isComm || userStore.isAdmin" class="layout-vip isPlus" @click="openUpgrade">
+		<contextHolder />
+		<fs-icon icon="mingcute:vip-1-line" :title="text.title" />
 
-    <div v-if="mode !== 'icon'" class="text hidden md:block ml-0.5">
-      <a-tooltip>
-        <template #title> {{ text.title }}</template>
-        <span class="">{{ text.name }}</span>
-      </a-tooltip>
-    </div>
-  </div>
+		<div v-if="mode !== 'icon'" class="text hidden md:block ml-0.5">
+			<a-tooltip>
+				<template #title> {{ text.title }}</template>
+				<span class="">{{ text.name }}</span>
+			</a-tooltip>
+		</div>
+	</div>
 </template>
 <script lang="tsx" setup>
 import { computed, onMounted, reactive } from "vue";
@@ -20,6 +20,9 @@ import { useSettingStore } from "/@/store/settings";
 import { useRouter } from "vue-router";
 import { useUserStore } from "/@/store/user";
 import { mitter } from "/@/utils/util.mitt";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const settingStore = useSettingStore();
 const props = withDefaults(
@@ -39,56 +42,56 @@ const text = computed<Text>(() => {
   const map = {
     isComm: {
       comm: {
-        name: `${vipLabel}已开通`,
-        title: "到期时间：" + expireTime.value,
+        name: t("vip.comm.name", { vipLabel }),
+        title: t("vip.comm.title", { expire: expireTime.value }),
       },
       button: {
-        name: `${vipLabel}已开通`,
-        title: "到期时间：" + expireTime.value,
+        name: t("vip.comm.name", { vipLabel }),
+        title: t("vip.comm.title", { expire: expireTime.value }),
       },
       icon: {
         name: "",
-        title: `${vipLabel}已开通`,
+        title: t("vip.comm.name", { vipLabel }),
       },
       nav: {
-        name: `${vipLabel}`,
-        title: "到期时间：" + expireTime.value,
+        name: t("vip.comm.nav", { vipLabel }),
+        title: t("vip.comm.title", { expire: expireTime.value }),
       },
     },
     isPlus: {
       comm: {
-        name: "商业版功能",
-        title: "升级商业版，获取商业授权",
+        name: t("vip.plus.name"),
+        title: t("vip.plus.title"),
       },
       button: {
-        name: `${vipLabel}已开通`,
-        title: "到期时间：" + expireTime.value,
+        name: t("vip.comm.name", { vipLabel }),
+        title: t("vip.comm.title", { expire: expireTime.value }),
       },
       icon: {
         name: "",
-        title: `${vipLabel}已开通`,
+        title: t("vip.comm.name", { vipLabel }),
       },
       nav: {
-        name: `${vipLabel}`,
-        title: "到期时间：" + expireTime.value,
+        name: t("vip.comm.nav", { vipLabel }),
+        title: t("vip.comm.title", { expire: expireTime.value }),
       },
     },
     free: {
       comm: {
-        name: "商业版功能",
-        title: "升级商业版，获取商业授权",
+        name: t("vip.free.comm.name"),
+        title: t("vip.free.comm.title"),
       },
       button: {
-        name: "专业版功能",
-        title: "升级专业版，享受更多VIP特权",
+        name: t("vip.free.button.name"),
+        title: t("vip.free.button.title"),
       },
       icon: {
         name: "",
-        title: "专业版功能",
+        title: t("vip.free.button.name"),
       },
       nav: {
-        name: "基础版",
-        title: "升级专业版，享受更多VIP特权",
+        name: t("vip.free.nav.name"),
+        title: t("vip.free.nav.title"),
       },
     },
   };
@@ -100,6 +103,7 @@ const text = computed<Text>(() => {
     return map.free[props.mode];
   }
 });
+
 
 const expireTime = computed(() => {
   if (settingStore.isPlus) {
@@ -125,22 +129,24 @@ const formState = reactive({
 const router = useRouter();
 async function doActive() {
   if (!formState.code) {
-    message.error("请输入激活码");
-    throw new Error("请输入激活码");
+    message.error(t("vip.enterCode"));
+    throw new Error(t("vip.enterCode"));
   }
   const res = await api.doActive(formState);
   if (res) {
     await settingStore.init();
     const vipLabel = settingStore.vipLabel;
     Modal.success({
-      title: "激活成功",
-      content: `您已成功激活${vipLabel},有效期至：${dayjs(settingStore.plusInfo.expireTime).format("YYYY-MM-DD")}`,
+      title: t("vip.successTitle"),
+      content: t("vip.successContent", {
+        vipLabel,
+        expireDate: dayjs(settingStore.plusInfo.expireTime).format("YYYY-MM-DD"),
+      }),
       onOk() {
         if (!(settingStore.installInfo.bindUserId > 0)) {
-          //未绑定账号
           Modal.confirm({
-            title: "是否绑定袖手账号",
-            content: "绑定账号后，可以避免License丢失，强烈建议绑定",
+            title: t("vip.bindAccountTitle"),
+            content: t("vip.bindAccountContent"),
             onOk() {
               router.push("/sys/account");
             },
@@ -150,6 +156,7 @@ async function doActive() {
     });
   }
 }
+
 
 const computedSiteId = computed(() => settingStore.installInfo?.siteId);
 const [modal, contextHolder] = Modal.useModal();
@@ -162,16 +169,17 @@ function goAccount() {
 
 async function getVipTrial() {
   const res = await api.getVipTrial();
-  message.success(`恭喜，您已获得专业版${res.duration}天试用`);
+  message.success(t('vip.congratulations_vip_trial', { duration: res.duration }));
   await settingStore.init();
 }
+
 
 function openTrialModal() {
   Modal.destroyAll();
 
   modal.confirm({
-    title: "7天专业版试用获取",
-    okText: "立即获取",
+    title: t('vip.trial_modal_title'),
+    okText: t('vip.trial_modal_ok_text'),
     onOk() {
       getVipTrial();
     },
@@ -179,13 +187,14 @@ function openTrialModal() {
     content: () => {
       return (
         <div class="flex-col mt-10 mb-10">
-          <div>感谢您对开源项目的支持</div>
-          <div>点击确认，即可获取7天专业版试用</div>
+          <div>{t('vip.trial_modal_thanks')}</div>
+          <div>{t('vip.trial_modal_click_confirm')}</div>
         </div>
       );
     },
   });
 }
+
 
 function openStarModal() {
   Modal.destroyAll();
@@ -194,8 +203,8 @@ function openStarModal() {
   };
 
   modal.confirm({
-    title: "7天专业版试用获取",
-    okText: "立即去Star",
+    title: t("vip.get_7_day_pro_trial"),
+    okText: t("vip.star_now"),
     onOk() {
       goGithub();
       openTrialModal();
@@ -204,7 +213,7 @@ function openStarModal() {
     content: () => {
       return (
         <div class="flex mt-10 mb-10">
-          <div>可以先请您帮忙点个star吗？感谢感谢</div>
+          <div>{t("vip.please_help_star")}</div>
           <img class="ml-5" src="https://img.shields.io/github/stars/certd/certd?logo=github" />
         </div>
       );
@@ -212,174 +221,207 @@ function openStarModal() {
   });
 }
 
+
 function openUpgrade() {
-  if (!userStore.isAdmin) {
-    message.info("仅限管理员操作");
-    return;
-  }
-  const placeholder = "请输入激活码";
-  const isPlus = settingStore.isPlus;
-  let title = "激活专业版/商业版";
-  if (settingStore.isComm) {
-    title = "续期商业版";
-  } else if (settingStore.isPlus) {
-    title = "续期专业版/升级商业版";
-  }
+if (!userStore.isAdmin) {
+  message.info(t("vip.admin_only_operation"));
+  return;
+}
+const placeholder = t("vip.enter_activation_code");
+const isPlus = settingStore.isPlus;
+let title = t("vip.activate_pro_business");
+if (settingStore.isComm) {
+  title = t("vip.renew_business");
+} else if (settingStore.isPlus) {
+  title = t("vip.renew_pro_upgrade_business");
+}
 
-  const productInfo = settingStore.productInfo;
-  const vipTypeDefine = {
-    free: {
-      title: "基础版",
-      desc: "社区免费版",
-      type: "free",
-      icon: "lucide:package-open",
-      privilege: ["证书申请无限制", "域名数量无限制", "证书流水线数量无限制", "常用的主机、云平台、cdn、宝塔、1Panel等部署插件", "邮件、webhook通知方式"],
-    },
-    plus: {
-      title: "专业版",
-      desc: "开源需要您的赞助支持",
-      type: "plus",
-      privilege: ["可加VIP群，您的需求将优先实现", "站点证书监控无限制", "更多通知方式", "插件全开放，群辉等更多插件"],
-      trial: {
-        title: "点击获取7天试用",
-        click: () => {
-          openStarModal();
-        },
-      },
-      icon: "stash:thumb-up",
-      price: productInfo.plus.price,
-      price3: `¥${productInfo.plus.price3}/3年`,
-      tooltip: productInfo.plus.tooltip,
-      get() {
-        return (
-          <a-tooltip title="爱发电赞助“VIP会员”后获取一年期专业版激活码，开源需要您的支持">
-            <a-button size="small" type="primary" href="https://afdian.com/a/greper" target="_blank">
-              爱发电赞助后获取
-            </a-button>
-          </a-tooltip>
-        );
-      },
-    },
-    comm: {
-      title: "商业版",
-      desc: "商业授权，可对外运营",
-      type: "comm",
-      icon: "vaadin:handshake",
-      privilege: ["拥有专业版所有特权", "允许商用，可修改logo、标题", "数据统计", "插件管理", "多用户无限制", "支持用户支付"],
-      price: productInfo.comm.price,
-      price3: `¥${productInfo.comm.price3}/3年`,
-      tooltip: productInfo.comm.tooltip,
-      get() {
-        return <a-button size="small">请联系作者获取试用</a-button>;
-      },
-    },
-  };
 
-  const modalRef = modal.confirm({
-    title,
-    async onOk() {
-      return await doActive();
+const productInfo = settingStore.productInfo;
+const vipTypeDefine = {
+  free: {
+    title: t("vip.basic_edition"),
+    desc: t("vip.community_free_version"),
+    type: "free",
+    icon: "lucide:package-open",
+    privilege: [
+      t("vip.unlimited_certificate_application"),
+      t("vip.unlimited_domain_count"),
+      t("vip.unlimited_certificate_pipelines"),
+      t("vip.common_deployment_plugins"),
+      t("vip.email_webhook_notifications"),
+    ],
+  },
+  plus: {
+    title: t("vip.professional_edition"),
+    desc: t("vip.open_source_support"),
+    type: "plus",
+    privilege: [
+      t("vip.vip_group_priority"),
+      t("vip.unlimited_site_certificate_monitoring"),
+      t("vip.more_notification_methods"),
+      t("vip.plugins_fully_open"),
+    ],
+    trial: {
+      title: t("vip.click_to_get_7_day_trial"),
+      click: () => {
+        openStarModal();
+      },
     },
-    maskClosable: true,
-    okText: "激活",
-    width: 1000,
-    content: () => {
-      let activationCodeGetWay = (
-        <span>
-          <a href="https://afdian.com/a/greper" target="_blank">
-            爱发电赞助“VIP会员”后获取一年期专业版激活码
-          </a>
-          <span> 商业版请直接联系作者</span>
-        </span>
+    icon: "stash:thumb-up",
+    price: productInfo.plus.price,
+    price3: `¥${productInfo.plus.price3}/3${t("vip.years")}`,
+    tooltip: productInfo.plus.tooltip,
+    get() {
+      return (
+        <a-tooltip title={t("vip.afdian_support_vip")}>
+          <a-button size="small" type="primary" href="https://afdian.com/a/greper" target="_blank">
+            {t("vip.get_after_support")}
+          </a-button>
+        </a-tooltip>
       );
-      const vipLabel = settingStore.vipLabel;
-      const slots = [];
-      for (const key in vipTypeDefine) {
-        // @ts-ignore
-        const item = vipTypeDefine[key];
-        const vipBlockClass = `vip-block ${key === settingStore.plusInfo.vipType ? "current" : ""}`;
-        slots.push(
-          <a-col span={8}>
-            <div class={vipBlockClass}>
-              <h3 class="block-header ">
-                <span class="flex-o">{item.title}</span>
-                {item.trial && (
-                  <span class="trial">
-                    <a-tooltip title={item.trial.message}>
-                      <a onClick={item.trial.click}>{item.trial.title}</a>
+    },
+  },
+  comm: {
+    title: t("vip.business_edition"),
+    desc: t("vip.commercial_license"),
+    type: "comm",
+    icon: "vaadin:handshake",
+    privilege: [
+      t("vip.all_pro_privileges"),
+      t("vip.allow_commercial_use_modify_logo_title"),
+      t("vip.data_statistics"),
+      t("vip.plugin_management"),
+      t("vip.unlimited_multi_users"),
+      t("vip.support_user_payment"),
+    ],
+    price: productInfo.comm.price,
+    price3: `¥${productInfo.comm.price3}/3${t("vip.years")}`,
+    tooltip: productInfo.comm.tooltip,
+    get() {
+      return <a-button size="small">{t("vip.contact_author_for_trial")}</a-button>;
+    },
+  },
+};
+
+
+const modalRef = modal.confirm({
+  title,
+  async onOk() {
+    return await doActive();
+  },
+  maskClosable: true,
+  okText: t("vip.activate"),
+  width: 1000,
+  content: () => {
+    let activationCodeGetWay = (
+      <span>
+        <a href="https://afdian.com/a/greper" target="_blank">
+          {t("vip.get_pro_code_after_support")}
+        </a>
+        <span> {t("vip.business_contact_author")}</span>
+      </span>
+    );
+    const vipLabel = settingStore.vipLabel;
+    const slots = [];
+    for (const key in vipTypeDefine) {
+      // @ts-ignore
+      const item = vipTypeDefine[key];
+      const vipBlockClass = `vip-block ${key === settingStore.plusInfo.vipType ? "current" : ""}`;
+      slots.push(
+        <a-col span={8}>
+          <div class={vipBlockClass}>
+            <h3 class="block-header ">
+              <span class="flex-o">{item.title}</span>
+              {item.trial && (
+                <span class="trial">
+                  <a-tooltip title={item.trial.message}>
+                    <a onClick={item.trial.click}>{item.trial.title}</a>
+                  </a-tooltip>
+                </span>
+              )}
+            </h3>
+            <div style="color:green" class="flex-o">
+              <fs-icon icon={item.icon} class="fs-16 flex-o" />
+              {item.desc}
+            </div>
+            <ul class="flex-1 privilege">
+              {item.privilege.map((p: string) => (
+                <li class="flex-baseline">
+                  <fs-icon class="color-green" icon="ion:checkmark-sharp" />
+                  {p}
+                </li>
+              ))}
+            </ul>
+            <div class="footer flex-between flex-vc">
+              <div class="price-show">
+                {item.price && (
+                  <span class="flex">
+                    <span class="-text">¥{item.price}</span>
+                    <span>/</span>
+                    {t("vip.year")}
+                    <a-tooltip class="ml-5" title={item.price3}>
+                      <fs-icon class="pointer color-red" icon="ic:outline-discount"></fs-icon>
                     </a-tooltip>
                   </span>
                 )}
-              </h3>
-              <div style="color:green" class="flex-o">
-                <fs-icon icon={item.icon} class="fs-16 flex-o" />
-                {item.desc}
+                {!item.price && (
+                  <span>
+                    <span class="price-text">{t("vip.freee")}</span>
+                  </span>
+                )}
               </div>
-              <ul class="flex-1 privilege">
-                {item.privilege.map((p: string) => (
-                  <li class="flex-baseline">
-                    <fs-icon class="color-green" icon="ion:checkmark-sharp" />
-                    {p}
-                  </li>
-                ))}
-              </ul>
-              <div class="footer flex-between flex-vc">
-                <div class="price-show">
-                  {item.price && (
-                    <span class="flex">
-                      <span class="-text">¥{item.price}</span>
-                      <span>/年</span>
-                      <a-tooltip class="ml-5" title={item.price3}>
-                        <fs-icon class="pointer color-red" icon="ic:outline-discount"></fs-icon>
-                      </a-tooltip>
-                    </span>
-                  )}
-                  {!item.price && (
-                    <span>
-                      <span class="price-text">免费</span>
-                    </span>
-                  )}
-                </div>
-                <div class="get-show">{item.get && <div>{item.get()}</div>}</div>
-              </div>
+              <div class="get-show">{item.get && <div>{item.get()}</div>}</div>
             </div>
-          </a-col>
-        );
-      }
-      return (
-        <div class="mt-10 mb-10 vip-active-modal">
-          {productInfo.notice && (
-            <div class="mb-10">
-              <a-alert type="error" message={productInfo.notice}></a-alert>
-            </div>
-          )}
-          <div class="vip-type-vs">
-            <a-row gutter={20}>{slots}</a-row>
+          </div>
+        </a-col>
+      );
+    }
+    return (
+      <div class="mt-10 mb-10 vip-active-modal">
+        {productInfo.notice && (
+          <div class="mb-10">
+            <a-alert type="error" message={productInfo.notice}></a-alert>
+          </div>
+        )}
+        <div class="vip-type-vs">
+          <a-row gutter={20}>{slots}</a-row>
+        </div>
+        <div class="mt-10">
+          <h3 class="block-header">{isPlus ? t("vip.renew") : t("vip.activate_immediately")}</h3>
+          <div>
+            {isPlus
+              ? `${t("vip.current")} ${vipLabel} ${t("vip.activated_expire_time")}` +
+                dayjs(settingStore.plusInfo.expireTime).format("YYYY-MM-DD")
+              : ""}
           </div>
           <div class="mt-10">
-            <h3 class="block-header">{isPlus ? "续期" : "立刻激活"}</h3>
-            <div>{isPlus ? `当前${vipLabel}已激活，到期时间` + dayjs(settingStore.plusInfo.expireTime).format("YYYY-MM-DD") : ""}</div>
-            <div class="mt-10">
-              <div class="flex-o w-100">
-                <span>站点ID：</span>
-                <fs-copyable class="flex-1" v-model={computedSiteId.value}></fs-copyable>
-              </div>
-              <a-input class="mt-10" v-model:value={formState.code} placeholder={placeholder} />
-              <a-input class="mt-10" v-model:value={formState.inviteCode} placeholder={"邀请码【选填】，可额外获得专业版30天/商业版15天时长"} />
+            <div class="flex-o w-100">
+              <span>{t("vip.site_id")}：</span>
+              <fs-copyable class="flex-1" v-model={computedSiteId.value}></fs-copyable>
             </div>
+            <a-input class="mt-10" v-model:value={formState.code} placeholder={placeholder} />
+            <a-input
+              class="mt-10"
+              v-model:value={formState.inviteCode}
+              placeholder={t("vip.invite_code_optional")}
+            />
+          </div>
 
-            <div class="mt-10">
-              没有激活码？
-              {activationCodeGetWay}
-            </div>
-            <div class="mt-10">
-              激活码使用过一次之后，不可再次使用，如果要更换站点，请<a onClick={goAccount}>绑定账号</a>，然后"转移VIP"即可
-            </div>
+          <div class="mt-10">
+            {t("vip.no_activation_code")}
+            {activationCodeGetWay}
+          </div>
+          <div class="mt-10">
+            {t("vip.activation_code_one_use")}<a onClick={goAccount}>{t("vip.bind_account")}</a>
+            ，{t("vip.transfer_vip")}
           </div>
         </div>
-      );
-    },
-  });
+      </div>
+    );
+  },
+});
+
 }
 onMounted(() => {
   mitter.on("openVipModal", () => {
@@ -392,69 +434,75 @@ onMounted(() => {
 
 <style lang="less">
 .layout-vip {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
 
-  &.isPlus {
-    color: #c5913f;
-  }
+	&.isPlus {
+		color: #c5913f;
+	}
 
-  .text {
-  }
+	.text {}
 }
 
 .vip-active-modal {
-  .vip-block {
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-    border: 1px solid #eee;
-    border-radius: 5px;
-    height: 250px;
-    //background-color: rgba(250, 237, 167, 0.79);
-    &.current {
-      border-color: green;
-    }
-    .block-header {
-      padding: 0px;
-      display: flex;
-      justify-content: space-between;
-      .trial {
-        font-size: 12px;
-        font-wight: 400;
-      }
-    }
+	.vip-block {
+		display: flex;
+		flex-direction: column;
+		padding: 10px;
+		border: 1px solid #eee;
+		border-radius: 5px;
+		height: 250px;
 
-    .footer {
-      padding-top: 5px;
-      margin-top: 0px;
-      border-top: 1px solid #eee;
-      .price-text {
-        font-size: 18px;
-        color: red;
-      }
-    }
-  }
+		//background-color: rgba(250, 237, 167, 0.79);
+		&.current {
+			border-color: green;
+		}
 
-  ul {
-    list-style-type: unset;
-    margin-left: 0px;
-    padding: 0;
-  }
-  .color-green {
-    color: green;
-  }
-  .vip-type-vs {
-    .privilege {
-      .fs-icon {
-        color: green;
-      }
-    }
-    .fs-icon {
-      margin-right: 5px;
-    }
-  }
+		.block-header {
+			padding: 0px;
+			display: flex;
+			justify-content: space-between;
+
+			.trial {
+				font-size: 12px;
+				font-wight: 400;
+			}
+		}
+
+		.footer {
+			padding-top: 5px;
+			margin-top: 0px;
+			border-top: 1px solid #eee;
+
+			.price-text {
+				font-size: 18px;
+				color: red;
+			}
+		}
+	}
+
+	ul {
+		list-style-type: unset;
+		margin-left: 0px;
+		padding: 0;
+	}
+
+	.color-green {
+		color: green;
+	}
+
+	.vip-type-vs {
+		.privilege {
+			.fs-icon {
+				color: green;
+			}
+		}
+
+		.fs-icon {
+			margin-right: 5px;
+		}
+	}
 }
 </style>

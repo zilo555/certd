@@ -5,7 +5,7 @@ import type { BuiltinThemeType } from '/@/vben/types';
 import { computed, ref, watch } from 'vue';
 
 import { UserRoundPen } from '/@/vben/icons';
-import { $t } from '/@/vben/locales';
+import { $t } from '/@/locales';
 import { BUILT_IN_THEME_PRESETS } from '/@/vben/preferences';
 import { convertToHsl, TinyColor } from '/@/vben/utils';
 

@@ -1,33 +1,35 @@
+import i18n from "/@/locales/i18n";
+
 export const headerResource = [
   {
-    title: "文档",
+    title: "certd.helpDoc",
     path: "https://certd.docmirror.cn",
     meta: {
-      icon: "ion:document-text-outline"
-    }
+      icon: "ion:document-text-outline",
+    },
   },
   {
-    title: "源码",
+    title: "certd.source",
     name: "source",
     key: "source",
     meta: {
-      icon: "ion:git-branch-outline"
+      icon: "ion:git-branch-outline",
     },
     children: [
       {
-        title: "github",
+        title: "certd.github",
         path: "https://github.com/certd/certd",
         meta: {
-          icon: "ion:logo-github"
-        }
+          icon: "ion:logo-github",
+        },
       },
       {
-        title: "gitee",
+        title: "certd.gitee",
         path: "https://gitee.com/certd/certd",
         meta: {
-          icon: "ion:logo-octocat"
-        }
-      }
-    ]
-  }
+          icon: "ion:logo-octocat",
+        },
+      },
+    ],
+  },
 ];
