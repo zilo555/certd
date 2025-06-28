@@ -61,7 +61,7 @@ const paymentsDictRef = dict({
     if (dict.data.length > 0) {
       formRef.value.payType = dict.data[0].value;
     }
-  }
+  },
 });
 
 const router = useRouter();
@@ -73,10 +73,10 @@ async function orderCreate() {
       productId: formRef.value.productId,
       duration: formRef.value.duration,
       num: formRef.value.num ?? 1,
-      payType: "free"
+      payType: "free",
     });
     notification.success({
-      message: "套餐购买成功"
+      message: "套餐购买成功",
     });
     openRef.value = false;
     return;
@@ -84,7 +84,7 @@ async function orderCreate() {
 
   if (!formRef.value.payType) {
     notification.error({
-      message: "请选择支付方式"
+      message: "请选择支付方式",
     });
     return;
   }
@@ -92,13 +92,13 @@ async function orderCreate() {
     productId: formRef.value.productId,
     duration: formRef.value.duration,
     num: formRef.value.num ?? 1,
-    payType: formRef.value.payType
+    payType: formRef.value.payType,
   });
 
   async function onPaid() {
     openRef.value = false;
     router.push({
-      path: "/"
+      path: "/",
     });
   }
 
@@ -116,7 +116,7 @@ async function orderCreate() {
     return;
   } else {
     notification.error({
-      message: "暂不支持该支付方式"
+      message: "暂不支持该支付方式",
     });
     return;
   }
@@ -128,7 +128,7 @@ async function orderCreate() {
       onPaid();
     },
     cancelText: "取消支付",
-    okText: "已完成支付"
+    okText: "已完成支付",
   });
 }
 
@@ -157,7 +157,7 @@ async function doWxpay(qrcodeText: string, onPaid: () => Promise<void>) {
     },
     async onOk() {
       await onPaid();
-    }
+    },
   });
 }
 
@@ -192,7 +192,7 @@ function doYizhifu(paymentReq: any) {
 
   const body = paymentReq.body;
   const keys = Object.keys(body);
-  keys.forEach((key) => {
+  keys.forEach(key => {
     createInput(key, body[key]);
   });
 
@@ -202,7 +202,7 @@ function doYizhifu(paymentReq: any) {
 }
 
 defineExpose({
-  open
+  open,
 });
 </script>
 <style lang="less">

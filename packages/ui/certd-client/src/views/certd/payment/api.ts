@@ -6,6 +6,6 @@ export async function Notify(type: string, query: any) {
     url: apiPrefix + `/notify/${type}`,
     method: "post",
     data: query,
-    unpack: false
+    unpack: false,
   });
 }

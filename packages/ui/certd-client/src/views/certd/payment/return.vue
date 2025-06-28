@@ -47,7 +47,7 @@ check();
 const router = useRouter();
 function goHome() {
   router.push({
-    path: "/"
+    path: "/",
   });
 }
 </script>
