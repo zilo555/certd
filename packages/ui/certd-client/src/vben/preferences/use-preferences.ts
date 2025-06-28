@@ -166,7 +166,7 @@ function usePreferences() {
     if (!enablePreferences) {
       return {
         fixed: false,
-        header: false
+        header: false,
       };
     }
 
@@ -182,7 +182,7 @@ function usePreferences() {
     if (preferencesButtonPosition !== "auto") {
       return {
         fixed: preferencesButtonPosition === "fixed",
-        header: isHeaderPosition
+        header: isHeaderPosition,
       };
     }
 
@@ -191,7 +191,7 @@ function usePreferences() {
 
     return {
       fixed,
-      header: !fixed
+      header: !fixed,
     };
   });
 
@@ -219,7 +219,7 @@ function usePreferences() {
     locale,
     preferencesButtonPosition,
     sidebarCollapsed,
-    theme
+    theme,
   };
 }
 

@@ -108,7 +108,7 @@ const defaultPreferences: Preferences = {
   widget: {
     fullscreen: true,
     globalSearch: true,
-    languageToggle: false,
+    languageToggle: true,
     lockScreen: true,
     notification: false,
     refresh: true,

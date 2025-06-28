@@ -10,21 +10,21 @@ export const outsideResource = [
     children: [
       {
         meta: {
-          title: "登录"
+          title: "登录",
         },
         name: "login",
         path: "/login",
-        component: "/framework/login/index.vue"
+        component: "/framework/login/index.vue",
       },
       {
         meta: {
-          title: "注册"
+          title: "注册",
         },
         name: "register",
         path: "/register",
-        component: "/framework/register/index.vue"
-      }
-    ]
+        component: "/framework/register/index.vue",
+      },
+    ],
   },
-  ...errorPage
+  ...errorPage,
 ];

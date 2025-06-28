@@ -1,3 +1,3 @@
 export default {
-	title: '使用教程',
-}
+  title: "使用教程",
+};

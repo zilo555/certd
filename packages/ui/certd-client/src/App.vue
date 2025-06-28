@@ -1,5 +1,5 @@
 <template>
-  <AConfigProvider :locale="locale" :theme="tokenTheme">
+  <AConfigProvider :locale="antdvLocale" :theme="tokenTheme">
     <FsFormProvider>
       <contextHolder />
       <router-view />
@@ -8,24 +8,22 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, provide, ref } from "vue";
-import "dayjs/locale/zh-cn";
-import "dayjs/locale/en";
-import dayjs from "dayjs";
-import { usePreferences, preferences } from "/@/vben/preferences";
+import { computed, provide, ref } from "vue";
+import { preferences, usePreferences } from "/@/vben/preferences";
 import { useAntdDesignTokens } from "/@/vben/hooks";
-import { theme } from "ant-design-vue";
+import { Modal, theme } from "ant-design-vue";
 import AConfigProvider from "ant-design-vue/es/config-provider";
-import { Modal } from "ant-design-vue";
-import MaxKBChat from "/@/components/ai/index.vue";
-import { util } from "/@/utils";
-import { useSettingStore } from "/@/store/settings";
+import { antdvLocale } from "./locales/antdv";
+import { setI18nLanguage } from "/@/locales";
 defineOptions({
   name: "App",
 });
+
 const [modal, contextHolder] = Modal.useModal();
 provide("modal", modal);
 
+const locale = preferences.app.locale;
+setI18nLanguage(locale);
 
 const { isDark } = usePreferences();
 const { tokens } = useAntdDesignTokens();
@@ -43,5 +41,4 @@ const tokenTheme = computed(() => {
     token: tokens,
   };
 });
-
 </script>
