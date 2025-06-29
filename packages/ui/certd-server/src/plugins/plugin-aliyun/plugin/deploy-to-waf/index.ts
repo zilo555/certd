@@ -194,6 +194,7 @@ export class AliyunDeployCertToWaf extends AbstractTaskPlugin {
     if (!res?.Domains || res?.Domains.length === 0) {
       throw new Error('没有找到CNAME接入的域名站点');
     }
+    const total = res.TotalCount;
 
     const options = res.Domains.map((item: any) => {
       return {
@@ -203,7 +204,14 @@ export class AliyunDeployCertToWaf extends AbstractTaskPlugin {
         domain: item.Domain,
       };
     });
-    return this.ctx.utils.options.buildGroupOptions(options, this.certDomains);
+    const list= this.ctx.utils.options.buildGroupOptions(options, this.certDomains);
+
+    return {
+      list,
+      total: total,
+      offset: pager.offset,
+      limit: pager.limit
+    };
   }
 }
 
