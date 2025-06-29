@@ -32,14 +32,14 @@ function useMenu() {
 
   return {
     parentMenu,
-    parentPaths
+    parentPaths,
   };
 }
 
 function useMenuStyle(menu?: SubMenuProvider) {
   const subMenuStyle = computed(() => {
     return {
-      "--menu-level": menu ? menu?.level ?? 0 + 1 : 0
+      "--menu-level": menu ? (menu?.level ?? 0 + 1) : 0,
     };
   });
   return subMenuStyle;

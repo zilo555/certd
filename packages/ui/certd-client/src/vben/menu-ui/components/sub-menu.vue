@@ -20,7 +20,7 @@ defineOptions({ name: "SubMenu" });
 
 const props = withDefaults(defineProps<Props>(), {
   disabled: false,
-  isSubMenuMore: false
+  isSubMenuMore: false,
 });
 
 const { parentMenu, parentPaths } = useMenu();
@@ -41,7 +41,7 @@ createSubMenuContext({
   handleMouseleave,
   level: (subMenu?.level ?? 0) + 1,
   mouseInChild,
-  removeSubMenu
+  removeSubMenu,
 });
 
 const opened = computed(() => {
@@ -61,20 +61,20 @@ const contentProps = computed((): HoverCardContentProps => {
   return {
     collisionPadding: { top: 20 },
     side,
-    sideOffset: isHorizontal ? 5 : 10
+    sideOffset: isHorizontal ? 5 : 10,
   };
 });
 
 const active = computed(() => {
   let isActive = false;
 
-  Object.values(items.value).forEach((item) => {
+  Object.values(items.value).forEach(item => {
     if (item.active) {
       isActive = true;
     }
   });
 
-  Object.values(subMenus.value).forEach((subItem) => {
+  Object.values(subMenus.value).forEach(subItem => {
     if (subItem.active) {
       isActive = true;
     }
@@ -108,7 +108,7 @@ function handleClick() {
   rootMenu?.handleSubMenuClick({
     active: active.value,
     parentPaths: parentPaths.value,
-    path: props.path
+    path: props.path,
   });
 }
 
@@ -159,7 +159,7 @@ const menuIcon = computed(() => (active.value ? props.activeIcon || props.icon :
 const item = reactive({
   active,
   parentPaths,
-  path: props.path
+  path: props.path,
 });
 
 onMounted(() => {
@@ -183,7 +183,7 @@ onBeforeUnmount(() => {
             </template>
           </SubMenuContent>
         </template>
-        <div :class="[nsMenu.is(mode, true), nsMenu.e('popup')]" @focus="(e) => handleMouseenter(e, 100)" @mouseenter="(e) => handleMouseenter(e, 100)" @mouseleave="() => handleMouseleave(true)">
+        <div :class="[nsMenu.is(mode, true), nsMenu.e('popup')]" @focus="e => handleMouseenter(e, 100)" @mouseenter="e => handleMouseenter(e, 100)" @mouseleave="() => handleMouseleave(true)">
           <ul :class="[nsMenu.b(), is('rounded', rounded)]" :style="subMenuStyle">
             <slot></slot>
           </ul>

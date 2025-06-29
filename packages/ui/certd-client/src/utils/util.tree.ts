@@ -1,5 +1,5 @@
 export function eachTree(tree: any[], callback: (item: any) => void) {
-  tree.forEach((item) => {
+  tree.forEach(item => {
     callback(item);
     if (item.children) {
       eachTree(item.children, callback);
@@ -19,5 +19,5 @@ export function treeMap(tree: any[], mapFunc: (item: any) => {}) {
 
 export const treeUtils = {
   eachTree,
-  treeMap
+  treeMap,
 };

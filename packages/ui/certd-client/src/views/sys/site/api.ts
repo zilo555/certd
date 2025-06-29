@@ -5,7 +5,7 @@ const apiPrefix = "/sys/site";
 export async function SettingsGet(key: string) {
   return await request({
     url: apiPrefix + "/get",
-    method: "post"
+    method: "post",
   });
 }
 
@@ -13,6 +13,6 @@ export async function SettingsSave(setting: any) {
   await request({
     url: apiPrefix + "/save",
     method: "post",
-    data: setting
+    data: setting,
   });
 }

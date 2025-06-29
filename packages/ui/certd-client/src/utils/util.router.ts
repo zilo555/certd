@@ -21,5 +21,5 @@ async function open(path: any) {
 }
 
 export const routerUtils = {
-  open
+  open,
 };

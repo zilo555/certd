@@ -1,18 +1,15 @@
-import type { ComputedRef, Directive } from 'vue';
+import type { ComputedRef, Directive } from "vue";
 
-import { useTippy } from 'vue-tippy';
+import { useTippy } from "vue-tippy";
 
 export default function useTippyDirective(isDark: ComputedRef<boolean>) {
   const directive: Directive = {
     mounted(el, binding, vnode) {
-      const opts =
-        typeof binding.value === 'string'
-          ? { content: binding.value }
-          : binding.value || {};
+      const opts = typeof binding.value === "string" ? { content: binding.value } : binding.value || {};
 
       const modifiers = Object.keys(binding.modifiers || {});
-      const placement = modifiers.find((modifier) => modifier !== 'arrow');
-      const withArrow = modifiers.includes('arrow');
+      const placement = modifiers.find(modifier => modifier !== "arrow");
+      const withArrow = modifiers.includes("arrow");
 
       if (placement) {
         opts.placement = opts.placement || placement;
@@ -52,13 +49,13 @@ export default function useTippyDirective(isDark: ComputedRef<boolean>) {
         };
       }
 
-      if (el.getAttribute('title') && !opts.content) {
-        opts.content = el.getAttribute('title');
-        el.removeAttribute('title');
+      if (el.getAttribute("title") && !opts.content) {
+        opts.content = el.getAttribute("title");
+        el.removeAttribute("title");
       }
 
-      if (el.getAttribute('content') && !opts.content) {
-        opts.content = el.getAttribute('content');
+      if (el.getAttribute("content") && !opts.content) {
+        opts.content = el.getAttribute("content");
       }
 
       useTippy(el, opts);
@@ -72,21 +69,15 @@ export default function useTippyDirective(isDark: ComputedRef<boolean>) {
     },
 
     updated(el, binding) {
-      const opts =
-        typeof binding.value === 'string'
-          ? { content: binding.value, theme: isDark.value ? '' : 'light' }
-          : Object.assign(
-              { theme: isDark.value ? '' : 'light' },
-              binding.value,
-            );
+      const opts = typeof binding.value === "string" ? { content: binding.value, theme: isDark.value ? "" : "light" } : Object.assign({ theme: isDark.value ? "" : "light" }, binding.value);
 
-      if (el.getAttribute('title') && !opts.content) {
-        opts.content = el.getAttribute('title');
-        el.removeAttribute('title');
+      if (el.getAttribute("title") && !opts.content) {
+        opts.content = el.getAttribute("title");
+        el.removeAttribute("title");
       }
 
-      if (el.getAttribute('content') && !opts.content) {
-        opts.content = el.getAttribute('content');
+      if (el.getAttribute("content") && !opts.content) {
+        opts.content = el.getAttribute("content");
       }
 
       if (el.$tippy) {

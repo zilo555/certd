@@ -10,7 +10,7 @@ export default {
       function checkPlus() {
         // 事件处理代码
         notification.warn({
-          message: "此为专业版功能，请升级到专业版"
+          message: "此为专业版功能，请升级到专业版",
         });
       }
       el.addEventListener("click", function (event: any) {
@@ -20,5 +20,5 @@ export default {
         checkPlus();
       });
     }
-  }
+  },
 };

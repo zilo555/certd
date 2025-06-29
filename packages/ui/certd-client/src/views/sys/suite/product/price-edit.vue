@@ -27,7 +27,7 @@ const props = withDefaults(
   {
     modelValue: () => {
       return [];
-    }
+    },
   }
 );
 
@@ -41,14 +41,14 @@ function doEmit(value: PriceItem[]) {
 }
 
 function isActive(item: any) {
-  return props.modelValue.some((v) => v.duration === item.value);
+  return props.modelValue.some(v => v.duration === item.value);
 }
 
 function onDurationClicked(item: any) {
-  const has = props.modelValue.some((v) => v.duration === item.value);
+  const has = props.modelValue.some(v => v.duration === item.value);
   if (has) {
     // remove
-    const newValue = props.modelValue.filter((v) => v.duration !== item.value);
+    const newValue = props.modelValue.filter(v => v.duration !== item.value);
     doEmit(newValue);
   } else {
     // add
@@ -72,7 +72,7 @@ function onDurationClicked(item: any) {
   .duration-item {
     border: 1px solid #eee;
     padding: 2px;
-    width: 35px;
+    width: 45px;
     text-align: center;
     cursor: pointer;
 

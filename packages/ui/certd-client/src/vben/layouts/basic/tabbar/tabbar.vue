@@ -11,7 +11,7 @@ import { TabsToolMore, TabsToolScreen, TabsView } from "../../../tabs-ui";
 import { useTabbar } from "./use-tabbar";
 
 defineOptions({
-  name: "LayoutTabbar"
+  name: "LayoutTabbar",
 });
 
 defineProps<{ showIcon?: boolean; theme?: string }>();
@@ -26,11 +26,11 @@ const { createContextMenus, currentActive, currentTabs, handleClick, handleClose
 const menus = computed(() => {
   const tab = tabbarStore.getTabByPath(currentActive.value);
   const menus = createContextMenus(tab);
-  return menus.map((item) => {
+  return menus.map(item => {
     return {
       ...item,
       label: item.text,
-      value: item.key
+      value: item.key,
     };
   });
 });

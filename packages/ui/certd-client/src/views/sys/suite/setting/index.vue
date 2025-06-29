@@ -49,23 +49,23 @@ import ProductManager from "/@/views/sys/suite/product/index.vue";
 import { useSettingStore } from "/@/store/settings";
 
 defineOptions({
-  name: "SettingsSuite"
+  name: "SettingsSuite",
 });
 
 const api = {
   async SuiteSettingGet() {
     return await request({
       url: "/sys/settings/suite/get",
-      method: "post"
+      method: "post",
     });
   },
   async SuiteSettingSave(data: any) {
     return await request({
       url: "/sys/settings/suite/save",
       method: "post",
-      data
+      data,
     });
-  }
+  },
 };
 
 const formRef = ref<any>(null);
@@ -93,7 +93,7 @@ const onClick = async () => {
   await loadSettings();
   await settingsStore.loadSysSettings();
   notification.success({
-    message: "保存成功"
+    message: "保存成功",
   });
 };
 

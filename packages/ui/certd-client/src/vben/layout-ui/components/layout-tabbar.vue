@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<Props>(), {});
 const style = computed((): CSSProperties => {
   const { height } = props;
   return {
-    height: `${height}px`
+    height: `${height}px`,
   };
 });
 </script>

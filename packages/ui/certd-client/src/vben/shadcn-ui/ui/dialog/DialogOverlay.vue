@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { inject } from 'vue';
+import { inject } from "vue";
 
-import { useScrollLock } from '/@/vben/composables';
+import { useScrollLock } from "/@/vben/composables";
 
 useScrollLock();
-const id = inject('DISMISSABLE_MODAL_ID');
+const id = inject("DISMISSABLE_MODAL_ID");
 </script>
 <template>
   <div :data-dismissable-modal="id" class="bg-overlay z-popup inset-0"></div>

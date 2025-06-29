@@ -42,23 +42,23 @@ import { notification } from "ant-design-vue";
 import { request } from "/@/api/service";
 
 defineOptions({
-  name: "SettingPayment"
+  name: "SettingPayment",
 });
 
 const api = {
   async SettingGet() {
     return await request({
       url: "/sys/settings/payment/get",
-      method: "post"
+      method: "post",
     });
   },
   async SettingSave(data: any) {
     return await request({
       url: "/sys/settings/payment/save",
       method: "post",
-      data
+      data,
     });
-  }
+  },
 };
 
 const formRef = ref<any>(null);
@@ -76,7 +76,7 @@ const formState = reactive<
 >({
   yizhifu: { enabled: false },
   alipay: { enabled: false },
-  wxpay: { enabled: false }
+  wxpay: { enabled: false },
 });
 
 async function loadSettings() {
@@ -90,7 +90,7 @@ const onClick = async () => {
   await api.SettingSave(form);
   await loadSettings();
   notification.success({
-    message: "保存成功"
+    message: "保存成功",
   });
 };
 </script>

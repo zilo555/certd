@@ -8,7 +8,7 @@ interface Props {
 }
 
 defineOptions({
-  name: "Copyright"
+  name: "Copyright",
 });
 
 withDefaults(defineProps<Props>(), {
@@ -16,7 +16,7 @@ withDefaults(defineProps<Props>(), {
   companySiteLink: "",
   date: "2024",
   icp: "",
-  icpLink: ""
+  icpLink: "",
 });
 </script>
 

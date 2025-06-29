@@ -6,7 +6,7 @@ export * from "./errors";
 
 export function usePermission() {
   return {
-    ...util
+    ...util,
   };
 }
 
@@ -19,5 +19,5 @@ export default {
     // 通过路由守卫，在登录成功后拦截路由，从后台加载权限数据
     // 然后将权限数据转化为菜单和路由，添加到系统中
     registerRouterHook();
-  }
+  },
 };

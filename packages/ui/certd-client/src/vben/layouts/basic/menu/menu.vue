@@ -11,7 +11,7 @@ interface Props extends MenuProps {
 
 const props = withDefaults(defineProps<Props>(), {
   accordion: true,
-  menus: () => []
+  menus: () => [],
 });
 
 const emit = defineEmits<{

@@ -19,44 +19,44 @@ import { defineComponent, ref } from "vue";
 const colorListDefine = [
   {
     key: "薄暮",
-    color: "#f5222d"
+    color: "#f5222d",
   },
   {
     key: "火山",
-    color: "#fa541c"
+    color: "#fa541c",
   },
   {
     key: "日暮",
-    color: "#faad14"
+    color: "#faad14",
   },
   {
     key: "明青",
-    color: "#13c2c2"
+    color: "#13c2c2",
   },
   {
     key: "极光绿",
-    color: "#52c41a"
+    color: "#52c41a",
   },
   {
     key: "拂晓蓝（默认）",
-    color: "#1890ff"
+    color: "#1890ff",
   },
   {
     key: "极客蓝",
-    color: "#2f54eb"
+    color: "#2f54eb",
   },
   {
     key: "酱紫",
-    color: "#722ed1"
-  }
+    color: "#722ed1",
+  },
 ];
 export default defineComponent({
   name: "FsThemeColorPicker",
   props: {
     primaryColor: {
       type: String,
-      default: "#1890ff"
-    }
+      default: "#1890ff",
+    },
   },
   emits: ["change"],
   setup(props, ctx) {
@@ -66,9 +66,9 @@ export default defineComponent({
     }
     return {
       colorList,
-      changeColor
+      changeColor,
     };
-  }
+  },
 });
 </script>
 <style lang="less">

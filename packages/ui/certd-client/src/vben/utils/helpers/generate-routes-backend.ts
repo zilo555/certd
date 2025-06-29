@@ -32,7 +32,7 @@ async function generateRoutesByBackend(options: GenerateMenuAndRoutesOptions): P
 }
 
 function convertRoutes(routes: RouteRecordStringComponent[], layoutMap: ComponentRecordType, pageMap: ComponentRecordType): RouteRecordRaw[] {
-  return mapTree(routes, (node) => {
+  return mapTree(routes, node => {
     const route = node as unknown as RouteRecordRaw;
     const { component, name } = node;
 

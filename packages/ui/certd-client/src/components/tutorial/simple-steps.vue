@@ -15,11 +15,7 @@ type Step = {
 
 import { ref } from "vue";
 
-const steps = ref<Step[]>([
-  { title: t('certd.steps.createPipeline') },
-  { title: t('certd.steps.addTask') },
-  { title: t('certd.steps.scheduledRun') }
-]);
+const steps = ref<Step[]>([{ title: t("certd.steps.createPipeline") }, { title: t("certd.steps.addTask") }, { title: t("certd.steps.scheduledRun") }]);
 
 const router = useRouter();
 function goPipeline() {

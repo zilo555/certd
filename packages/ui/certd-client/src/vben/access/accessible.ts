@@ -12,7 +12,7 @@ async function generateAccessible(mode: AccessModeType, options: GenerateMenuAnd
   const root = router.getRoutes().find((item: any) => item.path === "/");
 
   // 动态添加到router实例内
-  accessibleRoutes.forEach((route) => {
+  accessibleRoutes.forEach(route => {
     if (root && !route.meta?.noBasicLayout) {
       // 为了兼容之前的版本用法，如果包含子路由，则将component移除，以免出现多层BasicLayout
       // 如果你的项目已经跟进了本次修改，移除了所有自定义菜单首级的BasicLayout，可以将这段if代码删除
@@ -62,7 +62,7 @@ async function generateRoutes(mode: AccessModeType, options: GenerateMenuAndRout
    * 调整路由树，做以下处理：
    * 1. 对未添加redirect的路由添加redirect
    */
-  resultRoutes = mapTree(resultRoutes, (route) => {
+  resultRoutes = mapTree(resultRoutes, route => {
     // 如果有redirect或者没有子路由，则直接返回
     if (route.redirect || !route.children || route.children.length === 0) {
       return route;

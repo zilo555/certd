@@ -1,16 +1,12 @@
 <script setup lang="ts">
-import type { RadioGroupItemProps } from 'radix-vue';
+import type { RadioGroupItemProps } from "radix-vue";
 
-import { computed } from 'vue';
+import { computed } from "vue";
 
-import { cn } from '/@/vben/shared/utils';
+import { cn } from "/@/vben/shared/utils";
 
-import { Circle } from 'lucide-vue-next';
-import {
-  RadioGroupIndicator,
-  RadioGroupItem,
-  useForwardProps,
-} from 'radix-vue';
+import { Circle } from "lucide-vue-next";
+import { RadioGroupIndicator, RadioGroupItem, useForwardProps } from "radix-vue";
 
 const props = defineProps<RadioGroupItemProps & { class?: any }>();
 
@@ -26,12 +22,7 @@ const forwardedProps = useForwardProps(delegatedProps);
 <template>
   <RadioGroupItem
     v-bind="forwardedProps"
-    :class="
-      cn(
-        'border-primary text-primary focus-visible:ring-ring aspect-square h-4 w-4 rounded-full border shadow focus:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50',
-        props.class,
-      )
-    "
+    :class="cn('border-primary text-primary focus-visible:ring-ring aspect-square h-4 w-4 rounded-full border shadow focus:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50', props.class)"
   >
     <RadioGroupIndicator class="flex items-center justify-center">
       <Circle class="h-2.5 w-2.5 fill-current text-current" />

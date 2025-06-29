@@ -17,7 +17,7 @@ async function loadNprogress() {
   nProgressInstance = await import("nprogress");
   nProgressInstance.configure({
     showSpinner: true,
-    speed: 300
+    speed: 300,
   });
   return nProgressInstance;
 }

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { CSSProperties } from 'vue';
+import type { CSSProperties } from "vue";
 
-import { computed, ref, watchEffect } from 'vue';
+import { computed, ref, watchEffect } from "vue";
 
-import { VbenTooltip } from '/@/vben/shadcn-ui';
+import { VbenTooltip } from "/@/vben/shadcn-ui";
 
-import { useElementSize } from '@vueuse/core';
+import { useElementSize } from "@vueuse/core";
 
 interface Props {
   /**
@@ -27,7 +27,7 @@ interface Props {
    * 提示框位置
    * @default 'top'
    */
-  placement?: 'bottom' | 'left' | 'right' | 'top';
+  placement?: "bottom" | "left" | "right" | "top";
   /**
    * 是否启用文本提示框
    * @default true
@@ -59,19 +59,19 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   expand: false,
   line: 1,
-  maxWidth: '100%',
-  placement: 'top',
+  maxWidth: "100%",
+  placement: "top",
   tooltip: true,
-  tooltipBackgroundColor: '',
-  tooltipColor: '',
+  tooltipBackgroundColor: "",
+  tooltipColor: "",
   tooltipFontSize: 14,
   tooltipMaxWidth: undefined,
-  tooltipOverlayStyle: () => ({ textAlign: 'justify' }),
+  tooltipOverlayStyle: () => ({ textAlign: "justify" }),
 });
 const emit = defineEmits<{ expandChange: [boolean] }>();
 
 const textMaxWidth = computed(() => {
-  if (typeof props.maxWidth === 'number') {
+  if (typeof props.maxWidth === "number") {
     return `${props.maxWidth}px`;
   }
   return props.maxWidth;
@@ -85,15 +85,14 @@ const { width: eleWidth } = useElementSize(ellipsis);
 watchEffect(
   () => {
     if (props.tooltip && eleWidth.value) {
-      defaultTooltipMaxWidth.value =
-        props.tooltipMaxWidth ?? eleWidth.value + 24;
+      defaultTooltipMaxWidth.value = props.tooltipMaxWidth ?? eleWidth.value + 24;
     }
   },
-  { flush: 'post' },
+  { flush: "post" }
 );
 function onExpand() {
   isExpand.value = !isExpand.value;
-  emit('expandChange', isExpand.value);
+  emit("expandChange", isExpand.value);
 }
 
 function handleExpand() {
@@ -130,8 +129,8 @@ function handleExpand() {
             'max-width': textMaxWidth,
           }"
           class="cursor-text overflow-hidden"
-          @click="handleExpand"
           v-bind="$attrs"
+          @click="handleExpand"
         >
           <slot></slot>
         </div>

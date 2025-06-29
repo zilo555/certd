@@ -1,8 +1,8 @@
-import type { Component, Ref } from 'vue';
+import type { Component, Ref } from "vue";
 
-import type { MaybePromise } from '/@/vben/typings';
+import type { MaybePromise } from "/@/vben/typings";
 
-import type { ModalApi } from './modal-api';
+import type { ModalApi } from "./modal-api";
 
 export interface ModalProps {
   /**
@@ -143,9 +143,7 @@ export interface ModalState extends ModalProps {
 }
 
 export type ExtendedModalApi = ModalApi & {
-  useStore: <T = NoInfer<ModalState>>(
-    selector?: (state: NoInfer<ModalState>) => T,
-  ) => Readonly<Ref<T>>;
+  useStore: <T = NoInfer<ModalState>>(selector?: (state: NoInfer<ModalState>) => T) => Readonly<Ref<T>>;
 };
 
 export interface ModalApiOptions extends ModalState {

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { DialogTitleProps } from 'radix-vue';
+import type { DialogTitleProps } from "radix-vue";
 
-import { computed } from 'vue';
+import { computed } from "vue";
 
-import { cn } from '/@/vben/shared/utils';
+import { cn } from "/@/vben/shared/utils";
 
-import { DialogTitle, useForwardProps } from 'radix-vue';
+import { DialogTitle, useForwardProps } from "radix-vue";
 
 const props = defineProps<DialogTitleProps & { class?: any }>();
 
@@ -19,12 +19,7 @@ const forwardedProps = useForwardProps(delegatedProps);
 </script>
 
 <template>
-  <DialogTitle
-    v-bind="forwardedProps"
-    :class="
-      cn('text-lg font-semibold leading-none tracking-tight', props.class)
-    "
-  >
+  <DialogTitle v-bind="forwardedProps" :class="cn('text-lg font-semibold leading-none tracking-tight', props.class)">
     <slot></slot>
   </DialogTitle>
 </template>

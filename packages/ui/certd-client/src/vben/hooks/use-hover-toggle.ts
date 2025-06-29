@@ -19,7 +19,7 @@ export function useHoverToggle(refElement: Arrayable<MaybeElementRef>, delay: ((
   const value = ref(false);
   const timer = ref<ReturnType<typeof setTimeout> | undefined>();
   const refs = Array.isArray(refElement) ? refElement : [refElement];
-  refs.forEach((refEle) => {
+  refs.forEach(refEle => {
     const eleRef = computed(() => {
       const ele = unref(refEle);
       return ele instanceof Element ? ele : (ele?.$el as Element);
@@ -27,7 +27,7 @@ export function useHoverToggle(refElement: Arrayable<MaybeElementRef>, delay: ((
     const isHover = useElementHover(eleRef);
     isHovers.push(isHover);
   });
-  const isOutsideAll = computed(() => isHovers.every((v) => !v.value));
+  const isOutsideAll = computed(() => isHovers.every(v => !v.value));
 
   function setValueDelay(val: boolean) {
     timer.value && clearTimeout(timer.value);
@@ -42,7 +42,7 @@ export function useHoverToggle(refElement: Arrayable<MaybeElementRef>, delay: ((
 
   const watcher = watch(
     isOutsideAll,
-    (val) => {
+    val => {
       setValueDelay(!val);
     },
     { immediate: true }
@@ -54,7 +54,7 @@ export function useHoverToggle(refElement: Arrayable<MaybeElementRef>, delay: ((
     },
     disable() {
       watcher.pause();
-    }
+    },
   };
 
   onUnmounted(() => {

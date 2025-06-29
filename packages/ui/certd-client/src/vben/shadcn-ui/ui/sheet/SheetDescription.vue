@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { DialogDescriptionProps } from 'radix-vue';
+import type { DialogDescriptionProps } from "radix-vue";
 
-import { computed } from 'vue';
+import { computed } from "vue";
 
-import { cn } from '/@/vben/shared/utils';
+import { cn } from "/@/vben/shared/utils";
 
-import { DialogDescription } from 'radix-vue';
+import { DialogDescription } from "radix-vue";
 
 const props = defineProps<DialogDescriptionProps & { class?: any }>();
 
@@ -17,10 +17,7 @@ const delegatedProps = computed(() => {
 </script>
 
 <template>
-  <DialogDescription
-    :class="cn('text-muted-foreground text-sm', props.class)"
-    v-bind="delegatedProps"
-  >
+  <DialogDescription :class="cn('text-muted-foreground text-sm', props.class)" v-bind="delegatedProps">
     <slot></slot>
   </DialogDescription>
 </template>

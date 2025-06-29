@@ -10,7 +10,7 @@ import { utils } from "@fast-crud/fast-crud";
 import * as _ from "lodash-es";
 
 defineOptions({
-  name: "FsMenu"
+  name: "FsMenu",
 });
 
 const props = defineProps<{
@@ -37,7 +37,7 @@ function buildItemMenus(menus: any) {
       title: sub.title,
       icon: () => {
         return <fsIcon icon={sub.icon ?? sub.meta?.icon} />;
-      }
+      },
     };
 
     list.push(item);
@@ -50,7 +50,7 @@ function buildItemMenus(menus: any) {
 
 watch(
   () => props.menus,
-  (menus) => {
+  menus => {
     items.value = buildItemMenus(menus);
   },
   { immediate: true }
@@ -77,7 +77,7 @@ function openSelectedParents(fullPath: any) {
       return;
     }
     if (value.path === fullPath) {
-      _.forEach(context.parents, (item) => {
+      _.forEach(context.parents, item => {
         if (item.value instanceof Array) {
           return;
         }
@@ -99,7 +99,7 @@ watch(
   () => {
     return route.fullPath;
   },
-  (path) => {
+  path => {
     // path = route.fullPath;
     selectedKeys.value = [path];
     const changed = openSelectedParents(path);
@@ -108,7 +108,7 @@ watch(
     }
   },
   {
-    immediate: true
+    immediate: true,
   }
 );
 </script>

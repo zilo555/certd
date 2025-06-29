@@ -21,7 +21,7 @@ export const mySuiteApi = {
     return await request({
       url: apiPrefix + "/page",
       method: "post",
-      data: query
+      data: query,
     });
   },
 
@@ -29,7 +29,7 @@ export const mySuiteApi = {
     return await request({
       url: apiPrefix + "/add",
       method: "post",
-      data: obj
+      data: obj,
     });
   },
 
@@ -37,7 +37,7 @@ export const mySuiteApi = {
     return await request({
       url: apiPrefix + "/update",
       method: "post",
-      data: obj
+      data: obj,
     });
   },
 
@@ -45,7 +45,7 @@ export const mySuiteApi = {
     return await request({
       url: apiPrefix + "/delete",
       method: "post",
-      params: { id }
+      params: { id },
     });
   },
 
@@ -53,19 +53,19 @@ export const mySuiteApi = {
     return await request({
       url: apiPrefix + "/info",
       method: "post",
-      params: { id }
+      params: { id },
     });
   },
   async ListAll() {
     return await request({
       url: apiPrefix + "/all",
-      method: "post"
+      method: "post",
     });
   },
   async SuiteDetailGet() {
     return await request({
       url: `${apiPrefix}/detail`,
-      method: "post"
+      method: "post",
     });
-  }
+  },
 };

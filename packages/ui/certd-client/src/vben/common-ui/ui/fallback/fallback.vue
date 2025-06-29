@@ -1,38 +1,35 @@
 <script setup lang="ts">
-import type { FallbackProps } from './fallback';
+import type { FallbackProps } from "./fallback";
 
-import { computed, defineAsyncComponent } from 'vue';
-import { useRouter } from 'vue-router';
+import { computed, defineAsyncComponent } from "vue";
+import { useRouter } from "vue-router";
 
-import { ArrowLeft, RotateCw } from '/@/vben/icons';
-import { $t } from '/@/locales';
+import { ArrowLeft, RotateCw } from "/@/vben/icons";
+import { $t } from "/@/locales";
 
-import { VbenButton } from '/@/vben/shadcn-ui';
+import { VbenButton } from "/@/vben/shadcn-ui";
 
 interface Props extends FallbackProps {}
 
 defineOptions({
-  name: 'Fallback',
+  // @ts-ignore
+  name: "Fallback",
 });
 
 const props = withDefaults(defineProps<Props>(), {
-  description: '',
-  homePath: '/',
-  image: '',
+  description: "",
+  homePath: "/",
+  image: "",
   showBack: true,
-  status: 'coming-soon',
-  title: '',
+  status: "coming-soon",
+  title: "",
 });
 
-const Icon403 = defineAsyncComponent(() => import('./icons/icon-403.vue'));
-const Icon404 = defineAsyncComponent(() => import('./icons/icon-404.vue'));
-const Icon500 = defineAsyncComponent(() => import('./icons/icon-500.vue'));
-const IconHello = defineAsyncComponent(
-  () => import('./icons/icon-coming-soon.vue'),
-);
-const IconOffline = defineAsyncComponent(
-  () => import('./icons/icon-offline.vue'),
-);
+const Icon403 = defineAsyncComponent(() => import("./icons/icon-403.vue"));
+const Icon404 = defineAsyncComponent(() => import("./icons/icon-404.vue"));
+const Icon500 = defineAsyncComponent(() => import("./icons/icon-500.vue"));
+const IconHello = defineAsyncComponent(() => import("./icons/icon-coming-soon.vue"));
+const IconOffline = defineAsyncComponent(() => import("./icons/icon-offline.vue"));
 
 const titleText = computed(() => {
   if (props.title) {
@@ -40,23 +37,23 @@ const titleText = computed(() => {
   }
 
   switch (props.status) {
-    case '403': {
-      return $t('ui.fallback.forbidden');
+    case "403": {
+      return $t("ui.fallback.forbidden");
     }
-    case '404': {
-      return $t('ui.fallback.pageNotFound');
+    case "404": {
+      return $t("ui.fallback.pageNotFound");
     }
-    case '500': {
-      return $t('ui.fallback.internalError');
+    case "500": {
+      return $t("ui.fallback.internalError");
     }
-    case 'coming-soon': {
-      return $t('ui.fallback.comingSoon');
+    case "coming-soon": {
+      return $t("ui.fallback.comingSoon");
     }
-    case 'offline': {
-      return $t('ui.fallback.offlineError');
+    case "offline": {
+      return $t("ui.fallback.offlineError");
     }
     default: {
-      return '';
+      return "";
     }
   }
 });
@@ -66,39 +63,39 @@ const descText = computed(() => {
     return props.description;
   }
   switch (props.status) {
-    case '403': {
-      return $t('ui.fallback.forbiddenDesc');
+    case "403": {
+      return $t("ui.fallback.forbiddenDesc");
     }
-    case '404': {
-      return $t('ui.fallback.pageNotFoundDesc');
+    case "404": {
+      return $t("ui.fallback.pageNotFoundDesc");
     }
-    case '500': {
-      return $t('ui.fallback.internalErrorDesc');
+    case "500": {
+      return $t("ui.fallback.internalErrorDesc");
     }
-    case 'offline': {
-      return $t('ui.fallback.offlineErrorDesc');
+    case "offline": {
+      return $t("ui.fallback.offlineErrorDesc");
     }
     default: {
-      return '';
+      return "";
     }
   }
 });
 
 const fallbackIcon = computed(() => {
   switch (props.status) {
-    case '403': {
+    case "403": {
       return Icon403;
     }
-    case '404': {
+    case "404": {
       return Icon404;
     }
-    case '500': {
+    case "500": {
       return Icon500;
     }
-    case 'coming-soon': {
+    case "coming-soon": {
       return IconHello;
     }
-    case 'offline': {
+    case "offline": {
       return IconOffline;
     }
     default: {
@@ -108,11 +105,11 @@ const fallbackIcon = computed(() => {
 });
 
 const showBack = computed(() => {
-  return props.status === '403' || props.status === '404';
+  return props.status === "403" || props.status === "404";
 });
 
 const showRefresh = computed(() => {
-  return props.status === '500' || props.status === 'offline';
+  return props.status === "500" || props.status === "offline";
 });
 
 const { push } = useRouter();
@@ -130,34 +127,24 @@ function refresh() {
 <template>
   <div class="flex size-full flex-col items-center justify-center duration-300">
     <img v-if="image" :src="image" class="md:1/3 w-1/2 lg:w-1/4" />
-    <component
-      :is="fallbackIcon"
-      v-else-if="fallbackIcon"
-      class="md:1/3 h-1/3 w-1/2 lg:w-1/4"
-    />
+    <component :is="fallbackIcon" v-else-if="fallbackIcon" class="md:1/3 h-1/3 w-1/2 lg:w-1/4" />
     <div class="flex-col-center">
       <slot v-if="$slots.title" name="title"></slot>
-      <p
-        v-else-if="titleText"
-        class="text-foreground mt-8 text-2xl md:text-3xl lg:text-4xl"
-      >
+      <p v-else-if="titleText" class="text-foreground mt-8 text-2xl md:text-3xl lg:text-4xl">
         {{ titleText }}
       </p>
       <slot v-if="$slots.describe" name="describe"></slot>
-      <p
-        v-else-if="descText"
-        class="text-muted-foreground md:text-md my-4 lg:text-lg"
-      >
+      <p v-else-if="descText" class="text-muted-foreground md:text-md my-4 lg:text-lg">
         {{ descText }}
       </p>
       <slot v-if="$slots.action" name="action"></slot>
       <VbenButton v-else-if="showBack" size="lg" @click="back">
         <ArrowLeft class="mr-2 size-4" />
-        {{ $t('common.backToHome') }}
+        {{ $t("common.backToHome") }}
       </VbenButton>
       <VbenButton v-else-if="showRefresh" size="lg" @click="refresh">
         <RotateCw class="mr-2 size-4" />
-        {{ $t('common.refresh') }}
+        {{ $t("common.refresh") }}
       </VbenButton>
     </div>
   </div>

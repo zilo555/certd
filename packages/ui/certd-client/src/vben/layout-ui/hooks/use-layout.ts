@@ -38,6 +38,6 @@ export function useLayout(props: VbenLayoutProps) {
     isHeaderMixedNav,
     isHeaderNav,
     isMixedNav,
-    isSidebarMixedNav
+    isSidebarMixedNav,
   };
 }

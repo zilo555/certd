@@ -25,12 +25,12 @@ interface Props {
 }
 
 defineOptions({
-  name: "AccessControl"
+  name: "AccessControl",
 });
 
 const props = withDefaults(defineProps<Props>(), {
   codes: () => [],
-  type: "role"
+  type: "role",
 });
 
 const { hasAccessByCodes, hasAccessByRoles } = useAccess();

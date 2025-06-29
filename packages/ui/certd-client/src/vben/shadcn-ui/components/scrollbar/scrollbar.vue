@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { ClassType } from '/@/vben/typings';
+import type { ClassType } from "/@/vben/typings";
 
-import { computed, ref } from 'vue';
+import { computed, ref } from "vue";
 
-import { cn } from '/@/vben/shared/utils';
+import { cn } from "/@/vben/shared/utils";
 
-import { ScrollArea, ScrollBar } from '../../ui';
+import { ScrollArea, ScrollBar } from "../../ui";
 
 interface Props {
   class?: ClassType;
@@ -20,7 +20,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  class: '',
+  class: "",
   horizontal: false,
   shadow: false,
   shadowBorder: false,
@@ -46,13 +46,9 @@ const showShadowRight = computed(() => props.shadow && props.shadowRight);
 
 const computedShadowClasses = computed(() => {
   return {
-    'both-shadow':
-      !isAtLeft.value &&
-      !isAtRight.value &&
-      showShadowLeft.value &&
-      showShadowRight.value,
-    'left-shadow': !isAtLeft.value && showShadowLeft.value,
-    'right-shadow': !isAtRight.value && showShadowRight.value,
+    "both-shadow": !isAtLeft.value && !isAtRight.value && showShadowLeft.value && showShadowRight.value,
+    "left-shadow": !isAtLeft.value && showShadowLeft.value,
+    "right-shadow": !isAtRight.value && showShadowRight.value,
   };
 });
 
@@ -69,7 +65,7 @@ function handleScroll(event: Event) {
   isAtBottom.value = scrollTop + offsetHeight >= scrollHeight;
   isAtRight.value = scrollLeft + offsetWidth >= scrollWidth;
 
-  emit('scrollAt', {
+  emit("scrollAt", {
     bottom: isAtBottom.value,
     left: isAtLeft.value,
     right: isAtRight.value,
@@ -79,11 +75,7 @@ function handleScroll(event: Event) {
 </script>
 
 <template>
-  <ScrollArea
-    :class="[cn(props.class), computedShadowClasses]"
-    :on-scroll="handleScroll"
-    class="vben-scrollbar relative"
-  >
+  <ScrollArea :class="[cn(props.class), computedShadowClasses]" :on-scroll="handleScroll" class="vben-scrollbar relative">
     <div
       v-if="showShadowTop"
       :class="{
@@ -101,11 +93,7 @@ function handleScroll(event: Event) {
       }"
       class="scrollbar-bottom-shadow pointer-events-none absolute bottom-0 z-10 h-12 w-full opacity-0 transition-opacity duration-300 ease-in-out will-change-[opacity]"
     ></div>
-    <ScrollBar
-      v-if="horizontal"
-      :class="scrollBarClass"
-      orientation="horizontal"
-    />
+    <ScrollBar v-if="horizontal" :class="scrollBarClass" orientation="horizontal" />
   </ScrollArea>
 </template>
 
@@ -116,38 +104,19 @@ function handleScroll(event: Event) {
   }
 
   &:not(.both-shadow).right-shadow {
-    mask-image: linear-gradient(
-      90deg,
-      #000 0%,
-      #000 calc(100% - 16px),
-      transparent
-    );
+    mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 16px), transparent);
   }
 
   &.both-shadow {
-    mask-image: linear-gradient(
-      90deg,
-      transparent,
-      #000 16px,
-      #000 calc(100% - 16px),
-      transparent 100%
-    );
+    mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 16px), transparent 100%);
   }
 }
 
 .scrollbar-top-shadow {
-  background: linear-gradient(
-    to bottom,
-    hsl(var(--scroll-shadow, var(--background))),
-    transparent
-  );
+  background: linear-gradient(to bottom, hsl(var(--scroll-shadow, var(--background))), transparent);
 }
 
 .scrollbar-bottom-shadow {
-  background: linear-gradient(
-    to top,
-    hsl(var(--scroll-shadow, var(--background))),
-    transparent
-  );
+  background: linear-gradient(to top, hsl(var(--scroll-shadow, var(--background))), transparent);
 }
 </style>

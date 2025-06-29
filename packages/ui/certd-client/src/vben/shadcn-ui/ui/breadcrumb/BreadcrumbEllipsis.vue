@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { cn } from '/@/vben/shared/utils';
+import { cn } from "/@/vben/shared/utils";
 
-import { MoreHorizontal } from 'lucide-vue-next';
+import { MoreHorizontal } from "lucide-vue-next";
 
 const props = defineProps<{
   class?: any;
@@ -9,11 +9,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <span
-    :class="cn('flex h-9 w-9 items-center justify-center', props.class)"
-    aria-hidden="true"
-    role="presentation"
-  >
+  <span :class="cn('flex h-9 w-9 items-center justify-center', props.class)" aria-hidden="true" role="presentation">
     <slot>
       <MoreHorizontal class="h-4 w-4" />
     </slot>

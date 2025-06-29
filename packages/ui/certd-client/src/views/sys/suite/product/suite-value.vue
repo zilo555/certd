@@ -24,13 +24,13 @@ const target = computed(() => {
     return {
       value: -1,
       label: "无限制",
-      color: "green"
+      color: "green",
     };
   } else if (props.modelValue === 0) {
     return {
       value: 0,
       label: "0" + (props.unit || ""),
-      color: "red"
+      color: "red",
     };
   } else {
     let color = "blue";
@@ -40,7 +40,7 @@ const target = computed(() => {
     return {
       value: props.modelValue,
       label: props.modelValue + (props.unit || ""),
-      color: color
+      color: color,
     };
   }
 });

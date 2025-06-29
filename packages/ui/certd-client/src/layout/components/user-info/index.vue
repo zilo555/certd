@@ -1,13 +1,13 @@
 <template>
   <a-dropdown>
-    <div class="fs-user-info">{{ t('user.greeting') }}，{{ userStore.getUserInfo?.nickName || userStore.getUserInfo?.username }}</div>
+    <div class="fs-user-info">{{ t("user.greeting") }}，{{ userStore.getUserInfo?.nickName || userStore.getUserInfo?.username }}</div>
     <template #overlay>
       <a-menu>
         <a-menu-item>
-          <div @click="goUserProfile">{{ t('user.profile') }}</div>
+          <div @click="goUserProfile">{{ t("user.profile") }}</div>
         </a-menu-item>
         <a-menu-item>
-          <div @click="doLogout">{{ t('user.logout') }}</div>
+          <div @click="doLogout">{{ t("user.logout") }}</div>
         </a-menu-item>
       </a-menu>
     </template>

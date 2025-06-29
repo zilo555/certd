@@ -23,17 +23,17 @@ const props = withDefaults(
   {
     data: () => {
       return [];
-    }
+    },
   }
 );
 
 const dates = computed(() => {
-  return props.data.map((item) => {
+  return props.data.map(item => {
     return item.name;
   });
 });
 const counts = computed(() => {
-  return props.data.map((item) => {
+  return props.data.map(item => {
     return item.value;
   });
 });
@@ -43,15 +43,15 @@ const option = ref({
     show: props.data.length === 0, // 没数据才显示
     extStyle: {
       color: "grey",
-      fontSize: 20
+      fontSize: 20,
     },
     text: "暂无数据",
     left: "center",
-    top: "center"
+    top: "center",
   },
 
   tooltip: {
-    trigger: "item"
+    trigger: "item",
   },
   // tooltip: {
   //   trigger: "axis",
@@ -70,19 +70,19 @@ const option = ref({
     left: "20px",
     right: "20px",
     bottom: "10px",
-    containLabel: true
+    containLabel: true,
   },
   xAxis: [
     {
       type: "category",
       boundaryGap: false,
-      data: dates
-    }
+      data: dates,
+    },
   ],
   yAxis: [
     {
-      type: "value"
-    }
+      type: "value",
+    },
   ],
   series: [
     {
@@ -91,16 +91,16 @@ const option = ref({
       stack: "Total",
       label: {
         show: true,
-        position: "top"
+        position: "top",
       },
       smooth: true,
       areaStyle: {},
       emphasis: {
-        focus: "series"
+        focus: "series",
       },
-      data: counts
-    }
-  ]
+      data: counts,
+    },
+  ],
 });
 </script>
 

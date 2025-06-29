@@ -10,12 +10,12 @@ export default {
   props: {
     modelValue: {
       type: String,
-      default: undefined
+      default: undefined,
     },
     // eslint-disable-next-line vue/require-default-prop
     from: {
-      type: [String, Array]
-    }
+      type: [String, Array],
+    },
   },
   emits: ["update:modelValue"],
   setup(props: any, ctx: any) {
@@ -35,7 +35,7 @@ export default {
         currentStageIndex: currentStageIndex.value,
         currentTaskIndex: currentTaskIndex.value,
         currentStepIndex: currentStepIndex.value,
-        currentTask: currentTask.value
+        currentTask: currentTask.value,
       });
       if (props.from) {
         if (typeof props.from === "string") {
@@ -73,9 +73,9 @@ export default {
     }
     return {
       options,
-      onChanged
+      onChanged,
     };
-  }
+  },
 };
 </script>
 

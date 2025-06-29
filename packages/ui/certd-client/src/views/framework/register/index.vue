@@ -1,16 +1,6 @@
 <template>
   <div class="main">
-    <a-form
-      ref="formRef"
-      class="user-layout-register"
-      name="custom-validation"
-      :model="formState"
-      :rules="rules"
-      v-bind="layout"
-      :label-col="{ span: 6 }"
-      @finish="handleFinish"
-      @finish-failed="handleFinishFailed"
-    >
+    <a-form ref="formRef" class="user-layout-register" name="custom-validation" :model="formState" :rules="rules" v-bind="layout" :label-col="{ span: 6 }" @finish="handleFinish" @finish-failed="handleFinishFailed">
       <a-tabs v-model:active-key="registerType">
         <a-tab-pane key="username" tab="用户名注册" :disabled="!settingsStore.sysPublic.usernameRegisterEnabled">
           <template v-if="registerType === 'username'">
@@ -104,7 +94,7 @@ export default defineComponent({
       if (!settingsStore.sysPublic.usernameRegisterEnabled) {
         registerType.value = "";
         notification.error({
-          message: "没有启用任何一种注册方式"
+          message: "没有启用任何一种注册方式",
         });
       }
     }
@@ -117,7 +107,7 @@ export default defineComponent({
       username: "",
       password: "",
       confirmPassword: "",
-      randomStr: ""
+      randomStr: "",
     });
 
     const rules = {
@@ -125,32 +115,32 @@ export default defineComponent({
         {
           required: true,
           trigger: "change",
-          message: "请输入用户名"
-        }
+          message: "请输入用户名",
+        },
       ],
       email: [
         {
           required: true,
           trigger: "change",
-          message: "请输入邮箱"
+          message: "请输入邮箱",
         },
         {
           type: "email",
-          message: "请输入正确的邮箱"
-        }
+          message: "请输入正确的邮箱",
+        },
       ],
       password: [
         {
           required: true,
           trigger: "change",
-          message: "请输入密码"
-        }
+          message: "请输入密码",
+        },
       ],
       confirmPassword: [
         {
           required: true,
           trigger: "change",
-          message: "请确认密码"
+          message: "请确认密码",
         },
         {
           validator: async (rule: any, value: any) => {
@@ -158,41 +148,41 @@ export default defineComponent({
               throw new Error("两次输入密码不一致");
             }
             return true;
-          }
-        }
+          },
+        },
       ],
 
       imgCode: [
         {
           required: true,
-          message: "请输入图片验证码"
+          message: "请输入图片验证码",
         },
         {
           min: 4,
           max: 4,
-          message: "请输入4位图片验证码"
-        }
+          message: "请输入4位图片验证码",
+        },
       ],
       smsCode: [
         {
           required: true,
-          message: "请输入短信验证码"
-        }
+          message: "请输入短信验证码",
+        },
       ],
       validateCode: [
         {
           required: true,
-          message: "请输入邮件验证码"
-        }
-      ]
+          message: "请输入邮件验证码",
+        },
+      ],
     };
     const layout = {
       labelCol: {
-        span: 0
+        span: 0,
       },
       wrapperCol: {
-        span: 24
-      }
+        span: 24,
+      },
     };
 
     const handleFinish = async (values: any) => {
@@ -204,7 +194,7 @@ export default defineComponent({
           imgCode: formState.imgCode,
           randomStr: formState.randomStr,
           email: formState.email,
-          validateCode: formState.validateCode
+          validateCode: formState.validateCode,
         }) as any
       );
     };
@@ -235,9 +225,9 @@ export default defineComponent({
       handleFinish,
       resetForm,
       registerType,
-      settingsStore
+      settingsStore,
     };
-  }
+  },
 });
 </script>
 

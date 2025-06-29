@@ -17,7 +17,7 @@ export function useScrollLock() {
     const layoutFixedNodes = document.querySelectorAll<HTMLElement>(`.${SCROLL_FIXED_CLASS}`);
     const nodes = [...layoutFixedNodes];
     if (nodes.length > 0) {
-      nodes.forEach((node) => {
+      nodes.forEach(node => {
         node.dataset.transition = node.style.transition;
         node.style.transition = "none";
         node.style.paddingRight = `${scrollbarWidth}px`;
@@ -34,7 +34,7 @@ export function useScrollLock() {
     const layoutFixedNodes = document.querySelectorAll<HTMLElement>(`.${SCROLL_FIXED_CLASS}`);
     const nodes = [...layoutFixedNodes];
     if (nodes.length > 0) {
-      nodes.forEach((node) => {
+      nodes.forEach(node => {
         node.style.paddingRight = "";
         requestAnimationFrame(() => {
           node.style.transition = node.dataset.transition || "";

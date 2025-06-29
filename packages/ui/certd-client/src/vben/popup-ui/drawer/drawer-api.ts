@@ -6,7 +6,7 @@ import { bindMethods, isFunction } from "/@/vben/shared/utils";
 export class DrawerApi {
   // 共享数据
   public sharedData: Record<"payload", any> = {
-    payload: {}
+    payload: {},
   };
   public store: Store<DrawerState>;
 
@@ -34,13 +34,13 @@ export class DrawerApi {
       placement: "right",
       showCancelButton: true,
       showConfirmButton: true,
-      title: ""
+      title: "",
     };
 
     this.store = new Store<DrawerState>(
       {
         ...defaultState,
-        ...storeState
+        ...storeState,
       },
       {
         onUpdate: () => {
@@ -51,7 +51,7 @@ export class DrawerApi {
             this.state = state;
             this.api.onOpenChange?.(!!state?.isOpen);
           }
-        }
+        },
       }
     );
     this.state = this.store.state;
@@ -61,7 +61,7 @@ export class DrawerApi {
       onClosed,
       onConfirm,
       onOpenChange,
-      onOpened
+      onOpened,
     };
     bindMethods(this);
   }
@@ -74,7 +74,7 @@ export class DrawerApi {
     // 如果 onBeforeClose 返回 false，则不关闭弹窗
     const allowClose = this.api.onBeforeClose?.() ?? true;
     if (allowClose) {
-      this.store.setState((prev) => ({ ...prev, isOpen: false }));
+      this.store.setState(prev => ({ ...prev, isOpen: false }));
     }
   }
 
@@ -119,7 +119,7 @@ export class DrawerApi {
   }
 
   open() {
-    this.store.setState((prev) => ({ ...prev, isOpen: true }));
+    this.store.setState(prev => ({ ...prev, isOpen: true }));
   }
 
   setData<T>(payload: T) {
@@ -131,7 +131,7 @@ export class DrawerApi {
     if (isFunction(stateOrFn)) {
       this.store.setState(stateOrFn);
     } else {
-      this.store.setState((prev) => ({ ...prev, ...stateOrFn }));
+      this.store.setState(prev => ({ ...prev, ...stateOrFn }));
     }
     return this;
   }

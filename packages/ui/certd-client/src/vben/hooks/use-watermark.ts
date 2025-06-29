@@ -11,14 +11,14 @@ const cachedOptions = ref<Partial<WatermarkOptions>>({
     colorStops: [
       {
         color: "gray",
-        offset: 0
+        offset: 0,
       },
       {
         color: "gray",
-        offset: 1
-      }
+        offset: 1,
+      },
     ],
-    type: "linear"
+    type: "linear",
   },
   // fontSize: '20px',
   content: "",
@@ -29,14 +29,14 @@ const cachedOptions = ref<Partial<WatermarkOptions>>({
     gap: [20, 20],
     matrix: [
       [1, 0],
-      [0, 1]
+      [0, 1],
     ],
-    rows: 2
+    rows: 2,
   },
   height: 200,
   layout: "grid",
   rotate: 30,
-  width: 160
+  width: 160,
 });
 
 export function useWatermark() {
@@ -45,7 +45,7 @@ export function useWatermark() {
 
     cachedOptions.value = {
       ...cachedOptions.value,
-      ...options
+      ...options,
     };
     watermark.value = new Watermark(cachedOptions.value);
     updatePreferences({ app: { watermark: true } });
@@ -57,7 +57,7 @@ export function useWatermark() {
       await nextTick();
       await watermark.value?.changeOptions({
         ...cachedOptions.value,
-        ...options
+        ...options,
       });
     } else {
       await initWatermark(options);
@@ -83,6 +83,6 @@ export function useWatermark() {
   return {
     destroyWatermark,
     updateWatermark,
-    watermark: readonly(watermark)
+    watermark: readonly(watermark),
   };
 }

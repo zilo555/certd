@@ -1,29 +1,29 @@
 <script setup lang="ts">
-import type { ToggleEmits, ToggleProps } from 'radix-vue';
+import type { ToggleEmits, ToggleProps } from "radix-vue";
 
-import type { ToggleVariants } from './toggle';
+import type { ToggleVariants } from "./toggle";
 
-import { computed } from 'vue';
+import { computed } from "vue";
 
-import { cn } from '/@/vben/shared/utils';
+import { cn } from "/@/vben/shared/utils";
 
-import { Toggle, useForwardPropsEmits } from 'radix-vue';
+import { Toggle, useForwardPropsEmits } from "radix-vue";
 
-import { toggleVariants } from './toggle';
+import { toggleVariants } from "./toggle";
 
 const props = withDefaults(
   defineProps<
     ToggleProps & {
       class?: any;
-      size?: ToggleVariants['size'];
-      variant?: ToggleVariants['variant'];
+      size?: ToggleVariants["size"];
+      variant?: ToggleVariants["variant"];
     }
   >(),
   {
     disabled: false,
-    size: 'default',
-    variant: 'default',
-  },
+    size: "default",
+    variant: "default",
+  }
 );
 
 const emits = defineEmits<ToggleEmits>();
@@ -38,10 +38,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
 </script>
 
 <template>
-  <Toggle
-    v-bind="forwarded"
-    :class="cn(toggleVariants({ variant, size }), props.class)"
-  >
+  <Toggle v-bind="forwarded" :class="cn(toggleVariants({ variant, size }), props.class)">
     <slot></slot>
   </Toggle>
 </template>

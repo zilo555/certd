@@ -27,9 +27,9 @@ export default defineComponent({
       visible,
       show,
       afterVisibleChange,
-      setting
+      setting,
     };
-  }
+  },
 });
 </script>
 

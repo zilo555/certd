@@ -19,7 +19,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  show: true
+  show: true,
 });
 
 const style = computed((): CSSProperties => {
@@ -29,7 +29,7 @@ const style = computed((): CSSProperties => {
     marginBottom: show ? "0" : `-${height}px`,
     position: fixed ? "fixed" : "static",
     width,
-    zIndex
+    zIndex,
   };
 });
 </script>

@@ -29,7 +29,7 @@ async function generateMenus(routes: RouteRecordRaw[], router: Router): Promise<
 
     // 将菜单的所有父级和父级菜单记录到菜单项内
     if (resultChildren && resultChildren.length > 0) {
-      resultChildren.forEach((child) => {
+      resultChildren.forEach(child => {
         child.parents = [...(route.parents || []), path];
         child.parent = path;
       });
@@ -49,14 +49,14 @@ async function generateMenus(routes: RouteRecordRaw[], router: Router): Promise<
       path: resultPath as string,
       show: !route?.meta?.hideInMenu && route?.meta?.isMenu !== false,
       children: resultChildren || [],
-      meta: route.meta
+      meta: route.meta,
     };
   });
 
   // 对菜单进行排序
   menus = sortBy(menus, (item: any) => item.order ?? 0);
 
-  const finalMenus = filterTree(menus, (menu) => {
+  const finalMenus = filterTree(menus, menu => {
     return !!menu.show;
   });
   return finalMenus;

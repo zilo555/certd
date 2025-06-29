@@ -9,14 +9,14 @@ import { VbenIcon } from "../../../shadcn-ui";
 interface Props extends NormalMenuProps {}
 
 defineOptions({
-  name: "NormalMenu"
+  name: "NormalMenu",
 });
 
 const props = withDefaults(defineProps<Props>(), {
   activePath: "",
   collapse: false,
   menus: () => [],
-  theme: "dark"
+  theme: "dark",
 });
 
 const emit = defineEmits<{

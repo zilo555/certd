@@ -7,7 +7,7 @@ function createIconifyIcon(icon: string) {
     name: `Icon-${icon}`,
     setup(props, { attrs }) {
       return () => h(Icon, { icon, ...props, ...attrs });
-    }
+    },
   });
 }
 

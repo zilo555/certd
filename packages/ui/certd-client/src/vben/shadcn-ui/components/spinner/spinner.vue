@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue';
+import { ref, watch } from "vue";
 
-import { cn } from '/@/vben/shared/utils';
+import { cn } from "/@/vben/shared/utils";
 
 interface Props {
   class?: string;
@@ -17,7 +17,7 @@ interface Props {
 }
 
 defineOptions({
-  name: 'VbenSpinner',
+  name: "VbenSpinner",
 });
 
 const props = withDefaults(defineProps<Props>(), {
@@ -30,7 +30,7 @@ const timer = ref<ReturnType<typeof setTimeout>>();
 
 watch(
   () => props.spinning,
-  (show) => {
+  show => {
     if (!show) {
       showSpinner.value = false;
       clearTimeout(timer.value);
@@ -49,7 +49,7 @@ watch(
   },
   {
     immediate: true,
-  },
+  }
 );
 
 function onTransitionEnd() {
@@ -67,14 +67,14 @@ function onTransitionEnd() {
         {
           'invisible opacity-0': !showSpinner,
         },
-        props.class,
+        props.class
       )
     "
     @transitionend="onTransitionEnd"
   >
     <div
-      :class="{ paused: !renderSpinner }"
       v-if="renderSpinner"
+      :class="{ paused: !renderSpinner }"
       class="loader before:bg-primary/50 after:bg-primary relative size-12 before:absolute before:left-0 before:top-[60px] before:h-[5px] before:w-12 before:rounded-[50%] before:content-[''] after:absolute after:left-0 after:top-0 after:h-full after:w-full after:rounded after:content-['']"
     ></div>
   </div>

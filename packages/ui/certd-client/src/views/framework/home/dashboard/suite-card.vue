@@ -36,9 +36,7 @@
             </span>
             <span>(<expires-time-text :value="item.expiresTime" />)</span>
           </a-tag>
-          <div v-if="detail.suites?.length === 0" class="flex-o ml-5">
-            暂无套餐 <a-button class="ml-5" type="primary" size="small" @click="goBuy">去购买</a-button>
-          </div>
+          <div v-if="detail.suites?.length === 0" class="flex-o ml-5">暂无套餐 <a-button class="ml-5" type="primary" size="small" @click="goBuy">去购买</a-button></div>
         </div>
       </a-popover>
     </div>
@@ -54,7 +52,7 @@ import { FsIcon } from "@fast-crud/fast-crud";
 import { useRouter } from "vue-router";
 
 defineOptions({
-  name: "SuiteCard"
+  name: "SuiteCard",
 });
 
 const detail = ref<SuiteDetail>({});
@@ -68,7 +66,7 @@ loadSuiteDetail();
 const router = useRouter();
 function goBuy() {
   router.push({
-    path: "/certd/suite/buy"
+    path: "/certd/suite/buy",
   });
 }
 </script>

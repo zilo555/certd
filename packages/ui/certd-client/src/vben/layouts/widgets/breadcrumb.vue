@@ -20,7 +20,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   showHome: false,
   showIcon: false,
-  type: "normal"
+  type: "normal",
 });
 
 const route = useRoute();
@@ -41,14 +41,14 @@ const breadcrumbs = computed((): IBreadcrumb[] => {
     resultBreadcrumb.push({
       icon,
       path: path || route.path,
-      title: title ? $t((title || name) as string) : ""
+      title: title ? $t((title || name) as string) : "",
     });
   }
   if (props.showHome) {
     resultBreadcrumb.unshift({
       icon: "mdi:home-outline",
       isHome: true,
-      path: "/"
+      path: "/",
     });
   }
   if (props.hideWhenOnlyOne && resultBreadcrumb.length === 1) {

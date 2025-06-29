@@ -11,7 +11,7 @@ export function useVbenForm<T extends BaseFormComponentType = BaseFormComponentT
   const IS_REACTIVE = isReactive(options);
   const api = new FormApi(options);
   const extendedApi: ExtendedFormApi = api as never;
-  extendedApi.useStore = (selector) => {
+  extendedApi.useStore = selector => {
     return useStore(api.store, selector);
   };
 
@@ -25,7 +25,7 @@ export function useVbenForm<T extends BaseFormComponentType = BaseFormComponentT
     },
     {
       name: "VbenUseForm",
-      inheritAttrs: false
+      inheritAttrs: false,
     }
   );
   // Add reactivity support

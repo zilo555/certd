@@ -13,14 +13,14 @@ interface Props extends TabsProps {}
 defineOptions({
   name: "VbenTabsChrome",
   // eslint-disable-next-line perfectionist/sort-objects
-  inheritAttrs: false
+  inheritAttrs: false,
 });
 
 const props = withDefaults(defineProps<Props>(), {
   contentClass: "vben-tabs-content",
   contextMenus: () => [],
   gap: 7,
-  tabs: () => []
+  tabs: () => [],
 });
 
 const emit = defineEmits<{
@@ -35,12 +35,12 @@ const tabRef = ref();
 const style = computed(() => {
   const { gap } = props;
   return {
-    "--gap": `${gap}px`
+    "--gap": `${gap}px`,
   };
 });
 
 const tabsView = computed(() => {
-  return props.tabs.map((tab) => {
+  return props.tabs.map(tab => {
     const { fullPath, meta, name, path } = tab || {};
     const { affixTab, icon, newTabTitle, tabClosable, title } = meta || {};
     return {
@@ -52,7 +52,7 @@ const tabsView = computed(() => {
       meta,
       name,
       path,
-      title: (newTabTitle || title || name) as string
+      title: (newTabTitle || title || name) as string,
     } as TabConfig;
   });
 });
@@ -77,8 +77,8 @@ function onMouseDown(e: MouseEvent, tab: TabConfig) {
           {
             'is-active': tab.key === active,
             draggable: !tab.affixTab,
-            'affix-tab': tab.affixTab
-          }
+            'affix-tab': tab.affixTab,
+          },
         ]"
         :data-active-tab="active"
         :data-index="i"

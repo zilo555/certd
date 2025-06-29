@@ -13,12 +13,12 @@ interface Props extends TabsProps {}
 defineOptions({
   name: "VbenTabs",
   // @ts-ignore
-  inheritAttrs: false
+  inheritAttrs: false,
 });
 const props = withDefaults(defineProps<Props>(), {
   contentClass: "vben-tabs-content",
   contextMenus: () => [],
-  tabs: () => []
+  tabs: () => [],
 });
 
 const emit = defineEmits<{
@@ -30,21 +30,21 @@ const active = defineModel<string>("active");
 const typeWithClass = computed(() => {
   const typeClasses: Record<string, { content: string }> = {
     brisk: {
-      content: `h-full after:content-['']  after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1.5px] after:bg-primary after:scale-x-0 after:transition-[transform] after:ease-out after:duration-300 hover:after:scale-x-100 after:origin-left [&.is-active]:after:scale-x-100 [&:not(:first-child)]:border-l last:border-r last:border-r border-border`
+      content: `h-full after:content-['']  after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1.5px] after:bg-primary after:scale-x-0 after:transition-[transform] after:ease-out after:duration-300 hover:after:scale-x-100 after:origin-left [&.is-active]:after:scale-x-100 [&:not(:first-child)]:border-l last:border-r last:border-r border-border`,
     },
     card: {
-      content: "h-[calc(100%-6px)] rounded-md ml-2 border border-border  transition-all"
+      content: "h-[calc(100%-6px)] rounded-md ml-2 border border-border  transition-all",
     },
     plain: {
-      content: "h-full [&:not(:first-child)]:border-l last:border-r border-border"
-    }
+      content: "h-full [&:not(:first-child)]:border-l last:border-r border-border",
+    },
   };
 
   return typeClasses[props.styleType || "plain"] || { content: "" };
 });
 
 const tabsView = computed(() => {
-  return props.tabs.map((tab) => {
+  return props.tabs.map(tab => {
     const { fullPath, meta, name, path } = tab || {};
     const { affixTab, icon, newTabTitle, tabClosable, title } = meta || {};
     return {
@@ -56,7 +56,7 @@ const tabsView = computed(() => {
       meta,
       name,
       path,
-      title: (newTabTitle || title || name) as string
+      title: (newTabTitle || title || name) as string,
     } as TabConfig;
   });
 });
@@ -80,9 +80,9 @@ function onMouseDown(e: MouseEvent, tab: TabConfig) {
           {
             'is-active dark:bg-accent bg-primary/15': tab.key === active,
             draggable: !tab.affixTab,
-            'affix-tab': tab.affixTab
+            'affix-tab': tab.affixTab,
           },
-          typeWithClass.content
+          typeWithClass.content,
         ]"
         :data-index="i"
         class="tab-item [&:not(.is-active)]:hover:bg-accent translate-all group relative flex cursor-pointer select-none"

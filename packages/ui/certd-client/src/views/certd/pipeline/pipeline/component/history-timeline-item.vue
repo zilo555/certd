@@ -26,22 +26,22 @@ export default defineComponent({
       type: Object,
       default() {
         return {};
-      }
+      },
     },
     historyId: {
-      type: Number
+      type: Number,
     },
     type: {
       type: String,
-      default: "icon"
+      default: "icon",
     },
     isCurrent: {
-      type: Boolean
+      type: Boolean,
     },
     editMode: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   emits: ["view", "cancel"],
   setup(props: any, ctx: any) {
@@ -64,18 +64,18 @@ export default defineComponent({
         onOk: async () => {
           await api.Cancel(props.historyId);
           notification.success({
-            message: "任务取消成功"
+            message: "任务取消成功",
           });
-        }
+        },
       });
     }
     return {
       status,
       cancel,
       view,
-      cancelTask
+      cancelTask,
     };
-  }
+  },
 });
 </script>
 <style lang="less">

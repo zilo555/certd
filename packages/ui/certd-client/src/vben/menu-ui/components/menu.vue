@@ -28,7 +28,7 @@ const props = withDefaults(defineProps<Props>(), {
   collapse: false,
   mode: "vertical",
   rounded: true,
-  theme: "dark"
+  theme: "dark",
 });
 
 const emit = defineEmits<{
@@ -66,7 +66,7 @@ const getSlot = computed(() => {
 
 watch(
   () => props.collapse,
-  (value) => {
+  value => {
     if (value) openedMenus.value = [];
   }
 );
@@ -109,7 +109,7 @@ createMenuContext(
     removeSubMenu,
     subMenus,
     theme: toRef(props, "theme"),
-    items
+    items,
   })
 );
 
@@ -117,7 +117,7 @@ createSubMenuContext({
   addSubMenu,
   level: 1,
   mouseInChild,
-  removeSubMenu
+  removeSubMenu,
 });
 
 function calcMenuItemWidth(menuItem: HTMLElement) {
@@ -132,7 +132,7 @@ function calcSliceIndex() {
     return -1;
   }
   const items = [...(menu.value?.childNodes ?? [])].filter(
-    (item) =>
+    item =>
       // remove comment type node #12634
       item.nodeName !== "#comment" && (item.nodeName !== "#text" || item.nodeValue)
   ) as HTMLElement[];
@@ -198,7 +198,7 @@ function initMenu() {
 
   // 展开该菜单项的路径上所有子菜单
   // expand all subMenus of the menu item
-  parentPaths.forEach((path) => {
+  parentPaths.forEach(path => {
     const subMenu = subMenus.value[path];
     subMenu && openMenu(path, subMenu.parentPaths);
   });

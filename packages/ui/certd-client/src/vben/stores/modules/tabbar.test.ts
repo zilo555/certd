@@ -8,7 +8,7 @@ import { useTabbarStore } from "./tabbar";
 describe("useAccessStore", () => {
   const router = createRouter({
     history: createWebHistory(),
-    routes: []
+    routes: [],
   });
   router.push = vi.fn();
   router.replace = vi.fn();
@@ -23,7 +23,7 @@ describe("useAccessStore", () => {
       fullPath: "/home",
       meta: {},
       name: "Home",
-      path: "/home"
+      path: "/home",
     };
     store.addTab(tab);
     expect(store.tabs.length).toBe(1);
@@ -36,7 +36,7 @@ describe("useAccessStore", () => {
       fullPath: "/new",
       meta: {},
       name: "New",
-      path: "/new"
+      path: "/new",
     };
     store.addTab(newTab);
     expect(store.tabs).toContainEqual(newTab);
@@ -49,7 +49,7 @@ describe("useAccessStore", () => {
       meta: {},
       name: "Existing",
       path: "/existing",
-      query: {}
+      query: {},
     };
     store.tabs.push(initialTab);
     const updatedTab = { ...initialTab, query: { id: "1" } };
@@ -74,7 +74,7 @@ describe("useAccessStore", () => {
       fullPath: "/closable",
       meta: {},
       name: "Closable",
-      path: "/closable"
+      path: "/closable",
     };
     store.tabs.push(tab);
     store._close(tab);
@@ -87,7 +87,7 @@ describe("useAccessStore", () => {
       fullPath: "/affix",
       meta: { affixTab: true },
       name: "Affix",
-      path: "/affix"
+      path: "/affix",
     };
     store.tabs.push(affixTab);
     store._close(affixTab);
@@ -107,13 +107,13 @@ describe("useAccessStore", () => {
       fullPath: "/normal",
       meta: {},
       name: "Normal",
-      path: "/normal"
+      path: "/normal",
     };
     const affixTab: any = {
       fullPath: "/affix",
       meta: { affixTab: true },
       name: "Affix",
-      path: "/affix"
+      path: "/affix",
     };
     store.tabs.push(normalTab);
     store.affixTabs.push(affixTab);
@@ -130,7 +130,7 @@ describe("useAccessStore", () => {
     expect(router.replace).toHaveBeenCalledWith({
       params: {},
       path: "/dashboard",
-      query: {}
+      query: {},
     });
   });
 
@@ -140,19 +140,19 @@ describe("useAccessStore", () => {
       fullPath: "/home",
       meta: {},
       name: "Home",
-      path: "/home"
+      path: "/home",
     } as any);
     store.addTab({
       fullPath: "/about",
       meta: {},
       name: "About",
-      path: "/about"
+      path: "/about",
     } as any);
     store.addTab({
       fullPath: "/contact",
       meta: {},
       name: "Contact",
-      path: "/contact"
+      path: "/contact",
     } as any);
 
     await store._bulkCloseByPaths(["/home", "/contact"]);
@@ -167,19 +167,19 @@ describe("useAccessStore", () => {
       fullPath: "/home",
       meta: {},
       name: "Home",
-      path: "/home"
+      path: "/home",
     } as any);
     store.addTab({
       fullPath: "/about",
       meta: {},
       name: "About",
-      path: "/about"
+      path: "/about",
     } as any);
     const targetTab: any = {
       fullPath: "/contact",
       meta: {},
       name: "Contact",
-      path: "/contact"
+      path: "/contact",
     };
     store.addTab(targetTab);
 
@@ -195,20 +195,20 @@ describe("useAccessStore", () => {
       fullPath: "/home",
       meta: {},
       name: "Home",
-      path: "/home"
+      path: "/home",
     } as any);
     const targetTab: any = {
       fullPath: "/about",
       meta: {},
       name: "About",
-      path: "/about"
+      path: "/about",
     };
     store.addTab(targetTab);
     store.addTab({
       fullPath: "/contact",
       meta: {},
       name: "Contact",
-      path: "/contact"
+      path: "/contact",
     } as any);
 
     await store.closeOtherTabs(targetTab);
@@ -223,20 +223,20 @@ describe("useAccessStore", () => {
       fullPath: "/home",
       meta: {},
       name: "Home",
-      path: "/home"
+      path: "/home",
     };
     store.addTab(targetTab);
     store.addTab({
       fullPath: "/about",
       meta: {},
       name: "About",
-      path: "/about"
+      path: "/about",
     } as any);
     store.addTab({
       fullPath: "/contact",
       meta: {},
       name: "Contact",
-      path: "/contact"
+      path: "/contact",
     } as any);
 
     await store.closeRightTabs(targetTab);
@@ -252,25 +252,25 @@ describe("useAccessStore", () => {
       fullPath: "/home",
       meta: {},
       name: "Home",
-      path: "/home"
+      path: "/home",
     } as any);
     store.addTab({
       fullPath: keyToClose,
       meta: {},
       name: "About",
-      path: "/about"
+      path: "/about",
     } as any);
     store.addTab({
       fullPath: "/contact",
       meta: {},
       name: "Contact",
-      path: "/contact"
+      path: "/contact",
     } as any);
 
     await store.closeTabByKey(keyToClose, router);
 
     expect(store.tabs).toHaveLength(2);
-    expect(store.tabs.find((tab) => tab.fullPath === keyToClose)).toBeUndefined();
+    expect(store.tabs.find(tab => tab.fullPath === keyToClose)).toBeUndefined();
   });
 
   it("refreshes the current tab", async () => {
@@ -279,7 +279,7 @@ describe("useAccessStore", () => {
       fullPath: "/dashboard",
       meta: { name: "Dashboard" },
       name: "Dashboard",
-      path: "/dashboard"
+      path: "/dashboard",
     };
     router.currentRoute.value = currentTab;
 

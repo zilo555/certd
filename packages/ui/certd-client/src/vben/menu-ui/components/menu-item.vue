@@ -14,7 +14,7 @@ interface Props extends MenuItemProps {}
 defineOptions({ name: "MenuItem" });
 
 const props = withDefaults(defineProps<Props>(), {
-  disabled: false
+  disabled: false,
 });
 
 const emit = defineEmits<{ click: [MenuItemRegistered] }>();
@@ -38,7 +38,7 @@ const showTooltip = computed(() => rootMenu.props.mode === "vertical" && isTopLe
 const item: MenuItemRegistered = reactive({
   active,
   parentPaths: parentPaths.value,
-  path: props.path || ""
+  path: props.path || "",
 });
 
 /**
@@ -54,7 +54,7 @@ function handleClick() {
   }
   rootMenu?.handleMenuItemClick?.({
     parentPaths: parentPaths.value,
-    path: props.path
+    path: props.path,
   });
   emit("click", item);
 }

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { cn } from '/@/vben/shared/utils';
+import { cn } from "/@/vben/shared/utils";
 
 const props = defineProps<{
   class?: any;
@@ -7,12 +7,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <span
-    :class="cn('text-foreground font-normal', props.class)"
-    aria-current="page"
-    aria-disabled="true"
-    role="link"
-  >
+  <span :class="cn('text-foreground font-normal', props.class)" aria-current="page" aria-disabled="true" role="link">
     <slot></slot>
   </span>
 </template>

@@ -26,7 +26,9 @@
 import { defineComponent, onMounted, ref } from "vue";
 import * as api from "./api";
 import { Modal, notification } from "ant-design-vue";
-
+defineOptions({
+  name: "EmailEditor",
+});
 const props = defineProps<{}>();
 const VNodes = defineComponent({
   props: {

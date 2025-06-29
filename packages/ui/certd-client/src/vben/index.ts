@@ -9,18 +9,21 @@ import "./styles";
 import "./styles/antd/index.css";
 
 import { useTitle } from "@vueuse/core";
-import { setupI18n } from "../locales";
+import { setupI18n, useI18n } from "../locales";
 import { useSettingStore } from "/@/store/settings";
 
 export async function setupVben(app: any, { loadMessages, router }: any) {
   await setupI18n(app, { loadMessages });
   const store = await initStores(app, { namespace: "fs" });
   const settingStore = useSettingStore();
-
+  const { t } = useI18n();
   watchEffect(() => {
     if (preferences.app.dynamicTitle) {
-      const routeTitle = router.currentRoute.value.meta?.title;
+      let routeTitle = router.currentRoute.value.meta?.title;
       const appName = settingStore.inited ? preferences.app.name : "";
+      if (routeTitle && routeTitle.indexOf(".") >= 0) {
+        routeTitle = t(routeTitle);
+      }
       const pageTitle = (routeTitle ? `${routeTitle} - ` : "") + preferences.app.name;
       useTitle(pageTitle);
     }

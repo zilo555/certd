@@ -36,18 +36,18 @@ export function useVbenDrawer<TParentDrawerProps extends DrawerProps = DrawerPro
             isDrawerReady.value = false;
             await nextTick();
             isDrawerReady.value = true;
-          }
+          },
         });
         checkProps(extendedApi as ExtendedDrawerApi, {
           ...props,
           ...attrs,
-          ...slots
+          ...slots,
         });
         return () => h(isDrawerReady.value ? connectedComponent : "div", { ...props, ...attrs }, slots);
       },
       {
         name: "VbenParentDrawer",
-        inheritAttrs: false
+        inheritAttrs: false,
       }
     );
     return [Drawer, extendedApi as ExtendedDrawerApi] as const;
@@ -58,7 +58,7 @@ export function useVbenDrawer<TParentDrawerProps extends DrawerProps = DrawerPro
   const mergedOptions = {
     ...DEFAULT_DRAWER_PROPS,
     ...injectData.options,
-    ...options
+    ...options,
   } as DrawerApiOptions;
 
   mergedOptions.onOpenChange = (isOpen: boolean) => {
@@ -77,7 +77,7 @@ export function useVbenDrawer<TParentDrawerProps extends DrawerProps = DrawerPro
 
   const extendedApi: ExtendedDrawerApi = api as never;
 
-  extendedApi.useStore = (selector) => {
+  extendedApi.useStore = selector => {
     return useStore(api.store, selector);
   };
 
@@ -87,7 +87,7 @@ export function useVbenDrawer<TParentDrawerProps extends DrawerProps = DrawerPro
     },
     {
       name: "VbenDrawer",
-      inheritAttrs: false
+      inheritAttrs: false,
     }
   );
   injectData.extendApi?.(extendedApi);

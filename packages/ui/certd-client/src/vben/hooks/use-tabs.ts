@@ -90,7 +90,7 @@ export function useTabs() {
       disabledCloseLeft,
       disabledCloseOther,
       disabledCloseRight,
-      disabledRefresh: !isCurrentTab
+      disabledRefresh: !isCurrentTab,
     };
   }
 
@@ -108,6 +108,6 @@ export function useTabs() {
     resetTabTitle,
     setTabTitle,
     toggleTabPin,
-    unpinTab
+    unpinTab,
   };
 }

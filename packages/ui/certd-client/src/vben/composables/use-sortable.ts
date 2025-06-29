@@ -11,13 +11,13 @@ function useSortable<T extends HTMLElement>(sortableContainer: T, options: Sorta
       animation: 300,
       delay: 400,
       delayOnTouchOnly: true,
-      ...options
+      ...options,
     });
     return sortable as Sortable;
   };
 
   return {
-    initializeSortable
+    initializeSortable,
   };
 }
 

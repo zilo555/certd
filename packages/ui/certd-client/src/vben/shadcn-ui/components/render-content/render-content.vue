@@ -1,17 +1,15 @@
 <script lang="ts">
-import type { Component, PropType } from 'vue';
+import type { Component, PropType } from "vue";
 
-import { defineComponent, h } from 'vue';
+import { defineComponent, h } from "vue";
 
-import { isFunction, isObject } from '/@/vben/shared/utils';
+import { isFunction, isObject } from "/@/vben/shared/utils";
 
 export default defineComponent({
-  name: 'RenderContent',
+  name: "RenderContent",
   props: {
     content: {
-      default: undefined as
-        | PropType<(() => any) | Component | string>
-        | undefined,
+      default: undefined as PropType<(() => any) | Component | string> | undefined,
       type: [Object, String, Function],
     },
   },
@@ -20,9 +18,7 @@ export default defineComponent({
       if (!props.content) {
         return null;
       }
-      const isComponent =
-        (isObject(props.content) || isFunction(props.content)) &&
-        props.content !== null;
+      const isComponent = (isObject(props.content) || isFunction(props.content)) && props.content !== null;
       if (!isComponent) {
         return props.content;
       }

@@ -27,7 +27,7 @@ function getDefaultState(): VbenFormProps {
     submitButtonOptions: {},
     submitOnChange: false,
     submitOnEnter: false,
-    wrapperClass: "grid-cols-1"
+    wrapperClass: "grid-cols-1",
   };
 }
 
@@ -54,14 +54,14 @@ export class FormApi {
     this.store = new Store<VbenFormProps>(
       {
         ...defaultState,
-        ...storeState
+        ...storeState,
       },
       {
         onUpdate: () => {
           this.prevState = this.state;
           this.state = this.store.state;
           this.updateState();
-        }
+        },
       }
     );
 
@@ -102,7 +102,7 @@ export class FormApi {
           return async (needMerge: boolean = true) => {
             try {
               const results = await Promise.all(
-                chain.map(async (api) => {
+                chain.map(async api => {
                   const validateResult = await api.validate();
                   if (!validateResult.valid) {
                     return;
@@ -122,7 +122,7 @@ export class FormApi {
           };
         }
         return target[prop];
-      }
+      },
     });
 
     return proxy;
@@ -133,7 +133,7 @@ export class FormApi {
       Object.assign(this.form, formActions);
       this.stateHandler.setConditionTrue();
       this.setLatestSubmissionValues({
-        ...toRaw(this.handleRangeTimeValue(this.form.values))
+        ...toRaw(this.handleRangeTimeValue(this.form.values)),
       });
       this.isMounted = true;
     }
@@ -147,10 +147,10 @@ export class FormApi {
     const fieldSet = new Set(fields);
     const schema = this.state?.schema ?? [];
 
-    const filterSchema = schema.filter((item) => !fieldSet.has(item.fieldName));
+    const filterSchema = schema.filter(item => !fieldSet.has(item.fieldName));
 
     this.setState({
-      schema: filterSchema
+      schema: filterSchema,
     });
   }
 
@@ -165,7 +165,7 @@ export class FormApi {
   async resetValidate() {
     const form = await this.getForm();
     const fields = Object.keys(form.errors.value);
-    fields.forEach((field) => {
+    fields.forEach(field => {
       form.setFieldError(field, undefined);
     });
   }
@@ -181,11 +181,11 @@ export class FormApi {
 
   setState(stateOrFn: ((prev: VbenFormProps) => Partial<VbenFormProps>) | Partial<VbenFormProps>) {
     if (isFunction(stateOrFn)) {
-      this.store.setState((prev) => {
+      this.store.setState(prev => {
         return mergeWithArrayOverride(stateOrFn(prev), prev);
       });
     } else {
-      this.store.setState((prev) => mergeWithArrayOverride(stateOrFn, prev));
+      this.store.setState(prev => mergeWithArrayOverride(stateOrFn, prev));
     }
   }
 
@@ -239,7 +239,7 @@ export class FormApi {
 
   updateSchema(schema: Partial<FormSchema>[]) {
     const updated: Partial<FormSchema>[] = [...schema];
-    const hasField = updated.every((item) => Reflect.has(item, "fieldName") && item.fieldName);
+    const hasField = updated.every(item => Reflect.has(item, "fieldName") && item.fieldName);
 
     if (!hasField) {
       console.error("All items in the schema array must have a valid `fieldName` property to be updated");
@@ -249,7 +249,7 @@ export class FormApi {
 
     const updatedMap: Record<string, any> = {};
 
-    updated.forEach((item) => {
+    updated.forEach(item => {
       if (item.fieldName) {
         updatedMap[item.fieldName] = item;
       }
@@ -351,8 +351,8 @@ export class FormApi {
     const prevSchema = this.prevState?.schema ?? [];
     // 进行了删除schema操作
     if (currentSchema.length < prevSchema.length) {
-      const currentFields = new Set(currentSchema.map((item) => item.fieldName));
-      const deletedSchema = prevSchema.filter((item) => !currentFields.has(item.fieldName));
+      const currentFields = new Set(currentSchema.map(item => item.fieldName));
+      const deletedSchema = prevSchema.filter(item => !currentFields.has(item.fieldName));
       for (const schema of deletedSchema) {
         this.form?.setFieldValue?.(schema.fieldName, undefined);
       }

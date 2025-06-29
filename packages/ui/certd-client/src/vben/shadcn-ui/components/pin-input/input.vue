@@ -1,23 +1,16 @@
 <script setup lang="ts">
-import type { PinInputProps } from './types';
+import type { PinInputProps } from "./types";
 
-import { computed, onBeforeUnmount, ref, useId, watch } from 'vue';
+import { computed, onBeforeUnmount, ref, useId, watch } from "vue";
 
-import { PinInput, PinInputGroup, PinInputInput } from '../../ui';
-import { VbenButton } from '../button';
+import { PinInput, PinInputGroup, PinInputInput } from "../../ui";
+import { VbenButton } from "../button";
 
 defineOptions({
   inheritAttrs: false,
 });
 
-const {
-  codeLength = 6,
-  createText = async () => {},
-  disabled = false,
-  handleSendCode = async () => {},
-  loading = false,
-  maxTime = 60,
-} = defineProps<PinInputProps>();
+const { codeLength = 6, createText = async () => {}, disabled = false, handleSendCode = async () => {}, loading = false, maxTime = 60 } = defineProps<PinInputProps>();
 
 const emit = defineEmits<{
   complete: [];
@@ -43,17 +36,17 @@ const btnLoading = computed(() => {
 watch(
   () => modelValue.value,
   () => {
-    inputValue.value = modelValue.value?.split('') ?? [];
-  },
+    inputValue.value = modelValue.value?.split("") ?? [];
+  }
 );
 
-watch(inputValue, (val) => {
-  modelValue.value = val.join('');
+watch(inputValue, val => {
+  modelValue.value = val.join("");
 });
 
 function handleComplete(e: string[]) {
-  modelValue.value = e.join('');
-  emit('complete');
+  modelValue.value = e.join("");
+  emit("complete");
 }
 
 async function handleSend(e: Event) {
@@ -63,9 +56,9 @@ async function handleSend(e: Event) {
     countdown.value = maxTime;
     startCountdown();
   } catch (error) {
-    console.error('Failed to send code:', error);
+    console.error("Failed to send code:", error);
     // Consider emitting an error event or showing a notification
-    emit('sendError', error);
+    emit("sendError", error);
   }
 }
 
@@ -87,32 +80,12 @@ const id = useId();
 </script>
 
 <template>
-  <PinInput
-    :id="id"
-    v-model="inputValue"
-    :disabled="disabled"
-    class="flex w-full justify-between"
-    otp
-    placeholder="○"
-    type="number"
-    @complete="handleComplete"
-  >
+  <PinInput :id="id" v-model="inputValue" :disabled="disabled" class="flex w-full justify-between" otp placeholder="○" type="number" @complete="handleComplete">
     <div class="relative flex w-full">
       <PinInputGroup class="mr-2">
-        <PinInputInput
-          v-for="(item, index) in codeLength"
-          :key="item"
-          :index="index"
-        />
+        <PinInputInput v-for="(item, index) in codeLength" :key="item" :index="index" />
       </PinInputGroup>
-      <VbenButton
-        :disabled="disabled"
-        :loading="btnLoading"
-        class="flex-grow"
-        size="lg"
-        variant="outline"
-        @click="handleSend"
-      >
+      <VbenButton :disabled="disabled" :loading="btnLoading" class="flex-grow" size="lg" variant="outline" @click="handleSend">
         {{ btnText }}
       </VbenButton>
     </div>

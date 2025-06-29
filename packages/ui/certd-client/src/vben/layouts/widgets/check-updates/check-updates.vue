@@ -16,7 +16,7 @@ defineOptions({ name: "CheckUpdates" });
 
 const props = withDefaults(defineProps<Props>(), {
   checkUpdatesInterval: 1,
-  checkUpdateUrl: import.meta.env.BASE_URL || "/"
+  checkUpdateUrl: import.meta.env.BASE_URL || "/",
 });
 
 let isCheckingUpdates = false;
@@ -32,7 +32,7 @@ const [UpdateNoticeModal, modalApi] = useVbenModal({
     lastVersionTag.value = currentVersionTag.value;
     window.location.reload();
     // handleSubmitLogout();
-  }
+  },
 });
 
 async function getVersionTag() {
@@ -42,7 +42,7 @@ async function getVersionTag() {
     }
     const response = await fetch(props.checkUpdateUrl, {
       cache: "no-cache",
-      method: "HEAD"
+      method: "HEAD",
     });
 
     return response.headers.get("etag") || response.headers.get("last-modified");

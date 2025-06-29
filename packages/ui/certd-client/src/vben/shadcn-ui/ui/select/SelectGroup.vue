@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { SelectGroupProps } from 'radix-vue';
+import type { SelectGroupProps } from "radix-vue";
 
-import { computed } from 'vue';
+import { computed } from "vue";
 
-import { cn } from '/@/vben/shared/utils';
+import { cn } from "/@/vben/shared/utils";
 
-import { SelectGroup } from 'radix-vue';
+import { SelectGroup } from "radix-vue";
 
 const props = defineProps<SelectGroupProps & { class?: any }>();
 

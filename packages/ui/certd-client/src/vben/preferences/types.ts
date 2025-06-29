@@ -13,7 +13,7 @@ import type {
   PageTransitionType,
   PreferencesButtonPositionType,
   TabsStyleType,
-  ThemeModeType
+  ThemeModeType,
 } from "/@/vben/typings";
 
 type SupportedLanguagesType = "en-US" | "zh-CN";
@@ -288,5 +288,5 @@ export type {
   TabbarPreferences,
   ThemePreferences,
   TransitionPreferences,
-  WidgetPreferences
+  WidgetPreferences,
 };

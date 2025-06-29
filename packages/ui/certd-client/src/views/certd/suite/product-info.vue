@@ -105,7 +105,7 @@ async function doOrder() {
     display: flex;
     flex-wrap: wrap;
     .duration-item {
-      width: 50px;
+      width: 45px;
       border: 1px solid #cdcdcd;
       text-align: center;
       padding: 2px;

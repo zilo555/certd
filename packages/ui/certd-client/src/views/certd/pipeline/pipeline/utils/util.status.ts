@@ -17,19 +17,19 @@ const StatusEnum: StatusEnumType = {
     label: "成功",
     color: "green",
     spin: false,
-    icon: "ant-design:check-circle-outlined"
+    icon: "ant-design:check-circle-outlined",
   },
   error: {
     value: "error",
     label: "错误",
     color: "red",
-    icon: "ant-design:info-circle-outlined"
+    icon: "ant-design:info-circle-outlined",
   },
   skip: {
     value: "skip",
     label: "跳过",
     color: "blue",
-    icon: "fluent:arrow-step-over-20-filled"
+    icon: "fluent:arrow-step-over-20-filled",
   },
   start: {
     value: "start",
@@ -37,33 +37,33 @@ const StatusEnum: StatusEnumType = {
     color: "blue",
     spin: true,
     iconSpin: true,
-    icon: "ant-design:sync-outlined"
+    icon: "ant-design:sync-outlined",
   },
   canceled: {
     value: "canceled",
     label: "已取消",
     color: "yellow",
     iconColor: "#d4b106",
-    icon: "ant-design:minus-circle-twotone"
+    icon: "ant-design:minus-circle-twotone",
   },
   none: {
     value: "none",
     label: "未运行",
     color: "blue",
-    icon: "ant-design:minus-circle-twotone"
+    icon: "ant-design:minus-circle-twotone",
   },
   disabled: {
     value: "disabled",
     label: "禁用",
     color: "gray",
-    icon: "ant-design:stop-outlined"
+    icon: "ant-design:stop-outlined",
   },
   no_deploy_count: {
     value: "no_deploy_count",
     label: "次数不足",
     color: "gray",
-    icon: "ant-design:stop-outlined"
-  }
+    icon: "ant-design:stop-outlined",
+  },
 };
 export const statusUtil = {
   getColor(status = "none") {
@@ -79,5 +79,5 @@ export const statusUtil = {
       options.push(StatusEnum[key]);
     }
     return options;
-  }
+  },
 };

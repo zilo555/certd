@@ -13,11 +13,11 @@ interface Props extends MenuProps {
 }
 
 defineOptions({
-  name: "MenuView"
+  name: "MenuView",
 });
 
 const props = withDefaults(defineProps<Props>(), {
-  collapse: false
+  collapse: false,
   // theme: 'dark',
 });
 

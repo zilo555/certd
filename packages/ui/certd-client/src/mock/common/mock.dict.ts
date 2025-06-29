@@ -7,25 +7,25 @@ import { cloneDeep } from "lodash-es";
 const openStatus = [
   { value: "1", label: "打开", color: "success", icon: "ion:radio-button-on" },
   { value: "2", label: "停止", color: "cyan" },
-  { value: "0", label: "关闭", color: "red", icon: "ion:radio-button-off" }
+  { value: "0", label: "关闭", color: "red", icon: "ion:radio-button-off" },
 ];
 
 const moreOpenStatus = [
   { value: "1", label: "打开(open)", color: "success" },
   { value: "2", label: "停止(stop)", color: "cyan" },
-  { value: "0", label: "关闭(close)", color: "red" }
+  { value: "0", label: "关闭(close)", color: "red" },
 ];
 
 const textStatus = [
   { id: "1", text: "打开", color: "success" },
   { id: "2", text: "停止", color: "cyan" },
-  { id: "0", text: "关闭", color: "red" }
+  { id: "0", text: "关闭", color: "red" },
 ];
 
 let manyStatus = [
   { value: "1", label: "打开", color: "success", icon: "ion:radio-button-on" },
   { value: "2", label: "停止", color: "cyan" },
-  { value: "0", label: "关闭", color: "red", icon: "ion:radio-button-off" }
+  { value: "0", label: "关闭", color: "red", icon: "ion:radio-button-off" },
 ];
 let tempManyStatus: any[] = [];
 for (let i = 0; i < 100; i++) {
@@ -54,9 +54,9 @@ export default [
       return {
         code: 0,
         msg: "success",
-        data: openStatus
+        data: openStatus,
       };
-    }
+    },
   },
   {
     path: "/mock/dicts/_OpenStatusEnum2",
@@ -65,9 +65,9 @@ export default [
       return {
         code: 0,
         msg: "success",
-        data: textStatus
+        data: textStatus,
       };
-    }
+    },
   },
   {
     path: "/mock/dicts/ManyOpenStatusEnum",
@@ -76,9 +76,9 @@ export default [
       return {
         code: 0,
         msg: "success",
-        data: manyStatus
+        data: manyStatus,
       };
-    }
+    },
   },
   {
     path: "/mock/dicts/moreOpenStatusEnum",
@@ -87,9 +87,9 @@ export default [
       return {
         code: 0,
         msg: "success",
-        data: moreOpenStatus
+        data: moreOpenStatus,
       };
-    }
+    },
   },
   {
     path: "/mock/dicts/cascaderData",
@@ -98,9 +98,9 @@ export default [
       return {
         code: 0,
         msg: "success",
-        data: cascaderData
+        data: cascaderData,
       };
-    }
+    },
   },
   {
     path: "/mock/dicts/pca",
@@ -110,9 +110,9 @@ export default [
       return {
         code: 0,
         msg: "success",
-        data: data
+        data: data,
       };
-    }
+    },
   },
   {
     path: "/mock/dicts/littlePca",
@@ -121,9 +121,9 @@ export default [
       return {
         code: 0,
         msg: "success",
-        data: pcaDataLittle
+        data: pcaDataLittle,
       };
-    }
+    },
   },
   {
     path: "/mock/tree/GetTreeChildrenByParentId",
@@ -133,9 +133,9 @@ export default [
       return {
         code: 0,
         msg: "success",
-        data: list
+        data: list,
       };
-    }
+    },
   },
   {
     path: "/mock/tree/GetNodesByValues",
@@ -145,8 +145,8 @@ export default [
       return {
         code: 0,
         msg: "success",
-        data: list
+        data: list,
       };
-    }
-  }
+    },
+  },
 ];

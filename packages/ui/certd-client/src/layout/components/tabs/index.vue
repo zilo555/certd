@@ -2,14 +2,7 @@
   <div class="fs-multiple-page-control-group">
     <div class="fs-multiple-page-control-content">
       <div class="fs-multiple-page-control-content-inner">
-        <a-tabs
-          class="fs-multiple-page-control fs-multiple-page-sort"
-          :active-key="page.getCurrent"
-          type="editable-card"
-          hide-add
-          @tab-click="handleClick"
-          @edit="handleTabEdit"
-        >
+        <a-tabs class="fs-multiple-page-control fs-multiple-page-sort" :active-key="page.getCurrent" type="editable-card" hide-add @tab-click="handleClick" @edit="handleTabEdit">
           <a-tab-pane v-for="item in page.getOpened" :key="item.fullPath" :name="item.fullPath" :closable="isTabClosable(item)">
             <template #tab>
               <span class="flex-o">
@@ -75,7 +68,7 @@ export default {
       closeRight: pageStore.closeRight,
       closeOther: pageStore.closeOther,
       closeAll: pageStore.closeAll,
-      openedSort: pageStore.openedSort
+      openedSort: pageStore.openedSort,
     };
     const computeOpened = computed(() => {
       return pageStore.getOpened;
@@ -84,7 +77,7 @@ export default {
     return {
       page: pageStore,
       ...actions,
-      computeOpened
+      computeOpened,
     };
   },
   data() {
@@ -97,9 +90,9 @@ export default {
         { icon: "arrow-left", title: "关闭左侧", value: "left" },
         { icon: "arrow-right", title: "关闭右侧", value: "right" },
         { icon: "times", title: "关闭其它", value: "other" },
-        { icon: "times-circle", title: "关闭全部", value: "all" }
+        { icon: "times-circle", title: "关闭全部", value: "all" },
       ],
-      tagName: "/index"
+      tagName: "/index",
     };
   },
   mounted() {
@@ -195,8 +188,8 @@ export default {
       if (action === "remove") {
         this.close({ tagName });
       }
-    }
-  } as any
+    },
+  } as any,
 };
 </script>
 <style lang="less">

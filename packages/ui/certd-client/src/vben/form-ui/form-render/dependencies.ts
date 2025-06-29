@@ -30,7 +30,7 @@ export default function useDependencies(getDependencies: () => FormItemDependenc
   const triggerFieldValues = computed(() => {
     // 该字段可能会被多个字段触发
     const triggerFields = getDependencies()?.triggerFields ?? [];
-    return triggerFields.map((dep) => {
+    return triggerFields.map(dep => {
       return values.value[dep];
     });
   });
@@ -105,6 +105,6 @@ export default function useDependencies(getDependencies: () => FormItemDependenc
     isDisabled,
     isIf,
     isRequired,
-    isShow
+    isShow,
   };
 }

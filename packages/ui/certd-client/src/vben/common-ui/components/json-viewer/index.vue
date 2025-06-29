@@ -1,31 +1,26 @@
 <script lang="ts" setup>
-import type { SetupContext } from 'vue';
+import type { SetupContext } from "vue";
 
-import type { Recordable } from '/@/vben/types';
+import type { Recordable } from "/@/vben/types";
 
-import type {
-  JsonViewerAction,
-  JsonViewerProps,
-  JsonViewerToggle,
-  JsonViewerValue,
-} from './types';
+import type { JsonViewerAction, JsonViewerProps, JsonViewerToggle, JsonViewerValue } from "./types";
 
-import { computed, useAttrs } from 'vue';
+import { computed, useAttrs } from "vue";
 // @ts-ignore
-import VueJsonViewer from 'vue-json-viewer';
+import VueJsonViewer from "vue-json-viewer";
 
-import { $t } from '/@/locales';
+import { $t } from "/@/locales";
 
-import { isBoolean } from '/@/vben/shared/utils';
+import { isBoolean } from "/@/vben/shared/utils";
 
-defineOptions({ name: 'JsonViewer' });
+defineOptions({ name: "JsonViewer" });
 
 const props = withDefaults(defineProps<JsonViewerProps>(), {
   expandDepth: 1,
   copyable: false,
   sort: false,
   boxed: false,
-  theme: 'default-json-theme',
+  theme: "default-json-theme",
   expanded: false,
   previewMode: false,
   showArrayIndex: true,
@@ -40,38 +35,35 @@ const emit = defineEmits<{
   valueClick: [value: JsonViewerValue];
 }>();
 
-const attrs: SetupContext['attrs'] = useAttrs();
+const attrs: SetupContext["attrs"] = useAttrs();
 
 function handleClick(event: MouseEvent) {
-  if (
-    event.target instanceof HTMLElement &&
-    event.target.classList.contains('jv-item')
-  ) {
-    const pathNode = event.target.closest('.jv-push');
-    if (!pathNode || !pathNode.hasAttribute('path')) {
+  if (event.target instanceof HTMLElement && event.target.classList.contains("jv-item")) {
+    const pathNode = event.target.closest(".jv-push");
+    if (!pathNode || !pathNode.hasAttribute("path")) {
       return;
     }
     const param: JsonViewerValue = {
-      path: '',
-      value: '',
+      path: "",
+      value: "",
       depth: 0,
       el: event.target,
     };
 
-    param.path = pathNode.getAttribute('path') || '';
-    param.depth = Number(pathNode.getAttribute('depth')) || 0;
+    param.path = pathNode.getAttribute("path") || "";
+    param.depth = Number(pathNode.getAttribute("depth")) || 0;
 
     param.value = event.target.textContent || undefined;
     param.value = JSON.parse(param.value);
-    emit('valueClick', param);
+    emit("valueClick", param);
   }
-  emit('click', event);
+  emit("click", event);
 }
 
 const bindProps = computed<Recordable<any>>(() => {
   const copyable = {
-    copyText: $t('ui.jsonViewer.copy'),
-    copiedText: $t('ui.jsonViewer.copied'),
+    copyText: $t("ui.jsonViewer.copy"),
+    copiedText: $t("ui.jsonViewer.copied"),
     timeout: 2000,
     ...(isBoolean(props.copyable) ? {} : props.copyable),
   };
@@ -79,8 +71,8 @@ const bindProps = computed<Recordable<any>>(() => {
   return {
     ...props,
     ...attrs,
-    onCopied: (event: JsonViewerAction) => emit('copied', event),
-    onKeyclick: (key: string) => emit('keyClick', key),
+    onCopied: (event: JsonViewerAction) => emit("copied", event),
+    onKeyclick: (key: string) => emit("keyClick", key),
     onClick: (event: MouseEvent) => handleClick(event),
     copyable: props.copyable ? copyable : false,
   };
@@ -94,5 +86,5 @@ const bindProps = computed<Recordable<any>>(() => {
   </VueJsonViewer>
 </template>
 <style lang="scss">
-@use './style.scss';
+@use "./style.scss";
 </style>

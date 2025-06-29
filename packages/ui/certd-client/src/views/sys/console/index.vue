@@ -57,7 +57,7 @@ import { GetStatisticCount } from "./api";
 const count: Ref = ref({});
 
 function transformCountPerDayToChartData(key: string) {
-  count.value[key] = count.value[key].map((item:any) => {
+  count.value[key] = count.value[key].map((item: any) => {
     return {
       name: item.date,
       value: item.count,

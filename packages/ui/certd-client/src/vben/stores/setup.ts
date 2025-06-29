@@ -23,8 +23,8 @@ export async function initStores(app: App, options: InitStoreOptions) {
   pinia.use(
     createPersistedState({
       // key $appName-$store.id
-      key: (storeKey) => `${namespace}-${storeKey}`,
-      storage: localStorage
+      key: storeKey => `${namespace}-${storeKey}`,
+      storage: localStorage,
     })
   );
   app.use(pinia);

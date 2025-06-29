@@ -1,27 +1,22 @@
 <script setup lang="ts">
-import type { TooltipContentProps } from 'radix-vue';
+import type { TooltipContentProps } from "radix-vue";
 
-import type { StyleValue } from 'vue';
+import type { StyleValue } from "vue";
 
-import type { ClassType } from '/@/vben/typings';
+import type { ClassType } from "/@/vben/typings";
 
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '../../ui';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../ui";
 
 interface Props {
   contentClass?: ClassType;
   contentStyle?: StyleValue;
   delayDuration?: number;
-  side?: TooltipContentProps['side'];
+  side?: TooltipContentProps["side"];
 }
 
 withDefaults(defineProps<Props>(), {
   delayDuration: 0,
-  side: 'right',
+  side: "right",
 });
 </script>
 
@@ -31,12 +26,7 @@ withDefaults(defineProps<Props>(), {
       <TooltipTrigger as-child tabindex="-1">
         <slot name="trigger"></slot>
       </TooltipTrigger>
-      <TooltipContent
-        :class="contentClass"
-        :side="side"
-        :style="contentStyle"
-        class="side-content text-popover-foreground bg-accent rounded-md"
-      >
+      <TooltipContent :class="contentClass" :side="side" :style="contentStyle" class="side-content text-popover-foreground bg-accent rounded-md">
         <slot></slot>
       </TooltipContent>
     </Tooltip>

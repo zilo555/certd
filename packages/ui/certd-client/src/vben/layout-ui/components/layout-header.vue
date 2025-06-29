@@ -49,13 +49,13 @@ const style = computed((): CSSProperties => {
   return {
     height: `${height}px`,
     marginTop: show ? 0 : `-${height}px`,
-    right
+    right,
   };
 });
 
 const logoStyle = computed((): CSSProperties => {
   return {
-    minWidth: `${props.isMobile ? 40 : props.sidebarWidth}px`
+    minWidth: `${props.isMobile ? 40 : props.sidebarWidth}px`,
   };
 });
 </script>

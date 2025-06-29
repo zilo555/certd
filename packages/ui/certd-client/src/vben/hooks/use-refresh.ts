@@ -11,6 +11,6 @@ export function useRefresh() {
   }
 
   return {
-    refresh
+    refresh,
   };
 }

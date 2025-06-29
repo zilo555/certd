@@ -72,7 +72,7 @@ function diff<T extends Record<string, any>>(obj1: T, obj2: T): DiffResult<T> {
       const diffResult: any = {};
 
       const keys = new Set([...Object.keys(o1), ...Object.keys(o2)]);
-      keys.forEach((key) => {
+      keys.forEach(key => {
         const valueDiff = findDifferences(o1[key], o2[key]);
         if (valueDiff !== undefined) {
           diffResult[key] = valueDiff;

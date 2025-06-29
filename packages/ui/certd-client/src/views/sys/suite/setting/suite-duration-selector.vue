@@ -8,7 +8,7 @@ import { dict } from "@fast-crud/fast-crud";
 import { request } from "/@/api/service";
 
 defineOptions({
-  name: "SuiteDurationSelector"
+  name: "SuiteDurationSelector",
 });
 
 const props = defineProps<{
@@ -22,13 +22,13 @@ const suiteDictRef = dict({
   async getData() {
     const res = await request({
       url: "/sys/suite/product/list",
-      method: "post"
+      method: "post",
     });
     const options: any = [
       {
         value: "",
-        label: "不赠送"
-      }
+        label: "不赠送",
+      },
     ];
     res.forEach((item: any) => {
       const durationPrices = JSON.parse(item.durationPrices);
@@ -39,13 +39,13 @@ const suiteDictRef = dict({
           value: value,
           target: {
             productId: item.id,
-            duration: dp.duration
-          }
+            duration: dp.duration,
+          },
         });
       }
     });
     return options;
-  }
+  },
 });
 
 const selectedValue = ref();
@@ -53,7 +53,7 @@ watch(
   () => {
     return props.modelValue;
   },
-  (value) => {
+  value => {
     if (value && value.productId && value.duration) {
       selectedValue.value = value.productId + "_" + value.duration;
     } else {
@@ -61,7 +61,7 @@ watch(
     }
   },
   {
-    immediate: true
+    immediate: true,
   }
 );
 
@@ -75,14 +75,14 @@ const onSelectedChange = (value: any) => {
   const arr = value.value.split("_");
   emit("update:modelValue", {
     productId: parseInt(arr[0]),
-    duration: parseInt(arr[1])
+    duration: parseInt(arr[1]),
   });
 };
 
 defineExpose({
   refresh() {
     suiteDictRef.reloadDict();
-  }
+  },
 });
 </script>
 

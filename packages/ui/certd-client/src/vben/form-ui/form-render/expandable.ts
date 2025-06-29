@@ -59,7 +59,7 @@ export function useExpandable(props: FormRenderProps) {
 
     const containerRect = container?.getBoundingClientRect();
 
-    formItems.forEach((el) => {
+    formItems.forEach(el => {
       const itemRect = el.getBoundingClientRect();
 
       // 计算元素在第几行

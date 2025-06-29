@@ -1,11 +1,5 @@
 <script lang="ts" setup>
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '../../ui';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui";
 
 interface Props {
   class?: any;
@@ -29,7 +23,7 @@ const props = defineProps<Props>();
 </template>
 
 <style lang="less" scoped>
-button[role='combobox'][data-placeholder] {
+button[role="combobox"][data-placeholder] {
   color: hsl(var(--muted-foreground));
 }
 </style>

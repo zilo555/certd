@@ -27,7 +27,7 @@ export function useLayoutContentStyle() {
       position: "fixed",
       top: `${top}px`,
       width: `${width}px`,
-      zIndex: 150
+      zIndex: 150,
     };
   });
 
@@ -61,7 +61,7 @@ export function useLayoutHeaderStyle() {
     },
     setLayoutHeaderHeight: (height: number) => {
       headerHeight.value = `${height}px`;
-    }
+    },
   };
 }
 
@@ -74,6 +74,6 @@ export function useLayoutFooterStyle() {
     },
     setLayoutFooterHeight: (height: number) => {
       footerHeight.value = `${height}px`;
-    }
+    },
   };
 }

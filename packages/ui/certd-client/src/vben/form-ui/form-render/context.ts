@@ -16,6 +16,6 @@ export const useFormContext = () => {
   return {
     componentBindEventMap,
     componentMap,
-    isVertical
+    isVertical,
   };
 };

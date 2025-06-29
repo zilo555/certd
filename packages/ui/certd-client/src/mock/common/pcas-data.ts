@@ -17,7 +17,7 @@ export const TreeNodesLazyLoader = {
     if (!(values instanceof Array)) {
       values = [values];
     }
-    return getPcasData().then((data) => {
+    return getPcasData().then(data => {
       const nodes = [];
       for (const value of values) {
         const found = this.getNode(data, value);
@@ -44,7 +44,7 @@ export const TreeNodesLazyLoader = {
     }
   },
   getChildren(parent: any) {
-    return getPcasData().then((data) => {
+    return getPcasData().then(data => {
       const list = this.getChildrenByParent(parent, data);
       if (list == null) {
         return [];
@@ -85,5 +85,5 @@ export const TreeNodesLazyLoader = {
     }
     console.log("found children:", newList);
     return newList;
-  }
+  },
 };

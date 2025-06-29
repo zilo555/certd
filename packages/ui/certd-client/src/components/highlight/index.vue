@@ -18,18 +18,18 @@ export default defineComponent({
     code: {
       type: String,
       required: false,
-      default: ""
+      default: "",
     },
     formatHtml: {
       type: Boolean,
       required: false,
-      default: false
+      default: false,
     },
     lang: {
       type: String,
       required: false,
-      default: ""
-    }
+      default: "",
+    },
   },
   setup(props: any, ctx: any) {
     const highlightHTMLRef: Ref = ref("");
@@ -42,7 +42,7 @@ export default defineComponent({
         doHighlight();
       },
       {
-        immediate: true
+        immediate: true,
       }
     );
 
@@ -52,9 +52,9 @@ export default defineComponent({
     }
     return {
       highlightHTMLRef,
-      doHighlight
+      doHighlight,
     };
-  }
+  },
 });
 </script>
 

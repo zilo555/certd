@@ -1,14 +1,12 @@
-import type { CubicBezierPoints, EasingFunction } from '@vueuse/core';
+import type { CubicBezierPoints, EasingFunction } from "@vueuse/core";
 
-import type { StyleValue } from 'vue';
+import type { StyleValue } from "vue";
 
-import { TransitionPresets as TransitionPresetsData } from '@vueuse/core';
+import { TransitionPresets as TransitionPresetsData } from "@vueuse/core";
 
 export type TransitionPresets = keyof typeof TransitionPresetsData;
 
-export const TransitionPresetsKeys = Object.keys(
-  TransitionPresetsData,
-) as TransitionPresets[];
+export const TransitionPresetsKeys = Object.keys(TransitionPresetsData) as TransitionPresets[];
 
 export interface CountToProps {
   /** 初始值 */

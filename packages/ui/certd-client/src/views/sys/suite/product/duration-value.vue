@@ -6,7 +6,7 @@
 import { durationDict } from "/@/views/certd/suite/api";
 
 defineOptions({
-  name: "DurationValue"
+  name: "DurationValue",
 });
 const props = defineProps<{
   modelValue: number;

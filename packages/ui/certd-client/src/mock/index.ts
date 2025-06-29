@@ -38,7 +38,7 @@ list.forEach((apiFile: any) => {
 
       const req = {
         body: data,
-        params: params
+        params: params,
       };
       const ret = await item.handle(req);
       utils.logger.debug("response:", ret);

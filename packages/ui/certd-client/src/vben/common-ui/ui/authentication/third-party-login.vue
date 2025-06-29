@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { MdiGithub, MdiGoogle, MdiQqchat, MdiWechat } from '/@/vben/icons';
-import { $t } from '/@/locales';
+import { MdiGithub, MdiGoogle, MdiQqchat, MdiWechat } from "/@/vben/icons";
+import { $t } from "/@/locales";
 
-import { VbenIconButton } from '/@/vben/shadcn-ui';
+import { VbenIconButton } from "/@/vben/shadcn-ui";
 
 defineOptions({
-  name: 'ThirdPartyLogin',
+  name: "ThirdPartyLogin",
 });
 </script>
 
@@ -14,7 +14,7 @@ defineOptions({
     <div class="mt-4 flex items-center justify-between">
       <span class="border-input w-[35%] border-b dark:border-gray-600"></span>
       <span class="text-muted-foreground text-center text-xs uppercase">
-        {{ $t('authentication.thirdPartyLogin') }}
+        {{ $t("authentication.thirdPartyLogin") }}
       </span>
       <span class="border-input w-[35%] border-b dark:border-gray-600"></span>
     </div>

@@ -8,12 +8,12 @@ import { cn } from "/@/vben/shared/utils";
 import { PopoverContent, PopoverPortal, useForwardPropsEmits } from "radix-vue";
 
 defineOptions({
-  inheritAttrs: false
+  inheritAttrs: false,
 });
 
 const props = withDefaults(defineProps<PopoverContentProps & { class?: any }>(), {
   align: "center",
-  sideOffset: 4
+  sideOffset: 4,
 });
 const emits = defineEmits<PopoverContentEmits>();
 

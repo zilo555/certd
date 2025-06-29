@@ -18,13 +18,13 @@ const props = withDefaults(defineProps<VbenButtonGroupProps>(), {
   gap: 0,
   multiple: false,
   showIcon: true,
-  size: "middle"
+  size: "middle",
 });
 
 const btnDefaultProps = computed(() => {
   return {
     ...objectOmit(props, ["options", "btnClass", "size", "disabled"]),
-    class: cn(props.btnClass)
+    class: cn(props.btnClass),
   };
 });
 const modelValue = defineModel<Arrayable<ValueType> | undefined>();
@@ -33,7 +33,7 @@ const innerValue = ref<Array<ValueType>>([]);
 const loadingValues = ref<Array<ValueType>>([]);
 watch(
   () => props.multiple,
-  (val) => {
+  val => {
     if (val) {
       modelValue.value = innerValue.value;
     } else {
@@ -45,9 +45,9 @@ watch(
 
 watch(
   () => modelValue.value,
-  (val) => {
+  val => {
     if (Array.isArray(val)) {
-      const arrVal = val.filter((v) => v !== undefined);
+      const arrVal = val.filter(v => v !== undefined);
       if (arrVal.length > 0) {
         innerValue.value = props.multiple ? [...arrVal] : [arrVal[0] as ValueType];
       } else {
@@ -75,7 +75,7 @@ async function onBtnClick(value: ValueType) {
 
   if (props.multiple) {
     if (innerValue.value.includes(value)) {
-      innerValue.value = innerValue.value.filter((item) => item !== value);
+      innerValue.value = innerValue.value.filter(item => item !== value);
     } else {
       innerValue.value.push(value);
     }

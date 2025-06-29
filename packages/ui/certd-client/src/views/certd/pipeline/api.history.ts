@@ -7,7 +7,7 @@ export async function GetList(query: any) {
   const list = await request({
     url: apiPrefix + "/list",
     method: "post",
-    data: query
+    data: query,
   });
   for (const item of list) {
     if (item.pipeline && typeof item.pipeline === "string") {
@@ -21,7 +21,7 @@ export async function GetDetail(query: any): Promise<RunHistory> {
   const detail = await request({
     url: apiPrefix + "/detail",
     method: "post",
-    params: query
+    params: query,
   });
 
   const pipeline = JSON.parse(detail.history?.pipeline || "{}");
@@ -29,6 +29,6 @@ export async function GetDetail(query: any): Promise<RunHistory> {
   return {
     id: detail.history.id,
     pipeline,
-    logs
+    logs,
   } as RunHistory;
 }

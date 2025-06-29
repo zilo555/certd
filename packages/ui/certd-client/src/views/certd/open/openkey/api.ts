@@ -8,7 +8,7 @@ export const openkeyApi = {
     return await request({
       url: apiPrefix + "/page",
       method: "post",
-      data: query
+      data: query,
     });
   },
 
@@ -16,7 +16,7 @@ export const openkeyApi = {
     return await request({
       url: apiPrefix + "/add",
       method: "post",
-      data: obj
+      data: obj,
     });
   },
 
@@ -24,7 +24,7 @@ export const openkeyApi = {
     return await request({
       url: apiPrefix + "/update",
       method: "post",
-      data: obj
+      data: obj,
     });
   },
 
@@ -32,7 +32,7 @@ export const openkeyApi = {
     return await request({
       url: apiPrefix + "/delete",
       method: "post",
-      params: { id }
+      params: { id },
     });
   },
 
@@ -40,14 +40,14 @@ export const openkeyApi = {
     return await request({
       url: apiPrefix + "/info",
       method: "post",
-      params: { id }
+      params: { id },
     });
   },
   async GetApiToken(id: number) {
     return await request({
       url: apiPrefix + "/getApiToken",
       method: "post",
-      data: { id }
+      data: { id },
     });
-  }
+  },
 };

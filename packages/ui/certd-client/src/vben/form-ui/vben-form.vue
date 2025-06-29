@@ -24,7 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
   showCollapseButton: false,
   showDefaultActions: true,
   submitButtonOptions: () => ({}),
-  wrapperClass: "grid-cols-1"
+  wrapperClass: "grid-cols-1",
 });
 
 const forward = useForwardPropsEmits(props);

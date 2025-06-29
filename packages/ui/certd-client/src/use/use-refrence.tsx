@@ -13,7 +13,7 @@ export function useReference(formItem: any) {
     const ctx = {
       compute,
       asyncCompute,
-      computed
+      computed,
     };
     const script = formItem.mergeScript;
     const func = new Function("ctx", script);
@@ -30,7 +30,7 @@ export function useReference(formItem: any) {
     formItem.helper = {
       render: () => {
         return <div innerHTML={helper}></div>;
-      }
+      },
     };
   }
 }

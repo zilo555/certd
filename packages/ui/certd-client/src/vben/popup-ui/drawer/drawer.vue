@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<Props>(), {
   appendToMain: false,
   closeIconPlacement: "right",
   drawerApi: undefined,
-  zIndex: 1000
+  zIndex: 1000,
 });
 
 const components = globalShareState.getComponents();
@@ -57,16 +57,16 @@ const {
   showConfirmButton,
   title,
   titleTooltip,
-  zIndex
+  zIndex,
 } = usePriorityValues(props, state);
 
 watch(
   () => showLoading.value,
-  (v) => {
+  v => {
     if (v && wrapperRef.value) {
       wrapperRef.value.scrollTo({
         // behavior: 'smooth',
-        top: 0
+        top: 0,
       });
     }
   }
@@ -113,7 +113,7 @@ const getAppendTo = computed(() => {
       :class="
         cn('flex w-[520px] flex-col', drawerClass, {
           '!w-full': isMobile || placement === 'bottom' || placement === 'top',
-          'max-h-[100vh]': placement === 'bottom' || placement === 'top'
+          'max-h-[100vh]': placement === 'bottom' || placement === 'top',
         })
       "
       :modal="modal"
@@ -135,7 +135,7 @@ const getAppendTo = computed(() => {
         :class="
           cn('!flex flex-row items-center justify-between border-b px-6 py-5', headerClass, {
             'px-4 py-3': closable,
-            'pl-2': closable && closeIconPlacement === 'left'
+            'pl-2': closable && closeIconPlacement === 'left',
           })
         "
       >
@@ -198,7 +198,7 @@ const getAppendTo = computed(() => {
         ref="wrapperRef"
         :class="
           cn('relative flex-1 overflow-y-auto p-3', contentClass, {
-            'overflow-hidden': showLoading
+            'overflow-hidden': showLoading,
           })
         "
       >

@@ -8,25 +8,25 @@ import { $t } from "/@/locales";
 import { ContentCompact, ContentWide } from "../../icons";
 
 defineOptions({
-  name: "PreferenceLayoutContent"
+  name: "PreferenceLayoutContent",
 });
 
 const modelValue = defineModel<string>({ default: "wide" });
 
 const components: Record<string, Component> = {
   compact: ContentCompact,
-  wide: ContentWide
+  wide: ContentWide,
 };
 
 const PRESET = computed(() => [
   {
     name: $t("preferences.wide"),
-    type: "wide"
+    type: "wide",
   },
   {
     name: $t("preferences.compact"),
-    type: "compact"
-  }
+    type: "compact",
+  },
 ]);
 
 function activeClass(theme: string): string[] {

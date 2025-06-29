@@ -12,7 +12,7 @@ import { VbenButton } from "/@/vben//shadcn-ui";
 import PreferencesDrawer from "./preferences-drawer.vue";
 
 const [Drawer, drawerApi] = useVbenDrawer({
-  connectedComponent: PreferencesDrawer
+  connectedComponent: PreferencesDrawer,
 });
 
 /**

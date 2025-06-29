@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { AccordionContentProps } from 'radix-vue';
+import type { AccordionContentProps } from "radix-vue";
 
-import { computed } from 'vue';
+import { computed } from "vue";
 
-import { cn } from '/@/vben/shared/utils';
+import { cn } from "/@/vben/shared/utils";
 
-import { AccordionContent } from 'radix-vue';
+import { AccordionContent } from "radix-vue";
 
 const props = defineProps<AccordionContentProps & { class?: any }>();
 
@@ -17,10 +17,7 @@ const delegatedProps = computed(() => {
 </script>
 
 <template>
-  <AccordionContent
-    v-bind="delegatedProps"
-    class="data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden text-sm"
-  >
+  <AccordionContent v-bind="delegatedProps" class="data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden text-sm">
     <div :class="cn('pb-4 pt-0', props.class)">
       <slot></slot>
     </div>

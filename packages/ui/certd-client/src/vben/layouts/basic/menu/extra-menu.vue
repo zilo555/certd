@@ -16,7 +16,7 @@ interface Props extends MenuProps {
 
 withDefaults(defineProps<Props>(), {
   accordion: true,
-  menus: () => []
+  menus: () => [],
 });
 
 const route = useRoute();

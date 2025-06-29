@@ -16,8 +16,8 @@ export const durationDict = dict({
     { label: "8年", value: 2920 },
     { label: "9年", value: 3285 },
     { label: "10年", value: 3650 },
-    { label: "永久", value: -1 }
-  ]
+    { label: "永久", value: -1 },
+  ],
 });
 
 export type OrderModalOpenReq = {
@@ -29,7 +29,7 @@ export type OrderModalOpenReq = {
 export async function ProductList() {
   return await request({
     url: "/suite/product/list",
-    method: "POST"
+    method: "POST",
   });
 }
 
@@ -37,7 +37,7 @@ export async function ProductInfo(productId: number) {
   return await request({
     url: "/suite/product/info",
     method: "POST",
-    data: { id: productId }
+    data: { id: productId },
   });
 }
 
@@ -52,7 +52,7 @@ export async function TradeCreate(form: TradeCreateReq) {
   return await request({
     url: "/suite/trade/create",
     method: "POST",
-    data: form
+    data: form,
   });
 }
 
@@ -60,20 +60,20 @@ export async function TradeCreateFree(form: TradeCreateReq) {
   return await request({
     url: "/suite/trade/createFree",
     method: "POST",
-    data: form
+    data: form,
   });
 }
 
 export async function GetPaymentTypes() {
   return await request({
     url: "/suite/trade/payments",
-    method: "POST"
+    method: "POST",
   });
 }
 
 export async function GetSuiteSetting() {
   return await request({
     url: "/suite/settings/get",
-    method: "POST"
+    method: "POST",
   });
 }

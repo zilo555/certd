@@ -11,7 +11,7 @@ export function createAccessApi(from = "user") {
       return await request({
         url: apiPrefix + "/page",
         method: "post",
-        data: query
+        data: query,
       });
     },
 
@@ -19,7 +19,7 @@ export function createAccessApi(from = "user") {
       return await request({
         url: apiPrefix + "/add",
         method: "post",
-        data: obj
+        data: obj,
       });
     },
 
@@ -27,7 +27,7 @@ export function createAccessApi(from = "user") {
       return await request({
         url: apiPrefix + "/update",
         method: "post",
-        data: obj
+        data: obj,
       });
     },
 
@@ -35,7 +35,7 @@ export function createAccessApi(from = "user") {
       return await request({
         url: apiPrefix + "/delete",
         method: "post",
-        params: { id }
+        params: { id },
       });
     },
 
@@ -43,7 +43,7 @@ export function createAccessApi(from = "user") {
       return await request({
         url: apiPrefix + "/info",
         method: "post",
-        params: { id }
+        params: { id },
       });
     },
 
@@ -51,7 +51,7 @@ export function createAccessApi(from = "user") {
       return await request({
         url: apiPrefix + "/simpleInfo",
         method: "post",
-        params: { id }
+        params: { id },
       });
     },
 
@@ -59,7 +59,7 @@ export function createAccessApi(from = "user") {
       return await request({
         url: apiPrefix + "/getSecretPlain",
         method: "post",
-        data: { id, key }
+        data: { id, key },
       });
     },
 
@@ -67,7 +67,7 @@ export function createAccessApi(from = "user") {
       return await request({
         url: apiPrefix + "/define",
         method: "post",
-        params: { type }
+        params: { type },
       });
     },
 
@@ -75,8 +75,8 @@ export function createAccessApi(from = "user") {
       return await request({
         url: apiPrefix + "/defineByAccessType",
         method: "post",
-        params: { type }
+        params: { type },
       });
-    }
+    },
   };
 }

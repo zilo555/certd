@@ -20,11 +20,11 @@ export const COMPONENT_MAP: Record<BaseFormComponentType, Component> = {
   VbenInput,
   VbenInputPassword,
   VbenPinInput,
-  VbenSelect
+  VbenSelect,
 };
 
 export const COMPONENT_BIND_EVENT_MAP: Partial<Record<BaseFormComponentType, string>> = {
-  VbenCheckbox: "checked"
+  VbenCheckbox: "checked",
 };
 
 export function setupVbenForm<T extends BaseFormComponentType = BaseFormComponentType>(options: VbenFormAdapterOptions<T>) {
@@ -35,7 +35,7 @@ export function setupVbenForm<T extends BaseFormComponentType = BaseFormComponen
   Object.assign(DEFAULT_FORM_COMMON_CONFIG, {
     disabledOnChangeListener,
     disabledOnInputListener,
-    emptyStateValue
+    emptyStateValue,
   });
 
   if (defineRules) {

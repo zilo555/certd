@@ -177,10 +177,10 @@ const mockUtil: any = {
               records: records,
               total: data.length,
               limit,
-              offset
-            }
+              offset,
+            },
           };
-        }
+        },
       },
       {
         path: "/mock/" + name + "/get",
@@ -192,9 +192,9 @@ const mockUtil: any = {
           return {
             code: 0,
             msg: "success",
-            data: current
+            data: current,
           };
-        }
+        },
       },
       {
         path: "/mock/" + name + "/byIds",
@@ -205,9 +205,9 @@ const mockUtil: any = {
           return {
             code: 0,
             msg: "success",
-            data: res
+            data: res,
           };
-        }
+        },
       },
       {
         path: "/mock/" + name + "/add",
@@ -218,9 +218,9 @@ const mockUtil: any = {
           return {
             code: 0,
             msg: "success",
-            data: cloneDeep(req.body)
+            data: cloneDeep(req.body),
           };
-        }
+        },
       },
       {
         path: "/mock/" + name + "/update",
@@ -241,9 +241,9 @@ const mockUtil: any = {
           return {
             code: 0,
             msg: "success",
-            data: null
+            data: null,
           };
-        }
+        },
       },
       {
         path: "/mock/" + name + "/delete",
@@ -253,9 +253,9 @@ const mockUtil: any = {
           return {
             code: 0,
             msg: "success",
-            data: null
+            data: null,
           };
-        }
+        },
       },
       {
         path: "/mock/" + name + "/batchDelete",
@@ -271,9 +271,9 @@ const mockUtil: any = {
           return {
             code: 0,
             msg: "success",
-            data: null
+            data: null,
           };
-        }
+        },
       },
       {
         path: "/mock/" + name + "/delete",
@@ -283,9 +283,9 @@ const mockUtil: any = {
           return {
             code: 0,
             msg: "success",
-            data: null
+            data: null,
           };
-        }
+        },
       },
       {
         path: "/mock/" + name + "/all",
@@ -294,9 +294,9 @@ const mockUtil: any = {
           return {
             code: 0,
             msg: "success",
-            data: list
+            data: list,
           };
-        }
+        },
       },
       {
         path: "/mock/" + name + "/cellUpdate",
@@ -317,7 +317,7 @@ const mockUtil: any = {
           } else {
             item = {
               id: ++options.idGenerator,
-              [req.body.key]: req.body.value
+              [req.body.key]: req.body.value,
             };
             list.unshift(item);
           }
@@ -325,9 +325,9 @@ const mockUtil: any = {
           return {
             code: 0,
             msg: "success",
-            data: item
+            data: item,
           };
-        }
+        },
       },
       {
         path: "/mock/" + name + "/columnUpdate",
@@ -350,12 +350,12 @@ const mockUtil: any = {
           return {
             code: 0,
             msg: "success",
-            data: null
+            data: null,
           };
-        }
-      }
+        },
+      },
     ];
-  }
+  },
 };
 
 export default mockUtil;

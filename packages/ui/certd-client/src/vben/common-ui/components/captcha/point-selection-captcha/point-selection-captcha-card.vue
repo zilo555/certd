@@ -1,24 +1,18 @@
 <script setup lang="ts">
-import type { PointSelectionCaptchaCardProps } from '../types';
+import type { PointSelectionCaptchaCardProps } from "../types";
 
-import { computed } from 'vue';
+import { computed } from "vue";
 
-import { $t } from '/@/locales';
+import { $t } from "/@/locales";
 
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '/@/vben/shadcn-ui';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "/@/vben/shadcn-ui";
 
 const props = withDefaults(defineProps<PointSelectionCaptchaCardProps>(), {
-  height: '220px',
-  paddingX: '12px',
-  paddingY: '16px',
-  title: '',
-  width: '300px',
+  height: "220px",
+  paddingX: "12px",
+  paddingY: "16px",
+  title: "",
+  width: "300px",
 });
 
 const emit = defineEmits<{
@@ -26,7 +20,7 @@ const emit = defineEmits<{
 }>();
 
 const parseValue = (value: number | string) => {
-  if (typeof value === 'number') {
+  if (typeof value === "number") {
     return value;
   }
   const parsed = Number.parseFloat(value);
@@ -46,7 +40,7 @@ const captchaStyles = computed(() => {
 });
 
 function handleClick(e: MouseEvent) {
-  emit('click', e);
+  emit("click", e);
 }
 </script>
 <template>
@@ -54,7 +48,7 @@ function handleClick(e: MouseEvent) {
     <CardHeader class="p-0">
       <CardTitle id="captcha-title" class="flex items-center justify-between">
         <template v-if="$slots.title">
-          <slot name="title">{{ $t('ui.captcha.title') }}</slot>
+          <slot name="title">{{ $t("ui.captcha.title") }}</slot>
         </template>
         <template v-else>
           <span>{{ title }}</span>
@@ -65,14 +59,7 @@ function handleClick(e: MouseEvent) {
       </CardTitle>
     </CardHeader>
     <CardContent class="relative mt-2 flex w-full overflow-hidden rounded p-0">
-      <img
-        v-show="captchaImage"
-        :alt="$t('ui.captcha.alt')"
-        :src="captchaImage"
-        :style="captchaStyles"
-        class="relative z-10"
-        @click="handleClick"
-      />
+      <img v-show="captchaImage" :alt="$t('ui.captcha.alt')" :src="captchaImage" :style="captchaStyles" class="relative z-10" @click="handleClick" />
       <div class="absolute inset-0">
         <slot></slot>
       </div>

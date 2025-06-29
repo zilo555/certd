@@ -6,7 +6,7 @@ import SelectItem from "../select-item.vue";
 import SwitchItem from "../switch-item.vue";
 
 defineOptions({
-  name: "PreferenceGeneralConfig"
+  name: "PreferenceGeneralConfig",
 });
 
 const appLocale = defineModel<string>("appLocale");

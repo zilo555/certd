@@ -22,7 +22,7 @@ export function useFormInitial(props: ComputedRef<VbenFormProps> | VbenFormProps
   const initialValues = generateInitialValues();
 
   const form = useForm({
-    ...(Object.keys(initialValues)?.length ? { initialValues } : {})
+    ...(Object.keys(initialValues)?.length ? { initialValues } : {}),
   });
 
   const delegatedSlots = computed(() => {
@@ -40,7 +40,7 @@ export function useFormInitial(props: ComputedRef<VbenFormProps> | VbenFormProps
     const initialValues: Record<string, any> = {};
 
     const zodObject: ZodRawShape = {};
-    (unref(props).schema || []).forEach((item) => {
+    (unref(props).schema || []).forEach(item => {
       if (Reflect.has(item, "defaultValue")) {
         initialValues[item.fieldName] = item.defaultValue;
       } else if (item.rules && !isString(item.rules)) {
@@ -55,6 +55,6 @@ export function useFormInitial(props: ComputedRef<VbenFormProps> | VbenFormProps
 
   return {
     delegatedSlots,
-    form
+    form,
   };
 }

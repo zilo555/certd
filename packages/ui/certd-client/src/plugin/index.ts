@@ -10,5 +10,5 @@ function install(app: App, options: any = {}) {
 }
 
 export default {
-  install
+  install,
 };

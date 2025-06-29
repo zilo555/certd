@@ -13,7 +13,7 @@ import { createNotificationApi } from "../../api";
 export default defineComponent({
   name: "CertNotificationModal",
   props: {
-    modelValue: {}
+    modelValue: {},
   },
   emits: ["update:modelValue"],
   setup(props, ctx) {
@@ -26,9 +26,9 @@ export default defineComponent({
 
     return {
       crudBinding,
-      crudRef
+      crudRef,
     };
-  }
+  },
 });
 </script>
 <style lang="less">

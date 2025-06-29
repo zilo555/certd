@@ -115,5 +115,5 @@ export type {
   Nullable,
   ReadonlyRecordable,
   Recordable,
-  TimeoutHandle
+  TimeoutHandle,
 };

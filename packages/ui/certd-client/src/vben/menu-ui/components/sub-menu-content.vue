@@ -19,7 +19,7 @@ defineOptions({ name: "SubMenuContent" });
 
 const props = withDefaults(defineProps<Props>(), {
   isMenuMore: false,
-  level: 0
+  level: 0,
 });
 
 const rootMenu = useMenuContext();

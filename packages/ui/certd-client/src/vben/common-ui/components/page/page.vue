@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import type { StyleValue } from 'vue';
+import type { StyleValue } from "vue";
 
-import type { PageProps } from './types';
+import type { PageProps } from "./types";
 
-import { computed, nextTick, onMounted, ref, useTemplateRef } from 'vue';
+import { computed, nextTick, onMounted, ref, useTemplateRef } from "vue";
 
-import { CSS_VARIABLE_LAYOUT_CONTENT_HEIGHT } from '/@/vben/shared/constants';
-import { cn } from '/@/vben/shared/utils';
+import { CSS_VARIABLE_LAYOUT_CONTENT_HEIGHT } from "/@/vben/shared/constants";
+import { cn } from "/@/vben/shared/utils";
 
 defineOptions({
-  name: 'Page',
+  name: "Page",
 });
 
 const { autoContentHeight = false } = defineProps<PageProps>();
@@ -18,14 +18,14 @@ const headerHeight = ref(0);
 const footerHeight = ref(0);
 const shouldAutoHeight = ref(false);
 
-const headerRef = useTemplateRef<HTMLDivElement>('headerRef');
-const footerRef = useTemplateRef<HTMLDivElement>('footerRef');
+const headerRef = useTemplateRef<HTMLDivElement>("headerRef");
+const footerRef = useTemplateRef<HTMLDivElement>("footerRef");
 
 const contentStyle = computed<StyleValue>(() => {
   if (autoContentHeight) {
     return {
       height: `calc(var(${CSS_VARIABLE_LAYOUT_CONTENT_HEIGHT}) - ${headerHeight.value}px)`,
-      overflowY: shouldAutoHeight.value ? 'auto' : 'unset',
+      overflowY: shouldAutoHeight.value ? "auto" : "unset",
     };
   }
   return {};
@@ -50,22 +50,7 @@ onMounted(() => {
 
 <template>
   <div class="relative">
-    <div
-      v-if="
-        description ||
-        $slots.description ||
-        title ||
-        $slots.title ||
-        $slots.extra
-      "
-      ref="headerRef"
-      :class="
-        cn(
-          'bg-card border-border relative flex items-end border-b px-6 py-4',
-          headerClass,
-        )
-      "
-    >
+    <div v-if="description || $slots.description || title || $slots.title || $slots.extra" ref="headerRef" :class="cn('bg-card border-border relative flex items-end border-b px-6 py-4', headerClass)">
       <div class="flex-auto">
         <slot name="title">
           <div v-if="title" class="mb-2 flex text-lg font-semibold">
@@ -89,16 +74,7 @@ onMounted(() => {
       <slot></slot>
     </div>
 
-    <div
-      v-if="$slots.footer"
-      ref="footerRef"
-      :class="
-        cn(
-          'bg-card align-center absolute bottom-0 left-0 right-0 flex px-6 py-4',
-          footerClass,
-        )
-      "
-    >
+    <div v-if="$slots.footer" ref="footerRef" :class="cn('bg-card align-center absolute bottom-0 left-0 right-0 flex px-6 py-4', footerClass)">
       <slot name="footer"></slot>
     </div>
   </div>

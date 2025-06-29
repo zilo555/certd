@@ -47,16 +47,16 @@ export function useCrudPermission({ permission }: UseCrudPermissionProps) {
       {
         actionbar: {
           buttons: {
-            add: { show: hasActionPermission("add") }
-          }
+            add: { show: hasActionPermission("add") },
+          },
         },
         rowHandle: {
           buttons: {
             edit: { show: hasActionPermission("edit") },
             remove: { show: hasActionPermission("remove") },
-            view: { show: hasActionPermission("view") }
-          }
-        }
+            view: { show: hasActionPermission("view") },
+          },
+        },
       },
       extra
     );

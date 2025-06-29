@@ -10,7 +10,7 @@ function useNavigation() {
 
   const routeMetaMap = new Map<string, RouteRecordNormalized>();
 
-  routes.forEach((route) => {
+  routes.forEach(route => {
     routeMetaMap.set(route.path, route);
   });
 
@@ -24,7 +24,7 @@ function useNavigation() {
     } else {
       await router.push({
         path,
-        query
+        query,
       });
     }
   };

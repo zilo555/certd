@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue';
+import { ref, watch } from "vue";
 
-import { cn } from '/@/vben/shared/utils';
+import { cn } from "/@/vben/shared/utils";
 
 interface Props {
   class?: string;
@@ -22,12 +22,12 @@ interface Props {
 }
 
 defineOptions({
-  name: 'VbenLoading',
+  name: "VbenLoading",
 });
 
 const props = withDefaults(defineProps<Props>(), {
   minLoadingTime: 50,
-  text: '',
+  text: "",
 });
 // const startTime = ref(0);
 const showSpinner = ref(false);
@@ -36,7 +36,7 @@ const timer = ref<ReturnType<typeof setTimeout>>();
 
 watch(
   () => props.spinning,
-  (show) => {
+  show => {
     if (!show) {
       showSpinner.value = false;
       clearTimeout(timer.value);
@@ -55,7 +55,7 @@ watch(
   },
   {
     immediate: true,
-  },
+  }
 );
 
 function onTransitionEnd() {
@@ -73,18 +73,14 @@ function onTransitionEnd() {
         {
           'invisible opacity-0': !showSpinner,
         },
-        props.class,
+        props.class
       )
     "
     @transitionend="onTransitionEnd"
   >
-    <slot name="icon" v-if="renderSpinner">
+    <slot v-if="renderSpinner" name="icon">
       <span class="dot relative inline-block size-9 text-3xl">
-        <i
-          v-for="index in 4"
-          :key="index"
-          class="bg-primary absolute block size-4 origin-[50%_50%] scale-75 rounded-full opacity-30"
-        ></i>
+        <i v-for="index in 4" :key="index" class="bg-primary absolute block size-4 origin-[50%_50%] scale-75 rounded-full opacity-30"></i>
       </span>
     </slot>
 

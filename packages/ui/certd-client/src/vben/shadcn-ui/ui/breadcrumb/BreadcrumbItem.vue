@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { cn } from '/@/vben/shared/utils';
+import { cn } from "/@/vben/shared/utils";
 
 const props = defineProps<{
   class?: any;
@@ -7,11 +7,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <li
-    :class="
-      cn('hover:text-foreground inline-flex items-center gap-1.5', props.class)
-    "
-  >
+  <li :class="cn('hover:text-foreground inline-flex items-center gap-1.5', props.class)">
     <slot></slot>
   </li>
 </template>

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type { SelectTriggerProps } from 'radix-vue';
+import type { SelectTriggerProps } from "radix-vue";
 
-import { computed } from 'vue';
+import { computed } from "vue";
 
-import { cn } from '/@/vben/shared/utils';
+import { cn } from "/@/vben/shared/utils";
 
-import { ChevronDown } from 'lucide-vue-next';
-import { SelectIcon, SelectTrigger, useForwardProps } from 'radix-vue';
+import { ChevronDown } from "lucide-vue-next";
+import { SelectIcon, SelectTrigger, useForwardProps } from "radix-vue";
 
 const props = defineProps<SelectTriggerProps & { class?: any }>();
 
@@ -25,7 +25,7 @@ const forwardedProps = useForwardProps(delegatedProps);
     :class="
       cn(
         'border-input ring-offset-background placeholder:text-muted-foreground focus:ring-ring flex h-10 w-full items-center justify-between whitespace-nowrap rounded-md border bg-transparent px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1',
-        props.class,
+        props.class
       )
     "
   >

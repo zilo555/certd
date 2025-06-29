@@ -1,17 +1,13 @@
 <script setup lang="ts">
-import type { ScrollAreaRootProps } from 'radix-vue';
+import type { ScrollAreaRootProps } from "radix-vue";
 
-import { computed } from 'vue';
+import { computed } from "vue";
 
-import { cn } from '/@/vben/shared/utils';
+import { cn } from "/@/vben/shared/utils";
 
-import {
-  ScrollAreaCorner,
-  ScrollAreaRoot,
-  ScrollAreaViewport,
-} from 'radix-vue';
+import { ScrollAreaCorner, ScrollAreaRoot, ScrollAreaViewport } from "radix-vue";
 
-import ScrollBar from './ScrollBar.vue';
+import ScrollBar from "./ScrollBar.vue";
 
 const props = withDefaults(
   defineProps<
@@ -23,7 +19,7 @@ const props = withDefaults(
   >(),
   {
     onScroll: () => {},
-  },
+  }
 );
 
 const delegatedProps = computed(() => {
@@ -33,15 +29,8 @@ const delegatedProps = computed(() => {
 </script>
 
 <template>
-  <ScrollAreaRoot
-    v-bind="delegatedProps"
-    :class="cn('relative overflow-hidden', props.class)"
-  >
-    <ScrollAreaViewport
-      as-child
-      class="h-full w-full rounded-[inherit] focus:outline-none"
-      @scroll="onScroll"
-    >
+  <ScrollAreaRoot v-bind="delegatedProps" :class="cn('relative overflow-hidden', props.class)">
+    <ScrollAreaViewport as-child class="h-full w-full rounded-[inherit] focus:outline-none" @scroll="onScroll">
       <slot></slot>
     </ScrollAreaViewport>
     <ScrollBar />

@@ -23,7 +23,7 @@ defineOptions({ name: "NotificationPopup" });
 
 withDefaults(defineProps<Props>(), {
   dot: false,
-  notifications: () => []
+  notifications: () => [],
 });
 
 const emit = defineEmits<{

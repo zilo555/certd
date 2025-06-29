@@ -44,7 +44,7 @@ function useMixedMenu() {
         }
       }
       const item: any = {
-        ...sub
+        ...sub,
       };
 
       list.push(item);
@@ -76,7 +76,7 @@ function useMixedMenu() {
     return menus.value.map((item: any) => {
       return {
         ...item,
-        children: []
+        children: [],
       };
     });
   });
@@ -181,7 +181,7 @@ function useMixedMenu() {
 
   watch(
     () => route.path,
-    (path) => {
+    path => {
       const currentPath = (route?.meta?.activePath as string) ?? path;
       calcSideMenus(currentPath);
       if (rootMenuPath.value) defaultSubMap.set(rootMenuPath.value, currentPath);
@@ -203,7 +203,7 @@ function useMixedMenu() {
     sidebarMenus,
     mixHeaderMenus,
     mixExtraMenus,
-    sidebarVisible
+    sidebarVisible,
   };
 }
 

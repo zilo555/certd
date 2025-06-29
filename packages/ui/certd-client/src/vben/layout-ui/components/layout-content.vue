@@ -39,7 +39,7 @@ const style = computed((): CSSProperties => {
     paddingBottom: `${paddingBottom}px`,
     paddingLeft: `${paddingLeft}px`,
     paddingRight: `${paddingRight}px`,
-    paddingTop: `${paddingTop}px`
+    paddingTop: `${paddingTop}px`,
   };
 });
 </script>

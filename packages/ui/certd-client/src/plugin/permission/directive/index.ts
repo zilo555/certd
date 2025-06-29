@@ -7,5 +7,5 @@ const install = function (app: any) {
 
 export default {
   install,
-  ...permission
+  ...permission,
 };

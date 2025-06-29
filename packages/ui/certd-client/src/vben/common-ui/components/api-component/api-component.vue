@@ -74,7 +74,7 @@ const props = withDefaults(defineProps<Props>(), {
   afterFetch: undefined,
   modelPropName: "modelValue",
   api: undefined,
-  options: () => []
+  options: () => [],
 });
 
 const emit = defineEmits<{
@@ -96,13 +96,13 @@ const getOptions = computed(() => {
   const refOptionsData = unref(refOptions);
 
   function transformData(data: OptionsItem[]): OptionsItem[] {
-    return data.map((item) => {
+    return data.map(item => {
       const value = get(item, valueField);
       return {
         ...objectOmit(item, [labelField, valueField, childrenField]),
         label: get(item, labelField),
         value: numberToString ? `${value}` : value,
-        ...(childrenField && item[childrenField] ? { children: transformData(item[childrenField]) } : {})
+        ...(childrenField && item[childrenField] ? { children: transformData(item[childrenField]) } : {}),
       };
     });
   }
@@ -122,9 +122,9 @@ const bindProps = computed(() => {
     ...objectOmit(attrs, [`onUpdate:${props.modelPropName}`]),
     ...(props.visibleEvent
       ? {
-          [props.visibleEvent]: handleFetchForVisible
+          [props.visibleEvent]: handleFetchForVisible,
         }
-      : {})
+      : {}),
   };
 });
 

@@ -6,7 +6,7 @@ export async function TestSend(receiver: string) {
     url: apiPrefix + "/test",
     method: "post",
     data: {
-      receiver
-    }
+      receiver,
+    },
   });
 }

@@ -14,12 +14,12 @@ import { isHttpUrl } from "../../../shared/utils";
 import { onKeyStroke, useLocalStorage, useThrottleFn } from "@vueuse/core";
 
 defineOptions({
-  name: "SearchPanel"
+  name: "SearchPanel",
 });
 
 const props = withDefaults(defineProps<{ keyword: string; menus: MenuRecordRaw[] }>(), {
   keyword: "",
-  menus: () => []
+  menus: () => [],
 });
 const emit = defineEmits<{ close: [] }>();
 
@@ -162,14 +162,14 @@ function createSearchReg(key: string) {
   // 将输入的字符串拆分为单个字符
   // 对每个字符进行转义
   // 然后用'.*'连接所有字符，创建正则表达式
-  const keys = [...key].map((item) => transform(item)).join(".*");
+  const keys = [...key].map(item => transform(item)).join(".*");
   // 返回创建的正则表达式
   return new RegExp(`.*${keys}.*`);
 }
 
 watch(
   () => props.keyword,
-  (val) => {
+  val => {
     if (val) {
       handleSearch(val);
     } else {
@@ -182,7 +182,7 @@ onMounted(() => {
   searchItems.value = mapTree(props.menus, (item: any) => {
     return {
       ...item,
-      name: $t(item?.name)
+      name: $t(item?.name),
     };
   });
   if (searchHistory.value.length > 0) {

@@ -10,6 +10,6 @@ export function useAppConfig(env: Record<string, any>, isProduction: boolean): A
   const { VITE_GLOB_API_URL } = config;
 
   return {
-    apiURL: VITE_GLOB_API_URL
+    apiURL: VITE_GLOB_API_URL,
   };
 }

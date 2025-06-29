@@ -9,13 +9,13 @@ export default [
         children: [
           {
             code: "3",
-            name: "海淀"
+            name: "海淀",
           },
           {
             code: "4",
-            name: "朝阳"
-          }
-        ]
+            name: "朝阳",
+          },
+        ],
       },
       {
         code: "5",
@@ -23,15 +23,15 @@ export default [
         children: [
           {
             code: "6",
-            name: "海淀郊区"
+            name: "海淀郊区",
           },
           {
             code: "7",
-            name: "朝阳郊区"
-          }
-        ]
-      }
-    ]
+            name: "朝阳郊区",
+          },
+        ],
+      },
+    ],
   },
   {
     code: "11",
@@ -43,13 +43,13 @@ export default [
         children: [
           {
             code: "13",
-            name: "南山"
+            name: "南山",
           },
           {
             code: "14",
-            name: "福田"
-          }
-        ]
+            name: "福田",
+          },
+        ],
       },
       {
         code: "15",
@@ -57,14 +57,14 @@ export default [
         children: [
           {
             code: "16",
-            name: "南山郊区"
+            name: "南山郊区",
           },
           {
             code: "17",
-            name: "福田郊区"
-          }
-        ]
-      }
-    ]
-  }
+            name: "福田郊区",
+          },
+        ],
+      },
+    ],
+  },
 ];

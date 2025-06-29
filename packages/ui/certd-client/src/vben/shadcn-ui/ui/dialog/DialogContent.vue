@@ -1,21 +1,16 @@
 <script setup lang="ts">
-import type { DialogContentEmits, DialogContentProps } from 'radix-vue';
+import type { DialogContentEmits, DialogContentProps } from "radix-vue";
 
-import type { ClassType } from '/@/vben/typings';
+import type { ClassType } from "/@/vben/typings";
 
-import { computed, ref } from 'vue';
+import { computed, ref } from "vue";
 
-import { cn } from '/@/vben/shared/utils';
+import { cn } from "/@/vben/shared/utils";
 
-import { X } from 'lucide-vue-next';
-import {
-  DialogClose,
-  DialogContent,
-  DialogPortal,
-  useForwardPropsEmits,
-} from 'radix-vue';
+import { X } from "lucide-vue-next";
+import { DialogClose, DialogContent, DialogPortal, useForwardPropsEmits } from "radix-vue";
 
-import DialogOverlay from './DialogOverlay.vue';
+import DialogOverlay from "./DialogOverlay.vue";
 
 const props = withDefaults(
   defineProps<
@@ -30,34 +25,22 @@ const props = withDefaults(
       zIndex?: number;
     }
   >(),
-  { appendTo: 'body', showClose: true },
+  { appendTo: "body", showClose: true }
 );
-const emits = defineEmits<
-  DialogContentEmits & { close: []; closed: []; opened: [] }
->();
+const emits = defineEmits<DialogContentEmits & { close: []; closed: []; opened: [] }>();
 
 const delegatedProps = computed(() => {
-  const {
-    class: _,
-    modal: _modal,
-    open: _open,
-    showClose: __,
-    ...delegated
-  } = props;
+  const { class: _, modal: _modal, open: _open, showClose: __, ...delegated } = props;
 
   return delegated;
 });
 
 function isAppendToBody() {
-  return (
-    props.appendTo === 'body' ||
-    props.appendTo === document.body ||
-    !props.appendTo
-  );
+  return props.appendTo === "body" || props.appendTo === document.body || !props.appendTo;
 }
 
 const position = computed(() => {
-  return isAppendToBody() ? 'fixed' : 'absolute';
+  return isAppendToBody() ? "fixed" : "absolute";
 });
 
 const forwarded = useForwardPropsEmits(delegatedProps, emits);
@@ -67,9 +50,9 @@ function onAnimationEnd(event: AnimationEvent) {
   // 只有在 contentRef 的动画结束时才触发 opened/closed 事件
   if (event.target === contentRef.value?.$el) {
     if (props.open) {
-      emits('opened');
+      emits("opened");
     } else {
-      emits('closed');
+      emits("closed");
     }
   }
 }
@@ -86,8 +69,7 @@ defineExpose({
         :style="{
           ...(zIndex ? { zIndex } : {}),
           position,
-          backdropFilter:
-            overlayBlur && overlayBlur > 0 ? `blur(${overlayBlur}px)` : 'none',
+          backdropFilter: overlayBlur && overlayBlur > 0 ? `blur(${overlayBlur}px)` : 'none',
         }"
         @click="() => emits('close')"
       />
@@ -95,14 +77,14 @@ defineExpose({
     <DialogContent
       ref="contentRef"
       :style="{ ...(zIndex ? { zIndex } : {}), position }"
-      @animationend="onAnimationEnd"
       v-bind="forwarded"
       :class="
         cn(
           'z-popup bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-top-[48%] w-full p-6 shadow-lg outline-none sm:rounded-xl',
-          props.class,
+          props.class
         )
       "
+      @animationend="onAnimationEnd"
     >
       <slot></slot>
 
@@ -111,7 +93,7 @@ defineExpose({
         :class="
           cn(
             'data-[state=open]:bg-accent data-[state=open]:text-muted-foreground hover:bg-accent hover:text-accent-foreground text-foreground/80 flex-center absolute right-3 top-3 h-6 w-6 rounded-full px-1 text-lg opacity-70 transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none',
-            props.closeClass,
+            props.closeClass
           )
         "
         @click="() => emits('close')"

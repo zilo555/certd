@@ -29,9 +29,9 @@ export default defineComponent({
     };
     return {
       setting,
-      onChange
+      onChange,
     };
-  }
+  },
 });
 </script>
 

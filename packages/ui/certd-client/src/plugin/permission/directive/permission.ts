@@ -7,5 +7,5 @@ export default {
     if (!hasPermission) {
       el.parentNode && el.parentNode.removeChild(el);
     }
-  }
+  },
 };

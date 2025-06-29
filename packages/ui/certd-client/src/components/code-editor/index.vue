@@ -10,6 +10,10 @@ import { cloneDeep, debounce as lodashDebounce } from "lodash-es";
 import { initWorkers } from "./workers";
 import { importJavascriptContribution, importJsonContribution, importMonacoYaml, importYamlContribution } from "./async-import";
 
+defineOptions({
+  name: "CodeEditor",
+});
+
 /**
  * config:
  *   value: '', // 编辑器初始文本

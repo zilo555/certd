@@ -32,7 +32,7 @@ const props = defineProps<{
 const certFiles = ref([
   { name: "证书", fileName: "fullchain.pem", key: "crt", content: props.cert.crt },
   { name: "私钥", fileName: "private.pem", key: "key", content: props.cert.key },
-  { name: "中间证书", fileName: "chain.pem", key: "ic", content: props.cert.ic }
+  { name: "中间证书", fileName: "chain.pem", key: "ic", content: props.cert.ic },
 ]);
 </script>
 

@@ -6,7 +6,7 @@ import { createRouterGuard } from "/@/router/guard";
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes
+  routes,
 });
 /**
 

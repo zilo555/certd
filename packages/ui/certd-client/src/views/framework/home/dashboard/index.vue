@@ -11,14 +11,12 @@
         <div class="text">
           <div class="left">
             <div>
-              <span>{{ t('certd.dashboard.greeting', { name: userInfo.nickName || userInfo.username, site: siteInfo.title }) }}</span>
+              <span>{{ t("certd.dashboard.greeting", { name: userInfo.nickName || userInfo.username, site: siteInfo.title }) }}</span>
             </div>
             <div class="flex-o flex-wrap profile-badges">
               <a-tooltip :title="deltaTimeTip">
                 <a-badge :dot="deltaTimeWarning">
-                  <a-tag :color="deltaTimeWarning ? 'red' : 'green'" class="flex-inline pointer">
-                    <fs-icon icon="ion:time-outline"></fs-icon> {{ now }}
-                  </a-tag>
+                  <a-tag :color="deltaTimeWarning ? 'red' : 'green'" class="flex-inline pointer"> <fs-icon icon="ion:time-outline"></fs-icon> {{ now }} </a-tag>
                 </a-badge>
               </a-tooltip>
 
@@ -50,7 +48,7 @@
         <tutorial-button class="flex-center mt-2">
           <a-tooltip :title="t('certd.dashboard.tutorialTooltip')">
             <a-tag color="blue" class="flex-center">
-              {{ t('certd.dashboard.tutorialText') }}
+              {{ t("certd.dashboard.tutorialText") }}
               <fs-icon class="font-size-16 ml-5" icon="mingcute:question-line"></fs-icon>
             </a-tag>
           </a-tooltip>
@@ -61,10 +59,9 @@
     <div v-if="!settingStore.isComm" class="warning">
       <a-alert type="warning" show-icon>
         <template #message>
-          {{ t('certd.dashboard.alertMessage') }}
-          <a class="ml-5 flex-inline" href="https://gitee.com/certd/certd" target="_blank">gitee</a>、
-          <a class="ml-5 flex-inline" href="https://github.com/certd/certd" target="_blank">github</a>、
-          <a class="ml-5 flex-inline" href="https://certd.docmirror.cn" target="_blank">{{ t('certd.dashboard.helpDoc') }}</a>
+          {{ t("certd.dashboard.alertMessage") }}
+          <a class="ml-5 flex-inline" href="https://gitee.com/certd/certd" target="_blank">gitee</a>、 <a class="ml-5 flex-inline" href="https://github.com/certd/certd" target="_blank">github</a>、
+          <a class="ml-5 flex-inline" href="https://certd.docmirror.cn" target="_blank">{{ t("certd.dashboard.helpDoc") }}</a>
         </template>
       </a-alert>
     </div>
@@ -75,14 +72,12 @@
           <statistic-card :title="t('certd.dashboard.pipelineCount')" :count="count.pipelineCount">
             <template v-if="count.pipelineCount === 0" #default>
               <div class="flex-center flex-1 flex-col">
-                <div style="font-size: 18px; font-weight: 700">{{ t('certd.dashboard.noPipeline') }}</div>
-                <fs-button type="primary" class="mt-10" icon="ion:add-circle-outline" @click="goPipeline">{{ t('certd.dashboard.createNow') }}</fs-button>
+                <div style="font-size: 18px; font-weight: 700">{{ t("certd.dashboard.noPipeline") }}</div>
+                <fs-button type="primary" class="mt-10" icon="ion:add-circle-outline" @click="goPipeline">{{ t("certd.dashboard.createNow") }}</fs-button>
               </div>
             </template>
             <template #footer>
-              <router-link to="/certd/pipeline" class="flex">
-                <fs-icon icon="ion:settings-outline" class="mr-5 fs-16" /> {{ t('certd.dashboard.managePipeline') }}
-              </router-link>
+              <router-link to="/certd/pipeline" class="flex"> <fs-icon icon="ion:settings-outline" class="mr-5 fs-16" /> {{ t("certd.dashboard.managePipeline") }} </router-link>
             </template>
           </statistic-card>
         </a-col>
@@ -107,7 +102,7 @@
     <div v-if="pluginGroups" class="plugin-list">
       <a-card>
         <template #title>
-          {{ t('certd.dashboard.supportedTasks') }}
+          {{ t("certd.dashboard.supportedTasks") }}
           <a-tag color="green">{{ pluginGroups.groups.all.plugins.length }}</a-tag>
         </template>
         <a-row :gutter="10">
@@ -135,7 +130,6 @@
     </div>
   </div>
 </template>
-
 
 <script lang="ts" setup>
 import { FsIcon } from "@fast-crud/fast-crud";

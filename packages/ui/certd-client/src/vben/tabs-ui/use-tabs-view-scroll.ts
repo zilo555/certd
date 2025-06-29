@@ -1,10 +1,10 @@
-import type { TabsProps } from './types';
+import type { TabsProps } from "./types";
 
-import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
+import { nextTick, onMounted, onUnmounted, ref, watch } from "vue";
 
-import { VbenScrollbar } from '/@/vben/shadcn-ui';
+import { VbenScrollbar } from "/@/vben/shadcn-ui";
 
-import { useDebounceFn } from '@vueuse/core';
+import { useDebounceFn } from "@vueuse/core";
 
 type DomElement = Element | null | undefined;
 
@@ -31,10 +31,7 @@ export function useTabsViewScroll(props: TabsProps) {
     };
   }
 
-  function scrollDirection(
-    direction: 'left' | 'right',
-    distance: number = 150,
-  ) {
+  function scrollDirection(direction: "left" | "right", distance: number = 150) {
     const { scrollbarWidth, scrollViewWidth } = getScrollClientWidth();
 
     if (!scrollbarWidth || !scrollViewWidth) return;
@@ -42,11 +39,8 @@ export function useTabsViewScroll(props: TabsProps) {
     if (scrollbarWidth > scrollViewWidth) return;
 
     scrollViewportEl.value?.scrollBy({
-      behavior: 'smooth',
-      left:
-        direction === 'left'
-          ? -(scrollbarWidth - distance)
-          : +(scrollbarWidth - distance),
+      behavior: "smooth",
+      left: direction === "left" ? -(scrollbarWidth - distance) : +(scrollbarWidth - distance),
     });
   }
 
@@ -58,9 +52,7 @@ export function useTabsViewScroll(props: TabsProps) {
       return;
     }
 
-    const viewportEl = scrollbarEl?.querySelector(
-      'div[data-radix-scroll-area-viewport]',
-    );
+    const viewportEl = scrollbarEl?.querySelector("div[data-radix-scroll-area-viewport]");
 
     scrollViewportEl.value = viewportEl;
     calcShowScrollbarButton();
@@ -74,7 +66,7 @@ export function useTabsViewScroll(props: TabsProps) {
       useDebounceFn((_entries: ResizeObserverEntry[]) => {
         calcShowScrollbarButton();
         scrollToActiveIntoView();
-      }, 100),
+      }, 100)
     );
     resizeObserver.observe(viewportEl);
 
@@ -82,9 +74,7 @@ export function useTabsViewScroll(props: TabsProps) {
     mutationObserver?.disconnect();
     // 使用 MutationObserver 仅监听子节点数量变化
     mutationObserver = new MutationObserver(() => {
-      const count = viewportEl.querySelectorAll(
-        `div[data-tab-item="true"]`,
-      ).length;
+      const count = viewportEl.querySelectorAll(`div[data-tab-item="true"]`).length;
 
       if (count > tabItemCount) {
         scrollToActiveIntoView();
@@ -118,8 +108,8 @@ export function useTabsViewScroll(props: TabsProps) {
     }
 
     requestAnimationFrame(() => {
-      const activeItem = viewportEl?.querySelector('.is-active');
-      activeItem?.scrollIntoView({ behavior: 'smooth', inline: 'start' });
+      const activeItem = viewportEl?.querySelector(".is-active");
+      activeItem?.scrollIntoView({ behavior: "smooth", inline: "start" });
     });
   }
 
@@ -133,8 +123,7 @@ export function useTabsViewScroll(props: TabsProps) {
 
     const { scrollbarWidth } = getScrollClientWidth();
 
-    showScrollButton.value =
-      scrollViewportEl.value.scrollWidth > scrollbarWidth;
+    showScrollButton.value = scrollViewportEl.value.scrollWidth > scrollbarWidth;
   }
 
   const handleScrollAt = useDebounceFn(({ left, right }) => {
@@ -158,8 +147,8 @@ export function useTabsViewScroll(props: TabsProps) {
       // }, 300);
     },
     {
-      flush: 'post',
-    },
+      flush: "post",
+    }
   );
 
   // watch(
@@ -177,7 +166,7 @@ export function useTabsViewScroll(props: TabsProps) {
     () => props.styleType,
     () => {
       initScrollbar();
-    },
+    }
   );
 
   onMounted(initScrollbar);

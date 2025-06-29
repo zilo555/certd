@@ -1,22 +1,22 @@
 <script lang="ts" setup>
-import type { BacktopProps } from './backtop';
+import type { BacktopProps } from "./backtop";
 
-import { computed } from 'vue';
+import { computed } from "vue";
 
-import { ArrowUpToLine } from '/@/vben/icons';
+import { ArrowUpToLine } from "/@/vben/icons";
 
-import { VbenButton } from '../button';
-import { useBackTop } from './use-backtop';
+import { VbenButton } from "../button";
+import { useBackTop } from "./use-backtop";
 
 interface Props extends BacktopProps {}
 
-defineOptions({ name: 'BackTop' });
+defineOptions({ name: "BackTop" });
 
 const props = withDefaults(defineProps<Props>(), {
   bottom: 20,
   isGroup: false,
   right: 24,
-  target: '',
+  target: "",
   visibilityHeight: 200,
 });
 

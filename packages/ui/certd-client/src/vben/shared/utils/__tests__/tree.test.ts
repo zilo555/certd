@@ -17,9 +17,9 @@ describe("traverseTreeValues", () => {
         { name: "B" },
         {
           name: "C",
-          children: [{ name: "D" }, { name: "E" }]
-        }
-      ]
+          children: [{ name: "D" }, { name: "E" }],
+        },
+      ],
     },
     {
       name: "F",
@@ -27,33 +27,33 @@ describe("traverseTreeValues", () => {
         { name: "G" },
         {
           name: "H",
-          children: [{ name: "I" }]
-        }
-      ]
-    }
+          children: [{ name: "I" }],
+        },
+      ],
+    },
   ];
 
   it("traverses tree and returns all node values", () => {
-    const values = traverseTreeValues<Node, NodeValue>(sampleTree, (node) => node.name, {
-      childProps: "children"
+    const values = traverseTreeValues<Node, NodeValue>(sampleTree, node => node.name, {
+      childProps: "children",
     });
     expect(values).toEqual(["A", "B", "C", "D", "E", "F", "G", "H", "I"]);
   });
 
   it("handles empty tree", () => {
-    const values = traverseTreeValues<Node, NodeValue>([], (node) => node.name);
+    const values = traverseTreeValues<Node, NodeValue>([], node => node.name);
     expect(values).toEqual([]);
   });
 
   it("handles tree with only root node", () => {
     const rootNode = { name: "A" };
-    const values = traverseTreeValues<Node, NodeValue>([rootNode], (node) => node.name);
+    const values = traverseTreeValues<Node, NodeValue>([rootNode], node => node.name);
     expect(values).toEqual(["A"]);
   });
 
   it("handles tree with only leaf nodes", () => {
     const leafNodes = [{ name: "A" }, { name: "B" }, { name: "C" }];
-    const values = traverseTreeValues<Node, NodeValue>(leafNodes, (node) => node.name);
+    const values = traverseTreeValues<Node, NodeValue>(leafNodes, node => node.name);
     expect(values).toEqual(["A", "B", "C"]);
   });
 });
@@ -62,10 +62,10 @@ describe("filterTree", () => {
   const tree = [
     {
       id: 1,
-      children: [{ id: 2 }, { id: 3, children: [{ id: 4 }, { id: 5 }, { id: 6 }] }, { id: 7 }]
+      children: [{ id: 2 }, { id: 3, children: [{ id: 4 }, { id: 5 }, { id: 6 }] }, { id: 7 }],
     },
     { id: 8, children: [{ id: 9 }, { id: 10 }] },
-    { id: 11 }
+    { id: 11 },
   ];
 
   it("should return all nodes when condition is always true", () => {
@@ -79,18 +79,18 @@ describe("filterTree", () => {
   });
 
   it("should return nodes with even id values", () => {
-    const result = filterTree(tree, (node) => node.id % 2 === 0);
+    const result = filterTree(tree, node => node.id % 2 === 0);
     expect(result).toEqual([{ id: 8, children: [{ id: 10 }] }]);
   });
 
   it("should return nodes with odd id values and their ancestors", () => {
-    const result = filterTree(tree, (node) => node.id % 2 === 1);
+    const result = filterTree(tree, node => node.id % 2 === 1);
     expect(result).toEqual([
       {
         id: 1,
-        children: [{ id: 3, children: [{ id: 5 }] }, { id: 7 }]
+        children: [{ id: 3, children: [{ id: 5 }] }, { id: 7 }],
       },
-      { id: 11 }
+      { id: 11 },
     ]);
   });
 
@@ -102,18 +102,18 @@ describe("filterTree", () => {
           { name: "leaf 1" },
           {
             name: "branch",
-            children: [{ name: "leaf 2" }, { name: "leaf 3" }]
+            children: [{ name: "leaf 2" }, { name: "leaf 3" }],
           },
-          { name: "leaf 4" }
-        ]
-      }
+          { name: "leaf 4" },
+        ],
+      },
     ];
-    const result = filterTree(tree, (node) => node.name.includes("leaf") || node.name === "root");
+    const result = filterTree(tree, node => node.name.includes("leaf") || node.name === "root");
     expect(result).toEqual([
       {
         name: "root",
-        children: [{ name: "leaf 1" }, { name: "leaf 4" }]
-      }
+        children: [{ name: "leaf 1" }, { name: "leaf 4" }],
+      },
     ]);
   });
 });
@@ -136,18 +136,18 @@ describe("mapTree", () => {
                 name: "node5",
                 children: [
                   { id: 6, name: "node6" },
-                  { id: 7, name: "node7" }
-                ]
+                  { id: 7, name: "node7" },
+                ],
               },
-              { id: 8, name: "node8" }
-            ]
-          }
-        ]
-      }
+              { id: 8, name: "node8" },
+            ],
+          },
+        ],
+      },
     ];
-    const newTree = mapTree(tree, (node) => ({
+    const newTree = mapTree(tree, node => ({
       ...node,
-      name: `${node.name}-new`
+      name: `${node.name}-new`,
     }));
 
     expect(newTree).toEqual([
@@ -166,14 +166,14 @@ describe("mapTree", () => {
                 name: "node5-new",
                 children: [
                   { id: 6, name: "node6-new" },
-                  { id: 7, name: "node7-new" }
-                ]
+                  { id: 7, name: "node7-new" },
+                ],
               },
-              { id: 8, name: "node8-new" }
-            ]
-          }
-        ]
-      }
+              { id: 8, name: "node8-new" },
+            ],
+          },
+        ],
+      },
     ]);
   });
 });

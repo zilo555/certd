@@ -7,7 +7,7 @@ import { filterTree, mapTree } from "/@/vben/shared/utils";
  */
 async function generateRoutesByFrontend(routes: RouteRecordRaw[], roles: string[], forbiddenComponent?: RouteRecordRaw["component"]): Promise<RouteRecordRaw[]> {
   // 根据角色标识过滤路由表,判断当前用户是否拥有指定权限
-  const finalRoutes = filterTree(routes, (route) => {
+  const finalRoutes = filterTree(routes, route => {
     return hasAuthority(route, roles);
   });
 
@@ -16,7 +16,7 @@ async function generateRoutesByFrontend(routes: RouteRecordRaw[], roles: string[
   }
 
   // 如果有禁止访问的页面，将禁止访问的页面替换为403页面
-  return mapTree(finalRoutes, (route) => {
+  return mapTree(finalRoutes, route => {
     if (menuHasVisibleWithForbidden(route)) {
       route.component = forbiddenComponent;
     }
@@ -34,7 +34,7 @@ function hasAuthority(route: RouteRecordRaw, access: string[]) {
   if (!authority) {
     return true;
   }
-  const canAccess = access.some((value) => authority.includes(value));
+  const canAccess = access.some(value => authority.includes(value));
 
   return canAccess || (!canAccess && menuHasVisibleWithForbidden(route));
 }

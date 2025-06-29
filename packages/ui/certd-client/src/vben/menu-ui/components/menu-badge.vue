@@ -18,7 +18,7 @@ const variantsMap: Record<string, string> = {
   destructive: "bg-destructive",
   primary: "bg-primary",
   success: "bg-green-500",
-  warning: "bg-yellow-500"
+  warning: "bg-yellow-500",
 };
 
 const isDot = computed(() => props.badgeType === "dot");
@@ -36,7 +36,7 @@ const badgeClass = computed(() => {
 const badgeStyle = computed(() => {
   if (badgeClass.value && isValidColor(badgeClass.value)) {
     return {
-      backgroundColor: badgeClass.value
+      backgroundColor: badgeClass.value,
     };
   }
   return {};

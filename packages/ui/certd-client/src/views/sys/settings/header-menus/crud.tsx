@@ -33,13 +33,13 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
       records: records,
       total: records.length,
       limit: 9999999,
-      offset: 0
+      offset: 0,
     };
   };
   const editRequest = async ({ form, row }: EditReq) => {
     form.id = row.id;
     let found: any = undefined;
-    utils.tree.eachTree(settingStore.headerMenus?.menus || [], (item) => {
+    utils.tree.eachTree(settingStore.headerMenus?.menus || [], item => {
       if (item.id === row.id) {
         merge(item, form);
         found = item;
@@ -49,7 +49,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
     return found;
   };
   const delRequest = async ({ row }: DelReq) => {
-    utils.tree.eachTree([{ children: settingStore.headerMenus?.menus }], (item) => {
+    utils.tree.eachTree([{ children: settingStore.headerMenus?.menus }], item => {
       if (item.children) {
         remove(item.children, (child: any) => child.id === row.id);
       }
@@ -60,7 +60,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
   const addRequest = async ({ form }: AddReq) => {
     form.id = nanoid();
     if (form.parentId) {
-      utils.tree.eachTree(settingStore.headerMenus?.menus || [], (item) => {
+      utils.tree.eachTree(settingStore.headerMenus?.menus || [], item => {
         if (item.id === form.parentId) {
           if (!item.children) {
             item.children = [];
@@ -81,10 +81,10 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
         pageRequest,
         addRequest,
         editRequest,
-        delRequest
+        delRequest,
       },
       search: {
-        show: false
+        show: false,
       },
       table: {
         expandRowByClick: true,
@@ -92,7 +92,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
         expandedRowKeys: expandedRowKeys,
         "onUpdate:expandedRowKeys": (val: string[]) => {
           expandedRowKeys.value = val;
-        }
+        },
       },
       pagination: { show: false, pageSize: 9999999 },
       rowHandle: {
@@ -107,12 +107,12 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             click: ({ row }) => {
               crudExpose.openAdd({
                 row: {
-                  parentId: row.id
-                }
+                  parentId: row.id,
+                },
               });
-            }
-          }
-        }
+            },
+          },
+        },
       },
       columns: {
         id: {
@@ -121,26 +121,26 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           type: "text",
           column: {
             width: 200,
-            show: false
+            show: false,
           },
           form: {
-            show: false
-          }
+            show: false,
+          },
         },
         title: {
           title: "菜单标题",
           type: "text",
           column: {
-            width: 300
+            width: 300,
           },
           form: {
             rules: [
               {
                 required: true,
-                message: "请输入标题"
-              }
-            ]
-          }
+                message: "请输入标题",
+              },
+            ],
+          },
         },
         icon: {
           title: "图标",
@@ -149,34 +149,34 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             width: 300,
             cellRender: ({ row }) => {
               return <fs-icon class={"fs-16"} icon={row.icon}></fs-icon>;
-            }
+            },
           },
           form: {
             component: {
-              placeholder: "ion:add-circle"
-            }
-          }
+              placeholder: "ion:add-circle",
+            },
+          },
         },
         path: {
           title: "链接",
           type: "link",
           column: {
-            width: 300
+            width: 300,
           },
           form: {
             rules: [
               {
                 required: true,
-                message: "请输入链接"
+                message: "请输入链接",
               },
               {
                 type: "url",
-                message: "请输入正确的链接"
-              }
-            ]
-          }
-        }
-      }
-    }
+                message: "请输入正确的链接",
+              },
+            ],
+          },
+        },
+      },
+    },
   };
 }

@@ -35,7 +35,7 @@ export default {
       forEach(map, (item, key) => {
         list.push({
           key,
-          label: item.label
+          label: item.label,
         });
       });
       return list;
@@ -54,9 +54,9 @@ export default {
     return {
       languages,
       current,
-      changeLocale
+      changeLocale,
     };
-  }
+  },
 };
 </script>
 

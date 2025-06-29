@@ -13,7 +13,6 @@
   </fs-page>
 </template>
 
-
 <script lang="ts" setup>
 import { onActivated, onMounted } from "vue";
 import { useFs } from "@fast-crud/fast-crud";

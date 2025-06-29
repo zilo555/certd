@@ -22,7 +22,7 @@ import { mySuiteApi, SuiteDetail } from "/@/views/certd/suite/mine/api";
 import SuiteCard from "/@/views/framework/home/dashboard/suite-card.vue";
 
 defineOptions({
-  name: "MySuites"
+  name: "MySuites",
 });
 const detail = ref<SuiteDetail>({});
 const currentSuite = computed(() => {

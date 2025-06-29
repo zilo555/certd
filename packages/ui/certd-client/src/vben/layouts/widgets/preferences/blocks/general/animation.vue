@@ -4,12 +4,12 @@ import { $t } from "/@/locales";
 import SwitchItem from "../switch-item.vue";
 
 defineOptions({
-  name: "PreferenceAnimation"
+  name: "PreferenceAnimation",
 });
 
 const transitionProgress = defineModel<boolean>("transitionProgress", {
   // 默认值
-  default: false
+  default: false,
 });
 const transitionName = defineModel<string>("transitionName");
 const transitionEnable = defineModel<boolean>("transitionEnable");
@@ -37,7 +37,7 @@ function handleClick(value: string) {
       v-for="item in transitionPreset"
       :key="item"
       :class="{
-        'outline-box-active': transitionName === item
+        'outline-box-active': transitionName === item,
       }"
       class="outline-box p-2"
       @click="handleClick(item)"

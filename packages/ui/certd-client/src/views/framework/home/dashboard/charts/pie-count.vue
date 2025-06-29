@@ -22,19 +22,19 @@ const props = defineProps<{
 const option = ref({
   color: ["#91cc75", "#73c0de", "#ee6666", "#fac858", "#5470c6", "#3ba272", "#fc8452", "#9a60b4", "#ea7ccc", "#5470c6"],
   tooltip: {
-    trigger: "item"
+    trigger: "item",
   },
   legend: {
     orient: "vertical",
     bottom: "5%",
-    left: "left"
+    left: "left",
   },
   grid: {
     top: "20px",
     left: "20px",
     right: "20px",
     bottom: "10px",
-    containLabel: true
+    containLabel: true,
   },
   series: [
     {
@@ -46,25 +46,25 @@ const option = ref({
       itemStyle: {
         borderRadius: 0,
         borderColor: "#fff",
-        borderWidth: 1
+        borderWidth: 1,
       },
       label: {
         show: false,
-        position: "center"
+        position: "center",
       },
       emphasis: {
         label: {
           show: false,
           fontSize: 18,
-          fontWeight: "bold"
-        }
+          fontWeight: "bold",
+        },
       },
       labelLine: {
-        show: false
+        show: false,
       },
-      data: props.data
-    }
-  ]
+      data: props.data,
+    },
+  ],
 });
 </script>
 

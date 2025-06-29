@@ -1,19 +1,12 @@
 <script setup lang="ts">
-import type {
-  ContextMenuCheckboxItemEmits,
-  ContextMenuCheckboxItemProps,
-} from 'radix-vue';
+import type { ContextMenuCheckboxItemEmits, ContextMenuCheckboxItemProps } from "radix-vue";
 
-import { computed } from 'vue';
+import { computed } from "vue";
 
-import { cn } from '/@/vben/shared/utils';
+import { cn } from "/@/vben/shared/utils";
 
-import { Check } from 'lucide-vue-next';
-import {
-  ContextMenuCheckboxItem,
-  ContextMenuItemIndicator,
-  useForwardPropsEmits,
-} from 'radix-vue';
+import { Check } from "lucide-vue-next";
+import { ContextMenuCheckboxItem, ContextMenuItemIndicator, useForwardPropsEmits } from "radix-vue";
 
 const props = defineProps<ContextMenuCheckboxItemProps & { class?: any }>();
 const emits = defineEmits<ContextMenuCheckboxItemEmits>();
@@ -33,7 +26,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
     :class="
       cn(
         'focus:bg-accent focus:text-accent-foreground relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
-        props.class,
+        props.class
       )
     "
   >

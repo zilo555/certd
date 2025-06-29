@@ -9,7 +9,7 @@ function useOpenPreferences() {
 
   return {
     handleOpenPreference,
-    openPreferences
+    openPreferences,
   };
 }
 

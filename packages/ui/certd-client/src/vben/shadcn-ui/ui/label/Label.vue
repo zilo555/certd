@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { LabelProps } from 'radix-vue';
+import type { LabelProps } from "radix-vue";
 
-import { computed } from 'vue';
+import { computed } from "vue";
 
-import { cn } from '/@/vben/shared/utils';
+import { cn } from "/@/vben/shared/utils";
 
-import { Label } from 'radix-vue';
+import { Label } from "radix-vue";
 
 const props = defineProps<LabelProps & { class?: any }>();
 
@@ -17,15 +17,7 @@ const delegatedProps = computed(() => {
 </script>
 
 <template>
-  <Label
-    v-bind="delegatedProps"
-    :class="
-      cn(
-        'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
-        props.class,
-      )
-    "
-  >
+  <Label v-bind="delegatedProps" :class="cn('text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70', props.class)">
     <slot></slot>
   </Label>
 </template>

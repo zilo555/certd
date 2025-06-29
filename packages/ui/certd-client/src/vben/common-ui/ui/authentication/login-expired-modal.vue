@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { AuthenticationProps } from './types';
+import type { AuthenticationProps } from "./types";
 
-import { computed, watch } from 'vue';
+import { computed, watch } from "vue";
 
-import { useVbenModal } from '/@/vben/popup-ui';
-import { Slot, VbenAvatar } from '/@/vben/shadcn-ui';
+import { useVbenModal } from "/@/vben/popup-ui";
+import { Slot, VbenAvatar } from "/@/vben/shadcn-ui";
 
 interface Props extends AuthenticationProps {
   avatar?: string;
@@ -12,23 +12,23 @@ interface Props extends AuthenticationProps {
 }
 
 defineOptions({
-  name: 'LoginExpiredModal',
+  name: "LoginExpiredModal",
 });
 
 const props = withDefaults(defineProps<Props>(), {
-  avatar: '',
+  avatar: "",
   zIndex: 0,
 });
 
-const open = defineModel<boolean>('open');
+const open = defineModel<boolean>("open");
 
 const [Modal, modalApi] = useVbenModal();
 
 watch(
   () => open.value,
-  (val) => {
+  val => {
     modalApi.setState({ isOpen: val });
-  },
+  }
 );
 
 const getZIndex = computed(() => {
@@ -40,10 +40,10 @@ const getZIndex = computed(() => {
  */
 function calcZIndex() {
   let maxZ = 0;
-  const elements = document.querySelectorAll('*');
-  [...elements].forEach((element) => {
+  const elements = document.querySelectorAll("*");
+  [...elements].forEach(element => {
     const style = window.getComputedStyle(element);
-    const zIndex = style.getPropertyValue('z-index');
+    const zIndex = style.getPropertyValue("z-index");
     if (zIndex && !Number.isNaN(Number.parseInt(zIndex))) {
       maxZ = Math.max(maxZ, Number.parseInt(zIndex));
     }
@@ -65,13 +65,7 @@ function calcZIndex() {
       class="border-none px-10 py-6 text-center shadow-xl sm:w-[600px] sm:rounded-2xl md:h-[unset]"
     >
       <VbenAvatar :src="avatar" class="mx-auto mb-6 size-20" />
-      <Slot
-        :show-forget-password="false"
-        :show-register="false"
-        :show-remember-me="false"
-        :sub-title="$t('authentication.loginAgainSubTitle')"
-        :title="$t('authentication.loginAgainTitle')"
-      >
+      <Slot :show-forget-password="false" :show-register="false" :show-remember-me="false" :sub-title="$t('authentication.loginAgainSubTitle')" :title="$t('authentication.loginAgainTitle')">
         <slot> </slot>
       </Slot>
     </Modal>

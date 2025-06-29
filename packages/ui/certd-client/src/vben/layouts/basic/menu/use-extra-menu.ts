@@ -106,7 +106,7 @@ function useExtraMenu(useRootMenus?: ComputedRef<MenuRecordRaw[]>) {
     handleMenuMouseEnter,
     handleMixedMenuSelect,
     handleSideMouseLeave,
-    sidebarExtraVisible
+    sidebarExtraVisible,
   };
 }
 

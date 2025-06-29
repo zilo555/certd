@@ -78,7 +78,7 @@ const useNamespace = (block: string) => {
     em,
     is,
     m,
-    namespace
+    namespace,
   };
 };
 

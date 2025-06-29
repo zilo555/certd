@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  name: "PiContainer"
+  name: "PiContainer",
 };
 </script>
 

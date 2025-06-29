@@ -56,7 +56,7 @@ export const usePermissionStore = defineStore({
   id: "app.permission",
   state: (): PermissionState => ({
     permissions: [],
-    inited: false
+    inited: false,
   }),
   getters: {
     // @ts-ignore
@@ -68,7 +68,7 @@ export const usePermissionStore = defineStore({
     isInited() {
       // @ts-ignore
       return this.inited;
-    }
+    },
   },
   actions: {
     init({ permissions }: any) {
@@ -101,6 +101,6 @@ export const usePermissionStore = defineStore({
         }
       }
       this.resolve(permissionTree);
-    }
-  }
+    },
+  },
 });

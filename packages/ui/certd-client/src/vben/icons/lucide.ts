@@ -60,5 +60,5 @@ export {
   SwatchBook,
   UserRoundPen,
   X,
-  CircleX
+  CircleX,
 } from "lucide-vue-next";

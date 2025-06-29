@@ -22,6 +22,6 @@ export const useSimpleLocale = createSharedComposable(() => {
   return {
     $t,
     currentLocale,
-    setSimpleLocale
+    setSimpleLocale,
   };
 });

@@ -9,7 +9,7 @@ import type {
   LayoutType,
   NavigationStyleType,
   PreferencesButtonPositionType,
-  ThemeModeType
+  ThemeModeType,
 } from "/@/vben/types";
 
 import type { SegmentedItem } from "/@/vben//shadcn-ui";
@@ -125,20 +125,20 @@ const tabs = computed((): SegmentedItem[] => {
   return [
     {
       label: $t("preferences.appearance"),
-      value: "appearance"
+      value: "appearance",
     },
     {
       label: $t("preferences.layout"),
-      value: "layout"
+      value: "layout",
     },
     {
       label: $t("preferences.shortcutKeys.title"),
-      value: "shortcutKey"
+      value: "shortcutKey",
     },
     {
       label: $t("preferences.general"),
-      value: "general"
-    }
+      value: "general",
+    },
   ];
 });
 

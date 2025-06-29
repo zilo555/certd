@@ -1,21 +1,11 @@
 <script lang="ts" setup>
-import type {
-  DropdownMenuProps,
-  VbenDropdownMenuItem as IDropdownMenuItem,
-} from './interface';
+import type { DropdownMenuProps, VbenDropdownMenuItem as IDropdownMenuItem } from "./interface";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '../../ui';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../../ui";
 
 interface Props extends DropdownMenuProps {}
 
-defineOptions({ name: 'DropdownMenu' });
+defineOptions({ name: "DropdownMenu" });
 const props = withDefaults(defineProps<Props>(), {});
 
 function handleItemClick(menu: IDropdownMenuItem) {
@@ -33,11 +23,7 @@ function handleItemClick(menu: IDropdownMenuItem) {
     <DropdownMenuContent align="start">
       <DropdownMenuGroup>
         <template v-for="menu in menus" :key="menu.value">
-          <DropdownMenuItem
-            :disabled="menu.disabled"
-            class="data-[state=checked]:bg-accent data-[state=checked]:text-accent-foreground text-foreground/80 mb-1 cursor-pointer"
-            @click="handleItemClick(menu)"
-          >
+          <DropdownMenuItem :disabled="menu.disabled" class="data-[state=checked]:bg-accent data-[state=checked]:text-accent-foreground text-foreground/80 mb-1 cursor-pointer" @click="handleItemClick(menu)">
             <component :is="menu.icon" v-if="menu.icon" class="mr-2 size-4" />
             {{ menu.label }}
           </DropdownMenuItem>

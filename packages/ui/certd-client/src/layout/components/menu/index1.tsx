@@ -6,7 +6,7 @@ import "./index.less";
 import { utils } from "@fast-crud/fast-crud";
 import { routerUtils } from "/@/utils/util.router";
 
-defineOptions()
+defineOptions();
 
 export default defineComponent({
   name: "FsMenu",
@@ -14,9 +14,9 @@ export default defineComponent({
   props: {
     menus: {},
     expandSelected: {
-      default: false
+      default: false,
     },
-    scroll: {}
+    scroll: {},
   },
   setup(props, ctx) {
     async function onSelect(item: any) {
@@ -37,7 +37,7 @@ export default defineComponent({
           title: sub.title,
           icon: () => {
             return <fsIcon icon={sub.icon ?? sub.meta?.icon} />;
-          }
+          },
         };
         list.push(item);
         if (sub.children && sub.children.length > 0) {
@@ -80,7 +80,7 @@ export default defineComponent({
             default: () => {
               return buildMenus(sub.children);
             },
-            title
+            title,
           };
           function onTitleClick() {
             if (sub.path && ctx.attrs.mode === "horizontal") {
@@ -101,7 +101,7 @@ export default defineComponent({
     const slots = {
       default() {
         return buildMenus(props.menus);
-      }
+      },
     };
     const selectedKeys = ref([]);
     const openKeys = ref([]);
@@ -123,7 +123,7 @@ export default defineComponent({
           return;
         }
         if (value.path === fullPath) {
-          _.forEach(context.parents, (item) => {
+          _.forEach(context.parents, item => {
             if (item.value instanceof Array) {
               return;
             }
@@ -148,7 +148,7 @@ export default defineComponent({
       () => {
         return route.fullPath;
       },
-      (path) => {
+      path => {
         // path = route.fullPath;
         selectedKeys.value = [path];
         const changed = openSelectedParents(path);
@@ -157,7 +157,7 @@ export default defineComponent({
         }
       },
       {
-        immediate: true
+        immediate: true,
       }
     );
     return () => {
@@ -170,7 +170,7 @@ export default defineComponent({
           // onOpenChange={onOpenChange}
           v-models={[
             [openKeys.value, "openKeys"],
-            [selectedKeys.value, "selectedKeys"]
+            [selectedKeys.value, "selectedKeys"],
           ]}
           items={items.value}
           inlineCollapsed={!props.expandSelected}
@@ -179,5 +179,5 @@ export default defineComponent({
       const classNames = { "fs-menu-wrapper": true, "fs-menu-better-scroll": props.scroll };
       return <div>{menu}</div>;
     };
-  }
+  },
 });

@@ -18,12 +18,12 @@ export default defineComponent({
   props: {
     status: {
       type: [String, Number],
-      default: ""
+      default: "",
     },
     type: {
       type: String,
-      default: "icon"
-    }
+      default: "icon",
+    },
   },
   setup(props, ctx) {
     const statusRef = computed(() => {
@@ -31,9 +31,9 @@ export default defineComponent({
     });
 
     return {
-      statusRef
+      statusRef,
     };
-  }
+  },
 });
 </script>
 <style lang="less">

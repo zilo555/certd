@@ -6,7 +6,7 @@ export const sysUserSuiteApi = {
     return await request({
       url: apiPrefix + "/page",
       method: "post",
-      data: query
+      data: query,
     });
   },
 
@@ -14,7 +14,7 @@ export const sysUserSuiteApi = {
     return await request({
       url: apiPrefix + "/add",
       method: "post",
-      data: obj
+      data: obj,
     });
   },
 
@@ -22,7 +22,7 @@ export const sysUserSuiteApi = {
     return await request({
       url: apiPrefix + "/update",
       method: "post",
-      data: obj
+      data: obj,
     });
   },
 
@@ -30,7 +30,7 @@ export const sysUserSuiteApi = {
     return await request({
       url: apiPrefix + "/delete",
       method: "post",
-      params: { id }
+      params: { id },
     });
   },
 
@@ -38,13 +38,13 @@ export const sysUserSuiteApi = {
     return await request({
       url: apiPrefix + "/info",
       method: "post",
-      params: { id }
+      params: { id },
     });
   },
   async ListAll() {
     return await request({
       url: apiPrefix + "/all",
-      method: "post"
+      method: "post",
     });
   },
 
@@ -52,14 +52,14 @@ export const sysUserSuiteApi = {
     return await request({
       url: "/sys/authority/user/getSimpleUserByIds",
       method: "post",
-      data: { ids }
+      data: { ids },
     });
   },
   async PresentSuite(form: any) {
     return await request({
       url: apiPrefix + "/presentSuite",
       method: "post",
-      data: form
+      data: form,
     });
-  }
+  },
 };

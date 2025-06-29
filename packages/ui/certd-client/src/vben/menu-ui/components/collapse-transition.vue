@@ -2,7 +2,7 @@
 import type { RendererElement } from "vue";
 
 defineOptions({
-  name: "CollapseTransition"
+  name: "CollapseTransition",
 });
 
 const reset = (el: RendererElement) => {
@@ -85,7 +85,7 @@ const on = {
 
   leaveCancelled(el: RendererElement) {
     reset(el);
-  }
+  },
 };
 </script>
 

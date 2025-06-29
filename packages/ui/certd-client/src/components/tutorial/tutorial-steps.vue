@@ -20,10 +20,9 @@
     </div>
 
     <div class="flex-center actions">
-      <fs-button class="m-10" icon="ion:arrow-back-outline" @click="prev()">{{ t('guide.buttons.prev') }}</fs-button>
-      <fs-button class="m-10" type="primary" icon-right="ion:arrow-forward-outline" @click="next()">{{ t('guide.buttons.next') }}</fs-button>
+      <fs-button class="m-10" icon="ion:arrow-back-outline" @click="prev()">{{ t("guide.buttons.prev") }}</fs-button>
+      <fs-button class="m-10" type="primary" icon-right="ion:arrow-forward-outline" @click="next()">{{ t("guide.buttons.next") }}</fs-button>
     </div>
-
   </div>
 </template>
 
@@ -49,16 +48,13 @@ type StepItems = {
 import { computed, nextTick, ref } from "vue";
 
 const steps = ref<Step[]>([
-    {
+  {
     title: t("guide.createCertPipeline.title"),
     description: t("guide.createCertPipeline.description"),
     items: [
       {
         title: t("guide.createCertPipeline.items.tutorialTitle"),
-        descriptions: [
-          t("guide.createCertPipeline.items.tutorialDesc1"),
-          t("guide.createCertPipeline.items.tutorialDesc2"),
-        ],
+        descriptions: [t("guide.createCertPipeline.items.tutorialDesc1"), t("guide.createCertPipeline.items.tutorialDesc2")],
         body: () => {
           return <SimpleSteps></SimpleSteps>;
         },
@@ -86,26 +82,17 @@ const steps = ref<Step[]>([
       {
         image: "/static/doc/images/5-1-add-host.png",
         title: t("guide.addDeployTask.items.addTaskTitle"),
-        descriptions: [
-          t("guide.addDeployTask.items.addTaskDesc1"),
-          t("guide.addDeployTask.items.addTaskDesc2"),
-        ],
+        descriptions: [t("guide.addDeployTask.items.addTaskDesc1"), t("guide.addDeployTask.items.addTaskDesc2")],
       },
       {
         image: "/static/doc/images/5-2-add-host.png",
         title: t("guide.addDeployTask.items.fillParamsTitle"),
-        descriptions: [
-          t("guide.addDeployTask.items.fillParamsDesc1"),
-          t("guide.addDeployTask.items.fillParamsDesc2"),
-        ],
+        descriptions: [t("guide.addDeployTask.items.fillParamsDesc1"), t("guide.addDeployTask.items.fillParamsDesc2")],
       },
       {
         image: "/static/doc/images/5-3-add-host.png",
         title: t("guide.addDeployTask.items.activateCertTitle"),
-        descriptions: [
-          t("guide.addDeployTask.items.activateCertDesc1"),
-          t("guide.addDeployTask.items.activateCertDesc2"),
-        ],
+        descriptions: [t("guide.addDeployTask.items.activateCertDesc1"), t("guide.addDeployTask.items.activateCertDesc2")],
       },
       {
         image: "/static/doc/images/5-4-add-host.png",
@@ -119,81 +106,72 @@ const steps = ref<Step[]>([
       },
     ],
   },
-	{
-	title: t('guide.runAndTestTask.runAndTestTitle'),
-	description: t('guide.runAndTestTask.runAndTestDescription'),
-	items: [
-		{
-		image: "/static/doc/images/9-start.png",
-		title: t('guide.runAndTestTask.runTestOnce'),
-		descriptions: [t('guide.runAndTestTask.clickManualTriggerToTest')],
-		},
-		{
-		image: "/static/doc/images/10-1-log.png",
-		title: t('guide.runAndTestTask.viewLogs'),
-		descriptions: [t('guide.runAndTestTask.clickTaskToViewStatusAndLogs')],
-		},
-		{
-		image: "/static/doc/images/11-1-error.png",
-		title: t('guide.runAndTestTask.howToTroubleshootFailure'),
-		descriptions: [t('guide.runAndTestTask.viewErrorLogs')],
-		},
-		{
-		image: "/static/doc/images/11-2-error.png",
-		title: t('guide.runAndTestTask.howToTroubleshootFailure'),
-		descriptions: [
-			t('guide.runAndTestTask.viewErrorLogs'),
-			t('guide.runAndTestTask.nginxContainerNotExistFix'),
-		],
-		},
-		{
-		image: "/static/doc/images/12-1-log-success.png",
-		title: t('guide.runAndTestTask.executionSuccess'),
-		descriptions: [t('guide.runAndTestTask.retryAfterFix')],
-		},
-		{
-		image: "/static/doc/images/12-2-skip-log.png",
-		title: t('guide.runAndTestTask.autoSkipAfterSuccess'),
-		descriptions: [t('guide.runAndTestTask.successSkipExplanation')],
-		},
-		{
-		image: "/static/doc/images/13-1-result.png",
-		title: t('guide.runAndTestTask.viewCertDeploymentSuccess'),
-		descriptions: [t('guide.runAndTestTask.visitNginxToSeeCert')],
-		},
-		{
-		image: "/static/doc/images/13-3-download.png",
-		title: t('guide.runAndTestTask.downloadCertManualDeploy'),
-		descriptions: [t('guide.runAndTestTask.downloadIfNoAutoDeployPlugin')],
-		},
-	],
-	},
-	{
-	title: t('guide.scheduleAndEmailTask.title'),
-	description: t('guide.scheduleAndEmailTask.description'),
-	items: [
-		{
-		image: "/static/doc/images/14-timer.png",
-		title: t('guide.scheduleAndEmailTask.setSchedule'),
-		descriptions: [
-			t('guide.scheduleAndEmailTask.pipelineSuccessThenSchedule'),
-			t('guide.scheduleAndEmailTask.recommendDailyRun'),
-		],
-		},
-		{
-		image: "/static/doc/images/15-1-email.png",
-		title: t('guide.scheduleAndEmailTask.setEmailNotification'),
-		descriptions: [
-			t('guide.scheduleAndEmailTask.suggestErrorAndRecoveryEmails'),
-			t('guide.scheduleAndEmailTask.basicVersionNeedsMailServer'),
-		],
-		},
-		{
-		title: t('guide.scheduleAndEmailTask.tutorialEndTitle'),
-		descriptions: [t('guide.scheduleAndEmailTask.thanksForWatching')],
-		},
-	],
-	}
+  {
+    title: t("guide.runAndTestTask.runAndTestTitle"),
+    description: t("guide.runAndTestTask.runAndTestDescription"),
+    items: [
+      {
+        image: "/static/doc/images/9-start.png",
+        title: t("guide.runAndTestTask.runTestOnce"),
+        descriptions: [t("guide.runAndTestTask.clickManualTriggerToTest")],
+      },
+      {
+        image: "/static/doc/images/10-1-log.png",
+        title: t("guide.runAndTestTask.viewLogs"),
+        descriptions: [t("guide.runAndTestTask.clickTaskToViewStatusAndLogs")],
+      },
+      {
+        image: "/static/doc/images/11-1-error.png",
+        title: t("guide.runAndTestTask.howToTroubleshootFailure"),
+        descriptions: [t("guide.runAndTestTask.viewErrorLogs")],
+      },
+      {
+        image: "/static/doc/images/11-2-error.png",
+        title: t("guide.runAndTestTask.howToTroubleshootFailure"),
+        descriptions: [t("guide.runAndTestTask.viewErrorLogs"), t("guide.runAndTestTask.nginxContainerNotExistFix")],
+      },
+      {
+        image: "/static/doc/images/12-1-log-success.png",
+        title: t("guide.runAndTestTask.executionSuccess"),
+        descriptions: [t("guide.runAndTestTask.retryAfterFix")],
+      },
+      {
+        image: "/static/doc/images/12-2-skip-log.png",
+        title: t("guide.runAndTestTask.autoSkipAfterSuccess"),
+        descriptions: [t("guide.runAndTestTask.successSkipExplanation")],
+      },
+      {
+        image: "/static/doc/images/13-1-result.png",
+        title: t("guide.runAndTestTask.viewCertDeploymentSuccess"),
+        descriptions: [t("guide.runAndTestTask.visitNginxToSeeCert")],
+      },
+      {
+        image: "/static/doc/images/13-3-download.png",
+        title: t("guide.runAndTestTask.downloadCertManualDeploy"),
+        descriptions: [t("guide.runAndTestTask.downloadIfNoAutoDeployPlugin")],
+      },
+    ],
+  },
+  {
+    title: t("guide.scheduleAndEmailTask.title"),
+    description: t("guide.scheduleAndEmailTask.description"),
+    items: [
+      {
+        image: "/static/doc/images/14-timer.png",
+        title: t("guide.scheduleAndEmailTask.setSchedule"),
+        descriptions: [t("guide.scheduleAndEmailTask.pipelineSuccessThenSchedule"), t("guide.scheduleAndEmailTask.recommendDailyRun")],
+      },
+      {
+        image: "/static/doc/images/15-1-email.png",
+        title: t("guide.scheduleAndEmailTask.setEmailNotification"),
+        descriptions: [t("guide.scheduleAndEmailTask.suggestErrorAndRecoveryEmails"), t("guide.scheduleAndEmailTask.basicVersionNeedsMailServer")],
+      },
+      {
+        title: t("guide.scheduleAndEmailTask.tutorialEndTitle"),
+        descriptions: [t("guide.scheduleAndEmailTask.thanksForWatching")],
+      },
+    ],
+  },
 ]);
 
 const current = ref(0);

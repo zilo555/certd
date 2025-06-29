@@ -1,21 +1,20 @@
 <template>
-	<fs-page class="page-cert">
-		<template #header>
-			<div class="title">
-				{{ t("certd.pluginManagement") }}
-				<span class="sub">{{ t("certd.pluginBetaWarning") }}</span>
-			</div>
-		</template>
-		<fs-crud ref="crudRef" v-bind="crudBinding">
-			<!--      <template #pagination-left>-->
-			<!--        <a-tooltip :title="t('certd.batchDelete')">-->
-			<!--          <fs-button icon="DeleteOutlined" @click="handleBatchDelete"></fs-button>-->
-			<!--        </a-tooltip>-->
-			<!--      </template>-->
-		</fs-crud>
-	</fs-page>
+  <fs-page class="page-cert">
+    <template #header>
+      <div class="title">
+        {{ t("certd.pluginManagement") }}
+        <span class="sub">{{ t("certd.pluginBetaWarning") }}</span>
+      </div>
+    </template>
+    <fs-crud ref="crudRef" v-bind="crudBinding">
+      <!--      <template #pagination-left>-->
+      <!--        <a-tooltip :title="t('certd.batchDelete')">-->
+      <!--          <fs-button icon="DeleteOutlined" @click="handleBatchDelete"></fs-button>-->
+      <!--        </a-tooltip>-->
+      <!--      </template>-->
+    </fs-crud>
+  </fs-page>
 </template>
-
 
 <script lang="ts" setup>
 import { onActivated, onMounted } from "vue";
@@ -28,36 +27,35 @@ import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 
 defineOptions({
-	name: "SysPlugin",
+  name: "SysPlugin",
 });
 const { crudBinding, crudRef, crudExpose, context } = useFs({ createCrudOptions });
 
 onActivated(async () => {
-	await crudExpose.doRefresh();
+  await crudExpose.doRefresh();
 });
 
 const selectedRowKeys = context.selectedRowKeys;
 const handleBatchDelete = () => {
-	if (selectedRowKeys.value?.length > 0) {
-		Modal.confirm({
-			title: t("certd.confirm"),
-			content: t("certd.batchDeleteConfirm", { count: selectedRowKeys.value.length }),
-			async onOk() {
-				await DeleteBatch(selectedRowKeys.value);
-				message.info(t("certd.deleteSuccess"));
-				crudExpose.doRefresh();
-				selectedRowKeys.value = [];
-			},
-		});
-	} else {
-		message.error(t("certd.pleaseSelectRecord"));
-	}
+  if (selectedRowKeys.value?.length > 0) {
+    Modal.confirm({
+      title: t("certd.confirm"),
+      content: t("certd.batchDeleteConfirm", { count: selectedRowKeys.value.length }),
+      async onOk() {
+        await DeleteBatch(selectedRowKeys.value);
+        message.info(t("certd.deleteSuccess"));
+        crudExpose.doRefresh();
+        selectedRowKeys.value = [];
+      },
+    });
+  } else {
+    message.error(t("certd.pleaseSelectRecord"));
+  }
 };
-
 
 // 页面打开后获取列表数据
 onMounted(() => {
-	crudExpose.doRefresh();
+  crudExpose.doRefresh();
 });
 </script>
 <style lang="less"></style>

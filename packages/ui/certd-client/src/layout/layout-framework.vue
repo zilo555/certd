@@ -20,6 +20,7 @@
           <!--          <fs-menu class="header-menu" mode="horizontal" :expand-selected="false" :selectable="false" :menus="frameworkMenus" />-->
           <div
             v-for="menu of resourceStore.authedTopMenus"
+            :key="menu.name"
             class="top-menu flex-center header-btn"
             :class="{ current: resourceStore.currentTopMenu === menu }"
             :style="{ color: resourceStore.currentTopMenu === menu ? token.colorPrimary : '' }"

@@ -1,27 +1,27 @@
 <script setup lang="ts">
-import type { VariantProps } from 'class-variance-authority';
-import type { ToggleGroupRootEmits, ToggleGroupRootProps } from 'radix-vue';
+import type { VariantProps } from "class-variance-authority";
+import type { ToggleGroupRootEmits, ToggleGroupRootProps } from "radix-vue";
 
-import type { toggleVariants } from '../toggle';
+import type { toggleVariants } from "../toggle";
 
-import { computed, provide } from 'vue';
+import { computed, provide } from "vue";
 
-import { cn } from '/@/vben/shared/utils';
+import { cn } from "/@/vben/shared/utils";
 
-import { ToggleGroupRoot, useForwardPropsEmits } from 'radix-vue';
+import { ToggleGroupRoot, useForwardPropsEmits } from "radix-vue";
 
 type ToggleGroupVariants = VariantProps<typeof toggleVariants>;
 
 const props = defineProps<
   ToggleGroupRootProps & {
     class?: any;
-    size?: ToggleGroupVariants['size'];
-    variant?: ToggleGroupVariants['variant'];
+    size?: ToggleGroupVariants["size"];
+    variant?: ToggleGroupVariants["variant"];
   }
 >();
 const emits = defineEmits<ToggleGroupRootEmits>();
 
-provide('toggleGroup', {
+provide("toggleGroup", {
   size: props.size,
   variant: props.variant,
 });
@@ -35,10 +35,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
 </script>
 
 <template>
-  <ToggleGroupRoot
-    v-bind="forwarded"
-    :class="cn('flex items-center justify-center gap-1', props.class)"
-  >
+  <ToggleGroupRoot v-bind="forwarded" :class="cn('flex items-center justify-center gap-1', props.class)">
     <slot></slot>
   </ToggleGroupRoot>
 </template>

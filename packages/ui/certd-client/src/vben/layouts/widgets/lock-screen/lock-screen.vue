@@ -16,11 +16,11 @@ interface Props {
 }
 
 defineOptions({
-  name: "LockScreen"
+  name: "LockScreen",
 });
 
 withDefaults(defineProps<Props>(), {
-  avatar: ""
+  avatar: "",
 });
 
 defineEmits<{ toLogin: [] }>();
@@ -41,20 +41,20 @@ const [Form, { form, validate }] = useVbenForm(
   reactive({
     commonConfig: {
       hideLabel: true,
-      hideRequiredMark: true
+      hideRequiredMark: true,
     },
     schema: computed(() => [
       {
         component: "VbenInputPassword" as const,
         componentProps: {
-          placeholder: $t("ui.widgets.lockScreen.placeholder")
+          placeholder: $t("ui.widgets.lockScreen.placeholder"),
         },
         fieldName: "password",
         label: $t("authentication.password"),
-        rules: z.string().min(1, { message: $t("authentication.passwordTip") })
-      }
+        rules: z.string().min(1, { message: $t("authentication.passwordTip") }),
+      },
     ]),
-    showDefaultActions: false
+    showDefaultActions: false,
   })
 );
 

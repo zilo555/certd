@@ -1,25 +1,22 @@
 <script lang="ts" setup>
-import { VbenAvatar } from '/@/vben/shadcn-ui';
+import { VbenAvatar } from "/@/vben/shadcn-ui";
 
 interface Props {
   avatar?: string;
 }
 
 defineOptions({
-  name: 'WorkbenchHeader',
+  name: "WorkbenchHeader",
 });
 
 withDefaults(defineProps<Props>(), {
-  avatar: '',
+  avatar: "",
 });
 </script>
 <template>
   <div class="card-box p-4 py-6 lg:flex">
     <VbenAvatar :src="avatar" class="size-20" />
-    <div
-      v-if="$slots.title || $slots.description"
-      class="flex flex-col justify-center md:ml-6 md:mt-0"
-    >
+    <div v-if="$slots.title || $slots.description" class="flex flex-col justify-center md:ml-6 md:mt-0">
       <h1 v-if="$slots.title" class="text-md font-semibold md:text-xl">
         <slot name="title"></slot>
       </h1>

@@ -95,7 +95,7 @@ const props = withDefaults(defineProps<Props>(), {
   paddingTop: 0,
   show: true,
   showCollapseButton: true,
-  zIndex: 0
+  zIndex: 0,
 });
 
 const emit = defineEmits<{ leave: [] }>();
@@ -122,7 +122,7 @@ const style = computed((): CSSProperties => {
     marginTop: `${marginTop}px`,
     paddingTop: `${paddingTop}px`,
     zIndex,
-    ...(isSidebarMixed && extraVisible.value ? { transition: "none" } : {})
+    ...(isSidebarMixed && extraVisible.value ? { transition: "none" } : {}),
   };
 });
 
@@ -132,7 +132,7 @@ const extraStyle = computed((): CSSProperties => {
   return {
     left: `${width}px`,
     width: extraVisible.value && show ? `${extraWidth}px` : 0,
-    zIndex
+    zIndex,
   };
 });
 
@@ -140,7 +140,7 @@ const extraTitleStyle = computed((): CSSProperties => {
   const { headerHeight } = props;
 
   return {
-    height: `${headerHeight - 1}px`
+    height: `${headerHeight - 1}px`,
   };
 });
 
@@ -158,7 +158,7 @@ const contentStyle = computed((): CSSProperties => {
   return {
     height: `calc(100% - ${headerHeight + collapseHeight}px)`,
     paddingTop: "8px",
-    ...contentWidthStyle.value
+    ...contentWidthStyle.value,
   };
 });
 
@@ -168,20 +168,20 @@ const headerStyle = computed((): CSSProperties => {
   return {
     ...(isSidebarMixed ? { display: "flex", justifyContent: "center" } : {}),
     height: `${headerHeight - 1}px`,
-    ...contentWidthStyle.value
+    ...contentWidthStyle.value,
   };
 });
 
 const extraContentStyle = computed((): CSSProperties => {
   const { collapseHeight, headerHeight } = props;
   return {
-    height: `calc(100% - ${headerHeight + collapseHeight}px)`
+    height: `calc(100% - ${headerHeight + collapseHeight}px)`,
   };
 });
 
 const collapseStyle = computed((): CSSProperties => {
   return {
-    height: `${props.collapseHeight}px`
+    height: `${props.collapseHeight}px`,
   };
 });
 
@@ -206,7 +206,7 @@ function calcMenuWidthStyle(isHiddenDom: boolean): CSSProperties {
     marginLeft: show ? 0 : `-${widthValue}`,
     maxWidth: widthValue,
     minWidth: widthValue,
-    width: widthValue
+    width: widthValue,
   };
 }
 
@@ -250,8 +250,8 @@ function handleMouseleave() {
       theme,
       {
         'bg-sidebar-deep': isSidebarMixed,
-        'bg-sidebar border-border border-r': !isSidebarMixed
-      }
+        'bg-sidebar border-border border-r': !isSidebarMixed,
+      },
     ]"
     :style="style"
     class="fixed left-0 top-0 h-full transition-all duration-150"
@@ -272,7 +272,7 @@ function handleMouseleave() {
       v-if="isSidebarMixed"
       ref="asideRef"
       :class="{
-        'border-l': extraVisible
+        'border-l': extraVisible,
       }"
       :style="extraStyle"
       class="border-border bg-sidebar fixed top-0 h-full overflow-hidden border-r transition-all duration-200"

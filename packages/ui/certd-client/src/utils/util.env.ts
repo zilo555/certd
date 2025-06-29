@@ -1,4 +1,4 @@
-import {forEach} from "lodash-es";
+import { forEach } from "lodash-es";
 export function getEnvValue(key: string) {
   // @ts-ignore
   return import.meta.env["VITE_APP_" + key];

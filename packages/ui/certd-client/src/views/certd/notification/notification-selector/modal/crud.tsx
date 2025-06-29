@@ -47,46 +47,46 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
         pageRequest,
         addRequest,
         editRequest,
-        delRequest
+        delRequest,
       },
       toolbar: {
-        show: false
+        show: false,
       },
       search: {
-        show: false
+        show: false,
       },
       form: {
         labelCol: {
           //固定label宽度
           span: null,
           style: {
-            width: "145px"
-          }
-        }
+            width: "145px",
+          },
+        },
       },
       rowHandle: {
-        width: 200
+        width: 200,
       },
       table: {
         scroll: {
-          x: 700
+          x: 700,
         },
         rowSelection: {
           type: "radio",
           selectedRowKeys: selectedRowKey,
-          onChange: onSelectChange
+          onChange: onSelectChange,
         },
         customRow: (record: any) => {
           return {
             onClick: () => {
               onSelectChange([record.id]);
-            } // 点击行
+            }, // 点击行
           };
-        }
+        },
       },
       columns: {
-        ...commonColumnsDefine
-      }
-    }
+        ...commonColumnsDefine,
+      },
+    },
   };
 }

@@ -1,21 +1,14 @@
 <script setup lang="ts">
-import type { SelectOption } from '/@/vben/types';
+import type { SelectOption } from "/@/vben/types";
 
-import { useSlots } from 'vue';
+import { useSlots } from "vue";
 
-import { CircleHelp } from '/@/vben/icons';
+import { CircleHelp } from "/@/vben/icons";
 
-import {
-  NumberField,
-  NumberFieldContent,
-  NumberFieldDecrement,
-  NumberFieldIncrement,
-  NumberFieldInput,
-  VbenTooltip,
-} from '/@/vben//shadcn-ui';
+import { NumberField, NumberFieldContent, NumberFieldDecrement, NumberFieldIncrement, NumberFieldInput, VbenTooltip } from "/@/vben//shadcn-ui";
 
 defineOptions({
-  name: 'PreferenceSelectItem',
+  name: "PreferenceSelectItem",
 });
 
 withDefaults(
@@ -27,10 +20,10 @@ withDefaults(
   }>(),
   {
     disabled: false,
-    placeholder: '',
-    tip: '',
+    placeholder: "",
+    tip: "",
     items: () => [],
-  },
+  }
 );
 
 const inputValue = defineModel<number>();

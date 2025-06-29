@@ -17,7 +17,7 @@ export default defineComponent({
       () => {
         return router.currentRoute.value.fullPath;
       },
-      (value) => {
+      value => {
         showSourceLink.value = value !== "/index";
       },
       { immediate: true }
@@ -29,9 +29,9 @@ export default defineComponent({
     }
     return {
       goSource,
-      showSourceLink
+      showSourceLink,
     };
-  }
+  },
 });
 </script>
 

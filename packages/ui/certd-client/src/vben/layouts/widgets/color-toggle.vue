@@ -7,15 +7,15 @@ import { COLOR_PRESETS, preferences, updatePreferences } from "/@/vben/preferenc
 import { VbenIconButton } from "/@/vben//shadcn-ui";
 
 defineOptions({
-  name: "AuthenticationColorToggle"
+  name: "AuthenticationColorToggle",
 });
 
 function handleUpdate(colorPrimary: string, type: BuiltinThemeType) {
   updatePreferences({
     theme: {
       colorPrimary,
-      builtinType: type
-    }
+      builtinType: type,
+    },
   });
 }
 </script>

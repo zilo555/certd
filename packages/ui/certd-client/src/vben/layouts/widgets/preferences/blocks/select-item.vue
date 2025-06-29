@@ -1,21 +1,14 @@
 <script setup lang="ts">
-import type { SelectOption } from '/@/vben/types';
+import type { SelectOption } from "/@/vben/types";
 
-import { useSlots } from 'vue';
+import { useSlots } from "vue";
 
-import { CircleHelp } from '/@/vben/icons';
+import { CircleHelp } from "/@/vben/icons";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  VbenTooltip,
-} from '/@/vben//shadcn-ui';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, VbenTooltip } from "/@/vben//shadcn-ui";
 
 defineOptions({
-  name: 'PreferenceSelectItem',
+  name: "PreferenceSelectItem",
 });
 
 withDefaults(
@@ -26,9 +19,9 @@ withDefaults(
   }>(),
   {
     disabled: false,
-    placeholder: '',
+    placeholder: "",
     items: () => [],
-  },
+  }
 );
 
 const selectValue = defineModel<string>();

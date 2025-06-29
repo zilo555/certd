@@ -16,7 +16,7 @@ import dayjs from "dayjs";
 import { computed } from "vue";
 
 defineOptions({
-  name: "ExpiresTimeText"
+  name: "ExpiresTimeText",
 });
 
 const props = defineProps<{

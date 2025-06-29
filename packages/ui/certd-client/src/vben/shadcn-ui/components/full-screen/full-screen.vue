@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { Maximize, Minimize } from '/@/vben/icons';
+import { Maximize, Minimize } from "/@/vben/icons";
 
-import { useFullscreen } from '@vueuse/core';
+import { useFullscreen } from "@vueuse/core";
 
-import { VbenIconButton } from '../button';
+import { VbenIconButton } from "../button";
 
-defineOptions({ name: 'FullScreen' });
+defineOptions({ name: "FullScreen" });
 
 const { isFullscreen, toggle } = useFullscreen();
 

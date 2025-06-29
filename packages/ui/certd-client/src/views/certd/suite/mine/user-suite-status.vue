@@ -7,7 +7,7 @@ import { ref, computed } from "vue";
 import dayjs from "dayjs";
 
 defineOptions({
-  name: "UserSuiteStatus"
+  name: "UserSuiteStatus",
 });
 
 const props = defineProps<{

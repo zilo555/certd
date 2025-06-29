@@ -9,7 +9,7 @@ import SwitchItem from "../switch-item.vue";
 import ToggleItem from "../toggle-item.vue";
 
 defineOptions({
-  name: "PreferenceBreadcrumbConfig"
+  name: "PreferenceBreadcrumbConfig",
 });
 
 const props = defineProps<{ disabled?: boolean }>();
@@ -22,7 +22,7 @@ const breadcrumbHideOnlyOne = defineModel<boolean>("breadcrumbHideOnlyOne");
 
 const typeItems: SelectOption[] = [
   { label: $t("preferences.normal"), value: "normal" },
-  { label: $t("preferences.breadcrumb.background"), value: "background" }
+  { label: $t("preferences.breadcrumb.background"), value: "background" },
 ];
 
 const disableItem = computed(() => {

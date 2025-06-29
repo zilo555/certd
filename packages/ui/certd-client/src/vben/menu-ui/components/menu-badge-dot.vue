@@ -8,7 +8,7 @@ interface Props {
 
 withDefaults(defineProps<Props>(), {
   dotClass: "",
-  dotStyle: () => ({})
+  dotStyle: () => ({}),
 });
 </script>
 <template>

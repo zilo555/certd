@@ -13,7 +13,7 @@ import PriceInput from "./price-input.vue";
 import { durationDict } from "../../../certd/suite/api";
 
 defineOptions({
-  name: "DurationPriceValue"
+  name: "DurationPriceValue",
 });
 
 const props = withDefaults(
@@ -23,7 +23,7 @@ const props = withDefaults(
   {
     modelValue: () => {
       return [];
-    }
+    },
   }
 );
 </script>
