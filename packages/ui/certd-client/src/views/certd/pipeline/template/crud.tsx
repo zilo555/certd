@@ -5,8 +5,10 @@ import { useModal } from "/@/use/use-modal";
 import createCrudOptionsPipeline from "../crud";
 import * as pipelineApi from "../api";
 import { useTemplate } from "/@/views/certd/pipeline/template/use";
+import { useI18n } from "/@/locales";
 export default function ({ crudExpose, context }: CreateCrudOptionsProps): CreateCrudOptionsRet {
   const api = templateApi;
+  const { t } = useI18n();
   const pageRequest = async (query: UserPageQuery): Promise<UserPageRes> => {
     return await api.GetList(query);
   };
@@ -65,7 +67,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
         show: true,
         buttons: {
           add: {
-            text: "创建模版",
+            text: t("certd.template.createTemplate"),
             type: "primary",
             show: true,
           },
@@ -119,13 +121,13 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           },
         },
         title: {
-          title: "模版名称",
+          title: t("certd.template.templateName"),
           type: "text",
           search: {
             show: true,
           },
           form: {
-            rules: [{ required: true, message: "请输入模版名称" }],
+            rules: [{ required: true, message: t("certd.template.enterTemplateName") }],
           },
           column: {
             width: 400,
@@ -141,7 +143,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           },
         },
         pipelineId: {
-          title: "流水线ID",
+          title: t("certd.template.pipeline"),
           type: "table-select",
           search: { show: true },
           dict: dict({
@@ -160,7 +162,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           },
           form: {
             show: true,
-            helper: "复制该流水线配置作为模版来源",
+            helper: t("certd.template.copyPipelineConfig"),
             component: {
               valuesFormat: {
                 labelFormatter: (item: any) => {
@@ -191,7 +193,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           },
         },
         useCreate: {
-          title: "使用此模版",
+          title: t("certd.template.useTemplate"),
           form: { show: false },
           column: {
             conditionalRender: false,
@@ -208,14 +210,14 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
               return (
                 <a class={"flex items-center"} onClick={create}>
                   <fs-icon icon={"ion:duplicate-outline"}></fs-icon>
-                  <span class={"ml-5"}>创建单个流水线</span>
+                  <span class={"ml-5"}>{t("certd.template.singleCreate")}</span>
                 </a>
               );
             },
           },
         },
         useImport: {
-          title: "使用此模版",
+          title: t("certd.template.useTemplate"),
           form: { show: false },
           column: {
             conditionalRender: false,
@@ -224,7 +226,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
               return (
                 <router-link class={"flex items-center"} to={{ path: "/certd/pipeline/template/import", query: { templateId: row.id } }}>
                   <fs-icon icon={"ion:duplicate"}></fs-icon>
-                  <span class={"ml-5"}>批量创建流水线</span>
+                  <span class={"ml-5"}>{t("certd.template.batchCreate")}</span>
                 </router-link>
               );
             },

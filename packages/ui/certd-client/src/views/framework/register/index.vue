@@ -232,7 +232,6 @@ export default defineComponent({
 </script>
 
 <style lang="less">
-@import "../../../style/theme/index.less";
 .user-layout-register {
   label {
     font-size: 14px;
@@ -294,7 +293,6 @@ export default defineComponent({
       transition: color 0.3s;
 
       &:hover {
-        color: @primary-color;
       }
     }
 

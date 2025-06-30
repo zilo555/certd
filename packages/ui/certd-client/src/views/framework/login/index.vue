@@ -217,7 +217,6 @@ export default defineComponent({
 </script>
 
 <style lang="less">
-@import "../../../style/theme/index.less";
 
 .login-page.main {
   //margin: 20px !important;
@@ -229,7 +228,6 @@ export default defineComponent({
     //}
 
     .login-title {
-      color: @primary-color;
       font-size: 18px;
       text-align: center;
       margin: 20px;
@@ -274,7 +272,6 @@ export default defineComponent({
         transition: color 0.3s;
 
         &:hover {
-          color: @primary-color;
         }
       }
 

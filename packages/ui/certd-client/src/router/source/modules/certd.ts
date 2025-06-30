@@ -44,7 +44,7 @@ export const certdResources = [
         },
       },
       {
-        title: "流水线模版",
+        title: "certd.template.title",
         name: "PipelineTemplate",
         path: "/certd/pipeline/template",
         component: "/certd/pipeline/template/index.vue",
@@ -54,7 +54,7 @@ export const certdResources = [
         },
       },
       {
-        title: "流水线模版编辑",
+        title: "certd.template.edit",
         name: "PipelineTemplateEdit",
         path: "/certd/pipeline/template/edit",
         component: "/certd/pipeline/template/edit.vue",
@@ -63,7 +63,7 @@ export const certdResources = [
         },
       },
       {
-        title: "流水线模版批量创建",
+        title: "certd.template.importCreate",
         name: "PipelineTemplateImport",
         path: "/certd/pipeline/template/import",
         component: "/certd/pipeline/template/import/index.vue",

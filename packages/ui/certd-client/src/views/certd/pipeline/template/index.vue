@@ -2,9 +2,9 @@
   <fs-page>
     <template #header>
       <div class="title flex items-center">
-        流水线模版
+        {{ t("certd.template.title") }}
         <span class="ml-10 sub flex items-center">
-          <span>可根据模版批量创建流水线 </span>
+          <span>{{ t("certd.template.intro") }} </span>
           <vip-button class="ml-10" mode="button" />
         </span>
       </div>
@@ -17,12 +17,12 @@
 import { onActivated, onMounted } from "vue";
 import { useFs } from "@fast-crud/fast-crud";
 import createCrudOptions from "./crud";
-
+import { useI18n } from "vue-i18n";
 defineOptions({
   name: "PipelineTemplate",
 });
 const { crudBinding, crudRef, crudExpose } = useFs({ createCrudOptions, context: {} });
-
+const { t } = useI18n();
 // 页面打开后获取列表数据
 onMounted(() => {
   crudExpose.doRefresh();

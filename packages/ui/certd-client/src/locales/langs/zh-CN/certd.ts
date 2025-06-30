@@ -685,4 +685,20 @@ export default {
   setAsDefault: "设为默认",
   disabledLabel: "禁用",
   confirmToggleStatus: "确定要{action}吗？",
+
+  template: {
+    title: "流水线模版",
+    edit: "流水线模版编辑",
+    importCreate: "流水线模版批量创建",
+    intro: "可根据模版批量创建流水线",
+    createTemplate: "创建模版",
+    useTemplate: "使用此模板",
+    batchCreate: "批量创建流水线",
+    singleCreate: "创建单个流水线",
+    importCreate: "批量导入创建",
+    templateName: "模板名称",
+    enterTemplateName: "请输入模板名称",
+    copyPipelineConfig: "复制该流水线配置作为模板来源",
+    pipeline: "流水线",
+  },
 };
