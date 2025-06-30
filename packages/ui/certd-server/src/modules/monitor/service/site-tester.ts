@@ -2,7 +2,7 @@ import { logger, safePromise, utils } from "@certd/basic";
 import { merge } from "lodash-es";
 import https from "https";
 import { PeerCertificate } from "tls";
-import { TCPClient } from "dns2";
+// import { TCPClient } from "dns2";
 
 export type SiteTestReq = {
   host: string; // 只用域名部分
@@ -63,13 +63,13 @@ export class SiteTester {
       options.host = ipAddress;
     }
 
-    let dnsClients = [];
-    if (req.dnsServer && req.dnsServer.length > 0) {
-      for (let dns of req.dnsServer) {
-        const dnsClient = TCPClient({ dns });
-        dnsClients.push(dnsClient);
-      }
-    }
+    // let dnsClients = [];
+    // if (req.dnsServer && req.dnsServer.length > 0) {
+    //   for (let dns of req.dnsServer) {
+    //     const dnsClient = TCPClient({ dns });
+    //     dnsClients.push(dnsClient);
+    //   }
+    // }
 
     // async function customLookup(hostname, options, callback) {
     //   for (let client of dnsClients) {
