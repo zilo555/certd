@@ -80,10 +80,12 @@ https://certd.handfree.work/
 
 您可以根据实际情况从如下方式中选择一种方式进行私有化部署：
 
-1. [宝塔面板方式部署 推荐](https://certd.docmirror.cn/guide/install/docker/)
-2. [1Panel面板方式部署 推荐](https://certd.docmirror.cn/guide/install/1panel/)
-3. [Docker方式部署 推荐](https://certd.docmirror.cn/guide/install/docker/)
-4. [源码方式部署 不建议](https://certd.docmirror.cn/guide/install/source/)
+1. 【推荐】[Docker方式部署 ](https://certd.docmirror.cn/guide/install/docker/)
+2. 【推荐】[宝塔面板方式部署 ](https://certd.docmirror.cn/guide/install/docker/)
+3. 【推荐】[1Panel面板方式部署](https://certd.docmirror.cn/guide/install/1panel/)
+4. 【推荐】[雨云一键部署 推荐](https://app.rainyun.com/apps/rca/store/6646?ref=NzExMDQ2_) ： 首充翻倍，每月仅需2.2元    
+[<img src="https://rainyun-apps.cn-nb1.rains3.com/materials/deploy-on-rainyun-cn.svg">](https://app.rainyun.com/apps/rca/store/6646?ref=NzExMDQ2_)
+5. 【不推荐】[源码方式部署 ](https://certd.docmirror.cn/guide/install/source/)
 
 #### Docker镜像说明：
 * 国内镜像地址:
