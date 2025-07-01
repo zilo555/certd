@@ -195,7 +195,7 @@ export class PipelineService extends BaseService<PipelineEntity> {
     let domains = [];
     if (pipeline.stages) {
       RunnableCollection.each(pipeline.stages, (runnable: any) => {
-        if (runnable.runnableType === 'step' && runnable.type.startsWith('CertApply')) {
+        if (runnable.runnableType === 'step' && runnable.type.indexOf('CertApply')>=0) {
           domains = runnable.input.domains || [];
         }
       });
