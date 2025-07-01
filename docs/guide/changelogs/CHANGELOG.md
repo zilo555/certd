@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.36.0](https://github.com/certd/certd/compare/v1.35.5...v1.36.0) (2025-07-01)
+
+### Bug Fixes
+
+* 支持自定义证书生成插件 ([481cc02](https://github.com/certd/certd/commit/481cc029fafaf280aa844cd3ca30f4653ec35d55))
+
+### Features
+
+* 支持模版创建流水线 ([2559f0e](https://github.com/certd/certd/commit/2559f0e822db095d1d26a7f1d517622dce22a5c2))
+
+### Performance Improvements
+
+* 阿里云waf cname站点选择支持翻页及域名查询 ([4cf9858](https://github.com/certd/certd/commit/4cf98584dacc5999752732f136246647a2f1f07d))
+* 部署到ssh主机命令支持前置命令 ([991b741](https://github.com/certd/certd/commit/991b741cbe223b342f534157da63b71e81661f8e))
+* 模版导入流水线 ([dcc8c56](https://github.com/certd/certd/commit/dcc8c569693432579709ce63656665a76bcf9a44))
+* 添加用户资料编辑功能 ([7c0f43c](https://github.com/certd/certd/commit/7c0f43c8a3052f73afee3e93c9fcbc43c44ab690))
+* 优化阿里云waf的日志信息 ([821c6d8](https://github.com/certd/certd/commit/821c6d807d4b3cc5092d09a6282b8cbafb9e7c9f))
+* 优化中英文翻译与切换 ([acaa8b1](https://github.com/certd/certd/commit/acaa8b173183b4423584ee070e6e332e0ac0eb2d))
+* 站点IP监控前先同步一下IP ([a080b60](https://github.com/certd/certd/commit/a080b606ab6e289d96b17ef7d2879b4603f889ba))
+* 支持选择运行策略设置 ([60f055f](https://github.com/certd/certd/commit/60f055f293ce237c21cd9050333dad9609eceac1))
+
 ## [1.35.5](https://github.com/certd/certd/compare/v1.35.4...v1.35.5) (2025-06-20)
 
 ### Bug Fixes
