@@ -91,6 +91,7 @@ import { nanoid } from "nanoid";
 import PiNotificationFormEmail from "./pi-notification-form-email.vue";
 import NotificationSelector from "/@/views/certd/notification/notification-selector/index.vue";
 import { useI18n } from "vue-i18n";
+import { cloneDeep } from "lodash-es";
 
 const { t } = useI18n();
 
@@ -151,7 +152,7 @@ const notificationDrawerOnAfterVisibleChange = (val: any) => {
 
 const notificationOpen = (notification: any, emit: any) => {
   callback.value = emit;
-  currentNotification.value = _.cloneDeep(notification);
+  currentNotification.value = cloneDeep(notification);
   console.log("currentNotificationOpen", currentNotification.value);
   notificationDrawerShow();
 };
@@ -210,6 +211,16 @@ function onSelectedChange(node: any) {
 
 const labelCol = { span: 6 };
 const wrapperCol = { span: 16 };
+
+defineExpose({
+  notificationAdd,
+  notificationEdit,
+  notificationView,
+  notificationDelete,
+  notificationSave,
+  notificationOpen,
+  notificationDrawerShow,
+});
 </script>
 
 <style lang="less">
