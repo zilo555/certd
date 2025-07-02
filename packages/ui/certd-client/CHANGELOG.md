@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.1](https://github.com/certd/certd/compare/v1.36.0...v1.36.1) (2025-07-02)
+
+### Bug Fixes
+
+* 修复通知和触发器无法编辑的bug ([a2e0951](https://github.com/certd/certd/commit/a2e09510426680eb425c0d7ad337f39d3f052054))
+
 # [1.36.0](https://github.com/certd/certd/compare/v1.35.5...v1.36.0) (2025-07-01)
 
 ### Features

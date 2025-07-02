@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.1](https://github.com/certd/certd/compare/v1.36.0...v1.36.1) (2025-07-02)
+
+### Performance Improvements
+
+* 支持部署到七牛云DCDN ([bde601b](https://github.com/certd/certd/commit/bde601bfffb4f7345d97e1e3b064520816d31555))
+
 # [1.36.0](https://github.com/certd/certd/compare/v1.35.5...v1.36.0) (2025-07-01)
 
 ### Bug Fixes
