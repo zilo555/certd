@@ -3,9 +3,8 @@ import { computed, provide, ref, toRef } from "vue";
 import { useReference } from "/@/use/use-refrence";
 import { forEach, get, merge, set } from "lodash-es";
 import { Modal } from "ant-design-vue";
-import * as api from "/@/views/sys/cname/provider/api";
 import { mitter } from "/@/utils/util.mitt";
-import { useI18n } from "vue-i18n";
+import { useI18n } from "/src/locales";
 
 export function notificationProvide(api: any) {
   provide("notificationApi", api);
