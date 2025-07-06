@@ -225,7 +225,7 @@ export default async (client, userOpts) => {
             log(`开始第${j}个任务`);
             results.push(task());
             // eslint-disable-next-line no-await-in-loop
-            log(`wait ${waitTime}s`)
+            log(`wait ${Math.floor(waitTime/1000)}s`)
             await wait(waitTime);
         }
         return Promise.all(results);
