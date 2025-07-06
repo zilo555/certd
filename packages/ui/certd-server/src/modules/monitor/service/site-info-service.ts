@@ -15,6 +15,7 @@ import {UserSiteMonitorSetting} from "../../mine/service/models.js";
 import {SiteIpService} from "./site-ip-service.js";
 import {SiteIpEntity} from "../entity/site-ip.js";
 import {Cron} from "../../cron/cron.js";
+import { dnsContainer } from "./dns-custom.js";
 
 @Provide()
 @Scope(ScopeEnum.Request, {allowDowngrade: true})
@@ -108,6 +109,14 @@ export class SiteInfoService extends BaseService<SiteInfoEntity> {
     if (!site?.domain) {
       throw new Error("站点域名不能为空");
     }
+
+    const setting = await this.userSettingsService.getSetting<UserSiteMonitorSetting>(site.userId, UserSiteMonitorSetting);
+    const dnsServer = setting.dnsServer
+    let resolver = null
+    if (dnsServer && dnsServer.length > 0) {
+      resolver = dnsContainer.getDns(dnsServer) as any
+    }
+
     try {
       await this.update({
         id: site.id,
@@ -117,7 +126,8 @@ export class SiteInfoService extends BaseService<SiteInfoEntity> {
       const res = await siteTester.test({
         host: site.domain,
         port: site.httpsPort,
-        retryTimes
+        retryTimes,
+        resolver
       });
 
       const certi: PeerCertificate = res.certificate;

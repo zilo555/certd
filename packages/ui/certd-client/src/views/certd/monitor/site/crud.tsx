@@ -47,6 +47,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
   const { openSiteIpMonitorDialog } = useSiteIpMonitor();
   const { openSiteImportDialog } = useSiteImport();
   return {
+    id: "siteMonitorCrud",
     crudOptions: {
       request: {
         pageRequest,
@@ -117,7 +118,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
       },
       rowHandle: {
         fixed: "right",
-        width: 240,
+        width: 280,
         buttons: {
           check: {
             order: 0,

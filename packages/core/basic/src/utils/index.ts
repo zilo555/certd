@@ -34,6 +34,7 @@ import { locker } from "./util.lock.js";
 import { mitter } from "./util.mitter.js";
 
 import * as request from "./util.request.js";
+export * from "./util.cache.js";
 export const utils = {
   sleep,
   http,

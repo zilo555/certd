@@ -2,7 +2,6 @@ import { logger, safePromise, utils } from "@certd/basic";
 import { merge } from "lodash-es";
 import https from "https";
 import { PeerCertificate } from "tls";
-// import { TCPClient } from "dns2";
 
 export type SiteTestReq = {
   host: string; // 只用域名部分
@@ -11,7 +10,7 @@ export type SiteTestReq = {
   retryTimes?: number;
   ipAddress?: string;
 
-  dnsServer?: string[];
+  resolver?: any;
 };
 
 export type SiteTestRes = {
@@ -52,6 +51,7 @@ export class SiteTester {
       req
     );
 
+    let customLookup = null
     if (req.ipAddress) {
       //使用固定的ip
       const ipAddress = req.ipAddress;
@@ -61,37 +61,20 @@ export class SiteTester {
         servername: options.host
       };
       options.host = ipAddress;
+    }else if (req.resolver ) {
+      // 非ip address 请求时
+      const resolver = req.resolver
+      customLookup = async (hostname:string, options:any, callback)=> {
+        console.log(hostname, options);
+
+        // { family: undefined, hints: 0, all: true }
+        const res = await resolver.resolve(hostname, options)
+        console.log("custom lookup res:",res)
+        callback(null, res);
+      }
     }
 
-    // let dnsClients = [];
-    // if (req.dnsServer && req.dnsServer.length > 0) {
-    //   for (let dns of req.dnsServer) {
-    //     const dnsClient = TCPClient({ dns });
-    //     dnsClients.push(dnsClient);
-    //   }
-    // }
-
-    // async function customLookup(hostname, options, callback) {
-    //   for (let client of dnsClients) {
-    //     try {
-    //       const result = await client.resolve(hostname, options);
-    //       return callback(null, result);
-    //     } catch (e) {
-    //       this.logger.error(e);
-    //     }
-    //   }
-    //   try {
-    //     // 使用自定义DNS解析
-    //     const response = await dnsClients
-    //     const address = response.answers[0].address;
-    //     callback(null, address, 4);
-    //   } catch (err) {
-    //     // 解析失败时回退到系统DNS
-    //     require('dns').lookup(hostname, options, callback);
-    //   }
-    // }
-
-    options.agent = new https.Agent({ keepAlive: false });
+    options.agent = new https.Agent({ keepAlive: false, lookup: customLookup });
 
     // 创建 HTTPS 请求
     const requestPromise = safePromise((resolve, reject) => {

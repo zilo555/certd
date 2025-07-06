@@ -17,12 +17,12 @@
           </div>
           <div class="helper">{{ t("certd.monitor.setting.monitorRetryTimes") }}</div>
         </a-form-item>
-        <!-- <a-form-item :label="t('certd.monitor.setting.dnsServer')" :name="['dnsServer']">
+        <a-form-item :label="t('certd.monitor.setting.dnsServer')" :name="['dnsServer']">
           <div class="flex">
             <a-select v-model:value="formState.dnsServer" mode="tags" :open="false" />
           </div>
           <div class="helper">{{ t("certd.monitor.setting.dnsServerHelper") }}</div>
-        </a-form-item> -->
+        </a-form-item>
         <a-form-item :label="t('certd.monitor.setting.monitorCronSetting')" :name="['cron']">
           <div class="flex flex-baseline">
             <cron-editor v-model="formState.cron" :disabled="!settingsStore.isPlus" :allow-every-min="userStore.isAdmin" />

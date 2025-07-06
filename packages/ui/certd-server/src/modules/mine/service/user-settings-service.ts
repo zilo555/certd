@@ -3,8 +3,13 @@ import { InjectEntityModel } from "@midwayjs/typeorm";
 import { Repository } from "typeorm";
 import { BaseService, BaseSettings } from "@certd/lib-server";
 import { UserSettingsEntity } from "../entity/user-settings.js";
-import { mergeUtils } from "@certd/basic";
+import { LocalCache, mergeUtils } from "@certd/basic";
 const {merge} = mergeUtils
+
+const UserSettingCache = new LocalCache({
+  clearInterval: 5 * 60 * 1000,
+});
+
 /**
  * 授权
  */
@@ -75,14 +80,26 @@ export class UserSettingsService extends BaseService<UserSettingsEntity> {
   }
 
 
-  async getSetting<T>( userId: number,type: any): Promise<T> {
+  async getSetting<T>( userId: number,type: any, cache:boolean = false): Promise<T> {
     if(!userId){
       throw new Error('userId is required');
     }
     const key = type.__key__;
+    const cacheKey = key + '_' + userId;
+    if (cache) {
+      const settings: T = UserSettingCache.get(cacheKey);
+      if (settings) {
+        return settings;
+      }
+    }
+
     let newSetting: T = new type();
     const savedSettings = await this.getSettingByKey(key, userId);
     newSetting = merge(newSetting, savedSettings);
+
+    if (cache) {
+      UserSettingCache.set(cacheKey, newSetting);
+    }
     return newSetting;
   }
 

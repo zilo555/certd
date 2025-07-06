@@ -45,6 +45,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
   const { openSiteIpImportDialog } = useSiteIpMonitor();
   return {
     crudOptions: {
+      id: "siteIpCrud",
       request: {
         pageRequest,
         addRequest,

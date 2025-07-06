@@ -27,6 +27,7 @@ export class UserSiteMonitorSetting extends BaseSettings {
   notificationId?:number= 0;
   cron?:string = undefined;
   retryTimes?:number = 3;
+  dnsServer?:string[] = undefined;
 }
 
 export class UserEmailSetting extends BaseSettings {

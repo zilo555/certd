@@ -7,11 +7,15 @@ import {NotificationService} from "../../pipeline/service/notification-service.j
 import {UserSuiteService} from "@certd/commercial-core";
 import {UserSettingsService} from "../../mine/service/user-settings-service.js";
 import {SiteIpEntity} from "../entity/site-ip.js";
-import dns from "dns";
-import {logger, safePromise} from "@certd/basic";
+import dnsSdk from "dns";
+import {logger} from "@certd/basic";
 import dayjs from "dayjs";
 import {siteTester} from "./site-tester.js";
 import {PeerCertificate} from "tls";
+import { UserSiteMonitorSetting } from "../../mine/service/models.js";
+import { dnsContainer } from "./dns-custom.js";
+
+const dns =  dnsSdk.promises;
 
 @Provide()
 @Scope(ScopeEnum.Request, { allowDowngrade: true })
@@ -62,11 +66,20 @@ export class SiteIpService extends BaseService<SiteIpEntity> {
   async sync(entity: SiteInfoEntity,check:boolean = true) {
 
     const domain = entity.domain;
+
+    const setting = await this.userSettingsService.getSetting<UserSiteMonitorSetting>(entity.userId, UserSiteMonitorSetting);
+
+    const dnsServer = setting.dnsServer
+    let resolver = dns
+    if (dnsServer && dnsServer.length > 0) {
+      resolver = dnsContainer.getDns(dnsServer) as any
+    }
+
     //从域名解析中获取所有ip
-    const ips = await this.getAllIpsFromDomain(domain);
+    const ips = await this.getAllIpsFromDomain(domain,resolver);
     if (ips.length === 0 ) {
       logger.warn(`没有发现${domain}的IP`)
-      return 
+      return
     }
 
     const oldIps = await this.repository.find({
@@ -86,7 +99,7 @@ export class SiteIpService extends BaseService<SiteIpEntity> {
           hasChanged = false
         }
     }
-    
+
     if(hasChanged){
       logger.info(`发现${domain}的IP变化，需要更新，旧IP:${oldIps.map(ip=>ip.ipAddress).join(",")}，新IP:${ips.join(",")}`)
       //有变化需要更新
@@ -213,30 +226,26 @@ export class SiteIpService extends BaseService<SiteIpEntity> {
     })
   }
 
-  async getAllIpsFromDomain(domain: string) {
-    const getFromV4 = safePromise<string[]>((resolve, reject) => {
-      dns.resolve4(domain, (err, addresses) => {
-        if (err) {
-          logger.error(`[${domain}] resolve4 error`, err)
-          resolve([])
-          return;
-        }
-        resolve(addresses);
-      });
-    });
+  async getAllIpsFromDomain(domain: string,resolver:any = dns):Promise<string[]> {
+    const getFromV4 = async ():Promise<string[]> => {
+      try{
+        return await resolver.resolve4(domain);
+      }catch (err) {
+        logger.error(`[${domain}] resolve4 error`, err)
+        return []
+      }
+    }
+    const getFromV6 = async ():Promise<string[]> => {
+      try{
+        return await resolver.resolve6(domain);
+      }catch (err) {
+        logger.error(`[${domain}] resolve6 error`, err)
+        return []
+      }
+    }
 
-    const getFromV6 = safePromise<string[]>((resolve, reject) => {
-      dns.resolve6(domain, (err, addresses) => {
-        if (err) {
-          logger.error("[${domain}] resolve6 error", err)
-          resolve([])
-          return;
-        }
-        resolve(addresses);
-      });
-    });
 
-    return Promise.all([getFromV4, getFromV6]).then(res => {
+    return Promise.all([getFromV4(), getFromV6()]).then(res => {
       return [...res[0], ...res[1]];
     });
   }
