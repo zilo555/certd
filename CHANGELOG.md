@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.2](https://github.com/certd/certd/compare/v1.36.1...v1.36.2) (2025-07-06)
+
+### Bug Fixes
+
+* 修复notification编辑按钮无法打开对话框的bug ([0cea26c](https://github.com/certd/certd/commit/0cea26c6287f52adf273b4a525c37bea8555c68c))
+* 优化更新飞牛os证书有效期，修复某些情况下部署证书后飞牛无法访问https的bug ([610c919](https://github.com/certd/certd/commit/610c919c72037becc0ed326f5d5b18c963dfcb3a))
+
+### Performance Improvements
+
+* 证书检查支持自定义dns服务器 ([c53bb7c](https://github.com/certd/certd/commit/c53bb7cf677faa32729709ae0c10359db5194d7a))
+
 ## [1.36.1](https://github.com/certd/certd/compare/v1.36.0...v1.36.1) (2025-07-02)
 
 ### Bug Fixes

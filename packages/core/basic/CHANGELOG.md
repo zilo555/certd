@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.2](https://github.com/certd/certd/compare/v1.36.1...v1.36.2) (2025-07-06)
+
+### Performance Improvements
+
+* 证书检查支持自定义dns服务器 ([c53bb7c](https://github.com/certd/certd/commit/c53bb7cf677faa32729709ae0c10359db5194d7a))
+
 ## [1.36.1](https://github.com/certd/certd/compare/v1.36.0...v1.36.1) (2025-07-02)
 
 **Note:** Version bump only for package @certd/basic
