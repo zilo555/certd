@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.3](https://github.com/certd/certd/compare/v1.36.2...v1.36.3) (2025-07-07)
+
+### Bug Fixes
+
+* 修复开放接口添加按钮文本显示问题 ([f93ba99](https://github.com/certd/certd/commit/f93ba9970c12680f38eba2a7abd4b72cf3f5b6a6))
+
+### Performance Improvements
+
+* 优化部署到腾讯TKE插件，支持Opaque类型选择，优化填写说明 ([1445325](https://github.com/certd/certd/commit/144532530a865b634e68539e4888e26f52f73492))
+
 ## [1.36.2](https://github.com/certd/certd/compare/v1.36.1...v1.36.2) (2025-07-06)
 
 ### Bug Fixes
