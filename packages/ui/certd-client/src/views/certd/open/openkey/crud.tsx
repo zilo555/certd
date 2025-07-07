@@ -53,13 +53,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           width: 600,
         },
       },
-      actionbar: {
-        buttons: {
-          add: {
-            text: t("certd.actionbar.add"),
-          },
-        },
-      },
+      actionbar: {},
       rowHandle: {
         width: 300,
         fixed: "right",
