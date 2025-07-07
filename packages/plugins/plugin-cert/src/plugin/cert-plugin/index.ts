@@ -321,7 +321,7 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
       name: "a-input-number",
       vModel: "value",
     },
-    helper: "等待解析生效时长（秒）",
+    helper: "等待解析生效时长（秒），如果使用CNAME方式校验，本地验证失败，可以尝试延长此时间（比如5-10分钟）",
   })
   waitDnsDiffuseTime = 30;
 

@@ -100,7 +100,7 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
     }
     param.hostRecord = hostRecord;
 
-    const cnameKey = utils.id.simpleNanoId();
+    const cnameKey = utils.id.simpleNanoId().toLowerCase();
     const safeDomain = param.domain.replaceAll('.', '-');
     param.recordValue = `${safeDomain}.${cnameKey}.${cnameProvider.domain}`;
   }

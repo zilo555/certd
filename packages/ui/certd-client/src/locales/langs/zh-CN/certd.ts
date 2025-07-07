@@ -278,7 +278,7 @@ export default {
       monitorCronSetting: "监控定时设置",
       cronTrigger: "定时触发监控",
       dnsServer: "DNS服务器",
-      dnsServerHelper: "使用自定义的域名解析服务器，如：1.1.1.1,8.8.8.8",
+      dnsServerHelper: "使用自定义的域名解析服务器，如：1.1.1.1 , 支持多个",
     },
   },
   checkStatus: {

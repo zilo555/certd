@@ -273,8 +273,7 @@ export default {
       monitorCronSetting: "Monitoring Schedule",
       cronTrigger: "Scheduled trigger for monitoring",
       dnsServer: "DNS Server",
-      // dnsServerHelper: "使用自定义的域名解析服务器，如：1.1.1.1,8.8.8.8",
-      dnsServerHelper: "Use a custom domain name resolution server, such as: 1.1.1.1,8.8.8.8",
+      dnsServerHelper: "Use a custom domain name resolution server, such as: 1.1.1.1 , support multiple",
     },
   },
   checkStatus: {
