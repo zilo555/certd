@@ -1,6 +1,4 @@
-// @ts-ignore
-import { useI18n } from "vue-i18n";
-import { ref } from "vue";
+import { useI18n } from "/src/locales";
 import { AddReq, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, EditReq, UserPageQuery, UserPageRes } from "@fast-crud/fast-crud";
 import { pipelineGroupApi } from "./api";
 
