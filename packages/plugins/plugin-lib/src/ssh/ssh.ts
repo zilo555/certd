@@ -204,9 +204,18 @@ export class AsyncSsh2Client {
         stream
           .on("close", (code: any, signal: any) => {
             this.logger.info(`[${this.connConf.host}][close]:code:${code}`);
-            if (opts.throwOnStdErr == null && this.windows) {
-              opts.throwOnStdErr = true;
-            }
+            /**
+             * ]pipeline 执行命令:[10.123.0.2][exec]:cd /d D:\nginx-1.27.5 && D:\nginx-1.27.5\nginx.exe -t && D:\nginx-1.27.5\nginx.exe -s reload
+             * [2025-07-09T10:24:11.219] [ERROR]pipeline - [10. 123.0. 2][error]: nginx: the configuration file D: \nginx-1.27. 5/conf/nginx. conf syntax is ok
+             * [2025-07-09T10:24:11.231] [ERROR][10. 123. 0. 2] [error]: nginx: configuration file D: \nginx-1.27.5/conf/nginx.conf test is successful
+             * pipeline-
+             * [2025-07-09T10:24:11.473] [INFO]pipeline -[10.123.0.2][close]:code:0
+             * [2025-07-09T10:24:11.473][ERRoR] pipeline- [step][主机一执行远程主机脚本命令]<id:53hyarN3yvmbijNuMiNAt>: [Eror: nginx: the configuration fileD:\nginx-1.27.5/conf/nginx.conf syntax is ok
+              //需要忽略windows的错误
+             */
+            // if (opts.throwOnStdErr == null && this.windows) {
+            //   opts.throwOnStdErr = true;
+            // }
             if (opts.throwOnStdErr && hasErrorLog) {
               reject(new Error(data));
             }
@@ -482,9 +491,9 @@ export class SshClient {
    * Set-ItemProperty -Path "HKLM:\SOFTWARE\OpenSSH" -Name DefaultShell -Value "C:\Windows\System32\cmd.exe"
    * @param options
    */
-  async exec(options: { connectConf: SshAccess; script: string | Array<string>; env?: any }): Promise<string> {
+  async exec(options: { connectConf: SshAccess; script: string | Array<string>; env?: any; throwOnStdErr?: boolean }): Promise<string> {
     let { script } = options;
-    const { connectConf } = options;
+    const { connectConf, throwOnStdErr } = options;
 
     // this.logger.info('命令：', script);
     return await this._call({
@@ -529,7 +538,7 @@ export class SshClient {
             script = envScripts.join(newLine) + newLine + script;
           }
         }
-        return await conn.exec(script as string, {});
+        return await conn.exec(script as string, { throwOnStdErr });
       },
     });
   }
