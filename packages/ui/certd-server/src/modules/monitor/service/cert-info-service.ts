@@ -1,10 +1,10 @@
-import { Provide, Scope, ScopeEnum } from "@midwayjs/core";
-import { BaseService, CodeException, Constants, PageReq } from "@certd/lib-server";
-import { InjectEntityModel } from "@midwayjs/typeorm";
-import { Repository } from "typeorm";
-import { CertInfoEntity } from "../entity/cert-info.js";
-import { utils } from "@certd/basic";
-import { CertInfo, CertReader } from "@certd/plugin-cert";
+import {Provide, Scope, ScopeEnum} from "@midwayjs/core";
+import {BaseService, CodeException, Constants, PageReq} from "@certd/lib-server";
+import {InjectEntityModel} from "@midwayjs/typeorm";
+import {MoreThan, Repository} from "typeorm";
+import {CertInfoEntity} from "../entity/cert-info.js";
+import {utils} from "@certd/basic";
+import {CertInfo, CertReader} from "@certd/plugin-cert";
 
 export type UploadCertReq = {
   id?: number;
@@ -107,6 +107,7 @@ export class CertInfoService extends BaseService<CertInfoEntity> {
       },
       where: {
         userId,
+        expiresTime: MoreThan(new Date().getTime())
       },
     });
     //遍历查找

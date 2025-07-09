@@ -9,7 +9,6 @@
 
 <script setup lang="ts">
 import { inject, ref, watch } from "vue";
-import { CertApplyPluginNames } from "/@/constants";
 
 defineOptions({
   name: "CertDomainsGetter",
