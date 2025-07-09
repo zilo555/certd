@@ -363,13 +363,19 @@ export default function ({ crudExpose, context: { groupDictRef, selectedRowKeys 
           },
           column: {
             cellRender({ row }) {
-              if (!row.lastVars?.certExpiresTime) {
+              const value = row.lastVars?.certExpiresTime;
+              if (!value) {
                 return "-";
               }
-              const leftDays = dayjs(row.lastVars.certExpiresTime).diff(dayjs(), "day");
+              const expireDate = dayjs(value).format("YYYY-MM-DD");
+              const leftDays = dayjs(value).diff(dayjs(), "day");
               const color = leftDays < 20 ? "red" : "#389e0d";
               const percent = (leftDays / 90) * 100;
-              return <a-progress percent={percent} strokeColor={color} format={percent => `${leftDays} 天`} />;
+              const textColor = leftDays < 20 ? "red" : leftDays > 60 ? "#389e0d" : "";
+              const format = () => {
+                return <span style={{ color: textColor }}>{`${leftDays}${t("certd.days")}`}</span>;
+              };
+              return <a-progress title={expireDate + t("certd.expires")} percent={percent} strokeColor={color} format={format} />;
             },
             width: 150,
           },

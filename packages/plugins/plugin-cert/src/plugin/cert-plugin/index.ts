@@ -65,7 +65,7 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
         { value: "dns", label: "DNS直接验证" },
         { value: "cname", label: "CNAME代理验证" },
         { value: "http", label: "HTTP文件验证" },
-        { value: "cname", label: "多DNS提供商" },
+        { value: "dnses", label: "多DNS提供商" },
       ],
     },
     required: true,
@@ -162,13 +162,15 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
         })
       },
       show: ctx.compute(({form})=>{
-          return form.challengeType === 'cname' ||  form.challengeType === 'http'
+          return form.challengeType === 'cname' ||  form.challengeType === 'http' ||  form.challengeType === 'dnses'
       }),
       helper: ctx.compute(({form})=>{
           if(form.challengeType === 'cname' ){
               return '请按照上面的提示，给要申请证书的域名添加CNAME记录，添加后，点击验证，验证成功后不要删除记录，申请和续期证书会一直用它'
           }else if (form.challengeType === 'http'){
               return '请按照上面的提示，给每个域名设置文件上传配置，证书申请过程中会上传校验文件到网站根目录下'
+          }else if (form.challengeType === 'http'){
+              return '给每个域名单独配置dns提供商'
           }
       })
     }
@@ -405,7 +407,7 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
 
     let dnsProvider: IDnsProvider = null;
     let domainsVerifyPlan: DomainsVerifyPlan = null;
-    if (this.challengeType === "cname" || this.challengeType === "http") {
+    if (this.challengeType === "cname" || this.challengeType === "http" || this.challengeType === "dnses") {
       domainsVerifyPlan = await this.createDomainsVerifyPlan();
     } else {
       const dnsProviderType = this.dnsProviderType;

@@ -228,7 +228,11 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
               const leftDays = dayjs(value).diff(dayjs(), "day");
               const color = leftDays < 20 ? "red" : "#389e0d";
               const percent = (leftDays / 90) * 100;
-              return <a-progress title={expireDate + t("certd.expires")} percent={percent} strokeColor={color} format={(percent: number) => `${leftDays}${t("certd.days")}`} />;
+              const textColor = leftDays < 20 ? "red" : leftDays > 60 ? "#389e0d" : "";
+              const format = () => {
+                return <span style={{ color: textColor }}>{`${leftDays}${t("certd.days")}`}</span>;
+              };
+              return <a-progress title={expireDate + t("certd.expires")} percent={percent} strokeColor={color} format={format} />;
             },
           },
         },

@@ -167,10 +167,14 @@ async function onDomainsChanged(domains: string[]) {
     let planItem = planRef.value[domain];
     const domainGroupItem = domainGroups[domain];
     if (!planItem) {
+      let type = props.defaultType || "cname";
+      if (type === "dnses") {
+        type = "dns";
+      }
       planItem = {
         domain,
         //@ts-ignore
-        type: props.defaultType || "cname",
+        type: type,
         //@ts-ignore
         cnameVerifyPlan: {},
         //@ts-ignore
