@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.4](https://github.com/certd/certd/compare/v1.36.3...v1.36.4) (2025-07-10)
+
+### Performance Improvements
+
+* 站点证书即将过期通知标题颜色优化为红色 ([80c5331](https://github.com/certd/certd/commit/80c5331a5d4c320323d9b9b800e4ea3b72577b33))
+* 支持部署到阿里云vod ([98da4e1](https://github.com/certd/certd/commit/98da4e1791ed8bb21daf2a9914fda875d14633c9))
+* 支持部署证书到网宿CDN ([c3da026](https://github.com/certd/certd/commit/c3da026b33106f5195959825a68cadbe49efef00))
+* 重置管理员密码同时可以清除管理员的2FA设置 ([1ece091](https://github.com/certd/certd/commit/1ece0915f172d5f8b8adb866434e7efcc5c8c46d))
+* output-selector from参数支持更丰富的过滤规则 ([87853a2](https://github.com/certd/certd/commit/87853a201535f3bfe8505c40f8f5229d82ffcc73))
+
 ## [1.36.3](https://github.com/certd/certd/compare/v1.36.2...v1.36.3) (2025-07-07)
 
 ### Performance Improvements

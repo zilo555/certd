@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.4](https://github.com/certd/certd/compare/v1.36.3...v1.36.4) (2025-07-10)
+
+### Bug Fixes
+
+* 执行windows nginx命令时，改为return code判断是否执行成功 ([b37cffd](https://github.com/certd/certd/commit/b37cffd704cd08b8bdd68a6e284706eabe59e78d))
+
+### Performance Improvements
+
+* 支持部署到阿里云vod ([98da4e1](https://github.com/certd/certd/commit/98da4e1791ed8bb21daf2a9914fda875d14633c9))
+
 ## [1.36.3](https://github.com/certd/certd/compare/v1.36.2...v1.36.3) (2025-07-07)
 
 **Note:** Version bump only for package @certd/plugin-lib

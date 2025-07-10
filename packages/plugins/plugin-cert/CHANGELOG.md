@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.4](https://github.com/certd/certd/compare/v1.36.3...v1.36.4) (2025-07-10)
+
+### Performance Improvements
+
+* 优化证书进度条颜色 ([2af91db](https://github.com/certd/certd/commit/2af91dbf2ae36a4ed17c6788bc2a2a79a3bb29f8))
+* 支持部署到阿里云vod ([98da4e1](https://github.com/certd/certd/commit/98da4e1791ed8bb21daf2a9914fda875d14633c9))
+* output-selector from参数支持更丰富的过滤规则 ([87853a2](https://github.com/certd/certd/commit/87853a201535f3bfe8505c40f8f5229d82ffcc73))
+
 ## [1.36.3](https://github.com/certd/certd/compare/v1.36.2...v1.36.3) (2025-07-07)
 
 **Note:** Version bump only for package @certd/plugin-cert
