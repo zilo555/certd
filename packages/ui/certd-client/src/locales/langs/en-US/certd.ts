@@ -471,7 +471,7 @@ export default {
   statusError: "Error",
   actionImportBatch: "Batch Import",
   actionSyncIp: "Sync IP",
-  modalTitleSyncIp: "Sync IP",
+  TitleSyncIp: "Sync IP",
   modalContentSyncIp: "Are you sure to sync IP?",
   notificationSyncComplete: "Sync Complete",
   actionCheckAll: "Check All",
@@ -707,5 +707,9 @@ export default {
       showRunStrategy: "Show RunStrategy",
       showRunStrategyHelper: "Allow modify the run strategy of the task",
     },
+  },
+  modal: {
+    close: "Close",
+    viewCertificateTitle: "View Certificate",
   },
 };

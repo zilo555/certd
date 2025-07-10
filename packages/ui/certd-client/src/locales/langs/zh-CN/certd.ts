@@ -711,4 +711,8 @@ export default {
       showRunStrategyHelper: "任务设置中是否允许选择运行策略",
     },
   },
+  modal: {
+    close: "关闭",
+    viewCertificateTitle: "查看证书",
+  },
 };
