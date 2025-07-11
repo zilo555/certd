@@ -7,7 +7,7 @@ import { BaseNotification, IsNotification, NotificationBody, NotificationInput }
   needPlus: true,
 })
 // https://open.dingtalk.com/document/orgapp/the-creation-and-installation-of-the-application-robot-in-the?spm=ding_open_doc.document.0.0.242d1563cDgZz3
-export class DingTalkNotification extends BaseNotification {
+export class FeishuNotification extends BaseNotification {
   @NotificationInput({
     title: 'webhook地址',
     component: {

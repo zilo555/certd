@@ -1,12 +1,7 @@
-import { VolcengineAccess } from "./access.js";
-import { http, HttpClient, ILogger } from "@certd/basic";
+import {http} from "@certd/basic";
 import querystring from "querystring";
+import {VolcengineOpts} from "./ve-client.js";
 
-export type VolcengineOpts = {
-  access: VolcengineAccess
-  logger: ILogger
-  http: HttpClient
-}
 
 export type VolcengineReq = {
   method?: string;
