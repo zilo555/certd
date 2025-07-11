@@ -471,7 +471,7 @@ export default {
   statusError: "Error",
   actionImportBatch: "Batch Import",
   actionSyncIp: "Sync IP",
-  TitleSyncIp: "Sync IP",
+  modalTitleSyncIp: "Sync IP",
   modalContentSyncIp: "Are you sure to sync IP?",
   notificationSyncComplete: "Sync Complete",
   actionCheckAll: "Check All",
