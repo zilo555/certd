@@ -47,7 +47,7 @@ export class GithubCheckRelease extends AbstractTaskPlugin {
           mode:"tags"
         }
     },
-    required:true,
+    required:false,
   })
   notificationIds!: number[];
 
@@ -74,9 +74,21 @@ export class GithubCheckRelease extends AbstractTaskPlugin {
       name: 'a-textarea',
       vModel: 'value',
       rows: 6,
-      placeholder: `#拉取最新版镜像\ndocker pull greper/certd:latest \n#重建容器 \nnohup sh -c 'sleep 10; cd ~/deploy/certd/ ; docker compose down; docker compose up -d' >/dev/null & `,
+      placeholder: `
+# 拉取最新镜像
+docker pull registry.cn-shenzhen.aliyuncs.com/handsfree/certd:latest
+# 升级容器命令， 替换成你自己的实际部署位置及更新命令
+export RESTART_CERT='sleep 10; cd ~/deploy/certd/ ; docker compose down; docker compose up -d'
+# 构造一个脚本10s后在后台执行，避免容器销毁时执行太快，导致流水线任务无法结束
+nohup sh -c '$RESTART_CERT' >/dev/null  2>&1 & echo '10秒后重启' && exit`,
     },
-    helper: '有新版本后执行命令，比如：拉取最新版镜像，然后重建容器\n注意：自己升级自己需要使用nobup配合sleep',
+    helper: `有新版本后执行命令，比如：拉取最新版镜像，然后重建容器
+注意：自己升级自己需要使用nohup配合sleep
+自动升级命令示例：
+docker pull registry.cn-shenzhen.aliyuncs.com/handsfree/certd:latest
+export RESTART_CERT='sleep 10; cd ~/deploy/certd/ ; docker compose down; docker compose up -d'
+nohup sh -c '$RESTART_CERT' >/dev/null  2>&1 & echo '10秒后重启' && exit
+`,
     required: false,
   })
   script!: string;
@@ -108,23 +120,23 @@ export class GithubCheckRelease extends AbstractTaskPlugin {
     //仅每行开头的* 替换成 -， *号前面可以有空格
     const body = res.body.replace(/^(\s*)\* /gm, "$1- ")
 
-    if (this.notificationIds == null){
-      this.notificationIds = [0]
+    if (this.notificationIds && this.notificationIds.length > 0){
+      //发送通知
+      for (const notificationId of this.notificationIds) {
+        await this.ctx.notificationService.send({
+          id: notificationId,
+          useDefault: false,
+          useEmail:false,
+          logger: this.logger,
+          body: {
+            title: `${this.repoName} 新版本 ${this.lastVersion} 发布`,
+            content: `${body}\n\n > [Certd](https://certd.docmirror.cn)，不止证书自动化，插件解锁无限可能！\n\n`,
+            url: `https://github.com/${this.repoName}/releases/tag/${this.lastVersion}`,
+          }
+        })
+      }
     }
-    //发送通知
-    for (const notificationId of this.notificationIds) {
-      await this.ctx.notificationService.send({
-        id: notificationId,
-        useDefault: false,
-        useEmail:false,
-        logger: this.logger,
-        body: {
-          title: `${this.repoName} 新版本 ${this.lastVersion} 发布`,
-          content: `${body}\n\n > [Certd](https://certd.docmirror.cn)，不止证书自动化，插件解锁无限可能！\n\n`,
-          url: `https://github.com/${this.repoName}/releases/tag/${this.lastVersion}`,
-        }
-      })
-    }
+
 
     if (this.script != null && this.script.trim() != "") {
       const connectConf = await this.getAccess(this.sshAccessId);
