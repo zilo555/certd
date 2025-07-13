@@ -258,7 +258,7 @@
           <a-timeline class="mt-10">
             <template v-for="item of histories" :key="item.id">
               <pi-history-timeline-item
-                :runnable="item.pipeline"
+                :runnable="item"
                 :history-id="item.id"
                 :is-current="currentHistory?.id === item.id"
                 :edit-mode="editMode"
@@ -371,7 +371,7 @@ export default defineComponent({
     const loadCurrentHistoryDetail = async () => {
       const detail: RunHistory = await props.options?.getHistoryDetail({ historyId: currentHistory.value.id });
       currentHistory.value.logs = detail.logs;
-      merge(currentHistory.value.pipeline, detail.pipeline);
+      currentHistory.value.pipeline = detail.pipeline;
     };
     const changeCurrentHistory = async (history?: RunHistory) => {
       if (!history) {
@@ -382,7 +382,8 @@ export default defineComponent({
       }
       currentHistory.value = history;
       await loadCurrentHistoryDetail();
-      pipeline.value = history.pipeline;
+      pipeline.value = currentHistory.value.pipeline;
+      currentPipeline.value = cloneDeep(pipeline.value);
     };
 
     async function loadHistoryList(reload = false) {
@@ -413,7 +414,8 @@ export default defineComponent({
             return true;
           }
         }
-        if (historyList[0].pipeline?.version === pipeline.value.version) {
+        //@ts-ignore
+        if (historyList[0]?.version === pipeline.value.version) {
           await changeCurrentHistory(historyList[0]);
         }
       }
@@ -486,7 +488,6 @@ export default defineComponent({
           },
           detail.pipeline
         );
-        debugger;
         pipeline.value = currentPipeline.value;
         await loadHistoryList(true);
       },
@@ -707,7 +708,6 @@ export default defineComponent({
           title: "确认",
           content: `确定要手动触发运行吗？`,
           async onOk() {
-            debugger;
             //@ts-ignore
             await changeCurrentHistory(null);
             await props.options.doTrigger({ pipelineId: pipeline.value.id, stepId: stepId });
@@ -787,7 +787,6 @@ export default defineComponent({
               pipeline.value.version = 0;
             }
             pipeline.value.version++;
-            debugger;
             currentPipeline.value = pipeline.value;
 
             //移除空阶段

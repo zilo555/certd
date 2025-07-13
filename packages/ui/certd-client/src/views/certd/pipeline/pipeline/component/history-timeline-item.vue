@@ -4,7 +4,7 @@
       <fs-icon v-bind="status" :color="status.iconColor || status.color" />
     </template>
     <p>
-      <fs-date-format :model-value="runnable.status?.startTime"></fs-date-format>
+      <fs-date-format :model-value="runnable.createTime"></fs-date-format>
       <a-tag class="ml-5" :color="status.color" :closable="status.value === 'start'" @close="cancelTask">
         {{ status.label }}
       </a-tag>
@@ -46,7 +46,7 @@ export default defineComponent({
   emits: ["view", "cancel"],
   setup(props: any, ctx: any) {
     const status = computed(() => {
-      return statusUtil.get(props.runnable?.status?.result);
+      return statusUtil.get(props.runnable?.status);
     });
 
     function view() {

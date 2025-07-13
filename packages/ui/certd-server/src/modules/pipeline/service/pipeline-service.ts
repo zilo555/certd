@@ -123,6 +123,22 @@ export class PipelineService extends BaseService<PipelineEntity> {
     const result = await super.page(pageReq);
     await this.fillLastVars(result.records);
 
+    for (const item of result.records) {
+      if (!item.content){
+        continue
+      }
+      const pipeline = JSON.parse(item.content);
+      let stepCount = 0
+      RunnableCollection.each(pipeline.stages, (runnable: any) => {
+        stepCount++
+      })
+      // @ts-ignore
+      item.stepCount = stepCount
+      // @ts-ignore
+      item.triggerCount = pipeline.triggers.length
+      delete item.content
+    }
+
     return result;
   }
 
@@ -637,7 +653,7 @@ export class PipelineService extends BaseService<PipelineEntity> {
     //修改pipeline状态
     const pipelineEntity = new PipelineEntity();
     pipelineEntity.id = parseInt(history.pipeline.id);
-    pipelineEntity.status = history.pipeline.status.status + '';
+    pipelineEntity.status = history.pipeline.status.result + '';
     pipelineEntity.lastHistoryTime = history.pipeline.status.startTime;
     await this.update(pipelineEntity);
 

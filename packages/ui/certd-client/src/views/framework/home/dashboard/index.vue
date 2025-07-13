@@ -214,6 +214,7 @@ function transformStatusCount() {
     { name: "error", label: "失败" },
     { name: "canceled", label: "已取消" },
     { name: null, label: "未执行" },
+    { name: "skip", label: "跳过" },
   ];
   const result = [];
   for (const item of sorted) {
