@@ -154,7 +154,7 @@ export class DomainService extends BaseService<DomainEntity> {
         }
         continue
       }
-      const cnameRecord:CnameRecordEntity = cnameMap[mainDomain]
+      const cnameRecord:CnameRecordEntity = cnameMap[domain]
       if (cnameRecord) {
         domainVerifiers[domain] = {
           domain,
@@ -168,7 +168,7 @@ export class DomainService extends BaseService<DomainEntity> {
         }
         continue
       }
-      const httpRecord = httpMap[mainDomain]
+      const httpRecord = httpMap[domain]
       if (httpRecord) {
         domainVerifiers[domain] = {
           domain,

@@ -1,19 +1,27 @@
-import {Inject, Provide, Scope, ScopeEnum} from '@midwayjs/core';
-import {InjectEntityModel} from '@midwayjs/typeorm';
-import {Repository} from 'typeorm';
-import {AccessService, BaseService, PlusService, ValidateException} from '@certd/lib-server';
-import {CnameRecordEntity, CnameRecordStatusType} from '../entity/cname-record.js';
-import {createDnsProvider, IDnsProvider} from '@certd/plugin-cert';
-import {CnameProvider, CnameRecord} from '@certd/pipeline';
-import {cache, http, isDev, logger, utils} from '@certd/basic';
-import {getAuthoritativeDnsResolver, walkTxtRecord} from '@certd/acme-client';
-import {CnameProviderService} from './cname-provider-service.js';
-import {CnameProviderEntity} from '../entity/cname-provider.js';
-import {CommonDnsProvider} from './common-provider.js';
-import {DomainParser} from "@certd/plugin-cert/dist/dns-provider/domain-parser.js";
-import punycode from 'punycode.js'
-import {SubDomainService} from "../../pipeline/service/sub-domain-service.js";
-import {SubDomainsGetter} from "../../pipeline/service/getter/sub-domain-getter.js";
+import { Inject, Provide, Scope, ScopeEnum } from "@midwayjs/core";
+import { InjectEntityModel } from "@midwayjs/typeorm";
+import { Repository } from "typeorm";
+import {
+  AccessService,
+  BaseService,
+  PlusService,
+  SysInstallInfo,
+  SysSettingsService,
+  ValidateException
+} from "@certd/lib-server";
+import { CnameRecordEntity, CnameRecordStatusType } from "../entity/cname-record.js";
+import { createDnsProvider, IDnsProvider } from "@certd/plugin-cert";
+import { CnameProvider, CnameRecord } from "@certd/pipeline";
+import { cache, http, isDev, logger, utils } from "@certd/basic";
+import { getAuthoritativeDnsResolver, walkTxtRecord } from "@certd/acme-client";
+import { CnameProviderService } from "./cname-provider-service.js";
+import { CnameProviderEntity } from "../entity/cname-provider.js";
+import { CommonDnsProvider } from "./common-provider.js";
+import { DomainParser } from "@certd/plugin-cert/dist/dns-provider/domain-parser.js";
+import punycode from "punycode.js";
+import { SubDomainService } from "../../pipeline/service/sub-domain-service.js";
+import { SubDomainsGetter } from "../../pipeline/service/getter/sub-domain-getter.js";
+
 type CnameCheckCacheValue = {
   validating: boolean;
   pass: boolean;
@@ -35,6 +43,8 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
 
   @Inject()
   cnameProviderService: CnameProviderService;
+  @Inject()
+  sysSettingsService: SysSettingsService;
 
   @Inject()
   accessService: AccessService;
@@ -101,7 +111,17 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
     }
     param.hostRecord = hostRecord;
 
-    const cnameKey = utils.id.simpleNanoId().toLowerCase();
+    let cnameKey = utils.id.simpleNanoId(8).toLowerCase();
+
+    let userIdHash = ""
+    if(param.cnameProviderId < 0){
+      //公共cname服务
+      userIdHash = utils.hash.md5(`userId_${userId}`).substring(0, 8)
+    }else{
+      const installInfo = await  this.sysSettingsService.getSetting<SysInstallInfo>(SysInstallInfo)
+      userIdHash = utils.hash.md5(installInfo.siteId).substring(0, 8)
+    }
+    cnameKey = `${userIdHash}-${cnameKey}`;
     const safeDomain = param.domain.replaceAll('.', '-');
     param.recordValue = `${safeDomain}.${cnameKey}.${cnameProvider.domain}`;
   }
