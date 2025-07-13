@@ -19,7 +19,7 @@ import * as api from "./api";
 import { message } from "ant-design-vue";
 import FsPermissionTree from "../permission/fs-permission-tree.vue";
 import { UseCrudPermissionCompProps, UseCrudPermissionExtraProps } from "/@/plugin/permission";
-import { useI18n } from "vue-i18n";
+import { useI18n } from "/src/locales";
 
 function useAuthz() {
   const checkedKeys = ref();

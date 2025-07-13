@@ -1,4 +1,4 @@
-import { useI18n } from "vue-i18n";
+import { useI18n } from "/src/locales";
 import { Ref, ref } from "vue";
 import { useRouter } from "vue-router";
 import { AddReq, compute, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, EditReq, UserPageQuery, UserPageRes } from "@fast-crud/fast-crud";

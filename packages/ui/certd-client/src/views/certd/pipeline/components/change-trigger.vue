@@ -5,7 +5,7 @@
 <script setup lang="ts">
 import * as api from "../api";
 import { useFormWrapper } from "@fast-crud/fast-crud";
-import { useI18n } from "vue-i18n";
+import { useI18n } from "/src/locales";
 
 const { t } = useI18n();
 

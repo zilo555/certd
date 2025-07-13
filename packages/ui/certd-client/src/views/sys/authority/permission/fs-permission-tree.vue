@@ -28,7 +28,7 @@
 import { utils } from "@fast-crud/fast-crud";
 import { cloneDeep } from "lodash-es";
 import { computed, defineComponent, ref } from "vue";
-import { useI18n } from "vue-i18n";
+import { useI18n } from "/src/locales";
 
 export default defineComponent({
   name: "FsPermissionTree",

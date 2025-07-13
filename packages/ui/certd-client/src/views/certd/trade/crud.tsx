@@ -1,5 +1,5 @@
 import * as api from "./api";
-import { useI18n } from "vue-i18n";
+import { useI18n } from "/src/locales";
 import { computed, Ref, ref } from "vue";
 import { useRouter } from "vue-router";
 import { AddReq, compute, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, EditReq, UserPageQuery, UserPageRes, utils } from "@fast-crud/fast-crud";

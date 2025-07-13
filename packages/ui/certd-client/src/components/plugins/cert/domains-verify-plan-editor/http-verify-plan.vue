@@ -33,6 +33,7 @@
 import { Ref, ref, watch, nextTick } from "vue";
 import { HttpRecord } from "/@/components/plugins/cert/domains-verify-plan-editor/type";
 import { dict } from "@fast-crud/fast-crud";
+import { Dicts } from "/@/components/plugins/lib/dicts";
 
 defineOptions({
   name: "HttpVerifyPlan",
@@ -68,17 +69,7 @@ async function onRecordChange() {
   emit("change", records.value);
 }
 
-const uploaderTypeDict = dict({
-  data: [
-    { label: "SFTP", value: "sftp" },
-    { label: "FTP", value: "ftp" },
-    { label: "阿里云OSS", value: "alioss" },
-    { label: "腾讯云COS", value: "tencentcos" },
-    { label: "七牛OSS", value: "qiniuoss" },
-    { label: "S3/Minio", value: "s3" },
-    { label: "SSH(已废弃，请选择SFTP方式)", value: "ssh", disabled: true },
-  ],
-});
+const uploaderTypeDict = Dicts.uploaderTypeDict;
 </script>
 
 <style lang="less">

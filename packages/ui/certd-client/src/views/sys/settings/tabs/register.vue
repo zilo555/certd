@@ -73,7 +73,7 @@ import * as api from "/@/views/sys/settings/api";
 import { merge } from "lodash-es";
 import { useSettingStore } from "/@/store/settings";
 import { notification } from "ant-design-vue";
-import { useI18n } from "vue-i18n";
+import { useI18n } from "/src/locales";
 
 const { t } = useI18n();
 

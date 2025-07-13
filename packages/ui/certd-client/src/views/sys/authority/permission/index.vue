@@ -19,7 +19,7 @@ import createCrudOptions from "./crud.js";
 import FsPermissionTree from "./fs-permission-tree.vue";
 import { usePermission } from "/src/plugin/permission";
 import { useFs, useUi } from "@fast-crud/fast-crud";
-import { useI18n } from "vue-i18n";
+import { useI18n } from "/src/locales";
 
 export default defineComponent({
   name: "AuthorityManager",

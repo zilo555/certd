@@ -55,6 +55,14 @@ export function createAccessApi(from = "user") {
       });
     },
 
+    async GetDictByIds(ids: number[]) {
+      return await request({
+        url: apiPrefix + "/getDictByIds",
+        method: "post",
+        data: { ids },
+      });
+    },
+
     async GetSecretPlain(id: number, key: string) {
       return await request({
         url: apiPrefix + "/getSecretPlain",

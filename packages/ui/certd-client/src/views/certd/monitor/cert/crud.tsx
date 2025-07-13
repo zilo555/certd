@@ -1,5 +1,5 @@
 // @ts-ignore
-import { useI18n } from "vue-i18n";
+import { useI18n } from "/src/locales";
 //
 import { AddReq, compute, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, EditReq, useFormWrapper, UserPageQuery, UserPageRes } from "@fast-crud/fast-crud";
 import { certInfoApi } from "./api";

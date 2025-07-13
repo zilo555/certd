@@ -79,7 +79,7 @@ import { UserTwoFactorSetting } from "./api";
 import { Modal, notification } from "ant-design-vue";
 import { merge } from "lodash-es";
 import { useSettingStore } from "/@/store/settings";
-import { useI18n } from "vue-i18n";
+import { useI18n } from "/src/locales";
 
 const { t } = useI18n();
 const settingsStore = useSettingStore();

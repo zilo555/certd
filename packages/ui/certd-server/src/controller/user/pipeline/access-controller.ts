@@ -101,4 +101,10 @@ export class AccessController extends CrudController<AccessService> {
     const res = await this.service.getSimpleInfo(id);
     return this.ok(res);
   }
+
+  @Post('/getDictByIds', { summary: Constants.per.authOnly })
+  async getDictByIds(@Body('ids') ids: number[]) {
+    const res = await this.service.getSimpleByIds(ids, this.getUserId());
+    return this.ok(res);
+  }
 }

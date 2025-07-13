@@ -12,7 +12,7 @@ import { useUserStore } from "/@/store/user";
 import ChangePasswordButton from "/@/views/certd/mine/change-password-button.vue";
 import { onMounted, ref } from "vue";
 import { Modal } from "ant-design-vue";
-import { useI18n } from "vue-i18n";
+import { useI18n } from "/src/locales";
 
 const { t } = useI18n();
 

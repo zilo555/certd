@@ -31,7 +31,7 @@ import ChangeGroup from "./components/change-group.vue";
 import ChangeTrigger from "./components/change-trigger.vue";
 import { Modal, notification } from "ant-design-vue";
 import * as api from "./api";
-import { useI18n } from "vue-i18n";
+import { useI18n } from "/src/locales";
 
 const { t } = useI18n();
 import ChangeNotification from "/@/views/certd/pipeline/components/change-notification.vue";
