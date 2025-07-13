@@ -207,8 +207,8 @@ export default function ({ crudExpose }: CreateCrudOptionsProps): CreateCrudOpti
           type: "dict-switch",
           dict: dict({
             data: [
-              { label: t("certd.enabled"), value: 1, color: "green" },
-              { label: t("certd.disabled"), value: 0, color: "red" },
+              { label: t("common.enabled"), value: 1, color: "green" },
+              { label: t("common.disabled"), value: 0, color: "red" },
             ],
           }),
           column: {
