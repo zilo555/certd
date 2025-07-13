@@ -41,7 +41,7 @@ import { dict } from "@fast-crud/fast-crud";
 import createCrudOptions from "../crud";
 import { notificationProvide } from "/@/views/certd/notification/common";
 import { useUserStore } from "/@/store/user";
-import { useI18n } from "vue-i18n";
+import { useI18n } from "/src/locales";
 
 const { t } = useI18n();
 

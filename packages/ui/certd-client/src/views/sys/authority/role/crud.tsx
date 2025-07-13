@@ -1,6 +1,6 @@
 import * as api from "./api";
 import { AddReq, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, EditReq, UserPageQuery, UserPageRes } from "@fast-crud/fast-crud";
-import { useI18n } from "vue-i18n";
+import { useI18n } from "/src/locales";
 
 export default function ({ crudExpose, context: { authz } }: CreateCrudOptionsProps): CreateCrudOptionsRet {
   const { t } = useI18n();

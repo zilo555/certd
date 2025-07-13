@@ -77,7 +77,7 @@ import * as emailApi from "./api.email";
 import { notification } from "ant-design-vue";
 import { useSettingStore } from "/src/store/settings";
 import * as _ from "lodash-es";
-import { useI18n } from "vue-i18n";
+import { useI18n } from "/src/locales";
 
 const { t } = useI18n();
 defineOptions({

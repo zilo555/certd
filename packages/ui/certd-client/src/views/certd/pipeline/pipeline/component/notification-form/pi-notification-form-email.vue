@@ -25,7 +25,7 @@
 import { Ref, ref, watch } from "vue";
 import { useUserStore } from "/@/store/user";
 import { useSettingStore } from "/@/store/settings";
-import { useI18n } from "vue-i18n";
+import { useI18n } from "/src/locales";
 
 const { t } = useI18n();
 

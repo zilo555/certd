@@ -1,33 +1,33 @@
 <template>
-  <a-modal v-model:open="openRef" class="order-modal" :title="$t('order.confirmTitle')" @ok="orderCreate">
+  <a-modal v-model:open="openRef" class="order-modal" :title="$t('certd.order.confirmTitle')" @ok="orderCreate">
     <div v-if="product" class="order-box">
       <div class="flex-o mt-5">
-        <span class="label">{{ $t("order.package") }}：</span>{{ product.title }}
+        <span class="label">{{ $t("certd.order.package") }}：</span>{{ product.title }}
       </div>
       <div class="flex-o mt-5">
-        <span class="label">{{ $t("order.description") }}：</span>{{ product.intro }}
+        <span class="label">{{ $t("certd.order.description") }}：</span>{{ product.intro }}
       </div>
       <div class="flex-o mt-5">
-        <span class="label">{{ $t("order.specifications") }}：</span>
+        <span class="label">{{ $t("certd.order.specifications") }}：</span>
         <span class="flex-o flex-wrap">
-          <span class="flex-o"> {{ $t("order.pipeline") }}<suite-value class="ml-5" :model-value="product.content.maxPipelineCount" unit="{{$t('order.unit.pieces')}}" />； </span>
-          <span class="flex-o"> {{ $t("order.domain") }}<suite-value class="ml-5" :model-value="product.content.maxDomainCount" unit="{{$t('order.unit.count')}}" />； </span>
-          <span class="flex-o"> {{ $t("order.deployTimes") }}<suite-value class="ml-5" :model-value="product.content.maxDeployCount" unit="{{$t('order.unit.times')}}" />； </span>
+          <span class="flex-o"> {{ $t("certd.order.pipeline") }}<suite-value class="ml-5" :model-value="product.content.maxPipelineCount" :unit="$t('certd.order.unit.pieces')" />； </span>
+          <span class="flex-o"> {{ $t("certd.order.domain") }}<suite-value class="ml-5" :model-value="product.content.maxDomainCount" :unit="$t('certd.order.unit.count')" />； </span>
+          <span class="flex-o"> {{ $t("certd.order.deployTimes") }}<suite-value class="ml-5" :model-value="product.content.maxDeployCount" :unit="$t('certd.order.unit.times')" />； </span>
         </span>
       </div>
 
       <div class="flex-o mt-5">
-        <span class="label">{{ $t("order.duration") }}：</span>
+        <span class="label">{{ $t("certd.order.duration") }}：</span>
         <duration-value v-model="formRef.duration"></duration-value>
       </div>
       <div class="flex-o mt-5">
-        <span class="label">{{ $t("order.price") }}：</span>
+        <span class="label">{{ $t("certd.order.price") }}：</span>
         <price-input :edit="false" :model-value="durationSelected.price"></price-input>
       </div>
 
       <div class="flex-o mt-5">
-        <span class="label">{{ $t("order.paymentMethod") }}：</span>
-        <div v-if="durationSelected.price === 0">{{ $t("order.free") }}</div>
+        <span class="label">{{ $t("certd.order.paymentMethod") }}：</span>
+        <div v-if="durationSelected.price === 0">{{ $t("certd.order.free") }}</div>
         <fs-dict-select v-else v-model:value="formRef.payType" :dict="paymentsDictRef" style="width: 200px"> </fs-dict-select>
       </div>
     </div>

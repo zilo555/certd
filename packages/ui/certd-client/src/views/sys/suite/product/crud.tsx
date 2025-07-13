@@ -4,7 +4,7 @@ import SuiteValue from "./suite-value.vue";
 import SuiteValueEdit from "./suite-value-edit.vue";
 import PriceEdit from "./price-edit.vue";
 import DurationPriceValue from "/@/views/sys/suite/product/duration-price-value.vue";
-import { useI18n } from "vue-i18n";
+import { useI18n } from "/src/locales";
 
 export default function ({ crudExpose, context }: CreateCrudOptionsProps): CreateCrudOptionsRet {
   const { t } = useI18n();

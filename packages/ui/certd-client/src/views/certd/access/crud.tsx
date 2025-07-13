@@ -1,5 +1,5 @@
 // @ts-ignore
-import { useI18n } from "vue-i18n";
+import { useI18n } from "/src/locales";
 import { ref } from "vue";
 import { getCommonColumnDefine } from "/@/views/certd/access/common";
 import { AddReq, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, EditReq, UserPageQuery, UserPageRes } from "@fast-crud/fast-crud";

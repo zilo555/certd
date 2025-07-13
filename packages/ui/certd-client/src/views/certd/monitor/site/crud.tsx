@@ -1,5 +1,5 @@
 // @ts-ignore
-import { useI18n } from "vue-i18n";
+import { useI18n } from "/src/locales";
 import { AddReq, ColumnCompositionProps, compute, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, EditReq, UserPageQuery, UserPageRes } from "@fast-crud/fast-crud";
 import { siteInfoApi } from "./api";
 import dayjs from "dayjs";

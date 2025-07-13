@@ -4,7 +4,7 @@ import { useUserStore } from "/@/store/user";
 import { Modal, notification } from "ant-design-vue";
 import dayjs from "dayjs";
 import { useSettingStore } from "/@/store/settings";
-import { useI18n } from "vue-i18n";
+import { useI18n } from "/src/locales";
 
 export default function ({ crudExpose }: CreateCrudOptionsProps): CreateCrudOptionsRet {
   const { t } = useI18n();

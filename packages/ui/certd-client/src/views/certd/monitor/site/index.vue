@@ -28,7 +28,7 @@ import { useFs } from "@fast-crud/fast-crud";
 import createCrudOptions from "./crud";
 import { siteInfoApi } from "./api";
 import { Modal, notification } from "ant-design-vue";
-import { useI18n } from "vue-i18n";
+import { useI18n } from "/src/locales";
 
 const { t } = useI18n();
 defineOptions({
