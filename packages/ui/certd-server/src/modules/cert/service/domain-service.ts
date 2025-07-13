@@ -1,8 +1,12 @@
 import {Inject, Provide, Scope, ScopeEnum} from '@midwayjs/core';
 import {InjectEntityModel} from '@midwayjs/typeorm';
-import {Not, Repository} from 'typeorm';
+import {In, Not, Repository} from 'typeorm';
 import {AccessService, BaseService} from '@certd/lib-server';
 import {DomainEntity} from '../entity/domain.js';
+import {SubDomainService} from "../../pipeline/service/sub-domain-service.js";
+import {DomainParser} from "@certd/plugin-cert/dist/dns-provider/domain-parser.js";
+import {DomainVerifiers} from "@certd/plugin-cert";
+import { SubDomainsGetter } from '../../pipeline/service/getter/sub-domain-getter.js';
 
 
 /**
@@ -16,6 +20,8 @@ export class DomainService extends BaseService<DomainEntity> {
 
   @Inject()
   accessService: AccessService;
+  @Inject()
+  subDomainService: SubDomainService;
 
   //@ts-ignore
   getRepository() {
@@ -67,4 +73,97 @@ export class DomainService extends BaseService<DomainEntity> {
 
   }
 
+  /**
+   *
+   * @param userId
+   * @param domains //去除* 且去重之后的域名列表
+   */
+  async getDomainVerifiers(userId: number, domains: string[]):Promise<DomainVerifiers> {
+
+    const mainDomainMap:Record<string, string> = {}
+    const subDomainGetter = new SubDomainsGetter(userId, this.subDomainService)
+    const domainParser = new DomainParser(subDomainGetter)
+
+    const mainDomains = []
+    for (const domain of domains) {
+      const mainDomain = await domainParser.parse(domain);
+      mainDomainMap[domain] = mainDomain;
+      mainDomains.push(mainDomain)
+    }
+
+    //匹配DNS记录
+    let allDomains = [...domains,...mainDomains]
+    //去重
+    allDomains = [...new Set(allDomains)]
+
+    const domainRecords = await this.find({
+      where: {
+        domain: In(allDomains),
+        userId
+      }
+    })
+
+    const dnsMap = domainRecords.filter(item=>item.challengeType === 'dns').reduce((pre, item) => {
+      pre[item.domain] = item
+      return pre
+    }, {})
+    const cnameMap = domainRecords.filter(item=>item.challengeType === 'cname').reduce((pre, item) => {
+      pre[item.domain] = item
+      return pre
+    }, {})
+    const httpMap = domainRecords.filter(item=>item.challengeType === 'http').reduce((pre, item) => {
+      pre[item.domain] = item
+      return pre
+    }, {})
+
+
+    const domainVerifiers:DomainVerifiers = {}
+
+    for (const domain of domains) {
+      const mainDomain = mainDomainMap[domain]
+
+      const dnsRecord = dnsMap[mainDomain]
+      if (dnsRecord) {
+        domainVerifiers[domain] = {
+          domain,
+          mainDomain,
+          type: 'dns',
+          dns: {
+            dnsProviderType: dnsRecord.dnsProviderType,
+            dnsProviderAccessId: dnsRecord.dnsProviderAccessId
+          }
+        }
+        continue
+      }
+      const cnameRecord = cnameMap[mainDomain]
+      if (cnameRecord) {
+        domainVerifiers[domain] = {
+          domain,
+          mainDomain,
+          type: 'cname',
+          cname: {
+            cnameRecord: cnameRecord.cnameRecord
+          }
+        }
+        continue
+      }
+      const httpRecord = httpMap[mainDomain]
+      if (httpRecord) {
+        domainVerifiers[domain] = {
+          domain,
+          mainDomain,
+          type: 'http',
+          http: {
+            httpUploaderType: httpRecord.httpUploaderType,
+            httpUploaderAccess: httpRecord.httpUploaderAccess,
+            httpUploadRootDir: httpRecord.httpUploadRootDir
+          }
+        }
+         continue
+      }
+      domainVerifiers[domain] = null
+    }
+
+    return domainVerifiers;
+  }
 }

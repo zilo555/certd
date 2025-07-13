@@ -73,18 +73,22 @@ export type CnameVerifier = {
 export type HttpVerifier = {
   // http校验
   httpUploaderType: string;
-  httpUploaderAccess: string;
+  httpUploaderAccess: number;
   httpUploadRootDir: string;
 };
 export type DomainVerifier = {
   domain: string;
   mainDomain: string;
-  challengeType: string;
+  type: string;
   dns?: DnsVerifier;
   cname?: CnameVerifier;
   http?: HttpVerifier;
 };
 
+export type DomainVerifiers = {
+  [key: string]: DomainVerifier;
+};
+
 export interface IDomainVerifierGetter {
-  getVerifiers(domains: string[]): Promise<DomainVerifier[]>;
+  getVerifiers(domains: string[]): Promise<DomainVerifiers>;
 }

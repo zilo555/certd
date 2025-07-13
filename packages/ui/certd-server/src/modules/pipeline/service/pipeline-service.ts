@@ -44,7 +44,7 @@ import {UrlService} from "./url-service.js";
 import {NotificationService} from "./notification-service.js";
 import {UserSuiteEntity, UserSuiteService} from "@certd/commercial-core";
 import {CertInfoService} from "../../monitor/service/cert-info-service.js";
-import {TaskServiceBuilder} from "./task-service-getter.js";
+import {TaskServiceBuilder} from "./getter/task-service-getter.js";
 import {nanoid} from "nanoid";
 import {set} from "lodash-es";
 
