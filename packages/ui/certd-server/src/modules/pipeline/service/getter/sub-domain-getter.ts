@@ -1,5 +1,5 @@
 import {ISubDomainsGetter} from "@certd/plugin-cert";
-import {SubDomainService} from "../service/sub-domain-service.js";
+import {SubDomainService} from "../sub-domain-service.js";
 
 export class SubDomainsGetter implements ISubDomainsGetter {
   userId: number;

@@ -14,7 +14,7 @@ import {
 import {EmailService} from '../../../modules/basic/service/email-service.js';
 import {http, HttpRequestConfig, logger, mergeUtils, utils} from '@certd/basic';
 import {NotificationService} from '../../../modules/pipeline/service/notification-service.js';
-import {TaskServiceBuilder} from "../../../modules/pipeline/service/task-service-getter.js";
+import {TaskServiceBuilder} from "../../../modules/pipeline/service/getter/task-service-getter.js";
 
 @Provide()
 @Controller('/api/pi/handle')

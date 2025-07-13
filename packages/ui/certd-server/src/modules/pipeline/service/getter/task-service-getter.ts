@@ -1,6 +1,5 @@
 import {IServiceGetter} from "@certd/pipeline";
 import {Inject, Provide, Scope, ScopeEnum} from "@midwayjs/core";
-import {SubDomainService} from "../sub-domain-service.js";
 import {AccessGetter, AccessService} from "@certd/lib-server";
 import {CnameProxyService} from "./cname-proxy-service.js";
 import {NotificationGetter} from "./notification-getter.js";
@@ -10,6 +9,7 @@ import {SubDomainsGetter} from './sub-domain-getter.js'
 import {DomainVerifierGetter} from "./domain-verifier-getter.js";
 import {Context} from "@midwayjs/koa";
 import {DomainService} from "../../../cert/service/domain-service.js";
+import {SubDomainService} from "../sub-domain-service.js";
 
 export class TaskServiceGetter implements IServiceGetter{
   private userId: number;
@@ -36,7 +36,7 @@ export class TaskServiceGetter implements IServiceGetter{
   }
 
   async getSubDomainsGetter(): Promise<SubDomainsGetter> {
-    const subDomainsService = await  this.ctx.requestContext.getAsync("subDomainService")
+    const subDomainsService:SubDomainService = await  this.ctx.requestContext.getAsync("subDomainService")
     return new SubDomainsGetter(this.userId, subDomainsService)
   }
 
