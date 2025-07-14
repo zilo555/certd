@@ -893,7 +893,9 @@ export class PipelineService extends BaseService<PipelineEntity> {
         {
           id: nanoid(),
           title: "定时触发",
-          cron: randomCron,
+          props:{
+            cron: randomCron,
+          },
           type: "cron"
         }
       ],
