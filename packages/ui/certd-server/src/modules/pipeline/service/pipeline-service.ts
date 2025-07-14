@@ -896,7 +896,7 @@ export class PipelineService extends BaseService<PipelineEntity> {
           props:{
             cron: randomCron,
           },
-          type: "cron"
+          type: "timer"
         }
       ],
       notifications: [

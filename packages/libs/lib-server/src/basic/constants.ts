@@ -109,7 +109,7 @@ export const Constants = {
     },
     openCertApplying: {
       code: 20013,
-      message: '证书正在申请中，请稍后重新获取（需要事先在“域名管理”页面配置好校验方式）',
+      message: '证书正在申请中，请稍后重新获取',
     },
     openDomainNoVerifier:{
       code: 20014,
