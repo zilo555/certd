@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.6](https://github.com/certd/certd/compare/v1.36.5...v1.36.6) (2025-07-14)
+
+### Performance Improvements
+
+* 优化流水线列表页面、详情页面性能，精简返回数据 ([609ac9c](https://github.com/certd/certd/commit/609ac9c9a2dde605eb09834ae59693c1cb238765))
+* 支持自动选择校验方式申请证书 ([3f99432](https://github.com/certd/certd/commit/3f9943270cfb12946e38e6272bc5e8d95ad6ab9e))
+* OpenAPI支持autoApply参数 ([42f4d14](https://github.com/certd/certd/commit/42f4d1477dc791520a874aed56035abcbc8c433b))
+
 ## [1.36.5](https://github.com/certd/certd/compare/v1.36.4...v1.36.5) (2025-07-11)
 
 ### Bug Fixes
