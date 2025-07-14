@@ -1,6 +1,6 @@
 import {Inject, Provide, Scope, ScopeEnum} from '@midwayjs/core';
 import {InjectEntityModel} from '@midwayjs/typeorm';
-import {Repository} from 'typeorm';
+import { In, Repository } from "typeorm";
 import {AccessGetter, BaseService, PageReq, PermissionException, ValidateException} from '../../../index.js';
 import {AccessEntity} from '../entity/access.js';
 import {AccessDefine, accessRegistry, newAccess} from '@certd/pipeline';
@@ -174,5 +174,28 @@ export class AccessService extends BaseService<AccessEntity> {
 
   getDefineByType(type: string) {
     return accessRegistry.getDefine(type);
+  }
+
+
+  async getSimpleByIds(ids: number[], userId: any) {
+    if (ids.length === 0) {
+      return [];
+    }
+    if (!userId) {
+      return [];
+    }
+    return await this.repository.find({
+      where: {
+        id: In(ids),
+        userId,
+      },
+      select: {
+        id: true,
+        name: true,
+        type: true,
+        userId:true
+      },
+    });
+
   }
 }

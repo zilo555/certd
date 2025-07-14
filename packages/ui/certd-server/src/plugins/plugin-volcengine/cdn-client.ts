@@ -1,4 +1,4 @@
-import { VolcengineOpts } from "./dns-client.js";
+import { VolcengineOpts } from "./ve-client.js";
 import { CertInfo } from "@certd/plugin-cert";
 
 export class VolcengineCdnClient {

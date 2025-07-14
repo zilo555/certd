@@ -14,6 +14,8 @@ export default {
   search: "Search",
   enabled: "Enabled",
   disabled: "Disabled",
+  enable: "Enable",
+  disable: "Disable",
   edit: "Edit",
   delete: "Delete",
   create: "Create",

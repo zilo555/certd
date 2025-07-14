@@ -1,16 +1,16 @@
 import { CancelError, IsTaskPlugin, pluginGroups, RunStrategy, TaskInput } from "@certd/pipeline";
 import { utils } from "@certd/basic";
 
-import type { CertInfo, CnameVerifyPlan, DomainsVerifyPlan, HttpVerifyPlan, PrivateKeyType, SSLProvider } from "./acme.js";
-import { AcmeService } from "./acme.js";
+import { AcmeService, CertInfo, DomainsVerifyPlan, DomainVerifyPlan, PrivateKeyType, SSLProvider } from "./acme.js";
 import * as _ from "lodash-es";
-import { createDnsProvider, DnsProviderContext, IDnsProvider, ISubDomainsGetter } from "../../dns-provider/index.js";
+import { createDnsProvider, DnsProviderContext, DnsVerifier, DomainVerifiers, HttpVerifier, IDnsProvider, IDomainVerifierGetter, ISubDomainsGetter } from "../../dns-provider/index.js";
 import { CertReader } from "./cert-reader.js";
 import { CertApplyBasePlugin } from "./base.js";
 import { GoogleClient } from "../../libs/google.js";
 import { EabAccess } from "../../access";
 import { DomainParser } from "../../dns-provider/domain-parser.js";
 import { ossClientFactory } from "@certd/plugin-lib";
+
 export * from "./base.js";
 export type { CertInfo };
 export * from "./cert-reader.js";
@@ -66,13 +66,15 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
         { value: "cname", label: "CNAME代理验证" },
         { value: "http", label: "HTTP文件验证" },
         { value: "dnses", label: "多DNS提供商" },
+        { value: "auto", label: "自动匹配" },
       ],
     },
     required: true,
     helper: `1. <b>DNS直接验证</b>：域名dns解析是在阿里云/腾讯云/华为云/CF/NameSilo/西数/火山/dns.la/京东云/51dns的，选它
-2.  <b>CNAME代理验证</b>：支持任何注册商的域名，第一次需要手动添加CNAME记录（建议将DNS服务器修改为阿里云/腾讯云的，然后使用DNS直接验证）
+2.  <b>CNAME代理验证</b>：支持任何注册商的域名，第一次需要手动添加[CNAME记录](#/certd/cname/record)（建议将DNS服务器修改为阿里云/腾讯云的，然后使用DNS直接验证）
 3.  <b>HTTP文件验证</b>：不支持泛域名，需要配置网站文件上传
 4.  <b>多DNS提供商</b>：每个域名可以选择独立的DNS提供商
+5.  <b>自动匹配</b>：需要在[域名管理](#/certd/cert/domain)中事先配置好校验方式
 `,
   })
   challengeType!: string;
@@ -333,6 +335,7 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
   acme!: AcmeService;
 
   eab!: EabAccess;
+
   async onInit() {
     let eab: EabAccess = null;
 
@@ -408,7 +411,9 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
     let dnsProvider: IDnsProvider = null;
     let domainsVerifyPlan: DomainsVerifyPlan = null;
     if (this.challengeType === "cname" || this.challengeType === "http" || this.challengeType === "dnses") {
-      domainsVerifyPlan = await this.createDomainsVerifyPlan();
+      domainsVerifyPlan = await this.createDomainsVerifyPlan(domains, this.domainsVerifyPlan);
+    } else if (this.challengeType === "auto") {
+      domainsVerifyPlan = await this.createDomainsVerifyPlanByAuto(domains);
     } else {
       const dnsProviderType = this.dnsProviderType;
       const access = await this.getAccess(this.dnsProviderAccess);
@@ -444,72 +449,131 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
 
   async createDnsProvider(dnsProviderType: string, dnsProviderAccess: any): Promise<IDnsProvider> {
     const domainParser = this.acme.options.domainParser;
-    const context: DnsProviderContext = { access: dnsProviderAccess, logger: this.logger, http: this.ctx.http, utils, domainParser };
+    const context: DnsProviderContext = {
+      access: dnsProviderAccess,
+      logger: this.logger,
+      http: this.ctx.http,
+      utils,
+      domainParser,
+    };
     return await createDnsProvider({
       dnsProviderType,
       context,
     });
   }
 
-  async createDomainsVerifyPlan(): Promise<DomainsVerifyPlan> {
+  async createDomainsVerifyPlan(domains: string[], verifyPlanSetting: DomainsVerifyPlanInput): Promise<DomainsVerifyPlan> {
     const plan: DomainsVerifyPlan = {};
-    for (const domain in this.domainsVerifyPlan) {
-      const domainVerifyPlan = this.domainsVerifyPlan[domain];
-      let dnsProvider = null;
-      const cnameVerifyPlan: Record<string, CnameVerifyPlan> = {};
-      const httpVerifyPlan: Record<string, HttpVerifyPlan> = {};
-      if (domainVerifyPlan.type === "dns") {
-        const access = await this.getAccess(domainVerifyPlan.dnsProviderAccessId);
-        dnsProvider = await this.createDnsProvider(domainVerifyPlan.dnsProviderType, access);
-      } else if (domainVerifyPlan.type === "cname") {
-        for (const key in domainVerifyPlan.cnameVerifyPlan) {
-          const cnameRecord = await this.ctx.cnameProxyService.getByDomain(key);
-          let dnsProvider = cnameRecord.commonDnsProvider;
-          if (cnameRecord.cnameProvider.id > 0) {
-            dnsProvider = await this.createDnsProvider(cnameRecord.cnameProvider.dnsProviderType, cnameRecord.cnameProvider.access);
-          }
-          cnameVerifyPlan[key] = {
-            type: "cname",
-            domain: cnameRecord.cnameProvider.domain,
-            fullRecord: cnameRecord.recordValue,
-            dnsProvider,
-          };
-        }
-      } else if (domainVerifyPlan.type === "http") {
-        const httpUploaderContext = {
-          accessService: this.ctx.accessService,
-          logger: this.logger,
-          utils,
-        };
-        for (const key in domainVerifyPlan.httpVerifyPlan) {
-          const httpRecord = domainVerifyPlan.httpVerifyPlan[key];
-          const access = await this.getAccess(httpRecord.httpUploaderAccess);
-          let rootDir = httpRecord.httpUploadRootDir;
-          if (!rootDir.endsWith("/") && !rootDir.endsWith("\\")) {
-            rootDir = rootDir + "/";
-          }
-          this.logger.info("上传方式", httpRecord.httpUploaderType);
-          const httpUploader = await ossClientFactory.createOssClientByType(httpRecord.httpUploaderType, {
-            access,
-            rootDir: rootDir,
-            ctx: httpUploaderContext,
-          });
-          httpVerifyPlan[key] = {
-            type: "http",
-            domain: key,
-            httpUploader,
-          };
-        }
+
+    const domainParser = this.acme.options.domainParser;
+    for (const fullDomain of domains) {
+      const domain = fullDomain.replaceAll("*.", "");
+      const mainDomain = await domainParser.parse(domain);
+      const planSetting: DomainVerifyPlanInput = verifyPlanSetting[mainDomain];
+      if (planSetting == null) {
+        throw new Error(`没有找到域名（${domain}）的校验计划`);
       }
-      plan[domain] = {
-        domain,
-        type: domainVerifyPlan.type,
-        dnsProvider,
-        cnameVerifyPlan,
-        httpVerifyPlan,
-      };
+      if (planSetting.type === "dns") {
+        plan[domain] = await this.createDnsDomainVerifyPlan(planSetting, domain, mainDomain);
+      } else if (planSetting.type === "cname") {
+        plan[domain] = await this.createCnameDomainVerifyPlan(domain, mainDomain);
+      } else if (planSetting.type === "http") {
+        plan[domain] = await this.createHttpDomainVerifyPlan(planSetting.httpVerifyPlan[domain], domain, mainDomain);
+      }
     }
     return plan;
+  }
+
+  private async createDomainsVerifyPlanByAuto(domains: string[]) {
+    //从数据库里面自动选择校验方式
+    // domain list
+    const domainList = new Set<string>();
+    //整理域名
+    for (let domain of domains) {
+      domain = domain.replaceAll("*.", "");
+      domainList.add(domain);
+    }
+    const domainVerifierGetter: IDomainVerifierGetter = await this.ctx.serviceGetter.get("domainVerifierGetter");
+
+    const verifiers: DomainVerifiers = await domainVerifierGetter.getVerifiers([...domainList]);
+
+    const plan: DomainsVerifyPlan = {};
+
+    for (const domain in verifiers) {
+      const verifier = verifiers[domain];
+      if (verifier == null) {
+        throw new Error(`没有找到与该域名（${domain}）匹配的校验方式，请先到‘域名管理’页面添加校验方式`);
+      }
+      if (verifier.type === "dns") {
+        plan[domain] = await this.createDnsDomainVerifyPlan(verifier.dns, domain, verifier.mainDomain);
+      } else if (verifier.type === "cname") {
+        plan[domain] = await this.createCnameDomainVerifyPlan(domain, verifier.mainDomain);
+      } else if (verifier.type === "http") {
+        plan[domain] = await this.createHttpDomainVerifyPlan(verifier.http, domain, verifier.mainDomain);
+      }
+    }
+    return plan;
+  }
+
+  private async createDnsDomainVerifyPlan(planSetting: DnsVerifier, domain: string, mainDomain: string): Promise<DomainVerifyPlan> {
+    const access = await this.getAccess(planSetting.dnsProviderAccessId);
+    return {
+      type: "dns",
+      mainDomain,
+      domain,
+      dnsProvider: await this.createDnsProvider(planSetting.dnsProviderType, access),
+    };
+  }
+
+  private async createHttpDomainVerifyPlan(httpSetting: HttpVerifier, domain: string, mainDomain: string): Promise<DomainVerifyPlan> {
+    const httpUploaderContext = {
+      accessService: this.ctx.accessService,
+      logger: this.logger,
+      utils,
+    };
+
+    const access = await this.getAccess(httpSetting.httpUploaderAccess);
+    let rootDir = httpSetting.httpUploadRootDir;
+    if (!rootDir.endsWith("/") && !rootDir.endsWith("\\")) {
+      rootDir = rootDir + "/";
+    }
+    this.logger.info("上传方式", httpSetting.httpUploaderType);
+    const httpUploader = await ossClientFactory.createOssClientByType(httpSetting.httpUploaderType, {
+      access,
+      rootDir: rootDir,
+      ctx: httpUploaderContext,
+    });
+    return {
+      type: "http",
+      domain,
+      mainDomain,
+      httpVerifyPlan: {
+        type: "http",
+        domain,
+        httpUploader,
+      },
+    };
+  }
+
+  private async createCnameDomainVerifyPlan(domain: string, mainDomain: string): Promise<DomainVerifyPlan> {
+    const cnameRecord = await this.ctx.cnameProxyService.getByDomain(domain);
+    if (cnameRecord == null) {
+      throw new Error(`请先配置${domain}的CNAME记录，并通过校验`);
+    }
+    let dnsProvider = cnameRecord.commonDnsProvider;
+    if (cnameRecord.cnameProvider.id > 0) {
+      dnsProvider = await this.createDnsProvider(cnameRecord.cnameProvider.dnsProviderType, cnameRecord.cnameProvider.access);
+    }
+    return {
+      type: "cname",
+      domain,
+      mainDomain,
+      cnameVerifyPlan: {
+        domain: cnameRecord.cnameProvider.domain,
+        fullRecord: cnameRecord.recordValue,
+        dnsProvider,
+      },
+    };
   }
 }
 

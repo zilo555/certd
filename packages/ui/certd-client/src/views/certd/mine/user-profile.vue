@@ -29,7 +29,7 @@
 import * as api from "./api";
 import { Ref, ref } from "vue";
 import ChangePasswordButton from "/@/views/certd/mine/change-password-button.vue";
-import { useI18n } from "vue-i18n";
+import { useI18n } from "/src/locales";
 import { useUserProfile } from "./use";
 
 const { t } = useI18n();

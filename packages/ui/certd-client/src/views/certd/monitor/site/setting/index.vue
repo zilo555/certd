@@ -47,7 +47,7 @@ import { merge } from "lodash-es";
 import { useSettingStore } from "/src/store/settings";
 import NotificationSelector from "/@/views/certd/notification/notification-selector/index.vue";
 import { useUserStore } from "/@/store/user";
-import { useI18n } from "vue-i18n";
+import { useI18n } from "/src/locales";
 
 const { t } = useI18n();
 

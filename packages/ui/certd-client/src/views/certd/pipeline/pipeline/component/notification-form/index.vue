@@ -3,7 +3,7 @@
     <template #title>
       <div>
         {{ t("certd.edit_notification") }}
-        <a-button v-if="mode === 'edit'" @click="notificationDelete()">
+        <a-button v-if="mode === 'edit'" danger @click="notificationDelete()">
           <template #icon>
             <DeleteOutlined />
           </template>
@@ -90,7 +90,7 @@ import * as _ from "lodash-es";
 import { nanoid } from "nanoid";
 import PiNotificationFormEmail from "./pi-notification-form-email.vue";
 import NotificationSelector from "/@/views/certd/notification/notification-selector/index.vue";
-import { useI18n } from "vue-i18n";
+import { useI18n } from "/src/locales";
 import { cloneDeep } from "lodash-es";
 
 const { t } = useI18n();

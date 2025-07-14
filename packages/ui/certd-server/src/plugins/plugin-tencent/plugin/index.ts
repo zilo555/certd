@@ -7,3 +7,5 @@ export * from './deploy-to-cos/index.js';
 export * from './deploy-to-eo/index.js';
 export * from './delete-expiring-cert/index.js';
 export * from './deploy-to-tke-ingress/index.js';
+export * from './deploy-to-live/index.js';
+export * from './start-instances/index.js';

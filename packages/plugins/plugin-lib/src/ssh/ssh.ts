@@ -491,7 +491,7 @@ export class SshClient {
    * Set-ItemProperty -Path "HKLM:\SOFTWARE\OpenSSH" -Name DefaultShell -Value "C:\Windows\System32\cmd.exe"
    * @param options
    */
-  async exec(options: { connectConf: SshAccess; script: string | Array<string>; env?: any; throwOnStdErr?: boolean }): Promise<string> {
+  async exec(options: { connectConf: SshAccess; script: string | Array<string>; env?: any; throwOnStdErr?: boolean; stopOnError?: boolean }): Promise<string> {
     let { script } = options;
     const { connectConf, throwOnStdErr } = options;
 
@@ -504,6 +504,10 @@ export class SshClient {
         const envScripts = [];
         if (connectConf.windows) {
           isWinCmd = await this.isCmd(conn);
+        }
+
+        if (isLinux && options.stopOnError !== false) {
+          script = "set -e\n" + script;
         }
 
         if (options.env) {
@@ -538,6 +542,7 @@ export class SshClient {
             script = envScripts.join(newLine) + newLine + script;
           }
         }
+
         return await conn.exec(script as string, { throwOnStdErr });
       },
     });

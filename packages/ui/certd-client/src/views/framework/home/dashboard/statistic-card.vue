@@ -43,7 +43,7 @@ const slots = defineSlots();
   .data-item {
     display: flex;
     flex-direction: column;
-    height: 180px;
+    height: 188px;
     .header {
       display: flex;
       justify-content: space-between;

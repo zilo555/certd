@@ -56,7 +56,7 @@ import { Modal, notification } from "ant-design-vue";
 import { request } from "/@/api/service";
 import { util, utils } from "/@/utils";
 import { useSettingStore } from "/@/store/settings";
-import { useI18n } from "vue-i18n";
+import { useI18n } from "/src/locales";
 
 const { t } = useI18n();
 defineOptions({

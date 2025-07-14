@@ -1,16 +1,15 @@
-import { ALL, Body, Controller, Get, Inject, Post, Provide, Query } from '@midwayjs/core';
-import { CommonException, Constants, CrudController, PermissionException } from '@certd/lib-server';
-import { PipelineEntity } from '../../../modules/pipeline/entity/pipeline.js';
-import { HistoryService } from '../../../modules/pipeline/service/history-service.js';
-import { HistoryLogService } from '../../../modules/pipeline/service/history-log-service.js';
-import { HistoryEntity } from '../../../modules/pipeline/entity/history.js';
-import { HistoryLogEntity } from '../../../modules/pipeline/entity/history-log.js';
-import { PipelineService } from '../../../modules/pipeline/service/pipeline-service.js';
-import * as fs from 'fs';
-import { logger } from '@certd/basic';
-import { AuthService } from '../../../modules/sys/authority/service/auth-service.js';
-import { SysSettingsService } from '@certd/lib-server';
-import { In } from 'typeorm';
+import { ALL, Body, Controller, Get, Inject, Post, Provide, Query } from "@midwayjs/core";
+import { CommonException, Constants, CrudController, PermissionException, SysSettingsService } from "@certd/lib-server";
+import { PipelineEntity } from "../../../modules/pipeline/entity/pipeline.js";
+import { HistoryService } from "../../../modules/pipeline/service/history-service.js";
+import { HistoryLogService } from "../../../modules/pipeline/service/history-log-service.js";
+import { HistoryEntity } from "../../../modules/pipeline/entity/history.js";
+import { HistoryLogEntity } from "../../../modules/pipeline/entity/history-log.js";
+import { PipelineService } from "../../../modules/pipeline/service/pipeline-service.js";
+import * as fs from "fs";
+import { logger } from "@certd/basic";
+import { AuthService } from "../../../modules/sys/authority/service/auth-service.js";
+import { In } from "typeorm";
 
 /**
  * 证书
@@ -88,11 +87,30 @@ export class HistoryController extends CrudController<HistoryService> {
     const buildQuery = qb => {
       qb.limit(20);
     };
+    const withDetail = body.withDetail;
+    delete body.withDetail;
+    let select:any = null
+    if (!withDetail) {
+      select = {
+        pipeline: true, // 后面这里改成false
+        id: true,
+        userId: true,
+        pipelineId: true,
+        status: true,
+        // startTime: true,
+        triggerType: true,
+        endTime: true,
+        createTime: true,
+        updateTime: true
+      };
+    }
     const listRet = await this.getService().list({
       query: body,
       sort: { prop: 'id', asc: false },
       buildQuery,
+      select
     });
+
     for (const item of listRet) {
       if (!item.pipeline) {
         continue;
@@ -100,7 +118,13 @@ export class HistoryController extends CrudController<HistoryService> {
       const json = JSON.parse(item.pipeline);
       delete json.stages;
       item.pipeline = json;
+
+      //@ts-ignore
+      item.version = json.version;
+      item.status = json.status.result
+      delete item.pipeline;
     }
+
     return this.ok(listRet);
   }
 

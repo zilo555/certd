@@ -1,10 +1,10 @@
-import {Provide, Scope, ScopeEnum} from "@midwayjs/core";
-import {BaseService, CodeException, Constants, PageReq} from "@certd/lib-server";
-import {InjectEntityModel} from "@midwayjs/typeorm";
-import {MoreThan, Repository} from "typeorm";
-import {CertInfoEntity} from "../entity/cert-info.js";
-import {utils} from "@certd/basic";
-import {CertInfo, CertReader} from "@certd/plugin-cert";
+import { Provide, Scope, ScopeEnum } from "@midwayjs/core";
+import { BaseService, CodeException, Constants, PageReq } from "@certd/lib-server";
+import { InjectEntityModel } from "@midwayjs/typeorm";
+import { Repository } from "typeorm";
+import { CertInfoEntity } from "../entity/cert-info.js";
+import { utils } from "@certd/basic";
+import { CertInfo, CertReader } from "@certd/plugin-cert";
 
 export type UploadCertReq = {
   id?: number;
@@ -71,6 +71,7 @@ export class CertInfoService extends BaseService<CertInfoEntity> {
     }
 
     await this.addOrUpdate(bean);
+    return bean.id
   }
 
   async deleteByPipelineId(id: number) {
@@ -82,44 +83,28 @@ export class CertInfoService extends BaseService<CertInfoEntity> {
     });
   }
 
-  async getCertInfo(params: { domains?: string; certId?: number; userId: number }) {
-    const { domains, certId, userId } = params;
-    if (certId) {
-      return await this.getCertInfoById({ id: certId, userId });
-    }
-    return await this.getCertInfoByDomains({
-      domains,
-      userId,
-    });
-  }
-
-  private async getCertInfoByDomains(params: { domains: string; userId: number }) {
+  async getMatchCertList(params: { domains: string[]; userId: number }) {
     const { domains, userId } = params;
     if (!domains) {
       throw new CodeException(Constants.res.openCertNotFound);
     }
-    const domainArr = domains.split(',');
 
     const list = await this.find({
       select: {
         id: true,
         domains: true,
+        expiresTime:true,
+        pipelineId:true,
       },
       where: {
         userId,
-        expiresTime: MoreThan(new Date().getTime())
       },
     });
     //遍历查找
-    const matched = list.find(item => {
+    return list.filter(item => {
       const itemDomains = item.domains.split(',');
-      return utils.domain.match(domainArr, itemDomains);
+      return utils.domain.match(domains, itemDomains);
     });
-    if (!matched) {
-      throw new CodeException(Constants.res.openCertNotFound);
-    }
-
-    return await this.getCertInfoById({ id: matched.id, userId: userId });
   }
 
   async getCertInfoById(req: { id: number; userId: number }) {

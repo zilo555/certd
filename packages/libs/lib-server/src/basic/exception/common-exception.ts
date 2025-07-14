@@ -11,13 +11,13 @@ export class CommonException extends BaseException {
 }
 
 export class CodeException extends BaseException {
-  constructor(res: { code: number; message: string }) {
-    super("CodeException", res.code, res.message);
+  constructor(res: { code: number; message: string; data?: any }) {
+    super("CodeException", res.code, res.message, res.data);
   }
 }
 
 export class TextException extends BaseException {
-  constructor(name, code,message, data?) {
+  constructor(name, code, message, data?) {
     super(name, code, message, data);
   }
 }
