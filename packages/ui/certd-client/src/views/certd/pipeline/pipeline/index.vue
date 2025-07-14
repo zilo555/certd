@@ -302,6 +302,7 @@ import { eachSteps, findStep } from "../utils";
 import { usePluginStore } from "/@/store/plugin";
 import { getCronNextTimes } from "/@/components/cron-editor/utils";
 import { useCertViewer } from "/@/views/certd/pipeline/use";
+import { useI18n } from "/@/locales";
 
 export default defineComponent({
   name: "PipelineEdit",
@@ -339,6 +340,7 @@ export default defineComponent({
   },
   emits: ["update:modelValue", "update:editMode"],
   setup(props, ctx) {
+    const { t } = useI18n();
     const currentPipeline: Ref<any> = ref({});
     const pipeline: Ref<any> = ref({});
 
@@ -668,9 +670,19 @@ export default defineComponent({
           notificationFormRef.value.notificationView(notification, (type: string, value: any) => {});
         }
       };
+      const notificationDelete = (notification: any, index: any) => {
+        Modal.confirm({
+          title: t("certd.confirm"),
+          content: t("certd.confirm_delete_trigger"),
+          async onOk() {
+            pipeline.value.notifications.splice(index, 1);
+          },
+        });
+      };
       return {
         notificationAdd,
         notificationEdit,
+        notificationDelete,
         notificationFormRef,
       };
     }

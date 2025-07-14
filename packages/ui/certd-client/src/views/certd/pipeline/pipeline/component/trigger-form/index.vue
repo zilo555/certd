@@ -3,7 +3,7 @@
     <template #title>
       <div>
         {{ t("certd.editTrigger") }}
-        <a-button v-if="mode === 'edit'" @click="triggerDelete()">
+        <a-button v-if="mode === 'edit'" danger @click="triggerDelete()">
           <template #icon>
             <DeleteOutlined />
           </template>

@@ -3,7 +3,7 @@
     <template #title>
       <div>
         编辑任务
-        <a-button v-if="editMode" @click="taskDelete()">
+        <a-button v-if="editMode" danger @click="taskDelete()">
           <template #icon><DeleteOutlined /></template>
         </a-button>
       </div>

@@ -3,7 +3,7 @@
     <template #title>
       <div>
         {{ t("certd.edit_notification") }}
-        <a-button v-if="mode === 'edit'" @click="notificationDelete()">
+        <a-button v-if="mode === 'edit'" danger @click="notificationDelete()">
           <template #icon>
             <DeleteOutlined />
           </template>
