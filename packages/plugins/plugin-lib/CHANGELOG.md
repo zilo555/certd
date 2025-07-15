@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.9](https://github.com/certd/certd/compare/v1.36.7...v1.36.9) (2025-07-15)
+
+### Bug Fixes
+
+* 修复ssh无法执行命令的bug ([9763cb0](https://github.com/certd/certd/commit/9763cb00e5d95b2fa5d1c2d3d4a8eecac71600e6))
+
 ## [1.36.7](https://github.com/certd/certd/compare/v1.36.6...v1.36.7) (2025-07-15)
 
 ### Bug Fixes

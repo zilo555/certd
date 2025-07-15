@@ -1,7 +1,7 @@
 {
   "name": "@certd/plugin-cert",
   "private": false,
-  "version": "1.36.7",
+  "version": "1.36.9",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -16,10 +16,10 @@
     "pub": "npm publish"
   },
   "dependencies": {
-    "@certd/acme-client": "^1.36.7",
-    "@certd/basic": "^1.36.7",
-    "@certd/pipeline": "^1.36.7",
-    "@certd/plugin-lib": "^1.36.7",
+    "@certd/acme-client": "^1.36.9",
+    "@certd/basic": "^1.36.9",
+    "@certd/pipeline": "^1.36.9",
+    "@certd/plugin-lib": "^1.36.9",
     "@google-cloud/publicca": "^1.3.0",
     "dayjs": "^1.11.7",
     "jszip": "^3.10.1",
@@ -43,5 +43,5 @@
     "tslib": "^2.8.1",
     "typescript": "^5.4.2"
   },
-  "gitHead": "e0408f30ba604c4dbe7cb415d1eac8cb588fbc45"
+  "gitHead": "4a36fd2ec343794c5442e4402b21fa6869dfd90e"
 }

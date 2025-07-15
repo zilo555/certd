@@ -506,10 +506,6 @@ export class SshClient {
           isWinCmd = await this.isCmd(conn);
         }
 
-        if (isLinux && options.stopOnError !== false) {
-          script = "set -e\n" + script;
-        }
-
         if (options.env) {
           for (const key in options.env) {
             if (isLinux) {
@@ -525,10 +521,10 @@ export class SshClient {
         }
 
         if (isWinCmd) {
-          //组合成&&的形式
           if (typeof script === "string") {
             script = script.split("\n");
           }
+          //组合成&&的形式
           script = envScripts.concat(script);
           script = script as Array<string>;
           script = script.join(" && ");
@@ -541,6 +537,10 @@ export class SshClient {
           if (envScripts.length > 0) {
             script = envScripts.join(newLine) + newLine + script;
           }
+        }
+
+        if (isLinux && options.stopOnError !== false) {
+          script = "set -e\n" + script;
         }
 
         return await conn.exec(script as string, { throwOnStdErr });
