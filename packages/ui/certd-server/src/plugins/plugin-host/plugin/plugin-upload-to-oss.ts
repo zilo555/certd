@@ -6,9 +6,9 @@ import {utils} from "@certd/basic";
 @IsTaskPlugin({
   name: 'UploadCertToOss',
   title: '上传证书到对象存储OSS',
-  icon: 'ri:rest-time-line',
+  icon: 'ion:cloud-upload-outline',
   desc: '支持阿里云OSS、腾讯云COS、七牛云KODO、S3、MinIO、FTP、SFTP',
-  group: pluginGroups.other.key,
+  group: pluginGroups.host.key,
   showRunStrategy:false,
   default: {
     strategy: {

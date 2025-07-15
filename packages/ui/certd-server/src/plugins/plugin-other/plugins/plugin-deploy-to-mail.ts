@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 @IsTaskPlugin({
   name: 'DeployCertToMailPlugin',
   title: '邮件发送证书',
-  icon: 'ri:rest-time-line',
+  icon: 'ion:mail-outline',
   desc: '通过邮件发送证书',
   group: pluginGroups.other.key,
   showRunStrategy:false,
@@ -82,8 +82,9 @@ export class DeployCertToMailPlugin extends AbstractTaskPlugin {
     component: {
       name: 'a-input',
       vModel: 'value',
+      placeholder:`证书申请成功【$\{mainDomain}】`,
     },
-    helper: '请输入邮件标题否则将使用默认标题\n模板变量在标题中也可以使用',
+    helper: '请输入邮件标题否则将使用默认标题\n模板变量：主域名=$\{mainDomain}、全部域名=$\{domains}、过期时间=$\{expiresTime}、备注=$\{remark}、证书PEM=$\{crt}、证书私钥=$\{key}、中间证书/CA证书=$\{ic}',
     required: false,
   })
   title!: string;
@@ -97,9 +98,16 @@ export class DeployCertToMailPlugin extends AbstractTaskPlugin {
         minRows: 6,
         maxRows: 10,
       },
+      placeholder: `
+<div>
+  <p>证书申请成功</p>
+  <p>域名：$\{domains}</p>
+  <p>证书有效期：$\{expiresTime}</p>
+  <p>备注：$\{remark}</p>
+</div>
+`,
     },
-    helper: `请输入模版内容否则将使用默认模版
-变量：主域名=$\{mainDomain}、全部域名=$\{domains}、过期时间=$\{expiresTime}、备注=$\{remark}`,
+    helper: `请输入模版内容否则将使用默认模版，模板变量同上`,
     required: false,
   })
   template!: string;
@@ -127,7 +135,10 @@ export class DeployCertToMailPlugin extends AbstractTaskPlugin {
       mainDomain,
       domains,
       expiresTime: dayjs(certReader.expires).format("YYYY-MM-DD HH:mm:ss"),
-      remark:this.remark
+      remark:this.remark ||"",
+      crt: this.cert.crt,
+      key: this.cert.key,
+      ic: this.cert.ic
     }
 
     let title = `证书申请成功【${mainDomain}】`;
