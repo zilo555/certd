@@ -98,6 +98,8 @@ export class EmailService implements IEmailService {
       to: email.receivers.join(', '), // list of receivers
       subject: subject,
       text: email.content,
+      html: email.html,
+      attachments: email.attachments,
     };
     await transporter.sendMail(mailOptions);
   }

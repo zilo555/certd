@@ -1,7 +1,9 @@
 export type EmailSend = {
   subject: string;
-  content: string;
   receivers: string[];
+  content?: string;
+  attachments?: any[];
+  html?: string;
 };
 
 export interface IEmailService {

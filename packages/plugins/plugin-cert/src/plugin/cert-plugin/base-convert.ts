@@ -1,4 +1,4 @@
-import { AbstractTaskPlugin, IContext, Step, TaskInput, TaskOutput } from "@certd/pipeline";
+import { AbstractTaskPlugin, FileItem, IContext, Step, TaskInput, TaskOutput } from "@certd/pipeline";
 import dayjs from "dayjs";
 import type { CertInfo } from "./acme.js";
 import { CertReader } from "./cert-reader.js";
@@ -71,6 +71,12 @@ export abstract class CertApplyBaseConvertPlugin extends AbstractTaskPlugin {
   })
   cert?: CertInfo;
 
+  @TaskOutput({
+    title: "域名证书压缩文件",
+    type: "certZip",
+  })
+  certZip?: FileItem;
+
   async onInstance() {
     this.userContext = this.ctx.userContext;
     this.lastStatus = this.ctx.lastStatus as Step;
@@ -131,6 +137,7 @@ export abstract class CertApplyBaseConvertPlugin extends AbstractTaskPlugin {
     } else {
       this.extendsFiles();
     }
+    this.certZip = this._result.files[0];
   }
 
   async zipCert(cert: CertInfo, filename: string) {

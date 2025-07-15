@@ -5,7 +5,7 @@ import { TencentAccess } from "@certd/plugin-lib";
   name: 'DeployCertToTencentEO',
   title: '腾讯云-部署到腾讯云EO',
   icon: 'svg:icon-tencentcloud',
-  desc: '腾讯云边缘安全加速平台EO，必须配置上传证书到腾讯云任务',
+  desc: '腾讯云边缘安全加速平台EdgeOne(EO)，必须配置上传证书到腾讯云任务',
   group: pluginGroups.tencent.key,
   default: {
     strategy: {
