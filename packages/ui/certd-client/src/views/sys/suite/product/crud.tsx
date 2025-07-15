@@ -4,7 +4,7 @@ import SuiteValue from "./suite-value.vue";
 import SuiteValueEdit from "./suite-value-edit.vue";
 import PriceEdit from "./price-edit.vue";
 import DurationPriceValue from "/@/views/sys/suite/product/duration-price-value.vue";
-import { useI18n } from "vue-i18n";
+import { useI18n } from "/src/locales";
 
 export default function ({ crudExpose, context }: CreateCrudOptionsProps): CreateCrudOptionsRet {
   const { t } = useI18n();
@@ -55,15 +55,15 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           groups: {
             base: {
               header: t("certd.basicInfo"),
-              columns: [t("certd.titlea"), t("certd.type"), t("certd.disabled"), t("certd.ordera"), t("certd.supportBuy"), t("certd.intro")],
+              columns: ["title", "type", "disabled", "order", "supportBuy", "intro"]
             },
             content: {
               header: t("certd.packageContent"),
-              columns: [t("certd.maxDomainCount"), t("certd.maxPipelineCount"), t("certd.maxDeployCount"), t("certd.maxMonitorCount")],
+              columns: ["content.maxDomainCount", "content.maxPipelineCount", "content.maxDeployCount", "content.maxMonitorCount"]
             },
             price: {
               header: t("certd.price"),
-              columns: [t("certd.durationPrices")],
+              columns: ["durationPrices"]
             },
           },
         },

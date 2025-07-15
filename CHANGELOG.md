@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.6](https://github.com/certd/certd/compare/v1.36.5...v1.36.6) (2025-07-14)
+
+### Bug Fixes
+
+* 修复某些页面翻译不全显示错误的bug ([0b3158f](https://github.com/certd/certd/commit/0b3158fdd5fe5bb0a98c4e65715dbc3de2c38047))
+* 修复运行流水线后会闪烁一下的bug ([dfc9362](https://github.com/certd/certd/commit/dfc9362084082ee535b898f23b2609c1d946a6fd))
+
+### Performance Improvements
+
+* 部署plesk证书，支持删除未使用的证书 ([902d246](https://github.com/certd/certd/commit/902d246d1a7473ad90f604028c4eb09c8c67d99c))
+* 通知和定时器的删除按钮显示为红色更显眼 ([61ba83c](https://github.com/certd/certd/commit/61ba83c77546c3d505d081e19a3d68c127662bf1))
+* 优化流水线列表页面、详情页面性能，精简返回数据 ([609ac9c](https://github.com/certd/certd/commit/609ac9c9a2dde605eb09834ae59693c1cb238765))
+* 支持自动选择校验方式申请证书 ([3f99432](https://github.com/certd/certd/commit/3f9943270cfb12946e38e6272bc5e8d95ad6ab9e))
+* OpenAPI支持autoApply参数 ([42f4d14](https://github.com/certd/certd/commit/42f4d1477dc791520a874aed56035abcbc8c433b))
+
 ## [1.36.5](https://github.com/certd/certd/compare/v1.36.4...v1.36.5) (2025-07-11)
 
 ### Bug Fixes

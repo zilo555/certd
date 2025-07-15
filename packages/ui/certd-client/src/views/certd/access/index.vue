@@ -15,7 +15,7 @@ import { defineComponent, onActivated, onMounted } from "vue";
 import { useFs } from "@fast-crud/fast-crud";
 import createCrudOptions from "./crud";
 import { createAccessApi } from "/@/views/certd/access/api";
-import { useI18n } from "vue-i18n";
+import { useI18n } from "/src/locales";
 
 export default defineComponent({
   name: "AccessManager",

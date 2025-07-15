@@ -335,7 +335,7 @@ export default function ({ crudExpose, context: { groupDictRef, selectedRowKeys 
             }
           },
         },
-        _triggerCount: {
+        triggerCount: {
           title: t("certd.fields.scheduledTaskCount"),
           type: "number",
           column: {
@@ -346,7 +346,7 @@ export default function ({ crudExpose, context: { groupDictRef, selectedRowKeys 
             show: false,
           },
         },
-        _stepCount: {
+        stepCount: {
           title: t("certd.fields.deployTaskCount"),
           type: "number",
           form: { show: false },

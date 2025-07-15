@@ -14,6 +14,8 @@ export default {
   search: "搜索",
   enabled: "已启用",
   disabled: "已禁用",
+  enable: "启用",
+  disable: "禁用",
   edit: "修改",
   delete: "删除",
   create: "新增",

@@ -1,6 +1,6 @@
 import { useFormWrapper } from "@fast-crud/fast-crud";
 import { siteInfoApi } from "./api";
-import { useI18n } from "vue-i18n";
+import { useI18n } from "/src/locales";
 
 export function useSiteImport() {
   const { t } = useI18n();

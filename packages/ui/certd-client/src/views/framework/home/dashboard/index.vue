@@ -149,7 +149,7 @@ import { UserInfoRes } from "/@/store/user/api.user";
 import { GetStatisticCount } from "/@/views/framework/home/dashboard/api";
 import { useRouter } from "vue-router";
 import * as api from "./api";
-import { useI18n } from "vue-i18n";
+import { useI18n } from "/src/locales";
 const { t } = useI18n();
 import { usePluginStore } from "/@/store/plugin";
 defineOptions({
@@ -214,6 +214,7 @@ function transformStatusCount() {
     { name: "error", label: "失败" },
     { name: "canceled", label: "已取消" },
     { name: null, label: "未执行" },
+    { name: "skip", label: "跳过" },
   ];
   const result = [];
   for (const item of sorted) {

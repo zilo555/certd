@@ -23,10 +23,11 @@ export type HttpVerifyPlan = {
 
 export type DomainVerifyPlan = {
   domain: string;
+  mainDomain: string;
   type: "cname" | "dns" | "http";
   dnsProvider?: IDnsProvider;
-  cnameVerifyPlan?: Record<string, CnameVerifyPlan>;
-  httpVerifyPlan?: Record<string, HttpVerifyPlan>;
+  cnameVerifyPlan?: CnameVerifyPlan;
+  httpVerifyPlan?: HttpVerifyPlan;
 };
 export type DomainsVerifyPlan = {
   [key: string]: DomainVerifyPlan;
@@ -233,23 +234,20 @@ export class AcmeService {
     let dnsProvider = providers.dnsProvider;
     let fullRecord = `_acme-challenge.${fullDomain}`;
 
-    const origDomain = punycode.toUnicode(domain);
+    // const origDomain = punycode.toUnicode(domain);
     const origFullDomain = punycode.toUnicode(fullDomain);
     if (providers.domainsVerifyPlan) {
       //按照计划执行
-      const domainVerifyPlan = providers.domainsVerifyPlan[origDomain];
+      const domainVerifyPlan = providers.domainsVerifyPlan[origFullDomain];
       if (domainVerifyPlan) {
         if (domainVerifyPlan.type === "dns") {
           dnsProvider = domainVerifyPlan.dnsProvider;
         } else if (domainVerifyPlan.type === "cname") {
-          const cnameVerifyPlan = domainVerifyPlan.cnameVerifyPlan;
-          if (cnameVerifyPlan) {
-            const cname = cnameVerifyPlan[origFullDomain];
-            if (cname) {
-              dnsProvider = cname.dnsProvider;
-              domain = await this.options.domainParser.parse(cname.domain);
-              fullRecord = cname.fullRecord;
-            }
+          const cname: CnameVerifyPlan = domainVerifyPlan.cnameVerifyPlan;
+          if (cname) {
+            dnsProvider = cname.dnsProvider;
+            domain = await this.options.domainParser.parse(cname.domain);
+            fullRecord = cname.fullRecord;
           } else {
             this.logger.error(`未找到域名${fullDomain}的CNAME校验计划，请修改证书申请配置`);
           }
@@ -257,13 +255,12 @@ export class AcmeService {
             throw new Error(`未找到域名${fullDomain}CNAME校验计划的DnsProvider，请修改证书申请配置`);
           }
         } else if (domainVerifyPlan.type === "http") {
-          const httpVerifyPlan = domainVerifyPlan.httpVerifyPlan;
-          if (httpVerifyPlan) {
+          const plan: HttpVerifyPlan = domainVerifyPlan.httpVerifyPlan;
+          if (plan) {
             const httpChallenge = getChallenge("http-01");
             if (httpChallenge == null) {
               throw new Error("该域名不支持http-01方式校验");
             }
-            const plan = httpVerifyPlan[fullDomain];
             return await doHttpVerify(httpChallenge, plan.httpUploader);
           } else {
             throw new Error("未找到域名【" + fullDomain + "】的http校验配置");
@@ -272,8 +269,11 @@ export class AcmeService {
           throw new Error("不支持的校验类型", domainVerifyPlan.type);
         }
       } else {
-        this.logger.info("未找到域名校验计划，使用默认的dnsProvider");
+        this.logger.warn(`未找到域名${fullDomain}的校验计划，使用默认的dnsProvider`);
       }
+    }
+    if (!dnsProvider) {
+      throw new Error(`域名${fullDomain}没有匹配到任何校验方式，证书申请失败`);
     }
 
     const dnsChallenge = getChallenge("dns-01");

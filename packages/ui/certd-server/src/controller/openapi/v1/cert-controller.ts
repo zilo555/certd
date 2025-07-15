@@ -1,13 +1,15 @@
-import { ALL, Body, Controller, Get, Inject, Post, Provide, Query } from '@midwayjs/core';
-import { CodeException, Constants, EncryptService } from '@certd/lib-server';
-import { CertInfoService } from '../../../modules/monitor/service/cert-info-service.js';
-import { CertInfo } from '@certd/plugin-cert';
-import { OpenKey } from '../../../modules/open/service/open-key-service.js';
-import { BaseOpenController } from '../base-open-controller.js';
+import { ALL, Body, Controller, Get, Inject, Post, Provide, Query } from "@midwayjs/core";
+import { CodeException, Constants, EncryptService } from "@certd/lib-server";
+import { CertInfo } from "@certd/plugin-cert";
+import { OpenKey } from "../../../modules/open/service/open-key-service.js";
+import { BaseOpenController } from "../base-open-controller.js";
+import { CertInfoFacade } from "../../../modules/monitor/facade/cert-info-facade.js";
+import { merge } from "lodash-es";
 
 export type CertGetReq = {
   domains?: string;
   certId: number;
+  autoApply?:boolean;
 };
 
 /**
@@ -16,7 +18,7 @@ export type CertGetReq = {
 @Controller('/api/v1/cert')
 export class OpenCertController extends BaseOpenController {
   @Inject()
-  certInfoService: CertInfoService;
+  certInfoFacade: CertInfoFacade;
   @Inject()
   encryptService: EncryptService;
 
@@ -29,10 +31,13 @@ export class OpenCertController extends BaseOpenController {
       throw new CodeException(Constants.res.openKeyError);
     }
 
-    const res: CertInfo = await this.certInfoService.getCertInfo({
+    const req = merge({}, bean, query)
+
+    const res: CertInfo = await this.certInfoFacade.getCertInfo({
       userId,
-      domains: bean.domains || query.domains,
-      certId: bean.certId || query.certId,
+      domains: req.domains,
+      certId: req.certId,
+      autoApply: req.autoApply??false,
     });
     return this.ok(res);
   }

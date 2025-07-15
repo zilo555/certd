@@ -125,6 +125,7 @@ export function useCertPipelineCreator() {
     const pluginStore = usePluginStore();
     const randomHour = Math.floor(Math.random() * 6);
     const randomMin = Math.floor(Math.random() * 60);
+    const randomCron = `0 ${randomMin} ${randomHour} * * *`;
 
     const groupDictRef = dict({
       url: "/pi/pipeline/group/all",
@@ -193,7 +194,7 @@ export function useCertPipelineCreator() {
             title: t("certd.pipelineForm.triggerCronTitle"),
             type: "text",
             form: {
-              value: `0 ${randomMin} ${randomHour} * * *`,
+              value: randomCron,
               component: {
                 name: "cron-editor",
                 vModel: "modelValue",

@@ -107,5 +107,17 @@ export const Constants = {
       code: 20012,
       message: '证书还未生成',
     },
+    openCertApplying: {
+      code: 20013,
+      message: '证书正在申请中，请稍后重新获取',
+    },
+    openDomainNoVerifier:{
+      code: 20014,
+      message: '域名校验方式未配置',
+    },
+    openEmailNotFound: {
+      code: 20021,
+      message: '用户邮箱还未配置',
+    },
   },
 };

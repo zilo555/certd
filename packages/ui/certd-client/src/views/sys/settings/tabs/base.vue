@@ -62,7 +62,7 @@ import { merge } from "lodash-es";
 import { useSettingStore } from "/@/store/settings";
 import { notification } from "ant-design-vue";
 import { util } from "/@/utils";
-import { useI18n } from "vue-i18n";
+import { useI18n } from "/src/locales";
 
 const { t } = useI18n();
 

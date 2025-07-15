@@ -164,8 +164,11 @@ export abstract class BaseService<T> {
   }
 
   private buildListQuery(listReq: ListReq<T>) {
-    const { query, sort, buildQuery } = listReq;
+    const { query, sort, buildQuery,select } = listReq;
     const qb = this.getRepository().createQueryBuilder('main');
+    if (select) {
+      qb.setFindOptions({select});
+    }
     if (query) {
       const keys = Object.keys(query);
       for (const key of keys) {
@@ -191,6 +194,7 @@ export abstract class BaseService<T> {
     if (buildQuery) {
       buildQuery(qb);
     }
+
     return qb;
   }
 

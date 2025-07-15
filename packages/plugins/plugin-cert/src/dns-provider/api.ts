@@ -59,3 +59,38 @@ export interface ISubDomainsGetter {
 export interface IDomainParser {
   parse(fullDomain: string): Promise<string>;
 }
+
+export type DnsVerifier = {
+  // dns直接校验
+  dnsProviderType?: string;
+  dnsProviderAccessId?: number;
+};
+
+export type CnameVerifier = {
+  hostRecord: string;
+  domain: string;
+  recordValue: string;
+};
+
+export type HttpVerifier = {
+  // http校验
+  httpUploaderType: string;
+  httpUploaderAccess: number;
+  httpUploadRootDir: string;
+};
+export type DomainVerifier = {
+  domain: string;
+  mainDomain: string;
+  type: string;
+  dns?: DnsVerifier;
+  cname?: CnameVerifier;
+  http?: HttpVerifier;
+};
+
+export type DomainVerifiers = {
+  [key: string]: DomainVerifier;
+};
+
+export interface IDomainVerifierGetter {
+  getVerifiers(domains: string[]): Promise<DomainVerifiers>;
+}

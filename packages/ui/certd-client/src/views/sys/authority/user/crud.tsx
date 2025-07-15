@@ -4,7 +4,7 @@ import { useUserStore } from "/@/store/user";
 import { Modal, notification } from "ant-design-vue";
 import dayjs from "dayjs";
 import { useSettingStore } from "/@/store/settings";
-import { useI18n } from "vue-i18n";
+import { useI18n } from "/src/locales";
 
 export default function ({ crudExpose }: CreateCrudOptionsProps): CreateCrudOptionsRet {
   const { t } = useI18n();
@@ -207,8 +207,8 @@ export default function ({ crudExpose }: CreateCrudOptionsProps): CreateCrudOpti
           type: "dict-switch",
           dict: dict({
             data: [
-              { label: t("certd.enabled"), value: 1, color: "green" },
-              { label: t("certd.disabled"), value: 0, color: "red" },
+              { label: t("common.enabled"), value: 1, color: "green" },
+              { label: t("common.disabled"), value: 0, color: "red" },
             ],
           }),
           column: {
