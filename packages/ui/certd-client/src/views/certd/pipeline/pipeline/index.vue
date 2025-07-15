@@ -440,7 +440,7 @@ export default defineComponent({
           }
 
           if (currentHistory.value != null) {
-            if (currentHistory.value.pipeline?.status?.status === "start") {
+            if (currentHistory.value.status === "start") {
               await loadCurrentHistoryDetail();
               pipeline.value = currentHistory.value.pipeline;
               // if (currentHistory.value.pipeline?.status?.status !== "start") {
