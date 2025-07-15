@@ -374,6 +374,7 @@ export default defineComponent({
       const detail: RunHistory = await props.options?.getHistoryDetail({ historyId: currentHistory.value.id });
       currentHistory.value.logs = detail.logs;
       currentHistory.value.pipeline = detail.pipeline;
+      currentHistory.value.status = detail.pipeline.status.result;
     };
     const changeCurrentHistory = async (history?: RunHistory) => {
       if (!history) {
@@ -385,7 +386,7 @@ export default defineComponent({
       currentHistory.value = history;
       await loadCurrentHistoryDetail();
       pipeline.value = currentHistory.value.pipeline;
-      currentPipeline.value = cloneDeep(pipeline.value);
+      currentPipeline.value = currentHistory.value.pipeline;
     };
 
     async function loadHistoryList(reload = false) {
@@ -441,6 +442,11 @@ export default defineComponent({
           if (currentHistory.value != null) {
             if (currentHistory.value.pipeline?.status?.status === "start") {
               await loadCurrentHistoryDetail();
+              pipeline.value = currentHistory.value.pipeline;
+              // if (currentHistory.value.pipeline?.status?.status !== "start") {
+              // 不传true好像不会刷新
+              //   await loadHistoryList(true);
+              // }
             }
           }
         } catch (e) {

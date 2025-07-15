@@ -50,6 +50,60 @@ export class DeployCertToMailPlugin extends AbstractTaskPlugin {
   })
   email!: string[];
 
+
+  /**
+   *   title:
+   *     title: 邮件标题
+   *     helper: |-
+   *       请输入邮件标题否则将使用默认标题
+   *       域名:${certDomains}
+   *     component:
+   *       name: a-input
+   *     required: false
+   *   template:
+   *     title: 邮件模版
+   *     helper: |-
+   *       请输入模版内容否则将使用默认模版
+   *       域名:${certDomains}
+   *     value: |-
+   *       尊敬的用户你好:
+   *         以下是域名(${certDomains})证书文件
+   *     component:
+   *       name: a-textarea
+   *       autosize:
+   *         minRows: 6
+   *         maxRows: 10
+   *     required: false
+   */
+
+
+  @TaskInput({
+    title: '邮件标题',
+    component: {
+      name: 'a-input',
+      vModel: 'value',
+    },
+    helper: '请输入邮件标题否则将使用默认标题\n模板变量在标题中也可以使用',
+    required: false,
+  })
+  title!: string;
+
+  @TaskInput({
+    title: '邮件模版',
+    component: {
+      name: 'a-textarea',
+      vModel: 'value',
+      autosize: {
+        minRows: 6,
+        maxRows: 10,
+      },
+    },
+    helper: `请输入模版内容否则将使用默认模版
+变量：主域名=$\{mainDomain}、全部域名=$\{domains}、过期时间=$\{expiresTime}、备注=$\{remark}`,
+    required: false,
+  })
+  template!: string;
+
   @TaskInput({
     title: '备注',
     component: {
@@ -67,15 +121,33 @@ export class DeployCertToMailPlugin extends AbstractTaskPlugin {
     const certReader = new CertReader(this.cert)
     const mainDomain = certReader.getMainDomain();
     const domains = certReader.getAllDomains().join(',');
-    const title = `证书申请成功【${mainDomain}】`;
-    const html = `
+
+
+    const data = {
+      mainDomain,
+      domains,
+      expiresTime: dayjs(certReader.expires).format("YYYY-MM-DD HH:mm:ss"),
+      remark:this.remark
+    }
+
+    let title = `证书申请成功【${mainDomain}】`;
+    let html = `
         <div>
           <p>证书申请成功</p>
           <p>域名：${domains}</p>
-          <p>证书有效期：${dayjs(certReader.expires).format("YYYY-MM-DD HH:mm:ss")}</p>
+          <p>证书有效期：${data.expiresTime}</p>
           <p>备注：${this.remark||""}</p>
         </div>
       `;
+
+    if (this.title) {
+      const compile = this.compile(this.title);
+      title = compile(data);
+    }
+    if (this.template) {
+      const compile = this.compile(this.template);
+      html = compile(data);
+    }
     const file = this.certZip
     if (!file) {
       throw new Error('证书压缩文件还未生成，重新运行证书任务');
@@ -91,8 +163,13 @@ export class DeployCertToMailPlugin extends AbstractTaskPlugin {
         },
       ],
     })
+  }
 
-
+  compile(templateString:string) {
+    return new Function('data', `    with(data || {}) {
+        return \`${templateString}\`;
+      }
+    `);
   }
 }
 new DeployCertToMailPlugin();

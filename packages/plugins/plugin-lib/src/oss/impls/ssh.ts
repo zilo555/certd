@@ -16,6 +16,10 @@ export default class SshOssClientImpl extends BaseOssClient<SshAccess> {
     throw new Error("Method not implemented.");
   }
   async upload(filePath: string, fileContent: Buffer) {
+    if (!filePath) {
+      filePath = "";
+    }
+    filePath = filePath.trim();
     const tmpFilePath = path.join(os.tmpdir(), "cert", "http", filePath);
 
     // Write file to temp path
