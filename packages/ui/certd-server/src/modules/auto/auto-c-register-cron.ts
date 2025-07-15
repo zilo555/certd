@@ -71,7 +71,7 @@ export class AutoCRegisterCron {
       }
     })
     for (const item of monitorSettingList) {
-      const setting = item.setting ?? JSON.parse(item.setting)
+      const setting = item.setting ? JSON.parse(item.setting):{}
       if(!setting?.cron){
         continue
       }
