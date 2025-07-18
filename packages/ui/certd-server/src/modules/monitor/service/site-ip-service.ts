@@ -93,7 +93,7 @@ export class SiteIpService extends BaseService<SiteIpEntity> {
     if (oldIps.length === ips.length ){
       //检查是否有变化
         const oldIpList = oldIps.map(ip=>ip.ipAddress).sort().join(",")
-        const newIpList = ips.filter(ip=>!oldIpList.includes(ip)).sort().join(",")
+        const newIpList = ips.sort().join(",")
         if(oldIpList === newIpList){
           //无变化
           hasChanged = false

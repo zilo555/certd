@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.10](https://github.com/certd/certd/compare/v1.36.9...v1.36.10) (2025-07-18)
+
+### Performance Improvements
+
+* 优化子域名托管的说明 ([b15f514](https://github.com/certd/certd/commit/b15f514018b728acb0922ee3f93c1f302eb5d471))
+* 账号即将过期通知 ([e403450](https://github.com/certd/certd/commit/e40345095f31e2fb8e2333a6647466659133fa0c))
+* 子域名托管重复域名不允许添加 ([ffc0c7b](https://github.com/certd/certd/commit/ffc0c7bb7b16d9904fd2d905d1c4e1d4854e92a9))
+
 ## [1.36.9](https://github.com/certd/certd/compare/v1.36.7...v1.36.9) (2025-07-15)
 
 **Note:** Version bump only for package @certd/ui-client

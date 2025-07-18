@@ -36,4 +36,25 @@ export class SubDomainService extends BaseService<SubDomainEntity> {
     return list.map(item=>item.domain);
   }
 
+  async add(bean: SubDomainEntity) {
+    const {domain, userId} = bean;
+    if (!domain) {
+      throw new Error('域名不能为空');
+    }
+    if (!userId) {
+      throw new Error('用户ID不能为空');
+    }
+    const exist = await this.repository.findOne({
+      where: {
+        domain,
+        userId,
+      },
+    });
+   if (exist) {
+     throw new Error('域名已存在');
+   }
+   return await super.add(bean)
+
+  }
+
 }

@@ -32,6 +32,12 @@ export class CertInfoFacade  {
     if (certId) {
       return await this.certInfoService.getCertInfoById({ id: certId, userId });
     }
+    if (!domains) {
+      throw new CodeException({
+        ...Constants.res.openParamError,
+        message: "参数错误，certId和domains必须传一个",
+      });
+    }
     const domainArr = domains.split(',');
 
     const matchedList = await this.certInfoService.getMatchCertList({domains:domainArr,userId})
@@ -42,12 +48,15 @@ export class CertInfoFacade  {
         const pipeline:PipelineEntity = await this.createAutoPipeline({domains:domainArr,userId})
         await this.triggerApplyPipeline({pipelineId:pipeline.id})
       }else{
-        throw new CodeException(Constants.res.openCertNotFound);
+        throw new CodeException({
+          ...Constants.res.openCertNotFound,
+          message:"在证书仓库中没有找到匹配域名的证书，请先创建证书流水线，或传入autoApply参数，自动创建"
+        });
       }
     }
     matched = null;
     for (const item of matchedList) {
-      if (item.expiresTime>0 && item.expiresTime < new Date().getTime()) {
+      if (item.expiresTime>0 && item.expiresTime > new Date().getTime()) {
         matched = item;
         break
       }
@@ -59,7 +68,10 @@ export class CertInfoFacade  {
         await this.triggerApplyPipeline({pipelineId:first.pipelineId})
         return
       }else{
-        throw new CodeException(Constants.res.openCertNotFound);
+        throw new CodeException({
+          ...Constants.res.openCertNotFound,
+          message:"证书已过期，请触发流水线申请，或者传入autoApply参数，自动触发"
+        });
       }
     }
 
@@ -109,10 +121,12 @@ export class CertInfoFacade  {
       await this.pipelineService.trigger(req.pipelineId)
       await utils.sleep(1000)
     }
+    const certInfo = await this.certInfoService.getByPipelineId(req.pipelineId)
     throw new CodeException({
       ...Constants.res.openCertApplying,
       data:{
-        pipelineId:req.pipelineId
+        pipelineId:req.pipelineId,
+        certId:certInfo?.id
       }
     });
   }

@@ -3,7 +3,12 @@
     <template #header>
       <div class="title">
         {{ t("certd.subdomainHosting") }}
-        <span class="sub">{{ t("certd.subdomainHostingHint") }}</span>
+        <span class="sub">
+          {{ t("certd.subdomainHostingHint") }}； {{ t("certd.subdomainHelpText") }}
+          <a href="https://help.aliyun.com/zh/dns/subdomain-management" target="_blank">
+            {{ t("certd.subdomainManagement") }}
+          </a>
+        </span>
       </div>
     </template>
     <fs-crud ref="crudRef" v-bind="crudBinding">

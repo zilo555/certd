@@ -86,7 +86,10 @@ export class CertInfoService extends BaseService<CertInfoEntity> {
   async getMatchCertList(params: { domains: string[]; userId: number }) {
     const { domains, userId } = params;
     if (!domains) {
-      throw new CodeException(Constants.res.openCertNotFound);
+      throw new CodeException({
+        ...Constants.res.openCertNotFound,
+        message:"域名不能为空"
+      });
     }
 
     const list = await this.find({
@@ -98,6 +101,9 @@ export class CertInfoService extends BaseService<CertInfoEntity> {
       },
       where: {
         userId,
+      },
+      order: {
+        id: 'DESC',
       },
     });
     //遍历查找
@@ -161,4 +167,12 @@ export class CertInfoService extends BaseService<CertInfoEntity> {
     return bean;
   }
 
+  async getByPipelineId(pipelineId: number) {
+    return await this.repository.findOne({
+      where: {
+        pipelineId,
+      },
+    });
+
+  }
 }

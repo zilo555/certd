@@ -1,6 +1,6 @@
 import { AbstractTaskPlugin, IsTaskPlugin, pluginGroups, RunStrategy, TaskInput } from '@certd/pipeline';
-import { AliyunAccess } from '@certd/plugin-lib';
-import { CertInfo } from '@certd/plugin-cert';
+import {AliyunAccess, AliyunSslClient} from '@certd/plugin-lib';
+import {CertInfo, CertReader} from '@certd/plugin-cert';
 import { CertApplyPluginNames} from '@certd/plugin-cert';
 @IsTaskPlugin({
   name: 'DeployCertToAliyunOSS',
@@ -82,11 +82,27 @@ export class DeployCertToAliyunOSS extends AbstractTaskPlugin {
     helper: '请选择前置任务输出的域名证书',
     component: {
       name: 'output-selector',
-      from: [...CertApplyPluginNames],
+      from: [...CertApplyPluginNames,"uploadCertToAliyun"],
     },
     required: true,
   })
-  cert!: CertInfo;
+  cert!: CertInfo | string;
+
+  @TaskInput({
+    title: '证书服务接入点',
+    helper: '不会选就按默认',
+    value: 'cas.aliyuncs.com',
+    component: {
+      name: 'a-select',
+      options: [
+        { value: 'cn-hangzhou', label: '中国大陆' },
+        { value: 'southeast-1', label: '新加坡' },
+        { value: 'eu-central-1', label: '德国（法兰克福）' },
+      ],
+    },
+    required: true,
+  })
+  casRegion!: string;
 
   @TaskInput({
     title: 'Access授权',
@@ -103,10 +119,40 @@ export class DeployCertToAliyunOSS extends AbstractTaskPlugin {
   async execute(): Promise<void> {
     this.logger.info('开始部署证书到阿里云OSS');
     const access = (await this.getAccess(this.accessId)) as AliyunAccess;
+
+    await this.getAliyunCertId(access)
     this.logger.info(`bucket: ${this.bucket}, region: ${this.region}, domainName: ${this.domainName}`);
     const client = await this.getClient(access);
     await this.doRequest(client, {});
     this.logger.info('部署完成');
+  }
+
+  async getAliyunCertId(access: AliyunAccess) {
+    let certId: any = this.cert;
+    let certName: any = this.appendTimeSuffix("certd");
+    if (typeof this.cert === "object") {
+      let endpoint = `cas.${this.casRegion}.aliyuncs.com`;
+      if (this.casRegion === "cn-hangzhou"){
+        endpoint = "cas.aliyuncs.com";
+      }
+      const sslClient = new AliyunSslClient({
+        access,
+        logger: this.logger,
+        endpoint: endpoint
+      });
+
+      certName = this.buildCertName(CertReader.getMainDomain(this.cert.crt));
+
+      certId = await sslClient.uploadCert({
+        name: certName,
+        cert: this.cert
+      });
+      this.logger.info("上传证书成功", certId, certName);
+    }
+    return {
+      certId,
+      certName
+    };
   }
 
   async getClient(access: AliyunAccess) {
@@ -129,13 +175,24 @@ export class DeployCertToAliyunOSS extends AbstractTaskPlugin {
       cname: '',
       comp: 'add',
     });
+
+    let certStr =  ""
+    if (typeof this.cert === "object" ){
+      certStr = `
+      <PrivateKey>${this.cert.key}</PrivateKey>
+      <Certificate>${this.cert.crt}</Certificate>
+`
+    }else{
+      certStr = `<CertId>${this.cert}-${this.casRegion}</CertId>`
+    }
+
     const xml = `
  <BucketCnameConfiguration>
   <Cname>
     <Domain>${this.domainName}</Domain>
     <CertificateConfiguration>
-      <PrivateKey>${this.cert.key}</PrivateKey>
-      <Certificate>${this.cert.crt}</Certificate>
+      ${certStr}
+      <Force>true</Force>
     </CertificateConfiguration>
   </Cname>
 </BucketCnameConfiguration>`;

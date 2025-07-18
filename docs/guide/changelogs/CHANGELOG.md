@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.10](https://github.com/certd/certd/compare/v1.36.9...v1.36.10) (2025-07-18)
+
+### Bug Fixes
+
+* 企业微信通知改成text类型，因为markdown类型不支持@用户 ([747d266](https://github.com/certd/certd/commit/747d26674248082e678a3fd5ecc94712641a2716))
+* api接口获取不到证书的bug ([05a33a0](https://github.com/certd/certd/commit/05a33a0ec9999e2802f6c7b23cc1c61a2b9e963d))
+
+### Performance Improvements
+
+* 部署到阿里云oss插件支持选择上传到阿里云cas中的证书 ([2ea2c8c](https://github.com/certd/certd/commit/2ea2c8c05fc40f79595f1bbde67c1413558bf684))
+* 优化子域名托管的说明 ([b15f514](https://github.com/certd/certd/commit/b15f514018b728acb0922ee3f93c1f302eb5d471))
+* 账号即将过期通知 ([e403450](https://github.com/certd/certd/commit/e40345095f31e2fb8e2333a6647466659133fa0c))
+* 子域名托管重复域名不允许添加 ([ffc0c7b](https://github.com/certd/certd/commit/ffc0c7bb7b16d9904fd2d905d1c4e1d4854e92a9))
+
 ## [1.36.9](https://github.com/certd/certd/compare/v1.36.7...v1.36.9) (2025-07-15)
 
 ### Bug Fixes

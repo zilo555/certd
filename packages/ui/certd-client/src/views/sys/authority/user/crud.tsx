@@ -1,10 +1,11 @@
 import * as api from "./api";
-import { AddReq, compute, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, EditReq, UserPageQuery, UserPageRes } from "@fast-crud/fast-crud";
+import { AddReq, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, EditReq, UserPageQuery, UserPageRes } from "@fast-crud/fast-crud";
 import { useUserStore } from "/@/store/user";
 import { Modal, notification } from "ant-design-vue";
 import dayjs from "dayjs";
 import { useSettingStore } from "/@/store/settings";
 import { useI18n } from "/src/locales";
+import { computed } from "vue";
 
 export default function ({ crudExpose }: CreateCrudOptionsProps): CreateCrudOptionsRet {
   const { t } = useI18n();
@@ -26,7 +27,7 @@ export default function ({ crudExpose }: CreateCrudOptionsProps): CreateCrudOpti
   const userStore = useUserStore();
 
   const settingStore = useSettingStore();
-  const userValidTimeEnabled = compute(() => {
+  const userValidTimeEnabled = computed(() => {
     return settingStore.sysPublic.userValidTimeEnabled === true;
   });
   return {
@@ -226,7 +227,7 @@ export default function ({ crudExpose }: CreateCrudOptionsProps): CreateCrudOpti
           column: {
             align: "center",
             sorter: true,
-            width: 100,
+            width: 160,
             show: userValidTimeEnabled,
             cellRender({ value }) {
               if (value == null || value === 0) {
