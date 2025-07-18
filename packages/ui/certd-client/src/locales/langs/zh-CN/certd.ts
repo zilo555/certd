@@ -415,7 +415,7 @@ export default {
   is_present_no: "否",
   basicInfo: "基础信息",
   titlea: "名称",
-  disabled: "是否禁用",
+  disabled: "禁用",
   ordera: "排序",
   supportBuy: "支持购买",
   intro: "介绍",
