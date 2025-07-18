@@ -455,7 +455,7 @@ export default {
   batchDeleteConfirm: "确定要批量删除这{count}条记录吗",
   selectRecordFirst: "请先勾选记录",
   subdomainHosted: "托管的子域名",
-  subdomainHelpText: "如果您不理解什么是子域托管，可以参考文档",
+  subdomainHelpText: "如果您不理解什么是子域托管，请不要随意设置，可能导致证书无法申请，可以参考文档",
   subdomainManagement: "子域管理",
   isDisabled: "是否禁用",
   enabled: "启用",

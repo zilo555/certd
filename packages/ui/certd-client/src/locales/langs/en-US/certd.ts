@@ -449,7 +449,7 @@ export default {
   batchDeleteConfirm: "Are you sure to batch delete these {count} records?",
   selectRecordFirst: "Please select records first",
   subdomainHosted: "Hosted Subdomain",
-  subdomainHelpText: "If you don't understand what subdomain hosting is, please refer to the documentation ",
+  subdomainHelpText: "If you don't understand what subdomain hosting is,Do not set it randomly, as it may result in the inability to apply for the certificate. please refer to the documentation ",
   subdomainManagement: "Subdomain Management",
   isDisabled: "Is Disabled",
   enabled: "Enabled",
