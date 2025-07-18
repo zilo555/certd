@@ -192,6 +192,7 @@ export class DeployCertToAliyunOSS extends AbstractTaskPlugin {
     <Domain>${this.domainName}</Domain>
     <CertificateConfiguration>
       ${certStr}
+      <Force>true</Force>
     </CertificateConfiguration>
   </Cname>
 </BucketCnameConfiguration>`;
