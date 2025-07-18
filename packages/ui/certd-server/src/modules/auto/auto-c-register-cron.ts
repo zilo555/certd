@@ -1,15 +1,16 @@
-import { Autoload, Config, Init, Inject, Scope, ScopeEnum } from '@midwayjs/core';
-import { PipelineService } from '../pipeline/service/pipeline-service.js';
-import { logger } from '@certd/basic';
+import {Autoload, Config, Init, Inject, Scope, ScopeEnum} from '@midwayjs/core';
+import {PipelineService} from '../pipeline/service/pipeline-service.js';
+import {logger} from '@certd/basic';
 import {SysSettingsService, SysSiteInfo} from '@certd/lib-server';
-import { SiteInfoService } from '../monitor/index.js';
-import { Cron } from '../cron/cron.js';
+import {SiteInfoService} from '../monitor/index.js';
+import {Cron} from '../cron/cron.js';
 import {UserSettingsService} from "../mine/service/user-settings-service.js";
 import {UserSiteMonitorSetting} from "../mine/service/models.js";
 import {getPlusInfo} from "@certd/plus-core";
 import dayjs from "dayjs";
 import {NotificationService} from "../pipeline/service/notification-service.js";
 import {UserService} from "../sys/authority/service/user-service.js";
+import {Between} from "typeorm";
 
 @Autoload()
 @Scope(ScopeEnum.Request, { allowDowngrade: true })
@@ -58,6 +59,8 @@ export class AutoCRegisterCron {
 
 
     await this.registerPlusExpireCheckCron();
+
+    await this.registerUserExpireCheckCron()
   }
 
   async registerSiteMonitorCron() {
@@ -134,6 +137,63 @@ export class AutoCRegisterCron {
 
         }
 
+      }
+    })
+  }
+
+
+  registerUserExpireCheckCron() {
+    // 添加plus即将到期检查任务
+    this.cron.register({
+      name: 'user-expire-check',
+      cron: `0 20 9 * * *`, // 一天只能检查一次，否则会重复发送通知
+      job: async () => {
+
+        const getExpiresDaysUsers = async (days: number) => {
+          const targetDate = dayjs().add(days, 'day')
+          const startTime = targetDate.startOf('day').valueOf()
+          const endTime = targetDate.endOf('day').valueOf()
+          return await this.userService.find({
+            where: {
+              validTime: Between(startTime, endTime),
+              status: 1
+            }
+          })
+        }
+
+        const notifyExpiresDaysUsers = async (days: number) => {
+          const list = await getExpiresDaysUsers(days)
+          if (list.length === 0) {
+            return
+          }
+          let title = `账号即将到期`
+          let content = `您的账号剩余${days}天到期，请及时续期，以免影响业务`
+          if (days <= 0) {
+            title = `账号已过期`
+            content = `您的账号已过期${Math.abs(days)}天，请尽快续期，以免影响业务`
+          }
+          const url = await this.notificationService.getBindUrl("");
+          for (const user of list) {
+            logger.info(`发送到期通知给用户：${user.username}`)
+            await this.notificationService.send({
+              useDefault: true,
+              logger: logger,
+              body: {
+                title,
+                content,
+                errorMessage: title,
+                url
+              }
+            }, user.id)
+          }
+        }
+
+        await notifyExpiresDaysUsers(7)
+        await notifyExpiresDaysUsers(3)
+        await notifyExpiresDaysUsers(1)
+        await notifyExpiresDaysUsers(0)
+        await notifyExpiresDaysUsers(-1)
+        await notifyExpiresDaysUsers(-3)
       }
     })
   }
