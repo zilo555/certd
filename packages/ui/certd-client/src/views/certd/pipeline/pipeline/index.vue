@@ -298,7 +298,7 @@ import { FsIcon } from "@fast-crud/fast-crud";
 import { useSettingStore } from "/@/store/settings";
 import { useUserStore } from "/@/store/user";
 import TaskShortcuts from "./component/shortcut/task-shortcuts.vue";
-import { eachSteps, findStep } from "../utils";
+import { eachSteps, findStep, eachStages } from "../utils";
 import { usePluginStore } from "/@/store/plugin";
 import { getCronNextTimes } from "/@/components/cron-editor/utils";
 import { useCertViewer } from "/@/views/certd/pipeline/use";
@@ -381,6 +381,9 @@ export default defineComponent({
         //取消历史记录查看模式
         currentHistory.value = null;
         pipeline.value = cloneDeep(currentPipeline.value);
+        eachStages(pipeline.value.stages, item => {
+          item.status = null;
+        });
         return;
       }
       currentHistory.value = history;

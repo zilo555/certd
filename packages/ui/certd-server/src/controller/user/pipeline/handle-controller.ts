@@ -15,6 +15,7 @@ import {EmailService} from '../../../modules/basic/service/email-service.js';
 import {http, HttpRequestConfig, logger, mergeUtils, utils} from '@certd/basic';
 import {NotificationService} from '../../../modules/pipeline/service/notification-service.js';
 import {TaskServiceBuilder} from "../../../modules/pipeline/service/getter/task-service-getter.js";
+import { cloneDeep } from 'lodash-es';
 
 @Provide()
 @Controller('/api/pi/handle')
@@ -103,6 +104,7 @@ export class HandleController extends BaseController {
     const taskCtx: TaskInstanceContext = {
       pipeline: undefined,
       step: undefined,
+      define: cloneDeep( pluginDefine.define),
       lastStatus: undefined,
       http,
       download,
