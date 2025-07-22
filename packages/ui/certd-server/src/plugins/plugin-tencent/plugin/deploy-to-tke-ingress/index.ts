@@ -136,6 +136,18 @@ export class DeployCertToTencentTKEIngressPlugin extends AbstractTaskPlugin {
   ingressName!: string | string[];
 
 
+  @TaskInput({
+    title: "忽略证书校验",
+    required: false,
+    helper: "是否忽略证书校验",
+    component: {
+      name: "a-switch",
+      vModel: "checked",
+    }
+  })
+  skipTLSVerify!:boolean
+
+
   // @TaskInput({ title: "集群内网ip", helper: "如果开启了外网的话，无需设置" })
   // clusterIp!: string;
 
@@ -163,7 +175,8 @@ export class DeployCertToTencentTKEIngressPlugin extends AbstractTaskPlugin {
     this.logger.info("kubeconfig已成功获取");
     const k8sClient = new this.K8sClient({
       kubeConfigStr,
-      logger: this.logger
+      logger: this.logger,
+      skipTLSVerify: this.skipTLSVerify,
     });
     // if (this.clusterIp != null) {
     //   if (!this.clusterDomain) {
