@@ -26,43 +26,45 @@
         </template>
         <div class="flex-col h-100 w-100 overflow-hidden">
           <a-tabs v-model:active-key="pluginGroupActive" tab-position="left" class="flex-1 overflow-hidden">
-            <a-tab-pane v-for="group of computedPluginGroups" :key="group.key" class="scroll-y">
-              <template #tab>
-                <div class="cd-step-form-tab-label">
-                  <fs-icon :icon="group.icon" class="mr-2" />
-                  <div>{{ group.title }}</div>
-                </div>
-              </template>
-              <a-row v-if="!group.plugins || group.plugins.length === 0" :gutter="10">
-                <a-col class="flex-o">
-                  <div class="flex-o m-10">没有找到插件</div>
-                </a-col>
-              </a-row>
-              <a-row v-else :gutter="10">
-                <a-col v-for="item of group.plugins" :key="item.key" class="step-plugin w-full md:w-[50%]">
-                  <a-card
-                    hoverable
-                    :class="{ current: item.name === currentStep.type }"
-                    @click="stepTypeSelected(item)"
-                    @dblclick="
-                      stepTypeSelected(item);
-                      stepTypeSave();
-                    "
-                  >
-                    <a-card-meta>
-                      <template #title>
-                        <fs-icon class="plugin-icon" :icon="item.icon || 'clarity:plugin-line'"></fs-icon>
-                        <span class="title" :title="item.title">{{ item.title }}</span>
-                        <vip-button v-if="item.needPlus" mode="icon" />
-                      </template>
-                      <template #description>
-                        <span :title="item.desc" v-html="transformDesc(item.desc)"></span>
-                      </template>
-                    </a-card-meta>
-                  </a-card>
-                </a-col>
-              </a-row>
-            </a-tab-pane>
+            <template v-for="group of computedPluginGroups" :key="group.key">
+              <a-tab-pane v-if="(group.key === 'admin' && userStore.isAdmin) || group.key !== 'admin'" :key="group.key" class="scroll-y">
+                <template #tab>
+                  <div class="cd-step-form-tab-label">
+                    <fs-icon :icon="group.icon" class="mr-2" />
+                    <div>{{ group.title }}</div>
+                  </div>
+                </template>
+                <a-row v-if="!group.plugins || group.plugins.length === 0" :gutter="10">
+                  <a-col class="flex-o">
+                    <div class="flex-o m-10">没有找到插件</div>
+                  </a-col>
+                </a-row>
+                <a-row v-else :gutter="10">
+                  <a-col v-for="item of group.plugins" :key="item.key" class="step-plugin w-full md:w-[50%]">
+                    <a-card
+                      hoverable
+                      :class="{ current: item.name === currentStep.type }"
+                      @click="stepTypeSelected(item)"
+                      @dblclick="
+                        stepTypeSelected(item);
+                        stepTypeSave();
+                      "
+                    >
+                      <a-card-meta>
+                        <template #title>
+                          <fs-icon class="plugin-icon" :icon="item.icon || 'clarity:plugin-line'"></fs-icon>
+                          <span class="title" :title="item.title">{{ item.title }}</span>
+                          <vip-button v-if="item.needPlus" mode="icon" />
+                        </template>
+                        <template #description>
+                          <span :title="item.desc" v-html="transformDesc(item.desc)"></span>
+                        </template>
+                      </a-card-meta>
+                    </a-card>
+                  </a-col>
+                </a-row>
+              </a-tab-pane>
+            </template>
           </a-tabs>
         </div>
         <template #footer>
@@ -124,6 +126,7 @@ import { useReference } from "/@/use/use-refrence";
 import { useSettingStore } from "/@/store/settings";
 import { mitter } from "/@/utils/util.mitt";
 import { utils } from "/@/utils";
+import { useUserStore } from "/@/store/user";
 
 defineOptions({
   name: "PiStepForm",
@@ -138,7 +141,7 @@ const props = defineProps({
 const emit = defineEmits(["update"]);
 
 const pluginStore = usePluginStore();
-
+const userStore = useUserStore();
 function transformDesc(desc: string = "") {
   return utils.transformLink(desc);
 }

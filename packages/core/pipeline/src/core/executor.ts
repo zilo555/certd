@@ -352,6 +352,7 @@ export class Executor {
       pipeline: this.pipeline,
       runtime: this.runtime,
       step,
+      define: cloneDeep(define),
       lastStatus,
       http,
       download,

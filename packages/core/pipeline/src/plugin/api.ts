@@ -86,6 +86,7 @@ export type TaskInstanceContext = {
   runtime: RunHistory;
   //步骤定义
   step: Step;
+  define: PluginDefine;
   //日志
   logger: ILogger;
   //当前步骤输入参数跟上一次执行比较是否有变化
@@ -164,9 +165,7 @@ export abstract class AbstractTaskPlugin implements ITaskPlugin {
       this.registerSecret(cert.one);
     }
 
-    debugger
-    // @ts-ignore
-    if (this.ctx.step.onlyAdmin) {
+    if (this.ctx.define.onlyAdmin) {
       if (!this.isAdmin()) {
         throw new Error("只有管理员才能运行此任务");
       }
