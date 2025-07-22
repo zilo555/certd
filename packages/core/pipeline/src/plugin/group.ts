@@ -30,4 +30,5 @@ export const pluginGroups = {
   qiniu: new PluginGroup("qiniu", "七牛云", 5, "svg:icon-qiniuyun"),
   aws: new PluginGroup("aws", "亚马逊云", 6, "svg:icon-aws"),
   other: new PluginGroup("other", "其他", 10, "clarity:plugin-line"),
+  admin: new PluginGroup("admin", "管理", 11, "ion:settings-outline"),
 };

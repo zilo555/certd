@@ -59,6 +59,7 @@ export type PluginDefine = Registrable & {
       form: any;
     };
   };
+  onlyAdmin?: boolean;
   needPlus?: boolean;
   showRunStrategy?: boolean;
   pluginType?: string; //类型
@@ -161,6 +162,14 @@ export abstract class AbstractTaskPlugin implements ITaskPlugin {
       this.registerSecret(cert.crt);
       this.registerSecret(cert.key);
       this.registerSecret(cert.one);
+    }
+
+    debugger
+    // @ts-ignore
+    if (this.ctx.step.onlyAdmin) {
+      if (!this.isAdmin()) {
+        throw new Error("只有管理员才能运行此任务");
+      }
     }
   }
 

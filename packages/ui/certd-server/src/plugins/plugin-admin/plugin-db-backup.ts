@@ -14,14 +14,15 @@ const defaultFilePrefix = 'db_backup';
   name: 'DBBackupPlugin',
   title: '数据库备份',
   icon: 'lucide:database-backup',
-  desc: '仅支持备份SQLite数据库',
-  group: pluginGroups.other.key,
+  desc: '【仅管理员可用】仅支持备份SQLite数据库',
+  group: pluginGroups.admin.key,
   showRunStrategy: true,
   default: {
     strategy: {
       runStrategy: RunStrategy.AlwaysRun,
     },
   },
+  onlyAdmin:true,
   needPlus: true,
 })
 export class DBBackupPlugin extends AbstractPlusTaskPlugin {
@@ -157,6 +158,11 @@ export class DBBackupPlugin extends AbstractPlusTaskPlugin {
   }
 
   async execute(): Promise<void> {
+
+    if (!this.isAdmin()) {
+      throw new Error('只有管理员才能运行此任务');
+    }
+
     this.logger.info('开始备份数据库');
 
     let dbPath = process.env.certd_typeorm_dataSource_default_database;

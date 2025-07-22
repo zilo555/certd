@@ -13,6 +13,7 @@ export type CustomScriptContext = {
   desc: '【仅管理员】运行自定义js脚本执行',
   group: pluginGroups.other.key,
   showRunStrategy: true,
+  onlyAdmin: true,
   default: {
     strategy: {
       runStrategy: RunStrategy.SkipWhenSucceed,
