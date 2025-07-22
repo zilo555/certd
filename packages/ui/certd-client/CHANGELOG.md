@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.11](https://github.com/certd/certd/compare/v1.36.10...v1.36.11) (2025-07-22)
+
+**Note:** Version bump only for package @certd/ui-client
+
 ## [1.36.10](https://github.com/certd/certd/compare/v1.36.9...v1.36.10) (2025-07-18)
 
 ### Performance Improvements

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.11](https://github.com/certd/certd/compare/v1.36.10...v1.36.11) (2025-07-22)
+
+### Bug Fixes
+
+* 安全更新，备份数据库插件仅限管理员运行 ([13dfca1](https://github.com/certd/certd/commit/13dfca1749275526c82465a17c482b607c820fdd))
+
 ## [1.36.10](https://github.com/certd/certd/compare/v1.36.9...v1.36.10) (2025-07-18)
 
 ### Bug Fixes
