@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.12](https://github.com/certd/certd/compare/v1.36.11...v1.36.12) (2025-07-22)
+
+### Bug Fixes
+
+* 上传到阿里云cas，证书前缀无效的bug ([b382351](https://github.com/certd/certd/commit/b382351c7b91ec10e1f61d94bec5aad075207ec8))
+
+### Performance Improvements
+
+* 首页增加更新日志按钮 ([41ce848](https://github.com/certd/certd/commit/41ce8489dc2f03a705dfa3fbb357769defb56c60))
+* 增加版本过低提示 ([d1ce360](https://github.com/certd/certd/commit/d1ce36038cab72b5dc1b320d0a708c261ffbdacb))
+
 ## [1.36.11](https://github.com/certd/certd/compare/v1.36.10...v1.36.11) (2025-07-22)
 
 **Note:** Version bump only for package @certd/ui-client

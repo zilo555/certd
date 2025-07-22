@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.12](https://github.com/certd/certd/compare/v1.36.11...v1.36.12) (2025-07-22)
+
+### Performance Improvements
+
+* 部署到k8s，tke，ack忽悠证书校验 ([ab84835](https://github.com/certd/certd/commit/ab848353621869464a2c9a45fdb5e28d998b8a58))
+
 ## [1.36.11](https://github.com/certd/certd/compare/v1.36.10...v1.36.11) (2025-07-22)
 
 **Note:** Version bump only for package @certd/lib-k8s

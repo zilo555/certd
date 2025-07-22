@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.12](https://github.com/certd/certd/compare/v1.36.11...v1.36.12) (2025-07-22)
+
+### Bug Fixes
+
+* 修复自定义插件onlyAdmin报错的bug ([4e5e862](https://github.com/certd/certd/commit/4e5e862f5834ad180e4428959c272d444a6f78ab))
+
 ## [1.36.11](https://github.com/certd/certd/compare/v1.36.10...v1.36.11) (2025-07-22)
 
 ### Bug Fixes
