@@ -35,7 +35,7 @@ export class AliyunClient {
   }
 
   checkRet(ret: any) {
-    if (ret.Code != null) {
+    if (ret.Code != null && ret.Code !== "OK" && ret.Message !== "OK") {
       throw new Error("执行失败：" + ret.Message);
     }
   }
