@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.13](https://github.com/certd/certd/compare/v1.36.12...v1.36.13) (2025-07-23)
+
+### Bug Fixes
+
+* 修复阿里云发送短信验证码失败的bug ([2e6d03f](https://github.com/certd/certd/commit/2e6d03ff001f521f57368e7a62b97ed7b122e8d0))
+
+### Performance Improvements
+
+* 阿里云部分插件优化  [@nicheng-he](https://github.com/nicheng-he) ([e3738f6](https://github.com/certd/certd/commit/e3738f6422270d75ec414c15a343248cc4cad6e1))
+
 ## [1.36.12](https://github.com/certd/certd/compare/v1.36.11...v1.36.12) (2025-07-22)
 
 ### Bug Fixes
