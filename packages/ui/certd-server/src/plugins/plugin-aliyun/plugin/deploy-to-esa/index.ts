@@ -58,8 +58,8 @@ export class AliyunDeployCertToESA extends AbstractTaskPlugin {
       name: "a-select",
       options: [
         { value: "cas.aliyuncs.com", label: "中国大陆" },
-        { value: "cas.ap-southeast-1.aliyuncs.com", label: "新加坡" },
-        { value: "cas.eu-central-1.aliyuncs.com", label: "德国（法兰克福）" }
+        { value: "cas.ap-southeast-1.aliyuncs.com", label: "新加坡" }
+        // { value: "cas.eu-central-1.aliyuncs.com", label: "德国（法兰克福）" }
       ]
     },
     required: true
