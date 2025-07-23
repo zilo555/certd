@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.13](https://github.com/certd/certd/compare/v1.36.12...v1.36.13) (2025-07-23)
+
+### Performance Improvements
+
+* 阿里云部分插件优化  [@nicheng-he](https://github.com/nicheng-he) ([e3738f6](https://github.com/certd/certd/commit/e3738f6422270d75ec414c15a343248cc4cad6e1))
+
 ## [1.36.12](https://github.com/certd/certd/compare/v1.36.11...v1.36.12) (2025-07-22)
 
 ### Bug Fixes

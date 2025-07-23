@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.13](https://github.com/certd/certd/compare/v1.36.12...v1.36.13) (2025-07-23)
+
+### Bug Fixes
+
+* 修复阿里云发送短信验证码失败的bug ([2e6d03f](https://github.com/certd/certd/commit/2e6d03ff001f521f57368e7a62b97ed7b122e8d0))
+
 ## [1.36.12](https://github.com/certd/certd/compare/v1.36.11...v1.36.12) (2025-07-22)
 
 **Note:** Version bump only for package @certd/plugin-lib
