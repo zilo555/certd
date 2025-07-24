@@ -150,4 +150,18 @@ export class K8sClient {
     this.logger.info("ingress patched", opts.body);
     return res;
   }
+
+  async restartIngress(namespace: string, ingressNames: string[], labels: any) {
+    const body = {
+      metadata: {
+        labels: {
+          ...labels,
+        },
+      },
+    };
+    for (const ingress of ingressNames) {
+      await this.patchIngress({ namespace, ingressName: ingress, body });
+      this.logger.info(`ingress已重启:${ingress}`);
+    }
+  }
 }
