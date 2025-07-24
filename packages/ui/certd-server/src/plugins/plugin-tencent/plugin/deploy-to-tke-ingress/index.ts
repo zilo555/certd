@@ -24,10 +24,10 @@ export class DeployCertToTencentTKEIngressPlugin extends AbstractTaskPlugin {
     component: {
       name: "a-select",
       vModel: "value",
-      options: [{ value: "nginx", label: "TLS证书格式（Nginx可用）" }, {
-        value: "qcloud",
-        label: "Opaque格式（CLB可用，原qcloud）"
-      }]
+      options: [
+        { value: "nginx", label: "TLS证书格式（Nginx可用）" },
+        { value: "qcloud",label: "Opaque格式（CLB可用，原qcloud）"}
+      ]
     },
     helper: "clb将部署Opaque类型的证书，nginx类型将部署TLS证书格式",
     required: true
