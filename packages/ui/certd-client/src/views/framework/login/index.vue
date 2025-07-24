@@ -47,10 +47,10 @@
           {{ t("authentication.loginButton") }}
         </a-button>
 
-        <div v-if="!settingStore.isComm" class="mt-2">
-          <a href="https://certd.docmirror.cn/guide/use/forgotpasswd/" target="_blank">
-            {{ t("authentication.forgotAdminPassword") }}
-          </a>
+        <div v-if="!!settingStore.sysPublic.selfServicePasswordRetrievalEnabled" class="mt-2">
+          <router-link :to="{ name: 'forgotPassword' }">
+            {{ t("authentication.forgotPassword") }}
+          </router-link>
         </div>
       </a-form-item>
 
