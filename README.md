@@ -87,8 +87,8 @@ https://certd.handfree.work/
 1. 【推荐】[Docker方式部署 ](https://certd.docmirror.cn/guide/install/docker/)
 2. 【推荐】[宝塔面板方式部署 ](https://certd.docmirror.cn/guide/install/docker/)
 3. 【推荐】[1Panel面板方式部署](https://certd.docmirror.cn/guide/install/1panel/)
-4. 【推荐】[雨云一键部署](https://app.rainyun.com/apps/rca/store/6646/?ref=NzExMDQ2_) ： 首充翻倍，每月仅需2.2元    
-[<img src="https://rainyun-apps.cn-nb1.rains3.com/materials/deploy-on-rainyun-cn.svg">](https://app.rainyun.com/apps/rca/store/6646/?ref=NzExMDQ2_)
+4. 【推荐】[雨云一键部署](https://app.rainyun.com/apps/rca/store/6646/?ref=NzExMDQ2) ： 首充翻倍，每月仅需2.2元    
+[<img src="https://rainyun-apps.cn-nb1.rains3.com/materials/deploy-on-rainyun-cn.svg">](https://app.rainyun.com/apps/rca/store/6646/?ref=NzExMDQ2)
 5. 【不推荐】[源码方式部署 ](https://certd.docmirror.cn/guide/install/source/)
 
 #### Docker镜像说明：
