@@ -57,7 +57,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
         show: false,
       },
       search: {
-        show: false,
+        show: true,
       },
       form: {
         wrapper: {

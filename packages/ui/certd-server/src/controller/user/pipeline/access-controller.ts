@@ -23,8 +23,13 @@ export class AccessController extends CrudController<AccessService> {
   async page(@Body(ALL) body) {
     body.query = body.query ?? {};
     delete body.query.userId;
+    body.query.userId = this.getUserId()
+    let name = body.query?.name;
+    delete body.query.name;
     const buildQuery = qb => {
-      qb.andWhere('user_id = :userId', { userId: this.getUserId() });
+      if (name) {
+        qb.andWhere('name like :name', { name: `%${name.trim()}%` });
+      }
     };
     const res = await this.service.page({
       query: body.query,
