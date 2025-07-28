@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.14](https://github.com/certd/certd/compare/v1.36.13...v1.36.14) (2025-07-28)
+
+### Bug Fixes
+
+* 修复复制流水线为空的bug ([b070773](https://github.com/certd/certd/commit/b0707739fdfbae3d78db4efd3f180db05c4e4164))
+* 修复商用证书上传第二次运行无法使用pfx格式证书的bug ([251dd1f](https://github.com/certd/certd/commit/251dd1fe457a7b152f43eb6de18f7beb9f0b194e))
+
+### Performance Improvements
+
+* 1panel支持 currenNode ([acc8907](https://github.com/certd/certd/commit/acc890730f43d492c9b1bd3668814cf10efdf7b8))
+* 授权管理支持模糊查询 ([866eb62](https://github.com/certd/certd/commit/866eb6241baa7b21f6eddc649966324c188236c6))
+* 新增找回密码功能 [@nicheng-he](https://github.com/nicheng-he) ([81ac240](https://github.com/certd/certd/commit/81ac240ac84db0af2f56b6352e227ecb49f38377))
+* 优化start脚本 ([238ad7c](https://github.com/certd/certd/commit/238ad7ce51f17e1098c624e7f61ee2d98de1e02d))
+* 运行主机脚本插件支持选择运行策略 ([86b3df1](https://github.com/certd/certd/commit/86b3df194126476e1f58e0952a77e986f62eecce))
+* cdnfly 支持 账号密码登陆授权 ([e87f6d5](https://github.com/certd/certd/commit/e87f6d56f524dbbb9e3243e382b348b6e49f0d2c))
+* k8s ack、tke 支持重启ingress ([95715a0](https://github.com/certd/certd/commit/95715a007d931c64fa7dd953d94957398e00a443))
+
 ## [1.36.13](https://github.com/certd/certd/compare/v1.36.12...v1.36.13) (2025-07-23)
 
 ### Bug Fixes
