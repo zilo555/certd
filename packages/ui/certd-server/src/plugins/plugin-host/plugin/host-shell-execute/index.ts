@@ -7,6 +7,7 @@ import { SshClient } from '@certd/plugin-lib';
   group: pluginGroups.host.key,
   desc: '可以执行重启nginx等操作让证书生效',
   input: {},
+  showRunStrategy: true,
   default: {
     strategy: {
       runStrategy: RunStrategy.SkipWhenSucceed,
