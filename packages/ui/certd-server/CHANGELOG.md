@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.14](https://github.com/certd/certd/compare/v1.36.13...v1.36.14) (2025-07-28)
+
+### Performance Improvements
+
+* 授权管理支持模糊查询 ([866eb62](https://github.com/certd/certd/commit/866eb6241baa7b21f6eddc649966324c188236c6))
+* 新增找回密码功能 [@nicheng-he](https://github.com/nicheng-he) ([81ac240](https://github.com/certd/certd/commit/81ac240ac84db0af2f56b6352e227ecb49f38377))
+* 运行主机脚本插件支持选择运行策略 ([86b3df1](https://github.com/certd/certd/commit/86b3df194126476e1f58e0952a77e986f62eecce))
+
 ## [1.36.13](https://github.com/certd/certd/compare/v1.36.12...v1.36.13) (2025-07-23)
 
 ### Performance Improvements

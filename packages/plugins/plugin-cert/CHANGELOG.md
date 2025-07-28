@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.14](https://github.com/certd/certd/compare/v1.36.13...v1.36.14) (2025-07-28)
+
+### Bug Fixes
+
+* 修复商用证书上传第二次运行无法使用pfx格式证书的bug ([251dd1f](https://github.com/certd/certd/commit/251dd1fe457a7b152f43eb6de18f7beb9f0b194e))
+
 ## [1.36.13](https://github.com/certd/certd/compare/v1.36.12...v1.36.13) (2025-07-23)
 
 **Note:** Version bump only for package @certd/plugin-cert

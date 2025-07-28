@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.14](https://github.com/certd/certd/compare/v1.36.13...v1.36.14) (2025-07-28)
+
+### Performance Improvements
+
+* k8s ack、tke 支持重启ingress ([95715a0](https://github.com/certd/certd/commit/95715a007d931c64fa7dd953d94957398e00a443))
+
 ## [1.36.13](https://github.com/certd/certd/compare/v1.36.12...v1.36.13) (2025-07-23)
 
 **Note:** Version bump only for package @certd/lib-k8s

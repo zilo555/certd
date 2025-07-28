@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.14](https://github.com/certd/certd/compare/v1.36.13...v1.36.14) (2025-07-28)
+
+### Performance Improvements
+
+* 新增找回密码功能 [@nicheng-he](https://github.com/nicheng-he) ([81ac240](https://github.com/certd/certd/commit/81ac240ac84db0af2f56b6352e227ecb49f38377))
+
 ## [1.36.13](https://github.com/certd/certd/compare/v1.36.12...v1.36.13) (2025-07-23)
 
 **Note:** Version bump only for package @certd/lib-server

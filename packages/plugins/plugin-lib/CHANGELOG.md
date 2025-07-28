@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.14](https://github.com/certd/certd/compare/v1.36.13...v1.36.14) (2025-07-28)
+
+### Performance Improvements
+
+* 1panel支持 currenNode ([acc8907](https://github.com/certd/certd/commit/acc890730f43d492c9b1bd3668814cf10efdf7b8))
+
 ## [1.36.13](https://github.com/certd/certd/compare/v1.36.12...v1.36.13) (2025-07-23)
 
 ### Bug Fixes
