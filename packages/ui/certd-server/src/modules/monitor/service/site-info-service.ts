@@ -112,9 +112,9 @@ export class SiteInfoService extends BaseService<SiteInfoEntity> {
 
     const setting = await this.userSettingsService.getSetting<UserSiteMonitorSetting>(site.userId, UserSiteMonitorSetting);
     const dnsServer = setting.dnsServer
-    let resolver = null
+    let customDns = null
     if (dnsServer && dnsServer.length > 0) {
-      resolver = dnsContainer.getDns(dnsServer) as any
+      customDns = dnsContainer.getDns(dnsServer) as any
     }
 
     try {
@@ -127,7 +127,7 @@ export class SiteInfoService extends BaseService<SiteInfoEntity> {
         host: site.domain,
         port: site.httpsPort,
         retryTimes,
-        resolver
+        customDns
       });
 
       const certi: PeerCertificate = res.certificate;
@@ -154,7 +154,7 @@ export class SiteInfoService extends BaseService<SiteInfoEntity> {
         error: null,
         checkStatus: "ok"
       };
-
+      logger.info(`测试站点成功：id=${updateData.id},site=${site.name},expiresTime=${updateData.certExpiresTime}`)
       if (site.ipCheck) {
         delete updateData.checkStatus
       }

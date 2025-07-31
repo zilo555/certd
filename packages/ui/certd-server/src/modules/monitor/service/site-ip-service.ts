@@ -134,6 +134,7 @@ export class SiteIpService extends BaseService<SiteIpEntity> {
     if (!entity) {
       return;
     }
+    logger.info(`开始测试站点ip: id=${entity.id},ip=${entity.ipAddress}`)
     try {
       await this.update({
         id: entity.id,
@@ -173,7 +174,7 @@ export class SiteIpService extends BaseService<SiteIpEntity> {
       };
 
       await this.update(updateData);
-
+      logger.info(`测试站点ip成功: id=${updateData.id},ip=${entity.ipAddress},expiresTime=${updateData.certExpiresTime}`)
       return updateData
 
     } catch (e) {
@@ -231,7 +232,7 @@ export class SiteIpService extends BaseService<SiteIpEntity> {
       try{
         return await resolver.resolve4(domain);
       }catch (err) {
-        logger.error(`[${domain}] resolve4 error`, err)
+        logger.warn(`[${domain}] resolve4 error`, err)
         return []
       }
     }
@@ -239,7 +240,7 @@ export class SiteIpService extends BaseService<SiteIpEntity> {
       try{
         return await resolver.resolve6(domain);
       }catch (err) {
-        logger.error(`[${domain}] resolve6 error`, err)
+        logger.warn(`[${domain}] resolve6 error`, err)
         return []
       }
     }

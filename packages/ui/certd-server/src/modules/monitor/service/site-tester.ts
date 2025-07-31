@@ -2,6 +2,7 @@ import { logger, safePromise, utils } from "@certd/basic";
 import { merge } from "lodash-es";
 import https from "https";
 import { PeerCertificate } from "tls";
+import {DnsCustom} from "./dns-custom.js";
 
 export type SiteTestReq = {
   host: string; // 只用域名部分
@@ -10,7 +11,7 @@ export type SiteTestReq = {
   retryTimes?: number;
   ipAddress?: string;
 
-  resolver?: any;
+  customDns?: DnsCustom;
 };
 
 export type SiteTestRes = {
@@ -19,7 +20,9 @@ export type SiteTestRes = {
 
 export class SiteTester {
   async test(req: SiteTestReq): Promise<SiteTestRes> {
-    logger.info("测试站点:", JSON.stringify(req));
+    const req_ = {...req}
+    delete req_.customDns
+    logger.info("测试站点:", JSON.stringify(req_));
     const maxRetryTimes = req.retryTimes == null ? 3 : req.retryTimes;
     let tryCount = 0;
     let result: SiteTestRes = {};
@@ -61,15 +64,18 @@ export class SiteTester {
         servername: options.host
       };
       options.host = ipAddress;
-    }else if (req.resolver ) {
+    }else if (req.customDns ) {
       // 非ip address 请求时
-      const resolver = req.resolver
+      const customDns = req.customDns
       customLookup = async (hostname:string, options:any, callback)=> {
         console.log(hostname, options);
 
         // { family: undefined, hints: 0, all: true }
-        const res = await resolver.resolve(hostname, options)
+        const res = await customDns.lookup(hostname, options)
         console.log("custom lookup res:",res)
+        if (!res || res.length === 0) {
+          callback(new Error("没有解析到IP"));
+        }
         callback(null, res);
       }
     }
