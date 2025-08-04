@@ -202,15 +202,21 @@ export class DBBackupPlugin extends AbstractPlusTaskPlugin {
     const backupDir = this.backupDir || defaultBackupDir;
     const backupFilePath = `${backupDir}/${dbZipFilename}`;
 
-    if (this.backupMode === 'local') {
-      await this.localBackup(dbZipPath, backupDir, backupFilePath);
-    } else if (this.backupMode === 'ssh') {
-      await this.sshBackup(dbZipPath, backupDir, backupFilePath);
-    } else if (this.backupMode === 'oss') {
-      await this.ossBackup(dbZipPath, backupDir, backupFilePath);
-    } else {
-      throw new Error(`不支持的备份方式:${this.backupMode}`);
+    try{
+      if (this.backupMode === 'local') {
+        await this.localBackup(dbZipPath, backupDir, backupFilePath);
+      } else if (this.backupMode === 'ssh') {
+        await this.sshBackup(dbZipPath, backupDir, backupFilePath);
+      } else if (this.backupMode === 'oss') {
+        await this.ossBackup(dbZipPath, backupDir, backupFilePath);
+      } else {
+        throw new Error(`不支持的备份方式:${this.backupMode}`);
+      }
+    }finally{
+      //删除临时目录
+      await fs.promises.rm(tempDir, {recursive: true, force: true});
     }
+
 
     this.logger.info('数据库备份完成');
   }
