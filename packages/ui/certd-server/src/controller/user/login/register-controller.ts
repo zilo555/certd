@@ -44,6 +44,12 @@ export class RegisterController extends BaseController {
       if (sysPublicSettings.usernameRegisterEnabled === false) {
         throw new Error('当前站点已禁止用户名注册功能');
       }
+      if (!body.username) {
+        throw new Error('用户名不能为空');
+      }
+      if (body.username in ["admin","certd"]) {
+        throw new Error('用户名不能为保留字');
+      }
       await this.codeService.checkCaptcha(body.randomStr, body.imgCode);
       const newUser = await this.userService.register(body.type, {
         username: body.username,
