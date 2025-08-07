@@ -201,7 +201,7 @@ export class DeployCertToAliyunOSS extends AbstractTaskPlugin {
     let certName: any = this.appendTimeSuffix("certd");
     if (typeof this.cert === "object") {
       let endpoint = `cas.${this.casRegion}.aliyuncs.com`;
-      if (this.casRegion === "cn-hangzhou"){
+      if (this.casRegion === "cn-hangzhou" || !this.casRegion){
         endpoint = "cas.aliyuncs.com";
       }
       const sslClient = new AliyunSslClient({
