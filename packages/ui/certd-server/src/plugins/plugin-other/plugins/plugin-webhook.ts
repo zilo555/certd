@@ -2,7 +2,6 @@ import qs from 'qs';
 import {
   AbstractTaskPlugin,
   IsTaskPlugin,
-  NotificationBody,
   pluginGroups,
   RunStrategy,
   TaskInput
@@ -15,7 +14,7 @@ import {CertApplyPluginNames, CertInfo, CertReader} from "@certd/plugin-cert";
   icon: 'ion:send-sharp',
   desc: '调用webhook部署证书',
   group: pluginGroups.other.key,
-  showRunStrategy:true,
+  showRunStrategy: false,
   default: {
     strategy: {
       runStrategy: RunStrategy.SkipWhenSucceed,
@@ -33,7 +32,7 @@ export class WebhookDeployCert extends AbstractTaskPlugin {
     },
     required: true
   })
-  cert!: CertInfo ;
+  cert!: CertInfo;
 
   @TaskInput({
     title: 'webhook地址',
@@ -54,9 +53,9 @@ export class WebhookDeployCert extends AbstractTaskPlugin {
       name: 'a-select',
       placeholder: 'post/put/get',
       options: [
-        { value: 'POST', label: 'POST' },
-        { value: 'PUT', label: 'PUT' },
-        { value: 'GET', label: 'GET' },
+        {value: 'POST', label: 'POST'},
+        {value: 'PUT', label: 'PUT'},
+        {value: 'GET', label: 'GET'},
       ],
     },
     required: true,
@@ -69,8 +68,8 @@ export class WebhookDeployCert extends AbstractTaskPlugin {
     component: {
       name: 'a-auto-complete',
       options: [
-        { value: 'application/json', label: 'application/json' },
-        { value: 'application/x-www-form-urlencoded', label: 'application/x-www-form-urlencoded' },
+        {value: 'application/json', label: 'application/json'},
+        {value: 'application/x-www-form-urlencoded', label: 'application/x-www-form-urlencoded'},
       ],
     },
     helper: '也可以自定义填写',
@@ -97,8 +96,8 @@ export class WebhookDeployCert extends AbstractTaskPlugin {
     title: '消息body模版',
     value: `{
     "id":"123",
-    "crt":"{crt}",
-    "key":"{key}"
+    "crt":"\${crt}",
+    "key":"\${key}"
 }`,
     component: {
       name: 'a-textarea',
@@ -125,6 +124,17 @@ export class WebhookDeployCert extends AbstractTaskPlugin {
     required: false,
   })
   skipSslVerify: boolean;
+
+
+  @TaskInput({
+    title: '成功判定',
+    helper: "返回结果中包含此字符串则表示部署成功，不填则仅通过statusCode判定",
+    component: {
+      name: 'a-input',
+      placeholder: '例如： status:"success"',
+    },
+  })
+  successStr = '';
 
   replaceTemplate(target: string, body: any, urlEncode = false) {
     let bodyStr = target;
@@ -184,8 +194,9 @@ export class WebhookDeployCert extends AbstractTaskPlugin {
       });
     }
 
+    let res = null
     try {
-      const res = await this.http.request({
+      res = await this.http.request({
         url: url,
         method: this.method,
         headers: {
@@ -194,21 +205,30 @@ export class WebhookDeployCert extends AbstractTaskPlugin {
         },
         data: data,
         skipSslVerify: this.skipSslVerify,
+        responseType: "text",
+        returnOriginRes: true
       });
-      return res
     } catch (e) {
       if (e.response?.data) {
         throw new Error(e.message + ',' + JSON.stringify(e.response.data));
       }
       throw e;
     }
+
+    if (this.successStr && !res?.data?.includes(this.successStr)) {
+      throw new Error(`请求失败,期望包含：${this.successStr},实际返回：${res.data}`);
+    }
+    return res
   }
 
-  async onInstance() {}
+  async onInstance() {
+  }
+
   async execute(): Promise<void> {
     this.logger.info(`通过webhook部署开始`);
     await this.send();
     this.logger.info('部署成功');
   }
 }
+
 new WebhookDeployCert();

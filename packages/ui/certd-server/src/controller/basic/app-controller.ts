@@ -1,4 +1,4 @@
-import { Controller, Get, Inject, Provide } from '@midwayjs/core';
+import {Body, Controller, Get, Inject, Post, Provide} from '@midwayjs/core';
 import { BaseController, Constants, FileService, SysSettingsService, SysSiteInfo } from '@certd/lib-server';
 import { http, logger } from '@certd/basic';
 import { isComm } from '@certd/plus-core';
@@ -45,5 +45,11 @@ export class AppController extends BaseController {
     const redirect = '/static/images/logo/logo.svg';
     this.ctx.response.redirect(redirect);
     this.ctx.response.set('Cache-Control', 'public,max-age=25920');
+  }
+
+  @Post('/webhook', { summary: Constants.per.guest })
+  public async webhook( @Body() body: any) {
+    logger.info('webhook', JSON.stringify(body))
+    return this.ok("success")
   }
 }
