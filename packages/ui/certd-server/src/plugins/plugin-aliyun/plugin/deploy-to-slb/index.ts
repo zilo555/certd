@@ -207,7 +207,7 @@ export class AliyunDeployCertToSLB extends AbstractTaskPlugin {
   }
 
   getCLBClientV2(access: AliyunAccess) {
-    return access.getClient("slb.aliyuncs.com")
+    return access.getClient(`slb.${this.regionId}.aliyuncs.com`)
   }
 
   resolveListenerKey(listener: string) {
@@ -383,7 +383,7 @@ export class AliyunDeployCertToSLB extends AbstractTaskPlugin {
     access: AliyunAccess
   }) {
     const {loadBalancerId, listenerPort, listenerProtocol, access} = data;
-    const client = access.getClient("slb.aliyuncs.com")
+    const client = access.getClient(`slb.${this.regionId}.aliyuncs.com`)
 
     let queries = {
       RegionId: this.regionId,
