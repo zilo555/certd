@@ -40,7 +40,7 @@ export class RegisterController extends BaseController {
       throw new Error('当前站点已禁止自助注册功能');
     }
 
-    if (!body.username && body.username in ["admin","certd"]) {
+    if (body.username && ["admin","certd"].includes(body.username) ) {
       throw new Error('用户名不能为保留字');
     }
 
@@ -90,6 +90,7 @@ export class RegisterController extends BaseController {
         throwError: true,
       });
       const newUser = await this.userService.register(body.type, {
+        username: body.username,
         email: body.email,
         password: body.password,
       } as any);

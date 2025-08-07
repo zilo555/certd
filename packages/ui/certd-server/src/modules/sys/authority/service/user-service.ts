@@ -175,30 +175,36 @@ export class UserService extends BaseService<UserEntity> {
     if (!user.password) {
       user.password = simpleNanoId();
     }
-    if (!user.username) {
-      user.username = 'user_' + simpleNanoId();
-    }
 
-    if (type === 'username') {
+
+    if (user.username) {
       const username = user.username;
       const old = await this.findOne([{ username: username }, { mobile: username }, { email: username }]);
       if (old != null) {
         throw new CommonException('用户名已被注册');
       }
-    } else if (type === 'mobile') {
+    }
+
+    if (user.mobile) {
       const mobile = user.mobile;
 
-      user.nickName = mobile.substring(0, 3) + '****' + mobile.substring(7);
+      user.nickName = user.username || mobile.substring(0, 3) + '****' + mobile.substring(7);
       const old = await this.findOne([{ username: mobile }, { mobile: mobile }, { email: mobile }]);
       if (old != null) {
         throw new CommonException('手机号已被注册');
       }
-    } else if (type === 'email') {
+    }
+    if (user.email) {
       const email = user.email;
       const old = await this.findOne([{ username: email }, { mobile: email }, { email: email }]);
       if (old != null) {
         throw new CommonException('邮箱已被注册');
       }
+    }
+
+
+    if (!user.username) {
+      user.username = 'user_' + simpleNanoId();
     }
 
     let newUser: UserEntity = UserEntity.of({
