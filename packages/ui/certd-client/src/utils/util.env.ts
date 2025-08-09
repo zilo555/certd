@@ -6,22 +6,28 @@ export function getEnvValue(key: string) {
 
 export class EnvConfig {
   MODE: string = import.meta.env.MODE;
-  API: string = import.meta.env.VITE_APP_API;
-  STORAGE: string = import.meta.env.VITE_APP_STORAGE;
-  TITLE: string = import.meta.env.VITE_APP_TITLE;
-  SLOGAN: string = import.meta.env.VITE_APP_SLOGAN;
-  LOGO: string = import.meta.env.VITE_APP_LOGO;
-  LOGIN_LOGO: string = import.meta.env.VITE_APP_LOGIN_LOGO;
-  ICP_NO: string = import.meta.env.VITE_APP_ICP_NO;
-  COPYRIGHT_YEAR: string = import.meta.env.VITE_APP_COPYRIGHT_YEAR;
-  COPYRIGHT_NAME: string = import.meta.env.VITE_APP_COPYRIGHT_NAME;
-  COPYRIGHT_URL: string = import.meta.env.VITE_APP_COPYRIGHT_URL;
-  PM_ENABLED: string = import.meta.env.VITE_APP_PM_ENABLED;
+  API: string;
+  STORAGE: string;
+  TITLE: string;
+  SLOGAN: string;
+  LOGO: string;
+  LOGIN_LOGO: string;
+  ICP_NO: string;
+  COPYRIGHT_YEAR: string;
+  COPYRIGHT_NAME: string;
+  COPYRIGHT_URL: string;
+  PM_ENABLED: string;
+  VIP_PRODUCT_URL: string;
 
-  init(env: any) {
+  constructor() {
+    this.init();
+  }
+  init() {
+    const env = import.meta.env;
     for (const key in this) {
-      if (this.hasOwnProperty(key)) {
-        this[key] = env[key];
+      const metaKey = "VITE_APP_" + key;
+      if (this.hasOwnProperty(key) && env.hasOwnProperty(metaKey)) {
+        this[key] = env[metaKey];
       }
     }
   }

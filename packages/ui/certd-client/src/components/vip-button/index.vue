@@ -21,7 +21,7 @@ import { useRouter } from "vue-router";
 import { useUserStore } from "/@/store/user";
 import { mitter } from "/@/utils/util.mitt";
 import { useI18n } from "vue-i18n";
-
+import { env } from "/@/utils/util.env";
 const { t } = useI18n();
 
 const settingStore = useSettingStore();
@@ -231,6 +231,10 @@ function openUpgrade() {
     title = t("vip.renew_pro_upgrade_business");
   }
 
+  // const goBuyUrl = "https://afdian.com/a/greper"
+  const subjectId = settingStore.installInfo.siteId;
+  const appKey = settingStore.installInfo.appKey;
+  const goBuyUrl = `${env.VIP_PRODUCT_URL}?appKey=${appKey}&subjectId=${subjectId}`;
   const productInfo = settingStore.productInfo;
   const vipTypeDefine = {
     free: {
@@ -258,7 +262,7 @@ function openUpgrade() {
       get() {
         return (
           <a-tooltip title={t("vip.afdian_support_vip")}>
-            <a-button size="small" type="primary" href="https://afdian.com/a/greper" target="_blank">
+            <a-button size="small" type="primary" href={goBuyUrl} target="_blank">
               {t("vip.get_after_support")}
             </a-button>
           </a-tooltip>
@@ -291,7 +295,7 @@ function openUpgrade() {
     content: () => {
       let activationCodeGetWay = (
         <span>
-          <a href="https://afdian.com/a/greper" target="_blank">
+          <a href={goBuyUrl} target="_blank">
             {t("vip.get_pro_code_after_support")}
           </a>
           <span> {t("vip.business_contact_author")}</span>
