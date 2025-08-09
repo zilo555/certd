@@ -125,16 +125,28 @@ export const useSettingStore = defineStore({
       return this.installInfo;
     },
     isPlus(): boolean {
-      return this.plusInfo?.isPlus && this.plusInfo?.expireTime > new Date().getTime();
+      return this.plusInfo?.isPlus && (this.plusInfo?.expireTime === -1 || this.plusInfo?.expireTime > new Date().getTime());
     },
     isComm(): boolean {
-      return this.plusInfo?.isComm && this.plusInfo?.expireTime > new Date().getTime();
+      return this.plusInfo?.isComm && (this.plusInfo?.expireTime === -1 || this.plusInfo?.expireTime > new Date().getTime());
     },
     isAgent(): boolean {
       return this.siteEnv?.agent?.enabled === true;
     },
     isCommOrAgent() {
       return this.isComm || this.isAgent;
+    },
+    expiresText() {
+      if (this.plusInfo?.expireTime == null) {
+        return "";
+      }
+      if (this.plusInfo?.expireTime === -1) {
+        return "永久";
+      }
+      return utils.time.formatDate(this.plusInfo?.expireTime, "yyyy-MM-dd");
+    },
+    isForever() {
+      return this.isPlus && this.plusInfo?.expireTime === -1;
     },
     vipLabel(): string {
       const { t } = useI18n();

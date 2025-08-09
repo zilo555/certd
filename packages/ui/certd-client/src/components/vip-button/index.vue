@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!settingStore.isComm || userStore.isAdmin" class="layout-vip isPlus" @click="openUpgrade">
+  <div v-if="!settingStore.isComm || userStore.isAdmin" class="layout-vip isPlus" :class="{ isForever: settingStore.isForever }" @click="openUpgrade">
     <contextHolder />
     <fs-icon icon="mingcute:vip-1-line" :title="text.title" />
 
@@ -106,7 +106,7 @@ const text = computed<Text>(() => {
 
 const expireTime = computed(() => {
   if (settingStore.isPlus) {
-    return dayjs(settingStore.plusInfo.expireTime).format("YYYY-MM-DD");
+    return settingStore.expiresText;
   }
   return "";
 });
@@ -368,7 +368,7 @@ function openUpgrade() {
           </div>
           <div class="mt-10">
             <h3 class="block-header">{isPlus ? t("vip.renew") : t("vip.activate_immediately")}</h3>
-            <div>{isPlus ? `${t("vip.current")} ${vipLabel} ${t("vip.activated_expire_time")}` + dayjs(settingStore.plusInfo.expireTime).format("YYYY-MM-DD") : ""}</div>
+            <div>{isPlus ? `${t("vip.current")} ${vipLabel} ${t("vip.activated_expire_time")}` + settingStore.expiresText : ""}</div>
             <div class="mt-10">
               <div class="flex-o w-100">
                 <span>{t("vip.site_id")}：</span>
@@ -410,6 +410,10 @@ onMounted(() => {
 
   &.isPlus {
     color: #c5913f;
+
+    &.isForever {
+      color: #ff2e83;
+    }
   }
 
   .text {
