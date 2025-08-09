@@ -174,7 +174,7 @@ export class CodeService {
   buildEmailCodeKey(email: string, randomStr: string, verificationType?: string) {
     return ['email', verificationType, email, randomStr].filter(item => !!item).join(':');
   }
-  checkValidateCode(key: string, userCode: string, throwError = true, errorNum = 0) {
+  checkValidateCode(key: string, userCode: string, throwError = true, errorNum = 3) {
     // 记录异常次数key
     const err_num_key = key + ':err_num';
     //验证图片验证码
