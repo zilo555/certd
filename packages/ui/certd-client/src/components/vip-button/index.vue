@@ -428,6 +428,11 @@ onMounted(() => {
     border: 1px solid #eee;
     border-radius: 5px;
     height: 275px;
+    line-height: 24px;
+
+    .privilege {
+      margin-top: 5px;
+    }
 
     //background-color: rgba(250, 237, 167, 0.79);
     &.current {
