@@ -237,6 +237,7 @@ function openUpgrade() {
   const location = window.location;
   const callbackUrl = encodeURIComponent(`${location.origin}${location.pathname}#/sys/account`);
   const goBuyUrl = `${env.VIP_PRODUCT_URL}?appKey=${appKey}&subjectId=${subjectId}&callback=${callbackUrl}`;
+  const goBuyCommUrl = `${goBuyUrl}&vipType=comm`;
   const productInfo = settingStore.productInfo;
   const vipTypeDefine = {
     free: {
@@ -281,7 +282,11 @@ function openUpgrade() {
       price3: `¥${productInfo.comm.price3}/3${t("vip.years")}`,
       tooltip: productInfo.comm.tooltip,
       get() {
-        return <a-button size="small">{t("vip.contact_author_for_trial")}</a-button>;
+        return (
+          <a-button size="small" type="primary" href={goBuyCommUrl} target="_blank">
+            {t("vip.contact_author_for_trial")}
+          </a-button>
+        );
       },
     },
   };
