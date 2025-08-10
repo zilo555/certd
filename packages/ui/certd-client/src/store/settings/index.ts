@@ -143,7 +143,7 @@ export const useSettingStore = defineStore({
       if (this.plusInfo?.expireTime === -1) {
         return "永久";
       }
-      return dayjs(this.plusInfo?.expireTime, "yyyy-MM-dd");
+      return dayjs(this.plusInfo?.expireTime).format("YYYY-MM-DD");
     },
     isForever() {
       return this.isPlus && this.plusInfo?.expireTime === -1;
