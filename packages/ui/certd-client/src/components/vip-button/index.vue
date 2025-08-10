@@ -234,7 +234,9 @@ function openUpgrade() {
   // const goBuyUrl = "https://afdian.com/a/greper"
   const subjectId = settingStore.installInfo.siteId;
   const appKey = settingStore.installInfo.appKey;
-  const goBuyUrl = `${env.VIP_PRODUCT_URL}?appKey=${appKey}&subjectId=${subjectId}`;
+  const location = window.location;
+  const callbackUrl = encodeURIComponent(`${location.origin}${location.pathname}#/sys/account`);
+  const goBuyUrl = `${env.VIP_PRODUCT_URL}?appKey=${appKey}&subjectId=${subjectId}&callback=${callbackUrl}`;
   const productInfo = settingStore.productInfo;
   const vipTypeDefine = {
     free: {

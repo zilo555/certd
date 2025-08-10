@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
 import { Modal, notification } from "ant-design-vue";
-import * as _ from "lodash-es";
 import * as basicApi from "./api.basic";
 import { AppInfo, HeaderMenus, PlusInfo, SiteEnv, SiteInfo, SuiteSetting, SysInstallInfo, SysPublicSetting } from "./api.basic";
 import { useUserStore } from "../user";
@@ -11,6 +10,7 @@ import { useTitle } from "@vueuse/core";
 import { utils } from "/@/utils";
 import { cloneDeep, merge } from "lodash-es";
 import { useI18n } from "/src/locales";
+import dayjs from "dayjs";
 export interface SettingState {
   sysPublic?: SysPublicSetting;
   installInfo?: {
@@ -143,7 +143,7 @@ export const useSettingStore = defineStore({
       if (this.plusInfo?.expireTime === -1) {
         return "永久";
       }
-      return utils.time.formatDate(this.plusInfo?.expireTime, "yyyy-MM-dd");
+      return dayjs(this.plusInfo?.expireTime, "yyyy-MM-dd");
     },
     isForever() {
       return this.isPlus && this.plusInfo?.expireTime === -1;
@@ -191,12 +191,12 @@ export const useSettingStore = defineStore({
     },
     async loadSysSettings() {
       const allSettings = await basicApi.loadAllSettings();
-      _.merge(this.sysPublic, allSettings.sysPublic || {});
-      _.merge(this.installInfo, allSettings.installInfo || {});
-      _.merge(this.siteEnv, allSettings.siteEnv || {});
-      _.merge(this.plusInfo, allSettings.plusInfo || {});
-      _.merge(this.headerMenus, allSettings.headerMenus || {});
-      _.merge(this.suiteSetting, allSettings.suiteSetting || {});
+      merge(this.sysPublic, allSettings.sysPublic || {});
+      merge(this.installInfo, allSettings.installInfo || {});
+      merge(this.siteEnv, allSettings.siteEnv || {});
+      merge(this.plusInfo, allSettings.plusInfo || {});
+      merge(this.headerMenus, allSettings.headerMenus || {});
+      merge(this.suiteSetting, allSettings.suiteSetting || {});
       //@ts-ignore
       this.initSiteInfo(allSettings.siteInfo || {});
       this.initAppInfo(allSettings.app || {});
@@ -216,7 +216,7 @@ export const useSettingStore = defineStore({
           siteInfo.loginLogo = `api/basic/file/download?key=${siteInfo.loginLogo}`;
         }
       }
-      this.siteInfo = _.merge({}, defaultSiteInfo, siteInfo);
+      this.siteInfo = merge({}, defaultSiteInfo, siteInfo);
 
       if (this.siteInfo.logo) {
         updatePreferences({
