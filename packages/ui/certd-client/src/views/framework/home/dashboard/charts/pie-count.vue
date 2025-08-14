@@ -41,7 +41,7 @@ const option = ref({
       center: ["60%", "50%"],
       name: "状态",
       type: "pie",
-      radius: "80%",
+      radius: ["30%", "70%"],
       avoidLabelOverlap: false,
       itemStyle: {
         borderRadius: 0,
