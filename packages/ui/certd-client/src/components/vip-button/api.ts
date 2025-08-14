@@ -8,10 +8,10 @@ export async function doActive(form: any) {
   });
 }
 
-export async function getVipTrial(vipType:string) {
+export async function getVipTrial(vipType: string) {
   return await request({
     url: "/sys/plus/getVipTrial",
     method: "post",
-    data: {vipType},
+    data: { vipType },
   });
 }
