@@ -165,34 +165,38 @@ function goAccount() {
   router.push("/sys/account");
 }
 
-async function getVipTrial() {
-  const res = await api.getVipTrial();
+async function getVipTrial(vipType = "plus") {
+  const res = await api.getVipTrial(vipType);
   message.success(t("vip.congratulations_vip_trial", { duration: res.duration }));
   await settingStore.init();
 }
 
-function openTrialModal() {
+function openTrialModal(vipType = "plus") {
   Modal.destroyAll();
 
   modal.confirm({
     title: t("vip.trial_modal_title"),
     okText: t("vip.trial_modal_ok_text"),
     onOk() {
-      getVipTrial();
+      getVipTrial(vipType);
     },
     width: 600,
     content: () => {
       return (
         <div class="flex-col mt-10 mb-10">
           <div>{t("vip.trial_modal_thanks")}</div>
-          <div>{t("vip.trial_modal_click_confirm")}</div>
+          <div>{t("vip.trial_modal_click_confirm", { vipType })}</div>
         </div>
       );
     },
   });
 }
 
-function openStarModal() {
+function openStarModal(vipType: string) {
+  if (settingStore.isPlus) {
+    message.error(t("vip.already_vip"));
+    return;
+  }
   Modal.destroyAll();
   const goGithub = () => {
     window.open("https://github.com/certd/certd/");
@@ -203,7 +207,7 @@ function openStarModal() {
     okText: t("vip.star_now"),
     onOk() {
       goGithub();
-      openTrialModal();
+      openTrialModal(vipType);
     },
     width: 600,
     content: () => {
@@ -255,7 +259,7 @@ function openUpgrade() {
       trial: {
         title: t("vip.click_to_get_7_day_trial"),
         click: () => {
-          openStarModal();
+          openStarModal("plus");
         },
       },
       icon: "stash:thumb-up",
@@ -281,6 +285,12 @@ function openUpgrade() {
       price: productInfo.comm.price,
       price3: `¥${productInfo.comm.price3}/3${t("vip.years")}`,
       tooltip: productInfo.comm.tooltip,
+      trial: {
+        title: t("vip.click_to_get_7_day_trial"),
+        click: () => {
+          openStarModal("comm");
+        },
+      },
       get() {
         return (
           <a-button size="small" type="primary" href={goBuyCommUrl} target="_blank">
