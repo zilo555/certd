@@ -95,7 +95,7 @@ function install(app: App, options: any = {}) {
 
               //不能用 !scope.value ， 否则switch组件设置为关之后就消失了
               const { value, key, props } = scope;
-              return !value && key != "_index" && value != false;
+              return value != null && key != "_index" && value != "";
             },
             render() {
               return "-";
