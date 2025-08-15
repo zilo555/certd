@@ -75,18 +75,22 @@ export class KsyunRefreshCDNCert extends AbstractTaskPlugin {
   async execute(): Promise<void> {
     const access = await this.getAccess<KsyunAccess>(this.accessId);
 
-    const certReader = new CertReader(this.cert)
-    const certName = certReader.buildCertName()
     const client = await access.getCdnClient();
-    for (const item of this.certList) {
-      this.logger.info(`----------- 开始更新证书：${item}`);
+    for (const certId of this.certList) {
+      this.logger.info(`----------- 开始更新证书：${certId}`);
+
+      const oldCert = await access.getCert({
+        client,
+        certId:certId
+      })
+
       await access.updateCert({
         client,
-        certId: item,
-        certName,
+        certId: certId,
+        certName: oldCert.CertificateName,
         cert: this.cert
       });
-      this.logger.info(`----------- 更新证书${item}成功`);
+      this.logger.info(`----------- 更新证书${certId}成功`);
     }
 
     this.logger.info("部署完成");

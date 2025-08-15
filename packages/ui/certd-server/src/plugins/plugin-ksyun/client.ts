@@ -38,6 +38,7 @@ export class KsyunClient {
     try{
       return await this.http.request(config)
     }catch (e) {
+      this.logger.error(e.request)
       if (e.response?.data?.Error?.Message){
         throw new Error(e.response?.data?.Error?.Message)
       }

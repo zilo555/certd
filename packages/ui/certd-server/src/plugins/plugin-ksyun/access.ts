@@ -83,7 +83,7 @@ export class KsyunAccess extends BaseAccess {
       method:"POST",
       url:"/2016-09-01/cert/SetCertificate",
       data:{
-        CertificateId: parseInt(opts.certId),
+        CertificateId: opts.certId,
         CertificateName: opts.certName,
         ServerCertificate: opts.cert.crt,
         PrivateKey: opts.cert.key
@@ -91,6 +91,24 @@ export class KsyunAccess extends BaseAccess {
     })
     this.ctx.logger.info(res)
     return res
+  }
+
+  async getCert(opts:{client:KsyunClient,certId:string}){
+    const res = await opts.client.doRequest({
+      action: "GetCertificates",
+      version: "2016-09-01",
+      method:"POST",
+      url:"/2016-09-01/cert/GetCertificates",
+      data:{
+        CertificateId: opts.certId,
+      }
+    })
+    this.ctx.logger.info(res)
+    const list = res.Certificates
+    if (list.length > 0) {
+      return list[0]
+    }
+    throw new Error(`未找到证书:${opts.certId}`)
   }
 
   async getCdnClient() {
