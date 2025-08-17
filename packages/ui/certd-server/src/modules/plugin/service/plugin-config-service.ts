@@ -54,6 +54,7 @@ export class PluginConfigService {
         sysSetting: JSON.stringify(sysSetting),
         type: 'builtIn',
         disabled: false,
+        author: "certd",
       });
     } else {
       await this.pluginService.getRepository().update({ name }, { sysSetting: JSON.stringify(sysSetting) });

@@ -180,6 +180,12 @@ export class PluginService extends BaseService<PluginEntity> {
       throw new Error(`插件${param.author}/${param.name}已存在`);
     }
 
+    if (param.type === "builtIn"){
+      return await super.add({
+        ...param,
+      });
+    }
+
     let plugin: any = {};
     if (param.pluginType === "access") {
       plugin = getDefaultAccessPlugin();
