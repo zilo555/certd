@@ -6,6 +6,41 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "544964",
+      "name": "social-foursquare",
+      "font_class": "four",
+      "unicode": "e8fb",
+      "unicode_decimal": 59643
+    },
+    {
+      "icon_id": "8567079",
+      "name": "ksyun-logo",
+      "font_class": "ksyun",
+      "unicode": "e65a",
+      "unicode_decimal": 58970
+    },
+    {
+      "icon_id": "42174864",
+      "name": "雨-copy",
+      "font_class": "rainyun",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
+      "icon_id": "14065547",
+      "name": "网宿",
+      "font_class": "wangsu",
+      "unicode": "e655",
+      "unicode_decimal": 58965
+    },
+    {
+      "icon_id": "41324539",
+      "name": "ai客服",
+      "font_class": "aikefu",
+      "unicode": "e727",
+      "unicode_decimal": 59175
+    },
+    {
       "icon_id": "13592652",
       "name": "cdn",
       "font_class": "cdn",

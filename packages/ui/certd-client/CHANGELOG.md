@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.16](https://github.com/certd/certd/compare/v1.36.15...v1.36.16) (2025-08-16)
+
+### Bug Fixes
+
+* 修复授权配置复制功能，无法复制已加密字段的问题 ([221e068](https://github.com/certd/certd/commit/221e068bac3af6cd5d1794f8cd4c2ec5c0bc3f45))
+
+### Performance Improvements
+
+* 增加找回密码的验证码可重试次数 [@nicheng-he](https://github.com/nicheng-he)  ([#496](https://github.com/certd/certd/issues/496)) ([fe03f99](https://github.com/certd/certd/commit/fe03f9942b5662fb90cad86da10782f5dc3603f5))
+* 支持阿里云API网关 ([9e1e4ee](https://github.com/certd/certd/commit/9e1e4eeec2859759ca5b07834c9d24cf88a6ad33))
+* 支持部署到金山云CDN ([dfa74a6](https://github.com/certd/certd/commit/dfa74a69f7cbb9009d3e20c7eecfa1b905a00cf0))
+
 ## [1.36.15](https://github.com/certd/certd/compare/v1.36.14...v1.36.15) (2025-08-07)
 
 ### Performance Improvements

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.16](https://github.com/certd/certd/compare/v1.36.15...v1.36.16) (2025-08-16)
+
+### Bug Fixes
+
+* 修复授权配置复制功能，无法复制已加密字段的问题 ([221e068](https://github.com/certd/certd/commit/221e068bac3af6cd5d1794f8cd4c2ec5c0bc3f45))
+
+### Performance Improvements
+
+* 百度云支持上传到证书托管，支持部署到负载均衡 ([798a48a](https://github.com/certd/certd/commit/798a48aa9686fd5d11cfffb6cd93eadfc40aacb3))
+* 部署到百度cdn支持自动获取域名列表选择 ([4e432ed](https://github.com/certd/certd/commit/4e432ed03f4fb564e85a2f284ee26b58400b82f5))
+* 验证码可重试次数设置为3次 ([1bdceee](https://github.com/certd/certd/commit/1bdceeecf4b5daecdd621a05a2596b6eb45ce8ea))
+* 增加找回密码的验证码可重试次数 [@nicheng-he](https://github.com/nicheng-he)  ([#496](https://github.com/certd/certd/issues/496)) ([fe03f99](https://github.com/certd/certd/commit/fe03f9942b5662fb90cad86da10782f5dc3603f5))
+* 支持阿里云API网关 ([9e1e4ee](https://github.com/certd/certd/commit/9e1e4eeec2859759ca5b07834c9d24cf88a6ad33))
+* 支持部署到金山云CDN ([dfa74a6](https://github.com/certd/certd/commit/dfa74a69f7cbb9009d3e20c7eecfa1b905a00cf0))
+* 支持更新金山云cdn证书 ([462e22a](https://github.com/certd/certd/commit/462e22a3b0a94887462fe6aa68e4671a365e0737))
+* 支持apisix证书部署 ([9b63fb4](https://github.com/certd/certd/commit/9b63fb4ee2c6b56139160c5bf63482dab0869c2b))
+
 ## [1.36.15](https://github.com/certd/certd/compare/v1.36.14...v1.36.15) (2025-08-07)
 
 ### Bug Fixes

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.16](https://github.com/publishlab/node-acme-client/compare/v1.36.15...v1.36.16) (2025-08-16)
+
+### Performance Improvements
+
+* 部署到百度cdn支持自动获取域名列表选择 ([4e432ed](https://github.com/publishlab/node-acme-client/commit/4e432ed03f4fb564e85a2f284ee26b58400b82f5))
+
 ## [1.36.15](https://github.com/publishlab/node-acme-client/compare/v1.36.14...v1.36.15) (2025-08-07)
 
 **Note:** Version bump only for package @certd/acme-client

@@ -34,7 +34,18 @@ export class AccessService extends BaseService<AccessEntity> {
   }
 
   async add(param) {
-    this.encryptSetting(param, null);
+    let oldEntity = null;
+    if (param._copyFrom){
+      oldEntity = await this.info(param._copyFrom);
+      if (oldEntity == null) {
+        throw new ValidateException('该授权配置不存在,请确认是否已被删除');
+      }
+      if (oldEntity.userId  !== param.userId) {
+        throw new ValidateException('您无权查看该授权配置');
+      }
+    }
+    delete param._copyFrom
+    this.encryptSetting(param, oldEntity);
     return await super.add(param);
   }
 

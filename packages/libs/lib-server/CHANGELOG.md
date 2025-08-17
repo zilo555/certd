@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.16](https://github.com/certd/certd/compare/v1.36.15...v1.36.16) (2025-08-16)
+
+### Bug Fixes
+
+* 修复授权配置复制功能，无法复制已加密字段的问题 ([221e068](https://github.com/certd/certd/commit/221e068bac3af6cd5d1794f8cd4c2ec5c0bc3f45))
+
 ## [1.36.15](https://github.com/certd/certd/compare/v1.36.14...v1.36.15) (2025-08-07)
 
 **Note:** Version bump only for package @certd/lib-server

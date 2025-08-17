@@ -211,4 +211,8 @@ export class CertReader {
     }
     return name + "_" + dayjs().format("YYYYMMDDHHmmssSSS");
   }
+
+  static buildCertName(cert: any) {
+    return new CertReader(cert).buildCertName();
+  }
 }
