@@ -46,6 +46,16 @@ export class TencentAccess extends BaseAccess {
   })
   accountType: string;
 
+  @AccessInput({
+    title: "关闭证书过期通知",
+    value: true,
+    component: {
+      name: "a-switch",
+      vModel: "checked",
+    },
+  })
+  closeExpiresNotify: boolean = true;
+
   isIntl() {
     return this.accountType === "intl";
   }
