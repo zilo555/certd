@@ -1,11 +1,11 @@
 ---
 name: Feature Request
-about: 新需求、新特性
+about: 新需求、新特性申请支持
 title: "[Feature] "
 labels: feature
 ---
 
-> > 感谢您支持certd，请按如下规范提交issue    
+> > 感谢您支持certd，请按如下规范提交issue
 > 如果有条件，请尽量在[github上提交](https://github.com/certd/certd/issues)
 
 

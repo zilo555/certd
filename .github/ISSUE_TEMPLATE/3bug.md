@@ -1,12 +1,12 @@
 ---
 name: Bug Report
-about: 报告一个错误或问题
+about: 错误或问题报告
 title: "[BUG] "
 labels: bug
 ---
 
 
-> 感谢您支持certd，请按如下规范提交issue    
+> 感谢您支持certd，请按如下规范提交issue
 > 如果有条件，请尽量在[github上提交](https://github.com/certd/certd/issues)
 
 # bug提交

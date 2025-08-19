@@ -247,6 +247,9 @@ export class AsyncSsh2Client {
             const err = this.convert(iconv, ret);
             stdErr += err;
             hasErrorLog = true;
+            if (err.includes("sudo: a password is required")) {
+              this.logger.warn("请配置sudo免密，否则命令无法执行");
+            }
             this.logger.error(`[${this.connConf.host}][error]: ` + err.trimEnd());
           });
       });
