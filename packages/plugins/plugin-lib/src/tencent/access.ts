@@ -4,6 +4,7 @@ import { IsAccess, AccessInput, BaseAccess } from "@certd/pipeline";
   name: "tencent",
   title: "腾讯云",
   icon: "svg:icon-tencentcloud",
+  order: 0,
 })
 export class TencentAccess extends BaseAccess {
   @AccessInput({
@@ -46,7 +47,21 @@ export class TencentAccess extends BaseAccess {
   })
   accountType: string;
 
+  @AccessInput({
+    title: "关闭证书过期通知",
+    value: true,
+    component: {
+      name: "a-switch",
+      vModel: "checked",
+    },
+  })
+  closeExpiresNotify: boolean = true;
+
   isIntl() {
     return this.accountType === "intl";
+  }
+
+  intlDomain() {
+    return this.isIntl() ? "intl." : "";
   }
 }

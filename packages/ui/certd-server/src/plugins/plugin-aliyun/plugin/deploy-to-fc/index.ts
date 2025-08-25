@@ -1,13 +1,17 @@
 import { AbstractTaskPlugin, IsTaskPlugin, pluginGroups, RunStrategy, TaskInput } from "@certd/pipeline";
 import { CertApplyPluginNames, CertInfo, CertReader } from "@certd/plugin-cert";
 import { AliyunAccess, createCertDomainGetterInputDefine, createRemoteSelectInputDefine } from "@certd/plugin-lib";
+import fs from "fs";
+import path from "path";
+import { tmpdir } from "node:os";
+import { sp } from "@certd/basic";
 
 @IsTaskPlugin({
   name: 'AliyunDeployCertToFC',
   title: '阿里云-部署至阿里云FC(3.0)',
   icon: 'svg:icon-aliyun',
   group: pluginGroups.aliyun.key,
-  desc: '部署证书到阿里云函数计算（FC3.0）,【注意】证书的加密算法必须选择【pkcs1旧版】',
+  desc: '部署证书到阿里云函数计算（FC3.0）',
   needPlus: false,
   default: {
     strategy: {
@@ -89,7 +93,7 @@ export class AliyunDeployCertToFC extends AbstractTaskPlugin {
   @TaskInput(
     createRemoteSelectInputDefine({
       title: 'FC域名',
-      helper: "请选择要部署证书的域名\n【注意】证书的加密算法必须选择【pkcs1旧版】（否则会报'private key' has to be in PEM format错误）",
+      helper: "请选择要部署证书的域名",
       typeName: 'AliyunDeployCertToFC',
       action: AliyunDeployCertToFC.prototype.onGetDomainList.name,
       watches: ['accessId', 'regionId'],
@@ -99,9 +103,10 @@ export class AliyunDeployCertToFC extends AbstractTaskPlugin {
 
   @TaskInput({
     title: '域名支持的协议类型',
+    value: '',
     component: {
       name: 'a-select',
-      value: '',
+      vModel:"value",
       options: [
         { value: '', label: '保持原样（适用于原来已经开启了HTTPS）' },
         { value: 'HTTPS', label: '仅HTTPS' },
@@ -113,6 +118,13 @@ export class AliyunDeployCertToFC extends AbstractTaskPlugin {
 
   async onInstance() {}
 
+  async exec(cmd: string) {
+    process.env.LANG = "zh_CN.GBK";
+    await sp.spawn({
+      cmd: cmd,
+      logger: this.logger,
+    });
+  }
   async execute(): Promise<void> {
     this.logger.info('开始部署证书到阿里云');
     const access = await this.getAccess<AliyunAccess>(this.accessId);
@@ -121,6 +133,32 @@ export class AliyunDeployCertToFC extends AbstractTaskPlugin {
 
     const $Util = await import('@alicloud/tea-util');
     const $OpenApi = await import('@alicloud/openapi-client');
+
+
+    let privateKey = this.cert.key
+    try{
+      // openssl rsa -in private_key.pem -out private_key_pkcs1.pem
+      const tempDir = path.join(tmpdir(), "certd");
+      if (!fs.existsSync(tempDir)) {
+        fs.mkdirSync(tempDir, { recursive: true });
+      }
+      const keyFileName = this.ctx.utils.id.randomNumber(10);
+      const tempPem = `${tempDir}/${keyFileName}.pem`;
+      const tempPkcs1Pem =`${tempDir}/${keyFileName}_pkcs1.pem`;
+      fs.writeFileSync(tempPem, this.cert.key);
+      const oldPfxCmd = `openssl rsa -in ${tempPem} -traditional -out ${tempPkcs1Pem}`;
+      await this.exec(oldPfxCmd);
+      const fileBuffer = fs.readFileSync(tempPkcs1Pem);
+      privateKey = fileBuffer.toString();
+      fs.unlinkSync(tempPem);
+      fs.unlinkSync(tempPkcs1Pem);
+    }catch (e) {
+      this.logger.warn("私钥转换为PKCS#1格式失败",e);
+    }
+
+
+
+
     for (const domainName of this.fcDomains) {
       const params = new $OpenApi.Params({
         // 接口名称
@@ -147,7 +185,7 @@ export class AliyunDeployCertToFC extends AbstractTaskPlugin {
         certConfig: {
           certName: certName,
           certificate: this.cert.crt,
-          privateKey: this.cert.key,
+          privateKey: privateKey,
         },
       };
       if (this.protocol) {

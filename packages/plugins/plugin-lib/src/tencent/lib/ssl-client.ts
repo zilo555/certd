@@ -26,7 +26,7 @@ export class TencentSslClient {
       region: this.region,
       profile: {
         httpProfile: {
-          endpoint: "ssl.tencentcloudapi.com",
+          endpoint: this.access.isIntl() ? "ssl.intl.tencentcloudapi.com" : "ssl.tencentcloudapi.com",
         },
       },
     };
@@ -50,7 +50,10 @@ export class TencentSslClient {
     const ret = await client.UploadCertificate(params);
     this.checkRet(ret);
     this.logger.info(`证书[${opts.certName}]上传成功：tencentCertId=`, ret.CertificateId);
-    await this.switchCertNotify([ret.CertificateId], true);
+    if (this.access.closeExpiresNotify) {
+      await this.switchCertNotify([ret.CertificateId], true);
+    }
+
     return ret.CertificateId;
   }
 

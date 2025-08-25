@@ -33,7 +33,7 @@ export abstract class CertApplyBasePlugin extends CertApplyBaseConvertPlugin {
 
   @TaskInput({
     title: "证书申请成功通知",
-    value: true,
+    value: false,
     component: {
       name: "a-switch",
       vModel: "checked",
@@ -41,7 +41,7 @@ export abstract class CertApplyBasePlugin extends CertApplyBaseConvertPlugin {
     order: 100,
     helper: "证书申请成功后是否发送通知，优先使用默认通知渠道",
   })
-  successNotify = true;
+  successNotify = false;
 
   // @TaskInput({
   //   title: "CsrInfo",

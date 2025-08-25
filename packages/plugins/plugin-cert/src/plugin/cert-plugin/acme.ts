@@ -48,6 +48,7 @@ export type CertInfo = {
   der?: string;
   jks?: string;
   one?: string;
+  p7b?: string;
 };
 export type SSLProvider = "letsencrypt" | "google" | "zerossl";
 export type PrivateKeyType = "rsa_1024" | "rsa_2048" | "rsa_3072" | "rsa_4096" | "ec_256" | "ec_384" | "ec_521";

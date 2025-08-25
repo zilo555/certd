@@ -17,6 +17,7 @@ export type CertReaderHandleContext = {
   tmpIcPath?: string;
   tmpJksPath?: string;
   tmpOnePath?: string;
+  tmpP7bPath?: string;
 };
 export type CertReaderHandle = (ctx: CertReaderHandleContext) => Promise<void>;
 export type HandleOpts = { logger: ILogger; handle: CertReaderHandle };
@@ -124,7 +125,7 @@ export class CertReader {
     return domain;
   }
 
-  saveToFile(type: "crt" | "key" | "pfx" | "der" | "oc" | "one" | "ic" | "jks", filepath?: string) {
+  saveToFile(type: "crt" | "key" | "pfx" | "der" | "oc" | "one" | "ic" | "jks" | "p7b", filepath?: string) {
     if (!this.cert[type]) {
       return;
     }
@@ -138,7 +139,7 @@ export class CertReader {
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }
-    if (type === "crt" || type === "key" || type === "ic" || type === "oc" || type === "one") {
+    if (type === "crt" || type === "key" || type === "ic" || type === "oc" || type === "one" || type === "p7b") {
       fs.writeFileSync(filepath, this.cert[type]);
     } else {
       fs.writeFileSync(filepath, Buffer.from(this.cert[type], "base64"));
@@ -157,17 +158,19 @@ export class CertReader {
     const tmpDerPath = this.saveToFile("der");
     const tmpJksPath = this.saveToFile("jks");
     const tmpOnePath = this.saveToFile("one");
+    const tmpP7bPath = this.saveToFile("p7b");
     logger.info("本地文件写入成功");
     try {
       return await opts.handle({
         reader: this,
-        tmpCrtPath: tmpCrtPath,
-        tmpKeyPath: tmpKeyPath,
-        tmpPfxPath: tmpPfxPath,
-        tmpDerPath: tmpDerPath,
-        tmpIcPath: tmpIcPath,
-        tmpJksPath: tmpJksPath,
-        tmpOcPath: tmpOcPath,
+        tmpCrtPath,
+        tmpKeyPath,
+        tmpPfxPath,
+        tmpDerPath,
+        tmpIcPath,
+        tmpJksPath,
+        tmpOcPath,
+        tmpP7bPath,
         tmpOnePath,
       });
     } catch (err) {
@@ -189,6 +192,7 @@ export class CertReader {
       removeFile(tmpIcPath);
       removeFile(tmpJksPath);
       removeFile(tmpOnePath);
+      removeFile(tmpP7bPath);
     }
   }
 
@@ -210,5 +214,9 @@ export class CertReader {
       name = "certd";
     }
     return name + "_" + dayjs().format("YYYYMMDDHHmmssSSS");
+  }
+
+  static buildCertName(cert: any) {
+    return new CertReader(cert).buildCertName();
   }
 }

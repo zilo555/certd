@@ -8,7 +8,8 @@ import { VolcengineAccess } from "./access.js";
   title: "火山引擎",
   desc: "火山引擎DNS解析提供商",
   accessType: "volcengine",
-  icon: "svg:icon-volcengine"
+  icon: "svg:icon-volcengine",
+  order:2,
 })
 export class VolcengineDnsProvider extends AbstractDnsProvider {
   client: VolcengineDnsClient;

@@ -9,6 +9,7 @@ import {AccessInput, BaseAccess, IsAccess} from '@certd/pipeline';
   title: '火山引擎',
   desc: '',
   icon: 'svg:icon-volcengine',
+  order: 1,
 })
 export class VolcengineAccess extends BaseAccess {
 

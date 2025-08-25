@@ -1,11 +1,11 @@
 ---
 name: Plugin Apply
-about: 请求支持新部署插件
+about: 部署插件申请支持
 title: "[Plugin] "
 labels: feature
 ---
 
-> > 感谢您支持certd，请按如下规范提交issue    
+> > 感谢您支持certd，请按如下规范提交issue
 > 如果有条件，请尽量在[github上提交](https://github.com/certd/certd/issues)
 
 # 新部署插件申请支持

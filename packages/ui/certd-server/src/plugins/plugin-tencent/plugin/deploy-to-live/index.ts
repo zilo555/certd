@@ -101,7 +101,7 @@ export class TencentDeployCertToLive extends AbstractTaskPlugin {
       region: '',
       profile: {
         httpProfile: {
-          endpoint: 'live.tencentcloudapi.com',
+          endpoint: `live.${accessProvider.intlDomain()}tencentcloudapi.com`,
         },
       },
     };

@@ -122,7 +122,7 @@ export class DeployCertToTencentAll extends AbstractTaskPlugin {
       region: this.region,
       profile: {
         httpProfile: {
-          endpoint: 'ssl.tencentcloudapi.com',
+          endpoint: `ssl.${access.intlDomain()}tencentcloudapi.com`,
         },
       },
     });

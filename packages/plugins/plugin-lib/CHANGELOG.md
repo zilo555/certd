@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.17](https://github.com/certd/certd/compare/v1.36.16...v1.36.17) (2025-08-17)
+
+### Performance Improvements
+
+* 腾讯云关闭证书通知增加开关选项，在腾讯云授权里面 ([a77c777](https://github.com/certd/certd/commit/a77c777980dd38d97d983124eeed1596879bba95))
+
+## [1.36.16](https://github.com/certd/certd/compare/v1.36.15...v1.36.16) (2025-08-16)
+
+**Note:** Version bump only for package @certd/plugin-lib
+
 ## [1.36.15](https://github.com/certd/certd/compare/v1.36.14...v1.36.15) (2025-08-07)
 
 ### Performance Improvements

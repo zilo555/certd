@@ -65,8 +65,16 @@ networks:
 docker logs -f --tail 200 certd
 ```
 
-
-
+## 6. 容器内走时不准，或者时区不对
+走时不准确，慢慢偏差越来越大    
+或者整个时区都不对    
+可以尝试挂载localtime文件
+```yaml
+    volumes:
+      #   ↓↓↓↓↓ -------------------- 如果走时不准，请尝试挂载localtime文件
+      - /etc/localtime:/etc/localtime
+      - /etc/timezone:/etc/timezone
+```
 
 
 

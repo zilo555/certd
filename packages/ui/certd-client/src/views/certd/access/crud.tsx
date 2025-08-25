@@ -44,6 +44,20 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
       },
       rowHandle: {
         width: 200,
+        buttons: {
+          copy: {
+            async click(ctx: any) {
+              const { row, index } = ctx;
+              await crudExpose.openCopy({
+                row: {
+                  ...row,
+                  _copyFrom: row.id,
+                },
+                index: index,
+              });
+            },
+          },
+        },
       },
       columns: {
         id: {

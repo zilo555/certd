@@ -1,5 +1,11 @@
-import { AbstractTaskPlugin, IsTaskPlugin, pluginGroups, RunStrategy, TaskInput } from "@certd/pipeline";
-import { TencentAccess } from "@certd/plugin-lib";
+import {AbstractTaskPlugin, IsTaskPlugin, pluginGroups, RunStrategy, TaskInput} from "@certd/pipeline";
+import {
+  createCertDomainGetterInputDefine,
+  createRemoteSelectInputDefine,
+  TencentAccess,
+  TencentSslClient
+} from "@certd/plugin-lib";
+import {CertApplyPluginNames, CertInfo, CertReader} from "@certd/plugin-cert";
 
 @IsTaskPlugin({
   name: 'DeployCertToTencentEO',
@@ -14,16 +20,21 @@ import { TencentAccess } from "@certd/plugin-lib";
   },
 })
 export class DeployCertToTencentEO extends AbstractTaskPlugin {
+
   @TaskInput({
-    title: '已上传证书ID',
-    helper: '请选择前置任务上传到腾讯云的证书',
+    title: '域名证书',
+    helper: '请选择前置任务输出的域名证书，或者选择前置任务“上传证书到腾讯云”任务的证书ID',
     component: {
       name: 'output-selector',
-      from: 'UploadCertToTencent',
+      from: [...CertApplyPluginNames, 'UploadCertToTencent'],
     },
     required: true,
   })
-  certId!: string;
+  cert!: CertInfo | string;
+
+
+  @TaskInput(createCertDomainGetterInputDefine({ props: { required: false } }))
+  certDomains!: string[];
 
   @TaskInput({
     title: 'Access提供者',
@@ -36,12 +47,27 @@ export class DeployCertToTencentEO extends AbstractTaskPlugin {
   })
   accessId!: string;
 
-  @TaskInput({
+  @TaskInput(createRemoteSelectInputDefine({
     title: '站点ID',
     helper: '类似于zone-xxxx的字符串，在站点概览页面左上角，或者，站点列表页面站点名称下方',
+    action: DeployCertToTencentEO.prototype.onGetZoneList.name,
+    watches: ['certDomains', 'accessId'],
     required: true,
-  })
+    component:{
+      name:"remote-auto-complete"
+    }
+  }))
   zoneId!: string;
+
+  @TaskInput(
+    createRemoteSelectInputDefine({
+      title: '加速域名',
+      helper: '请选择域名或输入域名',
+      action: DeployCertToTencentEO.prototype.onGetDomainList.name,
+    })
+  )
+  domainNames!: string[];
+
 
   @TaskInput({
     title: '证书名称',
@@ -49,18 +75,7 @@ export class DeployCertToTencentEO extends AbstractTaskPlugin {
   })
   certName!: string;
 
-  @TaskInput({
-    title: 'cdn加速域名',
-    component: {
-      name: 'a-select',
-      vModel: 'value',
-      mode: 'tags',
-      open: false,
-    },
-    helper: '支持多个域名',
-    rules: [{ required: true, message: '该项必填' }],
-  })
-  domainNames!: string[];
+
 
   // @TaskInput({
   //   title: "CDN接口",
@@ -80,16 +95,41 @@ export class DeployCertToTencentEO extends AbstractTaskPlugin {
   }
 
   async execute(): Promise<void> {
-    const accessProvider: TencentAccess = (await this.getAccess(this.accessId)) as TencentAccess;
+    const accessProvider = await this.getAccess<TencentAccess>(this.accessId)
     const client = this.getClient(accessProvider);
-    const params = this.buildParams();
+
+    const sslClient = new TencentSslClient({
+      access:accessProvider,
+      logger: this.logger,
+    });
+
+    let tencentCertId = this.cert as string;
+    if (typeof this.cert !== 'string') {
+      const certReader = new CertReader(this.cert);
+      tencentCertId = await sslClient.uploadToTencent({
+        certName: certReader.buildCertName(),
+        cert: this.cert,
+      });
+    }
+
+    const params:any = {
+      ZoneId: this.zoneId,
+      Hosts: this.domainNames,
+      Mode: 'sslcert',
+      ServerCertInfo: [
+        {
+          CertId: tencentCertId,
+        },
+      ],
+    };
     await this.doRequest(client, params);
   }
 
   getClient(accessProvider: TencentAccess) {
     const TeoClient = this.Client;
 
-    const endpoint = accessProvider.isIntl()?"teo.intl.tencentcloudapi.com": "teo.tencentcloudapi.com";
+    //teo.intl.tencentcloudapi.com
+    const endpoint = `teo.${accessProvider.intlDomain()}tencentcloudapi.com`;
     const clientConfig = {
       credential: {
         secretId: accessProvider.secretId,
@@ -106,18 +146,6 @@ export class DeployCertToTencentEO extends AbstractTaskPlugin {
     return new TeoClient(clientConfig);
   }
 
-  buildParams() {
-    return {
-      ZoneId: this.zoneId,
-      Hosts: this.domainNames,
-      Mode: 'sslcert',
-      ServerCertInfo: [
-        {
-          CertId: this.certId,
-        },
-      ],
-    };
-  }
 
   async doRequest(client: any, params: any) {
     const ret = await client.ModifyHostsCertificate(params);
@@ -130,6 +158,57 @@ export class DeployCertToTencentEO extends AbstractTaskPlugin {
     if (!ret || ret.Error) {
       throw new Error('执行失败：' + ret.Error.Code + ',' + ret.Error.Message);
     }
+  }
+
+
+
+
+
+  async onGetZoneList(data: any) {
+    if (!this.accessId){
+      throw new Error('请选择授权');
+    }
+    const access: TencentAccess = await this.getAccess<TencentAccess>(this.accessId);
+    const client = await this.getClient(access);
+    const res = await client.DescribeZones({
+      Limit: 100,
+    });
+    this.checkRet(res);
+    const list = res.Zones;
+    if (!list || list.length === 0) {
+      return [];
+    }
+    return list.map((item: any) => {
+      return {
+        label: `${item.ZoneName}<${item.ZoneId}>`,
+        value: item.ZoneId,
+      };
+    });
+  }
+
+  async onGetDomainList(data: any) {
+    if (!this.accessId){
+      throw new Error('请选择授权');
+    }
+    const access: TencentAccess = await this.getAccess<TencentAccess>(this.accessId);
+    const client = await this.getClient(access);
+    const res = await client.DescribeAccelerationDomains({
+      Limit: 200,
+      ZoneId: this.zoneId,
+    });
+    this.checkRet(res);
+    const list = res.AccelerationDomains
+    if (!list || list.length === 0) {
+      return [];
+    }
+    const options = list.map((item: any) => {
+      return {
+        label: item.DomainName,
+        value: item.DomainName,
+        domain: item.DomainName
+      };
+    });
+    return  this.ctx.utils.options.buildGroupOptions(options, this.certDomains);
   }
 }
 

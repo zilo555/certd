@@ -5,6 +5,7 @@ import { AccessInput, BaseAccess, IsAccess } from "@certd/pipeline";
   desc: "",
   icon: "clarity:host-line",
   input: {},
+  order: 0,
 })
 export class SshAccess extends BaseAccess {
   @AccessInput({

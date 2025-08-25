@@ -16,6 +16,7 @@ type DemoRecord = {
   icon: 'clarity:plugin-line',
   // 这里是对应的云平台的access类型名称
   accessType: 'demo',
+  order:99,
 })
 export class DemoDnsProvider extends AbstractDnsProvider<DemoRecord> {
   access!: DemoAccess;

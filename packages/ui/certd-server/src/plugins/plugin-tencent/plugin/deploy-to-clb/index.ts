@@ -119,7 +119,7 @@ export class DeployCertToTencentCLB extends AbstractTaskPlugin {
       region: region,
       profile: {
         httpProfile: {
-          endpoint: 'clb.tencentcloudapi.com',
+          endpoint: `clb.${accessProvider.intlDomain()}tencentcloudapi.com`,
         },
       },
     };

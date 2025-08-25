@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.17](https://github.com/certd/certd/compare/v1.36.16...v1.36.17) (2025-08-17)
+
+### Performance Improvements
+
+* 证书申请任务默认不发送申请成功通知 ([0283bd2](https://github.com/certd/certd/commit/0283bd2f978dbcd13d361129135e439dd9fbc180))
+
+## [1.36.16](https://github.com/certd/certd/compare/v1.36.15...v1.36.16) (2025-08-16)
+
+### Performance Improvements
+
+* 百度云支持上传到证书托管，支持部署到负载均衡 ([798a48a](https://github.com/certd/certd/commit/798a48aa9686fd5d11cfffb6cd93eadfc40aacb3))
+
 ## [1.36.15](https://github.com/certd/certd/compare/v1.36.14...v1.36.15) (2025-08-07)
 
 **Note:** Version bump only for package @certd/plugin-cert
