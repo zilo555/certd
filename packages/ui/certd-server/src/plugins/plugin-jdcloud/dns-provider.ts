@@ -6,7 +6,8 @@ import { JDCloudAccess } from "./access.js";
   title: "京东云",
   desc: "京东云DNS解析提供商",
   accessType: "jdcloud",
-  icon: "svg:icon-jdcloud"
+  icon: "svg:icon-jdcloud",
+  order:3,
 })
 export class JDCloudDnsProvider extends AbstractDnsProvider {
   access!: JDCloudAccess;

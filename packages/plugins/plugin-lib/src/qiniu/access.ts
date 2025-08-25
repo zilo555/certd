@@ -6,6 +6,7 @@ import { AccessInput, BaseAccess, IsAccess } from "@certd/pipeline";
   desc: "",
   icon: "svg:icon-qiniuyun",
   input: {},
+  order: 2,
 })
 export class QiniuAccess extends BaseAccess {
   @AccessInput({

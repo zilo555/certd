@@ -210,7 +210,7 @@ export class DeployCertToTencentTKEIngressPlugin extends AbstractTaskPlugin {
       region,
       profile: {
         httpProfile: {
-          endpoint: "tke.tencentcloudapi.com"
+          endpoint: `tke.${accessProvider.intlDomain()}tencentcloudapi.com`
         }
       }
     };

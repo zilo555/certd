@@ -9,7 +9,8 @@ import { CertInfo } from "@certd/plugin-cert";
   name: "rainyun",
   title: "雨云授权",
   desc: "https://app.rainyun.com/",
-  icon: "svg:icon-lucky"
+  icon: "svg:icon-lucky",
+  order: 100
 })
 export class RainyunAccess extends BaseAccess {
 

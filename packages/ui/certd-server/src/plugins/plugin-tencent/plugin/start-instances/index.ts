@@ -151,7 +151,7 @@ export class TencentActionInstancesPlugin extends AbstractTaskPlugin {
       region: this.region,
       profile: {
         httpProfile: {
-          endpoint: 'cvm.tencentcloudapi.com',
+          endpoint: `cvm.${accessProvider.intlDomain()}tencentcloudapi.com`,
         },
       },
     };

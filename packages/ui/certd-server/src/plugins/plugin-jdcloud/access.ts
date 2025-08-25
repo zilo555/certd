@@ -9,6 +9,7 @@ import {AccessInput, BaseAccess, IsAccess} from '@certd/pipeline';
   title: '京东云',
   desc: '',
   icon: 'svg:icon-jdcloud',
+  order: 1,
 })
 export class JDCloudAccess extends BaseAccess {
 

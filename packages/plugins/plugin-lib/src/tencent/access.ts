@@ -4,6 +4,7 @@ import { IsAccess, AccessInput, BaseAccess } from "@certd/pipeline";
   name: "tencent",
   title: "腾讯云",
   icon: "svg:icon-tencentcloud",
+  order: 0,
 })
 export class TencentAccess extends BaseAccess {
   @AccessInput({
@@ -58,5 +59,9 @@ export class TencentAccess extends BaseAccess {
 
   isIntl() {
     return this.accountType === "intl";
+  }
+
+  intlDomain() {
+    return this.isIntl() ? "intl." : "";
   }
 }

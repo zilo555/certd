@@ -80,7 +80,7 @@ export class DeployToCdnPlugin extends AbstractTaskPlugin {
       region: '',
       profile: {
         httpProfile: {
-          endpoint: 'cdn.tencentcloudapi.com',
+          endpoint: `cdn.${accessProvider.intlDomain()}tencentcloudapi.com`,
         },
       },
     };

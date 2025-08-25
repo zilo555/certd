@@ -7,7 +7,6 @@ import { RainyunAccess } from "./access.js";
   desc: "雨云DNS解析提供商",
   accessType: "rainyun",
   icon: "svg:icon-lucky",
-  order: 0
 })
 export class RainyunDnsProvider extends AbstractDnsProvider {
 

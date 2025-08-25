@@ -104,7 +104,7 @@ export class TencentDeployCertToCDNv2 extends AbstractTaskPlugin {
       region: '',
       profile: {
         httpProfile: {
-          endpoint: 'cdn.tencentcloudapi.com',
+          endpoint: `cdn.${accessProvider.intlDomain()}tencentcloudapi.com`,
         },
       },
     };

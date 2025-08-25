@@ -26,7 +26,7 @@ export class TencentSslClient {
       region: this.region,
       profile: {
         httpProfile: {
-          endpoint: "ssl.tencentcloudapi.com",
+          endpoint: this.access.isIntl() ? "ssl.intl.tencentcloudapi.com" : "ssl.tencentcloudapi.com",
         },
       },
     };

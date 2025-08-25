@@ -5,6 +5,7 @@ import { IsAccess, AccessInput, BaseAccess } from "@certd/pipeline";
   title: "天翼云授权",
   desc: "",
   icon: "ant-design:aliyun-outlined",
+  order: 2,
 })
 export class CtyunAccess extends BaseAccess {
   @AccessInput({

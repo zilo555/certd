@@ -5,6 +5,7 @@ import { IsAccess, AccessInput, BaseAccess } from '@certd/pipeline';
   title: '华为云授权',
   desc: '',
   icon: 'svg:icon-huawei',
+  order: 0,
 })
 export class HuaweiAccess extends BaseAccess {
   @AccessInput({
