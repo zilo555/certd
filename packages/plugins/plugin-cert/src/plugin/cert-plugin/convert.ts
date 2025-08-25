@@ -18,11 +18,13 @@ export class CertConverter {
     pfx: string;
     der: string;
     jks: string;
+    p7b: string;
   }> {
     const certReader = new CertReader(opts.cert);
     let pfx: string;
     let der: string;
     let jks: string;
+    let p7b: string;
     const handle = async (ctx: CertReaderHandleContext) => {
       // 调用openssl 转pfx
       pfx = await this.convertPfx(ctx, opts.pfxPassword, opts.pfxArgs);
@@ -31,6 +33,8 @@ export class CertConverter {
       der = await this.convertDer(ctx);
 
       jks = await this.convertJks(ctx, opts.pfxPassword);
+
+      p7b = await this.convertP7b(ctx);
     };
 
     await certReader.readCertFile({ logger: this.logger, handle });
@@ -39,6 +43,7 @@ export class CertConverter {
       pfx,
       der,
       jks,
+      p7b,
     };
   }
 
@@ -95,6 +100,23 @@ export class CertConverter {
     return derCert;
   }
 
+  async convertP7b(opts: CertReaderHandleContext) {
+    const { tmpCrtPath } = opts;
+    const p7bPath = path.join(os.tmpdir(), "/certd/tmp/", Math.floor(Math.random() * 1000000) + `_cert.p7b`);
+    const dir = path.dirname(p7bPath);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    //openssl crl2pkcs7 -nocrl \
+    //     -certfile your_domain.crt \
+    //     -certfile intermediate.crt \
+    //     -out chain.p7b
+    await this.exec(`openssl crl2pkcs7 -nocrl -certfile ${tmpCrtPath} -out ${p7bPath}`);
+    const fileBuffer = fs.readFileSync(p7bPath);
+    const p7bCert = fileBuffer.toString();
+    fs.unlinkSync(p7bPath);
+    return p7bCert;
+  }
   async convertJks(opts: CertReaderHandleContext, pfxPassword = "") {
     const jksPassword = pfxPassword || "123456";
     try {
@@ -113,9 +135,7 @@ export class CertConverter {
       if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
       }
-      await this.exec(
-        `keytool -importkeystore -srckeystore ${p12Path} -srcstoretype PKCS12 -srcstorepass "${jksPassword}" -destkeystore ${jksPath} -deststoretype PKCS12 -deststorepass "${jksPassword}" `
-      );
+      await this.exec(`keytool -importkeystore -srckeystore ${p12Path} -srcstoretype PKCS12 -srcstorepass "${jksPassword}" -destkeystore ${jksPath} -deststoretype PKCS12 -deststorepass "${jksPassword}" `);
       fs.unlinkSync(p12Path);
 
       const fileBuffer = fs.readFileSync(jksPath);

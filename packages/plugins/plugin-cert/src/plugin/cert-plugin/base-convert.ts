@@ -125,6 +125,10 @@ export abstract class CertApplyBaseConvertPlugin extends AbstractTaskPlugin {
           cert.jks = res.jks;
         }
 
+        if (cert.p7b == null && res.p7b) {
+          cert.p7b = res.p7b;
+        }
+
         this.logger.info("转换证书格式成功");
       } catch (e) {
         this.logger.error("转换证书格式失败", e);
@@ -150,6 +154,7 @@ export abstract class CertApplyBaseConvertPlugin extends AbstractTaskPlugin {
     zip.file("intermediate.crt", cert.ic);
     zip.file("origin.crt", cert.oc);
     zip.file("one.pem", cert.one);
+    zip.file("cert.p7b", cert.p7b);
     if (cert.pfx) {
       zip.file("cert.pfx", Buffer.from(cert.pfx, "base64"));
     }

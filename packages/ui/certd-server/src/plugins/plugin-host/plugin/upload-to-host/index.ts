@@ -39,6 +39,7 @@ export class UploadCertToHostPlugin extends AbstractTaskPlugin {
         { value: 'der', label: 'der，一般用于Apache' },
         { value: 'jks', label: 'jks，一般用于JAVA应用' },
         { value: 'one', label: '证书私钥一体，crt+key简单合并为一个pem文件' },
+        { value: 'p7b', label: 'p7b格式' },
       ],
     },
     required: true,
@@ -71,7 +72,7 @@ export class UploadCertToHostPlugin extends AbstractTaskPlugin {
     mergeScript: `
       return {
         show: ctx.compute(({form})=>{
-          return form.certType === 'pem';
+          return form.certType === 'pem' || form.certType === 'p7b' ;
         })
       }
     `,
@@ -168,6 +169,24 @@ export class UploadCertToHostPlugin extends AbstractTaskPlugin {
     rules: [{ type: 'filepath' }],
   })
   onePath!: string;
+
+  @TaskInput({
+    title: 'p7b证书保存路径',
+    helper: '填写应用原本的证书保存路径，路径要包含证书文件名，例如：/tmp/domain_cert.p7b',
+    component: {
+      placeholder: '/root/deploy/app/domain_cert.p7b',
+    },
+    mergeScript: `
+      return {
+        show: ctx.compute(({form})=>{
+          return form.certType === 'p7b';
+        })
+      }
+    `,
+    required: true,
+    rules: [{ type: 'filepath' }],
+  })
+  p7bPath!: string;
 
   @TaskInput({
     title: '主机登录配置',
@@ -277,12 +296,17 @@ export class UploadCertToHostPlugin extends AbstractTaskPlugin {
   })
   hostOnePath!: string;
 
+  @TaskOutput({
+    title: 'p7b证书保存路径',
+  })
+  hostP7bPath!: string;
+
   async onInstance() {}
 
 
   async execute(): Promise<void> {
     const { cert, accessId } = this;
-    let { crtPath, keyPath, icPath, pfxPath, derPath, jksPath, onePath } = this;
+    let { crtPath, keyPath, icPath, pfxPath, derPath, jksPath, onePath,p7bPath } = this;
     const certReader = new CertReader(cert);
 
     const executeCmd = async ( script:string)=> {
@@ -308,6 +332,7 @@ export class UploadCertToHostPlugin extends AbstractTaskPlugin {
           env['HOST_DER_PATH'] = this.hostDerPath || '';
           env['HOST_JKS_PATH'] = this.hostJksPath || '';
           env['HOST_ONE_PATH'] = this.hostOnePath || '';
+          env['HOST_P7B_PATH'] = this.hostOnePath || '';
         }
 
         const scripts = script.split('\n');
@@ -320,7 +345,7 @@ export class UploadCertToHostPlugin extends AbstractTaskPlugin {
     }
 
     const handle = async (opts: CertReaderHandleContext) => {
-      const { tmpCrtPath, tmpKeyPath, tmpDerPath, tmpJksPath, tmpPfxPath, tmpIcPath, tmpOnePath } = opts;
+      const { tmpCrtPath, tmpKeyPath, tmpDerPath, tmpJksPath, tmpPfxPath, tmpIcPath, tmpOnePath ,tmpP7bPath} = opts;
 
       if (accessId == null) {
         this.logger.error('复制到当前主机功能已迁移到 “复制到本机”插件，请换成复制到本机插件');
@@ -392,6 +417,14 @@ export class UploadCertToHostPlugin extends AbstractTaskPlugin {
           remotePath: this.onePath,
         });
       }
+      if (this.p7bPath) {
+        this.logger.info(`上传p7b证书到主机：${this.p7bPath}`);
+        p7bPath = this.p7bPath.trim();
+        transports.push({
+          localPath: tmpP7bPath,
+          remotePath: this.p7bPath,
+        });
+      }
 
       this.logger.info('开始上传文件到服务器');
       await sshClient.uploadFiles({
@@ -410,6 +443,7 @@ export class UploadCertToHostPlugin extends AbstractTaskPlugin {
       this.hostDerPath = derPath;
       this.hostJksPath = jksPath;
       this.hostOnePath = onePath;
+      this.hostP7bPath = p7bPath;
     };
 
     //执行前置命令
