@@ -82,6 +82,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           },
           column: {
             width: 300,
+            order: -11,
           },
         },
         from: {

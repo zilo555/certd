@@ -6,6 +6,7 @@ export type PluginConfig = {
   disabled: boolean;
   sysSetting: {
     input?: Record<string, any>;
+    metadata?: Record<string, any>;
   };
 };
 
@@ -57,7 +58,14 @@ export class PluginConfigService {
         author: "certd",
       });
     } else {
-      await this.pluginService.getRepository().update({ name }, { sysSetting: JSON.stringify(sysSetting) });
+      let setting = JSON.parse(pluginEntity.sysSetting || "{}");
+      if (sysSetting.metadata) {
+        setting.metadata = sysSetting.metadata;
+      }
+      if (sysSetting.input) {
+        setting.input = sysSetting.input;
+      }
+      await this.pluginService.getRepository().update({ name }, { sysSetting: JSON.stringify(setting) });
     }
   }
 

@@ -133,7 +133,7 @@ export const sysResources = [
         title: "certd.sysResources.sysPluginConfig",
         name: "SysPluginConfig",
         path: "/sys/plugin/config",
-        component: "/sys/plugin/config.vue",
+        component: "/sys/plugin/config-common.vue",
         meta: {
           show: () => {
             const settingStore = useSettingStore();
