@@ -1,32 +1,45 @@
 <script setup lang="ts">
-import { cloneDeep, get, merge, set, unset } from "lodash-es";
 import { defineProps } from "vue";
+
 const props = defineProps<{ value: any }>();
 
-const emits = defineEmits(["setter", "clear1"]);
+const emits = defineEmits(["set", "clear"]);
 function setValue() {
-  console.log("33333");
-  emits("setter");
+  emits("set");
 }
 function clearValue() {
-  console.log("4444");
-  emits("clear1");
+  emits("clear");
 }
 </script>
 
 <template>
   <div class="rollbackable">
     <div class="flex">
-      <div>
+      <div style="width: 100px">
+        <a-tag v-if="value === undefined" color="green" size="small" class="pointer flex-inline items-center" @click.stop="setValue">
+          <fs-icon icon="material-symbols:edit" class="mr-5"></fs-icon>
+          自定义
+        </a-tag>
+        <a-tag v-else color="red" size="small" class="pointer flex-inline items-center" @click.stop="clearValue">
+          <fs-icon icon="material-symbols:undo" class="mr-5"></fs-icon>
+          还原
+        </a-tag>
+      </div>
+      <div class="flex-1 overflow-hidden value-render">
         <slot v-if="value === undefined" name="default"></slot>
         <slot v-else name="edit"></slot>
-      </div>
-      <div>
-        <div v-if="value === undefined" type="primary" size="small" @click.stop="setValue">自定义</div>
-        <div v-else style="margin-left: 100px" type="primary" size="small" @click.stop="clearValue">还原</div>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped lang="less"></style>
+<style lang="less">
+.rollbackable {
+  .value-render {
+    .ant-select,
+    .ant-input {
+      width: 100%;
+    }
+  }
+}
+</style>

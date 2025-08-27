@@ -7,38 +7,49 @@
       </div>
       <div class="p-10">
         <div ref="formRef" class="config-form w-full" :label-col="labelCol" :wrapper-col="wrapperCol">
-          <template v-for="(item, key) in originInputs" :key="key">
-            <div>
-              <div :label="item.title">
-                <label class="flex mt-5">
-                  <span class="w-20 flex-shrink-0">默认值</span>
-                  <rollbackable :value="configForm[key].value" @set="configForm[key].value = item.value ?? null" @clear="unset(configForm, `${key}.value`)"></rollbackable>
-                </label>
-                <label class="flex mt-5">
-                  <span class="w-20 flex-shrink-0">是否显示</span>
-                  <rollbackable :value="configForm[key].show" @set="set(configForm, `${key}.show`, item.show ?? null)" @clear="unset(configForm, `${key}.show`)"></rollbackable>
-                </label>
-                <label class="flex mt-5">
-                  <span class="w-20 flex-shrink-0">帮助说明</span>
-                  {{ configForm[key].helper }}
-                  <rollbackable :value="configForm[key].helper" @setter="configForm[key].helper = item.helper" @clear1="delete configForm[key].helper"></rollbackable>
-                </label>
-              </div>
-            </div>
-          </template>
+          <table class="table-fixed w-full">
+            <thead>
+              <tr>
+                <th class="text-left p-5" width="200px">插件参数</th>
+                <th class="text-left p-5" width="100px">参数配置</th>
+                <th class="text-left flex-1 p-5">自定义</th>
+              </tr>
+            </thead>
+            <tbody>
+              <template v-for="(item, key) in originInputs" :key="key">
+                <template v-for="prop in editableKeys" :key="prop.key">
+                  <tr>
+                    <td v-if="prop.key === 'value'" class="border-t-2 p-5" rowspan="3" :class="{ 'border-t-2': prop.key === 'value' }">{{ item.title }}</td>
+                    <td class="border-t p-5" :class="{ 'border-t-2': prop.key === 'value' }">{{ prop.label }}</td>
+                    <td class="border-t p-5" :class="{ 'border-t-2': prop.key === 'value' }">
+                      <rollbackable :value="configForm[key][prop.key]" @set="configForm[key][prop.key] = item[prop.key] ?? null" @clear="delete configForm[key][prop.key]">
+                        <template #default>
+                          <fs-render :render-func="prop.defaultRender(key, item)"></fs-render>
+                        </template>
+                        <template #edit>
+                          <fs-render :render-func="prop.editRender(key, item)"></fs-render>
+                        </template>
+                      </rollbackable>
+                    </td>
+                  </tr>
+                </template>
+              </template>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="tsx">
 import { computed, nextTick, onMounted, reactive, ref, Ref, unref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import * as api from "./api";
 import { usePluginStore } from "/@/store/plugin";
 import { cloneDeep, get, merge, set, unset } from "lodash-es";
 import Rollbackable from "./rollbackable.vue";
+import { FsRender } from "@fast-crud/fast-crud";
 const route = useRoute();
 const router = useRouter();
 const pluginStore = usePluginStore();
@@ -48,7 +59,6 @@ const props = defineProps<{
 
 const pluginMetadata = ref<any>("");
 const currentPlugin = ref();
-console.log("111111111111111111111");
 const labelCol = ref({
   span: null,
   style: {
@@ -71,9 +81,49 @@ function getForm() {
 }
 
 const editableKeys = ref([
-  { key: "value", label: "默认值" },
-  { key: "show", label: "是否显示", component: { name: "a-switch", vModel: "checked" } },
-  { key: "helper", label: "帮助说明", component: { name: "a-textarea", vModel: "value", rows: 4 } },
+  {
+    key: "value",
+    label: "默认值",
+    defaultRender(key: string, item: any) {
+      return () => {
+        return item["value"] ?? "";
+      };
+    },
+    editRender(key: string, item: any) {
+      return () => {
+        return <fs-component-render {...item.component} vModel:modelValue={configForm[key]["value"]} scope={getScope()} />;
+      };
+    },
+  },
+  {
+    key: "show",
+    label: "是否显示",
+    defaultRender(key: string, item: any) {
+      return () => {
+        const value = item["show"];
+        return value === false ? "不显示" : "显示";
+      };
+    },
+    editRender(key: string, item: any) {
+      return () => {
+        return <a-switch vModel:checked={configForm[key]["show"]} />;
+      };
+    },
+  },
+  {
+    key: "helper",
+    label: "帮助说明",
+    defaultRender(key: string, item: any) {
+      return () => {
+        return <pre class={"helper"}>{item["helper"]}</pre>;
+      };
+    },
+    editRender(key: string, item: any) {
+      return () => {
+        return <a-textarea rows={5} vModel:value={configForm[key]["helper"]} />;
+      };
+    },
+  },
 ]);
 
 const originInputs = computed(() => {
@@ -98,7 +148,7 @@ function clearFormValue(key: string) {
 }
 
 async function loadPluginSetting() {
-  currentPlugin.value = await pluginStore.getPluginDefine(props.plugin.name);
+  currentPlugin.value = await pluginStore.getPluginDefineFromOrigin(props.plugin.name);
   for (const key in currentPlugin.value.input) {
     configForm[key] = {};
   }
@@ -113,7 +163,9 @@ onMounted(async () => {
   await loadPluginSetting();
 });
 
-function doSave() {}
+defineExpose({
+  getForm,
+});
 </script>
 
 <style lang="less">

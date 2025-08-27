@@ -2,7 +2,11 @@ import { ALL, Body, Controller, Inject, Post, Provide, Query } from '@midwayjs/c
 import { merge } from 'lodash-es';
 import { CrudController } from '@certd/lib-server';
 import { PluginImportReq, PluginService } from "../../../modules/plugin/service/plugin-service.js";
-import { CommPluginConfig, PluginConfigService } from '../../../modules/plugin/service/plugin-config-service.js';
+import {
+  CommPluginConfig,
+  PluginConfig,
+  PluginConfigService
+} from '../../../modules/plugin/service/plugin-config-service.js';
 /**
  * 插件
  */
@@ -79,7 +83,11 @@ export class PluginController extends CrudController<PluginService> {
     const res = await this.pluginConfigService.saveCommPluginConfig(body);
     return this.ok(res);
   }
-
+  @Post('/saveSetting', { summary: 'sys:settings:edit' })
+  async saveSetting(@Body(ALL) body: PluginConfig) {
+    const res = await this.pluginConfigService.savePluginConfig(body);
+    return this.ok(res);
+  }
 
   @Post('/import', { summary: 'sys:settings:edit' })
   async import(@Body(ALL) body: PluginImportReq) {

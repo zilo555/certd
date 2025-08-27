@@ -3,7 +3,7 @@ import { PluginService } from './plugin-service.js';
 
 export type PluginConfig = {
   name: string;
-  disabled: boolean;
+  disabled?: boolean;
   sysSetting: {
     input?: Record<string, any>;
     metadata?: Record<string, any>;
@@ -38,10 +38,12 @@ export class PluginConfigService {
   }
 
   async saveCommPluginConfig(config: CommPluginConfig) {
-    await this.savePluginConfig('CertApply', config.CertApply);
+    config.CertApply.name  = 'CertApply';
+    await this.savePluginConfig(config.CertApply);
   }
 
-  async savePluginConfig(name: string, config: PluginConfig) {
+  async savePluginConfig( config: PluginConfig) {
+    const name = config.name;
     const sysSetting = config?.sysSetting;
     if (!sysSetting) {
       throw new Error(`${name}.sysSetting is required`);

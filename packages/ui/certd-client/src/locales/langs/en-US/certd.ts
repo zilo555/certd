@@ -564,7 +564,7 @@ export default {
   ipv6Priority: "IPv6 Priority",
   dualStackNetworkHelper: "If IPv6 priority is selected, enable IPv6 in docker-compose.yaml",
   enableCommonCnameService: "Enable Public CNAME Service",
-  commonCnameHelper: "Allow use of public CNAME service. If disabled and no <router-link to='/sys/cname/provider'>custom CNAME service</router-link> is set, CNAME proxy certificate application will not work.",
+  commonCnameHelper: "Allow use of public CNAME service. If disabled and no <a href='#/sys/cname/provider'>custom CNAME service</a> is set, CNAME proxy certificate application will not work.",
   enableCommonSelfServicePasswordRetrieval: "Enable self-service password recovery",
   saveButton: "Save",
   stopSuccess: "Stopped successfully",

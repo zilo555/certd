@@ -138,6 +138,7 @@ export function useCertPipelineCreator() {
         form: {
           doSubmit,
           wrapper: {
+            wrapClassName: "cert_pipeline_create_form",
             width: 1350,
             saveRemind: false,
             title: t("certd.pipelineForm.createTitle"),
