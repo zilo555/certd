@@ -9,7 +9,8 @@ export type AliyunCertInfo = {
 export type AliyunSslClientOpts = {
   access: AliyunAccess;
   logger: ILogger;
-  endpoint: string;
+  endpoint?: string;
+  region?: string;
 };
 
 export type AliyunSslGetResourceListReq = {
@@ -48,10 +49,19 @@ export class AliyunSslClient {
   async getClient() {
     const access = this.opts.access;
     const client = new AliyunClient({ logger: this.opts.logger });
+
+    let endpoint = this.opts.endpoint || "cas.aliyuncs.com";
+    if (this.opts.endpoint == null && this.opts.region) {
+      if (this.opts.region === "cn-hangzhou") {
+        endpoint = "cas.aliyuncs.com";
+      } else {
+        endpoint = `cas.${this.opts.region}.aliyuncs.com`;
+      }
+    }
     await client.init({
       accessKeyId: access.accessKeyId,
       accessKeySecret: access.accessKeySecret,
-      endpoint: `https://${this.opts.endpoint || "cas.aliyuncs.com"}`,
+      endpoint: `https://${endpoint}`,
       apiVersion: "2020-04-07",
     });
     return client;
