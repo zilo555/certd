@@ -119,7 +119,7 @@ export async function SaveCommPluginConfigs(data: CommPluginConfig): Promise<voi
   });
 }
 
-export async function savePluginSetting(req: { id: number; metadata: any }): Promise<void> {
+export async function savePluginSetting(req: { name: string; sysSetting: any }): Promise<void> {
   return await request({
     url: apiPrefix + "/saveSetting",
     method: "post",

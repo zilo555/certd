@@ -1,17 +1,17 @@
 import * as api from "/@/views/sys/plugin/api";
 import { useFormWrapper } from "@fast-crud/fast-crud";
 import { useI18n } from "/@/locales";
-import { Modal, notification } from "ant-design-vue";
+import { notification } from "ant-design-vue";
 import ConfigEditor from "./config-editor.vue";
-import { useModal } from "/@/use/use-modal";
 import { ref } from "vue";
 import { usePluginStore } from "/@/store/plugin";
+
 export function usePluginConfig() {
   const { openCrudFormDialog } = useFormWrapper();
   const { t } = useI18n();
 
   const pluginStore = usePluginStore();
-  const modal = useModal();
+  // @ts-ignore
   async function openConfigDialog({ row, crudExpose }) {
     const configEditorRef = ref();
     function createCrudOptions() {

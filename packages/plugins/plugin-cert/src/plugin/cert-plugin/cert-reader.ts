@@ -21,6 +21,15 @@ export type CertReaderHandleContext = {
 };
 export type CertReaderHandle = (ctx: CertReaderHandleContext) => Promise<void>;
 export type HandleOpts = { logger: ILogger; handle: CertReaderHandle };
+
+const formats = {
+  pem: ["crt", "key", "ic"],
+  one: ["one"],
+  pfx: ["pfx"],
+  der: ["der"],
+  jks: ["jks"],
+  p7b: ["p7b", "key"],
+};
 export class CertReader {
   cert: CertInfo;
 
@@ -74,8 +83,17 @@ export class CertReader {
     return arr[0] + endStr;
   }
 
-  toCertInfo(): CertInfo {
-    return this.cert;
+  toCertInfo(format?: string): CertInfo {
+    if (!format) {
+      return this.cert;
+    }
+
+    const formatArr = formats[format];
+    const res: any = {};
+    formatArr.forEach((key: string) => {
+      res[key] = this.cert[key];
+    });
+    return res;
   }
 
   getCrtDetail(crt: string = this.cert.crt) {
