@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.18](https://github.com/certd/certd/compare/v1.36.17...v1.36.18) (2025-08-28)
+
+### Performance Improvements
+
+* 部署到k8s支持自动创建secret ([c09c962](https://github.com/certd/certd/commit/c09c962cb676ca261610aa9f3e5105c9dae43f43))
+
 ## [1.36.17](https://github.com/certd/certd/compare/v1.36.16...v1.36.17) (2025-08-17)
 
 **Note:** Version bump only for package @certd/lib-k8s
