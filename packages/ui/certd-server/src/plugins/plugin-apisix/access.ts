@@ -8,7 +8,7 @@ import {CertInfo, CertReader} from "@certd/plugin-cert";
   name: "apisix",
   title: "APISIX授权",
   desc: "",
-  icon: "svg:icon-ksyun"
+  icon: "svg:icon-lucky"
 })
 export class ApisixAccess extends BaseAccess {
 
@@ -93,7 +93,7 @@ export class ApisixAccess extends BaseAccess {
       headers,
       baseURL: this.endpoint,
       ...req,
-      logRes: true,
+      logRes: false,
     });
   }
 
