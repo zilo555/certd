@@ -113,7 +113,7 @@ export class CertInfoService extends BaseService<CertInfoEntity> {
     });
   }
 
-  async getCertInfoById(req: { id: number; userId: number }) {
+  async getCertInfoById(req: { id: number; userId: number,format?:string }) {
     const entity = await this.info(req.id);
     if (!entity || entity.userId !== req.userId) {
       throw new CodeException(Constants.res.openCertNotFound);
@@ -124,7 +124,14 @@ export class CertInfoService extends BaseService<CertInfoEntity> {
     }
     const certInfo = JSON.parse(entity.certInfo) as CertInfo;
     const certReader = new CertReader(certInfo);
-    return certReader.toCertInfo();
+    return {
+      ...certReader.toCertInfo(req.format),
+      detail: {
+        id: entity.id,
+        domains: entity.domains.split(','),
+        notAfter: certReader.expires,
+      },
+    };
   }
 
   async updateCertByPipelineId(pipelineId: number, cert: CertInfo,file?:string,fromType = 'pipeline') {

@@ -1,6 +1,6 @@
 {
   "name": "@certd/lib-server",
-  "version": "1.36.17",
+  "version": "1.36.18",
   "description": "midway with flyway, sql upgrade way ",
   "private": false,
   "type": "module",
@@ -27,10 +27,10 @@
   ],
   "license": "AGPL",
   "dependencies": {
-    "@certd/acme-client": "^1.36.17",
-    "@certd/basic": "^1.36.17",
-    "@certd/pipeline": "^1.36.17",
-    "@certd/plus-core": "^1.36.17",
+    "@certd/acme-client": "^1.36.18",
+    "@certd/basic": "^1.36.18",
+    "@certd/pipeline": "^1.36.18",
+    "@certd/plus-core": "^1.36.18",
     "@midwayjs/cache": "~3.14.0",
     "@midwayjs/core": "~3.20.3",
     "@midwayjs/i18n": "~3.20.3",
@@ -61,5 +61,5 @@
     "typeorm": "^0.3.11",
     "typescript": "^5.4.2"
   },
-  "gitHead": "831c325c6383ba0a6f2dfa7496451ec714784e93"
+  "gitHead": "ea18a5ad151b296fda54fb5bcbe64c7d80cdff2f"
 }

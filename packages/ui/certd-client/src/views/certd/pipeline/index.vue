@@ -115,4 +115,13 @@ function batchRerun() {
     padding-left: 10px;
   }
 }
+
+.cert_pipeline_create_form {
+  .ant-collapse {
+    margin: 10px;
+  }
+  .ant-collapse-header {
+    text-align: right;
+  }
+}
 </style>

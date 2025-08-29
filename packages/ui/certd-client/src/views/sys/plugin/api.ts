@@ -97,6 +97,7 @@ export type CertApplyPluginSysInput = {
 export type PluginSysSetting<T> = {
   sysSetting: {
     input?: T;
+    metadata?: Record<string, any>;
   };
 };
 export type CommPluginConfig = {
@@ -115,6 +116,14 @@ export async function SaveCommPluginConfigs(data: CommPluginConfig): Promise<voi
     url: apiPrefix + "/saveCommPluginConfigs",
     method: "post",
     data,
+  });
+}
+
+export async function savePluginSetting(req: { name: string; sysSetting: any }): Promise<void> {
+  return await request({
+    url: apiPrefix + "/saveSetting",
+    method: "post",
+    data: req,
   });
 }
 

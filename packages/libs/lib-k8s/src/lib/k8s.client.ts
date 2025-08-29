@@ -90,7 +90,7 @@ export class K8sClient {
   async createSecret(opts: { namespace: string; body: V1Secret }) {
     const namespace = opts.namespace || "default";
     const created = await this.client.createNamespacedSecret(namespace, opts.body);
-    this.logger.info("new secrets:", opts.body);
+    this.logger.info("new secrets:", opts.body.metadata);
     return created.body;
   }
 
@@ -103,17 +103,33 @@ export class K8sClient {
   //   return await this.client.replaceNamespacedSecret(secretName, namespace, opts.body);
   // }
 
-  async patchSecret(opts: { namespace: string; secretName: string; body: V1Secret }) {
+  async patchSecret(opts: { namespace: string; secretName: string; body: V1Secret; createOnNotFound?: boolean }) {
     const namespace = opts.namespace || "default";
     const secretName = opts.secretName;
     if (secretName == null) {
       throw new Error("secretName 不能为空");
     }
     this.logger.info("patch secret:", secretName, namespace);
-    const oldSecret = await this.client.readNamespacedSecret(secretName, namespace);
+    let oldSecret: any = null;
+    try {
+      oldSecret = await this.client.readNamespacedSecret(secretName, namespace);
+    } catch (e) {
+      //@ts-ignore
+      if (e.response?.body?.code === 404) {
+        this.logger.warn(`secret ${secretName} 不存在`);
+        if (opts.createOnNotFound) {
+          //没有找到，则创建
+          const res = await this.createSecret({ namespace, body: opts.body });
+          this.logger.info(`secret ${secretName} 已创建`);
+          return res;
+        }
+      }
+      throw e;
+    }
+
     const newSecret = _.merge(oldSecret.body, opts.body);
     const res = await this.client.replaceNamespacedSecret(secretName, namespace, newSecret);
-    this.logger.info("secret updated");
+    this.logger.info(`secret ${secretName} 已更新`);
     return res.body;
   }
 

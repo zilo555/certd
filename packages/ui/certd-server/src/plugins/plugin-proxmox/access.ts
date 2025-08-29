@@ -61,10 +61,12 @@ export class ProxmoxAccess extends BaseAccess {
 
   @AccessInput({
     title: '领域',
+    value: "pam",
     component: {
-      placeholder: 'realm',
+      placeholder: 'pam、pve。默认值 pam',
     },
-    required: true,
+    helper:"pam 或 pve。默认值 pam",
+    required: false,
     encrypt: false,
   })
   realm = '';

@@ -10,6 +10,7 @@ export type CertGetReq = {
   domains?: string;
   certId: number;
   autoApply?:boolean;
+  format?:string; //默认是所有,pem,der,p12,pfx,jks,one,p7b
 };
 
 /**
@@ -38,6 +39,7 @@ export class OpenCertController extends BaseOpenController {
       domains: req.domains,
       certId: req.certId,
       autoApply: req.autoApply??false,
+      format: req.format
     });
     return this.ok(res);
   }

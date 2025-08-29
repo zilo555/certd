@@ -84,6 +84,7 @@ export function getCommonColumnDefine(crudExpose: any, typeRef: any, api: any) {
         component: {
           color: "auto",
         },
+        order: -1,
       },
       form: {
         component: {

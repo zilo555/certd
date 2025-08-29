@@ -34,20 +34,6 @@ export class DeployCertToTencentTKEIngressPlugin extends AbstractTaskPlugin {
   })
   ingressClass!: string;
 
-  /**
-   * AccessProvider的key,或者一个包含access的具体的对象
-   */
-  @TaskInput({
-    title: "Access授权",
-    helper: "access授权",
-    component: {
-      name: "access-selector",
-      type: "tencent"
-    },
-    required: true
-  })
-  accessId!: string;
-
   @TaskInput({
     title: "腾讯云证书id",
     helper: "请选择“上传证书到腾讯云”前置任务的输出",
@@ -66,6 +52,7 @@ export class DeployCertToTencentTKEIngressPlugin extends AbstractTaskPlugin {
   })
   tencentCertId!: string;
 
+
   @TaskInput({
     title: "域名证书",
     helper: "请选择前置任务输出的域名证书",
@@ -83,6 +70,24 @@ export class DeployCertToTencentTKEIngressPlugin extends AbstractTaskPlugin {
     required: true
   })
   cert!: any;
+
+
+
+
+  /**
+   * AccessProvider的key,或者一个包含access的具体的对象
+   */
+  @TaskInput({
+    title: "Access授权",
+    helper: "access授权",
+    component: {
+      name: "access-selector",
+      type: "tencent"
+    },
+    required: true
+  })
+  accessId!: string;
+
 
 
   @TaskInput({ title: "大区", value: "ap-guangzhou", required: true })
@@ -146,6 +151,17 @@ export class DeployCertToTencentTKEIngressPlugin extends AbstractTaskPlugin {
     }
   })
   skipTLSVerify!:boolean
+
+  @TaskInput({
+    title: "Secret自动创建",
+    helper: "如果Secret不存在，则创建",
+    value: false,
+    component: {
+      name: "a-switch",
+      vModel: "checked",
+    },
+  })
+  createOnNotFound: boolean;
 
 
   // @TaskInput({ title: "集群内网ip", helper: "如果开启了外网的话，无需设置" })
@@ -288,7 +304,7 @@ export class DeployCertToTencentTKEIngressPlugin extends AbstractTaskPlugin {
       secretNames = [secretName];
     }
     for (const secret of secretNames) {
-      await k8sClient.patchSecret({ namespace, secretName: secret, body });
+      await k8sClient.patchSecret({ namespace, secretName: secret, body , createOnNotFound: this.createOnNotFound});
       this.logger.info(`CertSecret已更新:${secret}`);
     }
   }

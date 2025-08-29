@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.18](https://github.com/certd/certd/compare/v1.36.17...v1.36.18) (2025-08-28)
+
+### Bug Fixes
+
+* 更新我爱云CDN域名地址，和部分目录结构 [@tyjsjxh](https://github.com/tyjsjxh)  ([#514](https://github.com/certd/certd/issues/514)) ([78e7a81](https://github.com/certd/certd/commit/78e7a81638c2ee779f0ab6c3ba7e5c6f6e064151))
+* 修复cron选择组件星期显示错误的bug ([eb75e52](https://github.com/certd/certd/commit/eb75e52278f94a72643f7317e6740fb42666c68a))
+* 修复proxmox某些情况下执行卡住的bug ([ebd6917](https://github.com/certd/certd/commit/ebd6917a1d40ae4d94555c32b7e3c093d0599b94))
+
+### Performance Improvements
+
+* 部署到k8s支持自动创建secret ([c09c962](https://github.com/certd/certd/commit/c09c962cb676ca261610aa9f3e5105c9dae43f43))
+* 短信验证码支持腾讯云 ([9108459](https://github.com/certd/certd/commit/9108459ae42bcd95a59acba164a64e82e5f2cfe6))
+* 商业版支持自定义插件的参数配置 ([17f23f3](https://github.com/certd/certd/commit/17f23f37516af925d5049291d67d41e4271f81f8))
+* 腾讯云插件支持国际版 ([58e82d5](https://github.com/certd/certd/commit/58e82d5dbd4ebf089ef239578ef9b68454d17b30))
+* 腾讯云EO插件支持自动获取zoneid和域名列表 ([70fcdc9](https://github.com/certd/certd/commit/70fcdc9ebbfb7c883c0c8a2138f61a0776a9491b))
+* 支持部署到阿里云云原生API网关、AI网关 ([2ca20be](https://github.com/certd/certd/commit/2ca20be197720201fceabcce9d927f4dbc1cc872))
+* 支持部署到华为云obs ([9feb9d0](https://github.com/certd/certd/commit/9feb9d04b3c56ec95c06fcf4fd071eb0e88ffc6f))
+* 支持部署到dokploy ([7dbdeae](https://github.com/certd/certd/commit/7dbdeaebe0bfee7521a863fe5e6b4a712aec5876))
+* 支持删除宝塔证书夹中的过期证书 ([3575113](https://github.com/certd/certd/commit/3575113655be751d19f88c64491e98a89042d6a2))
+* 支持p7b证书格式 ([d9f4a57](https://github.com/certd/certd/commit/d9f4a5793d68a017a5d80ad5385cbda603c4e165))
+* lecdnv2支持api token ([e448934](https://github.com/certd/certd/commit/e4489343fee7754be07bcfc3323969dc3a30e90c))
+* openapi返回证书时挑选匹配范围最小的那一个；增加format参数，增加返回值p7b格式，增加detail返回 ([2085bcc](https://github.com/certd/certd/commit/2085bcceb61c3723c9bdfec4c4cc0917631ff5e5))
+* ssh 配置sudo免密提示 ([e1e7011](https://github.com/certd/certd/commit/e1e7011853ad0c5bd7b09c3690861d5aa34b2db4))
+
 ## [1.36.17](https://github.com/certd/certd/compare/v1.36.16...v1.36.17) (2025-08-17)
 
 ### Bug Fixes

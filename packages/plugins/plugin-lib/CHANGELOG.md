@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.18](https://github.com/certd/certd/compare/v1.36.17...v1.36.18) (2025-08-28)
+
+### Performance Improvements
+
+* 腾讯云插件支持国际版 ([58e82d5](https://github.com/certd/certd/commit/58e82d5dbd4ebf089ef239578ef9b68454d17b30))
+* 支持部署到阿里云云原生API网关、AI网关 ([2ca20be](https://github.com/certd/certd/commit/2ca20be197720201fceabcce9d927f4dbc1cc872))
+* ssh 配置sudo免密提示 ([e1e7011](https://github.com/certd/certd/commit/e1e7011853ad0c5bd7b09c3690861d5aa34b2db4))
+
 ## [1.36.17](https://github.com/certd/certd/compare/v1.36.16...v1.36.17) (2025-08-17)
 
 ### Performance Improvements

@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.18](https://github.com/certd/certd/compare/v1.36.17...v1.36.18) (2025-08-28)
+
+### Bug Fixes
+
+* 修复cron选择组件星期显示错误的bug ([eb75e52](https://github.com/certd/certd/commit/eb75e52278f94a72643f7317e6740fb42666c68a))
+
+### Performance Improvements
+
+* 短信验证码支持腾讯云 ([9108459](https://github.com/certd/certd/commit/9108459ae42bcd95a59acba164a64e82e5f2cfe6))
+* 商业版支持自定义插件的参数配置 ([17f23f3](https://github.com/certd/certd/commit/17f23f37516af925d5049291d67d41e4271f81f8))
+* 支持p7b证书格式 ([d9f4a57](https://github.com/certd/certd/commit/d9f4a5793d68a017a5d80ad5385cbda603c4e165))
+* openapi返回证书时挑选匹配范围最小的那一个；增加format参数，增加返回值p7b格式，增加detail返回 ([2085bcc](https://github.com/certd/certd/commit/2085bcceb61c3723c9bdfec4c4cc0917631ff5e5))
+
 ## [1.36.17](https://github.com/certd/certd/compare/v1.36.16...v1.36.17) (2025-08-17)
 
 **Note:** Version bump only for package @certd/ui-client

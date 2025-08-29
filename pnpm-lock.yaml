@@ -1492,8 +1492,8 @@ importers:
         specifier: ^1.36.17
         version: link:../../pro/commercial-core
       '@certd/cv4pve-api-javascript':
-        specifier: ^8.4.1
-        version: 8.4.1
+        specifier: ^8.4.2
+        version: 8.4.2
       '@certd/jdcloud':
         specifier: ^1.36.17
         version: link:../../libs/lib-jdcloud
@@ -2766,8 +2766,8 @@ packages:
   '@better-scroll/zoom@2.5.1':
     resolution: {integrity: sha512-aGvFY5ooeZWS4RcxQLD+pGLpQHQxpPy0sMZV3yadcd2QK53PK9gS4Dp+BYfRv8lZ4/P2LoNEhr6Wq1DN6+uPlA==}
 
-  '@certd/cv4pve-api-javascript@8.4.1':
-    resolution: {integrity: sha512-jxlRieJmCA0Z9LnwX6Ra6ZekRGJEu8o8RGYoKU0Jjkhc9jm6ChEbVyfE7Iw49/hlpA+2yaHdAXb46au/afCISg==}
+  '@certd/cv4pve-api-javascript@8.4.2':
+    resolution: {integrity: sha512-udGce7ewrVl4DmZvX+17PjsnqsdDIHEDatr8QP0AVrY2p+8JkaSPW4mXCKiLGf82C9K2+GXgT+qNIqgW7tfF9Q==}
 
   '@certd/vue-js-cron-core@6.0.3':
     resolution: {integrity: sha512-kqzoAMhYz9j6FGNWEODRYtt4NpUEUwjpkU89z5WVg2tCtOcI5VhwyUGOd8AxiBCRfd6PtXvzuqw85PaOps9wrQ==}
@@ -15448,7 +15448,7 @@ snapshots:
     dependencies:
       '@better-scroll/core': 2.5.1
 
-  '@certd/cv4pve-api-javascript@8.4.1':
+  '@certd/cv4pve-api-javascript@8.4.2':
     dependencies:
       debug: 4.4.1(supports-color@8.1.1)
     transitivePeerDependencies:
@@ -21535,13 +21535,13 @@ snapshots:
       resolve: 1.22.10
       semver: 6.3.1
 
-  eslint-plugin-prettier@3.4.1(eslint-config-prettier@8.10.0(eslint@7.32.0))(eslint@7.32.0)(prettier@2.8.8):
+  eslint-plugin-prettier@3.4.1(eslint-config-prettier@8.10.0(eslint@8.57.0))(eslint@7.32.0)(prettier@2.8.8):
     dependencies:
       eslint: 7.32.0
       prettier: 2.8.8
       prettier-linter-helpers: 1.0.0
     optionalDependencies:
-      eslint-config-prettier: 8.10.0(eslint@7.32.0)
+      eslint-config-prettier: 8.10.0(eslint@8.57.0)
 
   eslint-plugin-prettier@4.2.1(eslint-config-prettier@8.10.0(eslint@8.57.0))(eslint@8.57.0)(prettier@2.8.8):
     dependencies:
@@ -24249,7 +24249,7 @@ snapshots:
       eslint: 7.32.0
       eslint-config-prettier: 8.10.0(eslint@7.32.0)
       eslint-plugin-node: 11.1.0(eslint@7.32.0)
-      eslint-plugin-prettier: 3.4.1(eslint-config-prettier@8.10.0(eslint@7.32.0))(eslint@7.32.0)(prettier@2.8.8)
+      eslint-plugin-prettier: 3.4.1(eslint-config-prettier@8.10.0(eslint@8.57.0))(eslint@7.32.0)(prettier@2.8.8)
       execa: 5.1.1
       inquirer: 7.3.3
       json5: 2.2.3

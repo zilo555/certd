@@ -1,11 +1,14 @@
 import * as api from "./api";
 import { useI18n } from "/src/locales";
-import { Ref, ref } from "vue";
+import { Ref, ref, computed } from "vue";
 import { useRouter } from "vue-router";
-import { AddReq, compute, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, EditReq, useFormWrapper, UserPageQuery, UserPageRes } from "@fast-crud/fast-crud";
-import { Modal, notification } from "ant-design-vue";
+import { AddReq, compute, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, EditReq, UserPageQuery, UserPageRes } from "@fast-crud/fast-crud";
+import { Modal } from "ant-design-vue";
 //@ts-ignore
 import yaml from "js-yaml";
+import { usePluginImport } from "./use-import";
+import { usePluginConfig } from "./use-config";
+import { useSettingStore } from "/src/store/settings/index";
 
 export default function ({ crudExpose, context }: CreateCrudOptionsProps): CreateCrudOptionsRet {
   const router = useRouter();
@@ -35,75 +38,11 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
 
   const selectedRowKeys: Ref<any[]> = ref([]);
   context.selectedRowKeys = selectedRowKeys;
-  const { openCrudFormDialog } = useFormWrapper();
 
-  async function openImportDialog() {
-    function createCrudOptions() {
-      return {
-        crudOptions: {
-          columns: {
-            content: {
-              title: t("certd.pluginFile"),
-              type: "text",
-              form: {
-                component: {
-                  name: "pem-input",
-                  vModel: "modelValue",
-                  textarea: {
-                    rows: 8,
-                  },
-                },
-                col: {
-                  span: 24,
-                },
-                helper: t("certd.selectPluginFile"),
-              },
-            },
-            override: {
-              title: t("certd.overrideSameName"),
-              type: "dict-switch",
-              dict: dict({
-                data: [
-                  {
-                    value: true,
-                    label: t("certd.override"),
-                  },
-                  {
-                    value: false,
-                    label: t("certd.noOverride"),
-                  },
-                ],
-              }),
-              form: {
-                value: false,
-                col: {
-                  span: 24,
-                },
-                helper: t("certd.overrideHelper"),
-              },
-            },
-          },
-          form: {
-            wrapper: {
-              title: t("certd.importPlugin"),
-              saveRemind: false,
-            },
-            afterSubmit() {
-              notification.success({ message: t("certd.operationSuccess") });
-              crudExpose.doRefresh();
-            },
-            async doSubmit({ form }: any) {
-              return await api.ImportPlugin({
-                ...form,
-              });
-            },
-          },
-        },
-      };
-    }
-    const { crudOptions } = createCrudOptions();
-    await openCrudFormDialog({ crudOptions });
-  }
+  const { openImportDialog } = usePluginImport();
+  const { openConfigDialog } = usePluginConfig();
+
+  const settingStore = useSettingStore();
   return {
     crudOptions: {
       settings: {
@@ -139,7 +78,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             text: t("certd.import"),
             type: "primary",
             async click() {
-              await openImportDialog();
+              await openImportDialog({ crudExpose });
             },
           },
         },
@@ -184,6 +123,21 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
                 link.click();
                 URL.revokeObjectURL(url);
               }
+            },
+          },
+          config: {
+            show: computed(() => {
+              return settingStore.isComm;
+            }),
+            text: null,
+            icon: "ion:settings-outline",
+            title: t("certd.config"),
+            type: "link",
+            async click({ row }) {
+              await openConfigDialog({
+                row,
+                crudExpose,
+              });
             },
           },
         },

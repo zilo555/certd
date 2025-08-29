@@ -83,7 +83,7 @@ export class CodeService {
     }
     const smsType = sysSettings.sms.type;
     const smsConfig = sysSettings.sms.config;
-    const sender: ISmsService = SmsServiceFactory.createSmsService(smsType);
+    const sender: ISmsService = await SmsServiceFactory.createSmsService(smsType);
     const accessGetter = new AccessSysGetter(this.accessService);
     sender.setCtx({
       accessService: accessGetter,

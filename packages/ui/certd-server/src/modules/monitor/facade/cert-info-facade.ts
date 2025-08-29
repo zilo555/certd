@@ -27,7 +27,7 @@ export class CertInfoFacade  {
   @Inject()
   userSettingsService : UserSettingsService
 
-  async getCertInfo(req: { domains?: string; certId?: number; userId: number,autoApply?:boolean }) {
+  async getCertInfo(req: { domains?: string; certId?: number; userId: number,autoApply?:boolean,format?:string }) {
     const { domains, certId, userId } = req;
     if (certId) {
       return await this.certInfoService.getCertInfoById({ id: certId, userId });
@@ -41,7 +41,7 @@ export class CertInfoFacade  {
     const domainArr = domains.split(',');
 
     const matchedList = await this.certInfoService.getMatchCertList({domains:domainArr,userId})
-    let matched: CertInfoEntity = null
+
     if (matchedList.length === 0 ) {
       if(req.autoApply === true){
         //自动申请，先创建自动申请流水线
@@ -54,13 +54,7 @@ export class CertInfoFacade  {
         });
       }
     }
-    matched = null;
-    for (const item of matchedList) {
-      if (item.expiresTime>0 && item.expiresTime > new Date().getTime()) {
-        matched = item;
-        break
-      }
-    }
+    let matched = this.getMinixMatched(matchedList);
     if (!matched) {
       if(req.autoApply === true){
         //如果没有找到有效期内的证书，则自动触发一次申请
@@ -75,7 +69,38 @@ export class CertInfoFacade  {
       }
     }
 
-    return await this.certInfoService.getCertInfoById({ id: matched.id, userId: userId });
+    return await this.certInfoService.getCertInfoById({ id: matched.id, userId: userId,format:req.format });
+
+
+
+  }
+
+  public getMinixMatched(matchedList: CertInfoEntity[]) {
+    let matched: CertInfoEntity = null;
+    for (const item of matchedList) {
+      if (item.expiresTime > 0 && item.expiresTime > new Date().getTime()) {
+        if (matched) {
+          //如果前面已经有match的值，判断范围是否比上一个小
+          const currentStars = `-${item.domains}`.split("*");
+          const matchedStars = `-${matched.domains}`.split("*");
+
+          const currentLength = item.domains.split(",");
+          const matchedLength = matched.domains.split(",");
+          if (currentStars.length < matchedStars.length) {
+            //如果*的数量比上一个少，则替换为当前
+            matched = item;
+          } else if (currentStars.length == matchedStars.length) {
+            //如果*的数量相同，则比较域名数量
+            if (currentLength.length < matchedLength.length) {
+              matched = item;
+            }
+          }
+        } else {
+          matched = item;
+        }
+      }
+    }
+    return matched;
   }
 
   async createAutoPipeline(req:{domains:string[],userId:number}){

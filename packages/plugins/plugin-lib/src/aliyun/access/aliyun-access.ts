@@ -7,9 +7,9 @@ export type AliyunClientV2Req = {
   // 接口 HTTP 方法
   method?: "GET" | "POST";
   authType?: "AK";
-  style?: "RPC";
+  style?: "RPC" | "ROA";
   // 接口 PATH
-  pathname?: `/`;
+  pathname?: string;
 
   data?: any;
 };
@@ -63,10 +63,10 @@ export class AliyunClientV2 {
       protocol: "HTTPS",
       // 接口 HTTP 方法
       method: req.method ?? "POST",
-      authType: "AK",
-      style: "RPC",
+      authType: req.authType ?? "AK",
+      style: req.style ?? "RPC",
       // 接口 PATH
-      pathname: `/`,
+      pathname: req.pathname ?? `/`,
       // 接口请求体内容格式
       reqBodyType: "json",
       // 接口响应体内容格式

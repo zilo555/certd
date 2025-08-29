@@ -14,8 +14,9 @@ import { CertApplyPluginNames, CertReader } from "@certd/plugin-cert";
  */
 const regionDict = [
   { value: 'cn-hangzhou', endpoint: 'cas.aliyuncs.com', label: 'cn-hangzhou-中国大陆' },
-  { value: 'eu-central-1', endpoint: 'cas.eu-central-1.aliyuncs.com', label: 'eu-central-1-德国（法兰克福）' },
   { value: 'ap-southeast-1', endpoint: 'cas.ap-southeast-1.aliyuncs.com', label: 'ap-southeast-1-新加坡（国际版选这个）' },
+  { value: 'private-', endpoint: '', disabled:true, label: '以下是私有证书区域' },
+  { value: 'eu-central-1', endpoint: 'cas.eu-central-1.aliyuncs.com', label: 'eu-central-1-德国（法兰克福）' },
   { value: 'ap-southeast-3', endpoint: 'cas.ap-southeast-3.aliyuncs.com', label: 'ap-southeast-3-马来西亚（吉隆坡）' },
   { value: 'ap-southeast-5', endpoint: 'cas.ap-southeast-5.aliyuncs.com', label: 'ap-southeast-5-印度尼西亚（雅加达）' },
   { value: 'cn-hongkong', endpoint: 'cas.cn-hongkong.aliyuncs.com', label: 'cn-hongkong-中国香港' },

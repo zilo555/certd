@@ -164,7 +164,8 @@ export class SysSettingsController extends CrudController<SysSettingsService> {
 
   @Post('/getSmsTypeDefine', { summary: 'sys:settings:view' })
   async getSmsTypeDefine(@Body('type') type: string) {
-    return this.ok(SmsServiceFactory.getDefine(type));
+    const define =await SmsServiceFactory.getDefine(type);
+    return this.ok(define);
   }
 
 

@@ -1,25 +1,28 @@
-import { AliyunSmsService } from './aliyun-sms.js';
-import { YfySmsService } from './yfy-sms.js';
 
 export class SmsServiceFactory {
-  static createSmsService(type: string) {
-    const cls = this.GetClassByType(type);
+  static async createSmsService(type: string) {
+    const cls = await this.GetClassByType(type);
     return new cls();
   }
 
-  static GetClassByType(type: string) {
+  static async GetClassByType(type: string) {
     switch (type) {
       case 'aliyun':
+        const {AliyunSmsService} = await import("./aliyun-sms.js")
         return AliyunSmsService;
       case 'yfysms':
+        const {YfySmsService} = await import("./yfy-sms.js")
         return YfySmsService;
+      case 'tencent':
+        const {TencentSmsService} = await import("./tencent-sms.js")
+        return TencentSmsService;
       default:
         throw new Error('不支持的短信服务类型');
     }
   }
 
-  static getDefine(type: string) {
-    const cls = this.GetClassByType(type);
+  static async getDefine(type: string) {
+    const cls = await this.GetClassByType(type);
     return cls.getDefine();
   }
 }

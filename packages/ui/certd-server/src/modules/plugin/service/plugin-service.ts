@@ -1,16 +1,16 @@
-import { Inject, Provide, Scope, ScopeEnum } from "@midwayjs/core";
-import { BaseService, PageReq } from "@certd/lib-server";
-import { PluginEntity } from "../entity/plugin.js";
-import { InjectEntityModel } from "@midwayjs/typeorm";
-import { Repository } from "typeorm";
-import { isComm } from "@certd/plus-core";
-import { BuiltInPluginService } from "../../pipeline/service/builtin-plugin-service.js";
-import { merge } from "lodash-es";
-import { accessRegistry, notificationRegistry, pluginRegistry } from "@certd/pipeline";
-import { dnsProviderRegistry } from "@certd/plugin-cert";
-import { logger } from "@certd/basic";
+import {Inject, Provide, Scope, ScopeEnum} from "@midwayjs/core";
+import {BaseService, PageReq} from "@certd/lib-server";
+import {PluginEntity} from "../entity/plugin.js";
+import {InjectEntityModel} from "@midwayjs/typeorm";
+import {IsNull, Not, Repository} from "typeorm";
+import {isComm} from "@certd/plus-core";
+import {BuiltInPluginService} from "../../pipeline/service/builtin-plugin-service.js";
+import {merge} from "lodash-es";
+import {accessRegistry, notificationRegistry, pluginRegistry} from "@certd/pipeline";
+import {dnsProviderRegistry} from "@certd/plugin-cert";
+import {logger} from "@certd/basic";
 import yaml from "js-yaml";
-import { getDefaultAccessPlugin, getDefaultDeployPlugin, getDefaultDnsPlugin } from "./default-plugin.js";
+import {getDefaultAccessPlugin, getDefaultDeployPlugin, getDefaultDnsPlugin} from "./default-plugin.js";
 import fs from "fs";
 import path from "path";
 
@@ -57,9 +57,9 @@ export class PluginService extends BaseService<PluginEntity> {
     };
   }
 
-  async getEnabledBuildInGroup(isSimple = false) {
+  async getEnabledBuildInGroup(opts?:{isSimple?:boolean,withSetting?:boolean}) {
     const groups = this.builtInPluginService.getGroups();
-    if (isSimple) {
+    if (opts?.isSimple) {
       for (const key in groups) {
         const group = groups[key];
         group.plugins.forEach(item => {
@@ -72,9 +72,43 @@ export class PluginService extends BaseService<PluginEntity> {
     if (!isComm()) {
       return groups;
     }
+
+    // 初始化设置
+    const settingPlugins = await this.repository.find({
+      select:{
+        id:true,
+        name:true,
+        sysSetting:true
+      },
+      where: {
+        sysSetting : Not(IsNull())
+      }
+    })
+    //合并插件配置
+    const pluginSettingMap:any = {}
+    for (const item of settingPlugins) {
+      if (!item.sysSetting) {
+        continue;
+      }
+      pluginSettingMap[item.name] = JSON.parse(item.sysSetting);
+    }
+    for (const key in groups) {
+      const group = groups[key];
+      if (!group.plugins) {
+        continue;
+      }
+      for (const item of group.plugins) {
+        const pluginSetting = pluginSettingMap[item.name];
+        if (pluginSetting){
+          item.sysSetting = pluginSetting
+        }
+      }
+    }
+
+
+    //排除禁用的
     const list = await this.list({
       query: {
-        type: "builtIn",
         disabled: true
       }
     });

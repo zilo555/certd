@@ -45,6 +45,7 @@
           <a-form-item :label="t('certd.smsProvider')" :name="['private', 'sms', 'type']">
             <a-select v-model:value="formState.private.sms.type" @change="smsTypeChange">
               <a-select-option value="aliyun">{{ t("certd.aliyunSms") }}</a-select-option>
+              <a-select-option value="tencent">{{ t("certd.tencentSms") }}</a-select-option>
               <a-select-option value="yfysms">{{ t("certd.yfySms") }}</a-select-option>
             </a-select>
           </a-form-item>

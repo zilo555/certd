@@ -1,9 +1,11 @@
 import { defineStore } from "pinia";
 import * as api from "./api.plugin";
-import { DynamicType, FormItemProps } from "@fast-crud/fast-crud";
+import { DynamicType, FormItemProps, useMerge } from "@fast-crud/fast-crud";
 import { i18n } from "/src/locales/i18n";
+import { cloneDeep } from "lodash-es";
 interface PluginState {
   group?: PluginGroups;
+  originGroup?: PluginGroups;
 }
 
 export type PluginGroup = {
@@ -32,14 +34,17 @@ export class PluginGroups {
   groups!: { [key: string]: PluginGroup };
   map!: { [key: string]: PluginDefine };
   t: any;
-  constructor(groups: { [key: string]: PluginGroup }) {
+  mergeSetting?: boolean;
+  constructor(groups: { [key: string]: PluginGroup }, opts?: { mergeSetting?: boolean }) {
     this.groups = groups;
     this.t = i18n.global.t;
+    this.mergeSetting = opts?.mergeSetting ?? false;
     this.initGroup(groups);
     this.initMap();
   }
 
   private initGroup(groups: { [p: string]: PluginGroup }) {
+    const { merge } = useMerge();
     const all: PluginGroup = {
       key: "all",
       title: this.t("certd.all"),
@@ -48,6 +53,14 @@ export class PluginGroups {
       icon: "material-symbols:border-all-rounded",
     };
     for (const key in groups) {
+      if (this.mergeSetting) {
+        for (const plugin of groups[key].plugins) {
+          if (plugin.sysSetting) {
+            merge(plugin.input, plugin.sysSetting.metadata?.input || {});
+          }
+        }
+      }
+
       all.plugins.push(...groups[key].plugins);
     }
     this.groups = {
@@ -132,11 +145,15 @@ export const usePluginStore = defineStore({
   id: "app.plugin",
   state: (): PluginState => ({
     group: null,
+    originGroup: null,
   }),
   actions: {
     async reload() {
       const groups = await api.GetGroups({});
-      this.group = new PluginGroups(groups);
+      this.group = new PluginGroups(groups, { mergeSetting: true });
+      this.originGroup = new PluginGroups(cloneDeep(groups));
+      console.log("group", this.group);
+      console.log("originGroup", this.originGroup);
     },
     async init() {
       if (!this.group) {
@@ -150,6 +167,7 @@ export const usePluginStore = defineStore({
     },
     async clear() {
       this.group = null;
+      this.originGroup = null
     },
     async getList(): Promise<PluginDefine[]> {
       await this.init();
@@ -158,6 +176,10 @@ export const usePluginStore = defineStore({
     async getPluginDefine(name: string): Promise<PluginDefine> {
       await this.init();
       return this.group.get(name);
+    },
+    async getPluginDefineFromOrigin(name: string): Promise<PluginDefine> {
+      await this.init();
+      return this.originGroup.get(name);
     },
     async getPluginConfig(query: any) {
       return await api.GetPluginConfig(query);

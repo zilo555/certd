@@ -43,7 +43,7 @@
         </a-tab-pane>
       </a-tabs>
       <a-form-item>
-        <a-button type="primary" size="large" html-type="submit" :loading="loading" class="login-button">
+        <a-button type="primary" size="large" html-type="button" :loading="loading" class="login-button" @click="handleFinish">
           {{ t("authentication.loginButton") }}
         </a-button>
 
@@ -217,7 +217,6 @@ export default defineComponent({
 </script>
 
 <style lang="less">
-
 .login-page.main {
   //margin: 20px !important;
   margin-bottom: 100px;
