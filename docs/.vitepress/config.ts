@@ -120,6 +120,7 @@ export default defineConfig({
                         {text: "邮箱配置", link: "/guide/use/email/index.md"},
                         {text: "IPv6支持", link: "/guide/use/setting/ipv6.md"},
                         {text: "ESXi", link: "/guide/use/ESXi/index.md"},
+                        {text: "子域名托管", link: "/guide/use/cert/subdomain.md"},
                     ]
                 },
                 {

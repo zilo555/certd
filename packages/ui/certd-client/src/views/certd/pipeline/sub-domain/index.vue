@@ -5,7 +5,7 @@
         {{ t("certd.subdomainHosting") }}
         <span class="sub">
           {{ t("certd.subdomainHostingHint") }}； {{ t("certd.subdomainHelpText") }}
-          <a href="https://help.aliyun.com/zh/dns/subdomain-management" target="_blank">
+          <a href="https://certd.docmirror.cn/guide/use/cert/subdomain.html" target="_blank">
             {{ t("certd.subdomainManagement") }}
           </a>
         </span>
