@@ -23,7 +23,7 @@ const unhiddenHtml = `
 
 @Provide()
 @Controller('/api/unhidden')
-export class HnhiddenController {
+export class UnhiddenController {
     @Inject()
     ctx: IMidwayKoaContext;
     @Inject()
