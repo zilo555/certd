@@ -313,6 +313,8 @@ function useStepForm() {
   };
 
   const stepDelete = () => {
+    //检查输出依赖
+
     Modal.confirm({
       title: "确认",
       content: `确定要删除此步骤吗？`,

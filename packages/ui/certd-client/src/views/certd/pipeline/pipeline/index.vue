@@ -279,7 +279,7 @@
   </fs-page>
 </template>
 
-<script lang="ts">
+<script lang="tsx">
 import { computed, defineComponent, onMounted, onUnmounted, provide, ref, Ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import PiTaskForm from "./component/task-form/index.vue";
@@ -758,9 +758,12 @@ export default defineComponent({
 
         //检查输出的stepid是否存在
         let hasError = false;
-        let errorMessage = "";
+        let errorMessages = [];
+        let errorIndex = 1;
         eachSteps(pp, (step: any, task: any, stage: any) => {
-          stepIds.push(step.id);
+          if (step.disabled !== true) {
+            stepIds.push(step.id);
+          }
           if (step.input) {
             for (const key in step.input) {
               const value = step.input[key];
@@ -775,21 +778,36 @@ export default defineComponent({
               const paramName = arr[2];
               if (!stepIds.includes(stepId)) {
                 hasError = true;
-                const message = `任务${step.title}的前置输出步骤${paramName}不存在，请重新修改此任务`;
+                const message = `${step.title}的前置输出步骤${paramName}不存在或已被禁用`;
+                errorIndex++;
                 addValidateError(task.id, {
                   message,
                 });
                 addValidateError(step.id, {
                   message,
                 });
-                errorMessage += message + "；";
+                errorMessages.push(message);
               }
             }
           }
         });
 
         if (hasError) {
-          notification.error({ message: errorMessage });
+          notification.error({
+            message: () => {
+              const nodes = [];
+              let i = 0;
+              for (const error of errorMessages) {
+                i++;
+                nodes.push(
+                  <div>
+                    {i}.{error}
+                  </div>
+                );
+              }
+              return nodes;
+            },
+          });
           throw new Error(errorMessage);
         }
       }
