@@ -25,6 +25,7 @@ export default {
     pipeline: "流水线",
     domain: "域名",
     deployTimes: "部署次数",
+    monitorCount: "域名监控数",
     duration: "时长",
     price: "价格",
     paymentMethod: "支付方式",

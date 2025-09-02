@@ -21,6 +21,7 @@ export default {
     pipeline: "Pipeline",
     domain: "Domain",
     deployTimes: "Deployments",
+    monitorCount: "DomainMonitors",
     duration: "Duration",
     price: "Price",
     paymentMethod: "Payment Method",
