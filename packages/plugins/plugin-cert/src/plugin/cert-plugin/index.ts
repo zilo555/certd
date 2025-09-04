@@ -89,7 +89,7 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
         { value: "letsencrypt", label: "Let's Encrypt", icon: "simple-icons:letsencrypt" },
         { value: "google", label: "Google", icon: "flat-color-icons:google" },
         { value: "zerossl", label: "ZeroSSL", icon: "emojione:digit-zero" },
-        { value: "sslcom", label: "SSL.com", icon: "la:expeditedssl" },
+        { value: "sslcom", label: "SSL.com（仅主域名和www免费）", icon: "la:expeditedssl" },
       ],
     },
     helper: "Let's Encrypt：申请最简单\nGoogle：大厂光环，兼容性好，仅首次需要翻墙获取EAB授权\nZeroSSL：需要EAB授权，无需翻墙",
