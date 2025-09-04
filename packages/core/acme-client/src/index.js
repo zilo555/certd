@@ -25,6 +25,10 @@ export const directory = {
         staging: 'https://acme.zerossl.com/v2/DV90',
         production: 'https://acme.zerossl.com/v2/DV90',
     },
+    sslcom:{
+      staging: 'https://acme.ssl.com/sslcom-dv-rsa',
+      production: 'https://acme.ssl.com/sslcom-dv-rsa',
+    }
 };
 
 /**

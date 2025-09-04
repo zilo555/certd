@@ -12,7 +12,7 @@ export class EabAccess extends BaseAccess {
     component: {
       placeholder: "kid / keyId",
     },
-    helper: "EAB KID， google的叫 keyId",
+    helper: "EAB KID， google的叫 keyId，ssl.com的叫Account/ACME Key",
     required: true,
     encrypt: true,
   })

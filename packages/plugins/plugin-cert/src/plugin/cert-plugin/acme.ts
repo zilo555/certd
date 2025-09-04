@@ -50,7 +50,7 @@ export type CertInfo = {
   one?: string;
   p7b?: string;
 };
-export type SSLProvider = "letsencrypt" | "google" | "zerossl";
+export type SSLProvider = "letsencrypt" | "google" | "zerossl" | "sslcom";
 export type PrivateKeyType = "rsa_1024" | "rsa_2048" | "rsa_3072" | "rsa_4096" | "ec_256" | "ec_384" | "ec_521";
 type AcmeServiceOptions = {
   userContext: IContext;
@@ -373,6 +373,7 @@ export class AcmeService {
         commonName,
         ...csrInfo,
         altNames,
+        emailAddress: email,
       },
       privateKey
     );

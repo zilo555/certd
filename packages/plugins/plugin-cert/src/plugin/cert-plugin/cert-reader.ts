@@ -221,10 +221,10 @@ export class CertReader {
     return `${prefix}_${domain}_${timeStr}.${suffix}`;
   }
 
-  buildCertName() {
+  buildCertName(prefix: string = "") {
     let domain = this.getMainDomain();
     domain = domain.replaceAll(".", "_").replaceAll("*", "_");
-    return `${domain}_${dayjs().format("YYYYMMDDHHmmssSSS")}`;
+    return `${prefix}_${domain}_${dayjs().format("YYYYMMDDHHmmssSSS")}`;
   }
 
   static appendTimeSuffix(name?: string) {

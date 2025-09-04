@@ -116,6 +116,12 @@ export class AliyunDeployCertToFC extends AbstractTaskPlugin {
   })
   protocol!: string;
 
+  @TaskInput({
+    title: '证书名称',
+    helper: '上传后将以此名称作为前缀备注',
+  })
+  certName!: string;
+
   async onInstance() {}
 
   async exec(cmd: string) {
@@ -179,7 +185,7 @@ export class AliyunDeployCertToFC extends AbstractTaskPlugin {
         bodyType: 'json',
       });
       // body params
-      const certName = this.buildCertName(CertReader.getMainDomain(this.cert.crt))
+      const certName = this.buildCertName(CertReader.getMainDomain(this.cert.crt),this.certName??"")
 
       const body: { [key: string]: any } = {
         certConfig: {
