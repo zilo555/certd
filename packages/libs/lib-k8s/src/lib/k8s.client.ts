@@ -119,7 +119,13 @@ export class K8sClient {
         this.logger.warn(`secret ${secretName} 不存在`);
         if (opts.createOnNotFound) {
           //没有找到，则创建
-          const res = await this.createSecret({ namespace, body: opts.body });
+          const body = merge(
+            {
+              type: "type: kubernetes.io/tls",
+            },
+            opts.body
+          );
+          const res = await this.createSecret({ namespace, body });
           this.logger.info(`secret ${secretName} 已创建`);
           return res;
         }
