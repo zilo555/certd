@@ -136,9 +136,10 @@ export class SshAccess extends BaseAccess {
     const { SshClient } = await import("./ssh.js");
     const client = new SshClient(this.ctx.logger);
 
+    const script = ["echo hello", "exit"];
     await client.exec({
       connectConf: this,
-      script: "echo hello",
+      script: script,
     });
     return "ok";
   }

@@ -469,7 +469,8 @@ export class SshClient {
 
   async isCmd(conn: AsyncSsh2Client) {
     const spec = await conn.exec("echo %COMSPEC% ");
-    if (spec.toString().trim() === "%COMSPEC%") {
+    const ret = spec.toString().trim();
+    if (ret.includes("%COMSPEC%") && !ret.includes("echo %COMSPEC%")) {
       return false;
     } else {
       return true;
