@@ -88,7 +88,7 @@ export class SshAccess extends BaseAccess {
 
   @AccessInput({
     title: "超时时间",
-    helper: "执行命令的超时时间，单位秒,默认10分钟",
+    helper: "执行命令的超时时间，单位秒,默认30分钟",
     component: {
       name: "a-input-number",
     },

@@ -593,7 +593,7 @@ export class SshClient {
       timeoutId = setTimeout(() => {
         this.logger.info("执行超时，断开连接");
         conn.end();
-      }, 1000 * (connectConf.timeout || 600));
+      }, 1000 * (connectConf.timeout || 1800));
       return await callable(conn);
     } finally {
       clearTimeout(timeoutId);
