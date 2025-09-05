@@ -1,4 +1,4 @@
-import log4js, { CallStack, Level } from "log4js";
+import log4js, { CallStack, Level, Logger } from "log4js";
 
 let logFilePath = "./logs/app.log";
 export function resetLogConfigure() {
@@ -29,6 +29,8 @@ export function buildLogger(write: (text: string) => void) {
 }
 
 export type ILogger = {
+  readonly category: string;
+  level: Level | string;
   log(level: Level | string, ...args: any[]): void;
 
   isLevelEnabled(level?: string): boolean;
