@@ -118,7 +118,7 @@
     "socks-proxy-agent": "^8.0.4",
     "strip-ansi": "^7.1.0",
     "svg-captcha": "^1.4.0",
-    "tencentcloud-sdk-nodejs": "^4.0.983",
+    "tencentcloud-sdk-nodejs": "^4.1.112",
     "typeorm": "^0.3.20",
     "uuid": "^10.0.0"
   },
