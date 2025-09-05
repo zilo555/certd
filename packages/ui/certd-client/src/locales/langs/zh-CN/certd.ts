@@ -224,6 +224,7 @@ export default {
     triggerCronTitle: "定时触发",
     triggerCronHelper: "点击上面的按钮，选择每天几点定时执行。\n建议设置为每天触发一次，证书未到期之前任务会跳过，不会重复执行",
     notificationTitle: "失败通知",
+    notificationWhen: "通知时机",
     notificationHelper: "任务执行失败实时提醒",
     groupIdTitle: "流水线分组",
   },
