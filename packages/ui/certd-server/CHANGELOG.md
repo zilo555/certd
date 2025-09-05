@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.19](https://github.com/certd/certd/compare/v1.36.18...v1.36.19) (2025-09-05)
+
+### Bug Fixes
+
+* 前置任务输出不存在时输出警告提示 ([b59052c](https://github.com/certd/certd/commit/b59052cc43b7b070fabd8b8e914e4c2a5e0ad61c))
+* 修复mysql下购买套餐加量包无效的bug ([c26ad4c](https://github.com/certd/certd/commit/c26ad4c8075f0606d45b8da13915737968d6191a))
+
+### Performance Improvements
+
+* 增加健康检查探针  /health/liveliness 和 /health/readiness ([44019e1](https://github.com/certd/certd/commit/44019e104289fedd32a867db00e9c6cb71b389cc))
+* 支持根据id更新证书（证书Id不变接口），不过该接口为白名单功能，普通腾讯云账户无法使用 ([fe9c4f3](https://github.com/certd/certd/commit/fe9c4f3391ff07c01dd9a252225f69a129c39050))
+* 支持godaddy ([b7980aa](https://github.com/certd/certd/commit/b7980aad5ab50f58662eaddf5d84aa82876a98eb))
+* 支持ssl.com证书颁发机构 ([27b6dfa](https://github.com/certd/certd/commit/27b6dfa4d2ab3bddd284c3a34511a72e1a513a4c))
+
 ## [1.36.18](https://github.com/certd/certd/compare/v1.36.17...v1.36.18) (2025-08-28)
 
 ### Bug Fixes
