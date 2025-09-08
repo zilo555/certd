@@ -1,7 +1,7 @@
 import { CoreV1Api, KubeConfig, NetworkingV1Api, V1Ingress, V1Secret } from "@kubernetes/client-node";
 import dns from "dns";
 import { ILogger } from "@certd/basic";
-import _ from "lodash-es";
+import { merge } from "lodash-es";
 
 export type K8sClientOpts = {
   kubeConfigStr: string;
@@ -119,7 +119,13 @@ export class K8sClient {
         this.logger.warn(`secret ${secretName} 不存在`);
         if (opts.createOnNotFound) {
           //没有找到，则创建
-          const res = await this.createSecret({ namespace, body: opts.body });
+          const body = merge(
+            {
+              type: "type: kubernetes.io/tls",
+            },
+            opts.body
+          );
+          const res = await this.createSecret({ namespace, body });
           this.logger.info(`secret ${secretName} 已创建`);
           return res;
         }
@@ -127,7 +133,7 @@ export class K8sClient {
       throw e;
     }
 
-    const newSecret = _.merge(oldSecret.body, opts.body);
+    const newSecret = merge(oldSecret.body, opts.body);
     const res = await this.client.replaceNamespacedSecret(secretName, namespace, newSecret);
     this.logger.info(`secret ${secretName} 已更新`);
     return res.body;
@@ -161,7 +167,7 @@ export class K8sClient {
     this.logger.info("patch ingress:", ingressName, namespace);
     const client = this.kubeconfig.makeApiClient(NetworkingV1Api);
     const oldIngress = await client.readNamespacedIngress(ingressName, namespace);
-    const newIngress = _.merge(oldIngress.body, opts.body);
+    const newIngress = merge(oldIngress.body, opts.body);
     const res = await client.replaceNamespacedIngress(ingressName, namespace, newIngress);
     this.logger.info("ingress patched", opts.body);
     return res;

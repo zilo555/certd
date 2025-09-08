@@ -22,7 +22,7 @@ export function fillPipelineByDefaultForm(pipeline: any, form: any) {
   if (form.notification != null) {
     notifications.push({
       type: "custom",
-      when: ["error", "turnToSuccess", "success"],
+      when: form.notificationWhen || ["error", "turnToSuccess"],
       notificationId: form.notification,
       title: form.notificationTarget?.name || "自定义通知",
     });
@@ -223,6 +223,25 @@ export function useCertPipelineCreator() {
               helper: t("certd.pipelineForm.notificationHelper"),
             },
           },
+          notificationWhen: {
+            title: t("certd.pipelineForm.notificationWhen"),
+            type: "text",
+            form: {
+              value: ["error", "turnToSuccess"],
+              component: {
+                name: "a-select",
+                vModel: "value",
+                mode: "multiple",
+                options: [
+                  { value: "start", label: t("certd.start_time") },
+                  { value: "success", label: t("certd.success_time") },
+                  { value: "turnToSuccess", label: t("certd.fail_to_success_time") },
+                  { value: "error", label: t("certd.fail_time") },
+                ],
+              },
+              order: 102,
+            },
+          },
           groupId: {
             title: t("certd.pipelineForm.groupIdTitle"),
             type: "dict-select",
@@ -268,7 +287,7 @@ export function useCertPipelineCreator() {
     async function doSubmit({ form }: any) {
       // const certDetail = readCertDetail(form.cert.crt);
       // 添加certd pipeline
-      const pluginInput = omit(form, ["triggerCron", "notification", "notificationTarget", "certApplyPlugin", "groupId"]);
+      const pluginInput = omit(form, ["triggerCron", "notification", "notificationTarget", "notificationWhen", "certApplyPlugin", "groupId"]);
       let pipeline: any = {
         title: form.domains[0] + "证书自动化",
         runnableType: "pipeline",

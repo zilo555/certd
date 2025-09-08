@@ -1,6 +1,5 @@
 import axios, { AxiosHeaders, AxiosRequestConfig } from "axios";
 import { ILogger, logger } from "./util.log.js";
-import { Logger } from "log4js";
 import { HttpProxyAgent } from "http-proxy-agent";
 import { HttpsProxyAgent } from "https-proxy-agent";
 import nodeHttp from "http";
@@ -84,7 +83,7 @@ export function getGlobalAgents() {
 /**
  * @description 创建请求实例
  */
-export function createAxiosService({ logger }: { logger: Logger }) {
+export function createAxiosService({ logger }: { logger: ILogger }) {
   // 创建一个 axios 实例
   const service = axios.create();
 

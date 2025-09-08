@@ -1,4 +1,4 @@
-import log4js, { CallStack, Level, Logger } from "log4js";
+import log4js, { CallStack, Level } from "log4js";
 
 let logFilePath = "./logs/app.log";
 export function resetLogConfigure() {
@@ -28,7 +28,56 @@ export function buildLogger(write: (text: string) => void) {
   return new PipelineLogger("pipeline", write);
 }
 
-export type ILogger = Logger;
+export type ILogger = {
+  readonly category: string;
+  level: Level | string;
+  log(level: Level | string, ...args: any[]): void;
+
+  isLevelEnabled(level?: string): boolean;
+
+  isTraceEnabled(): boolean;
+  isDebugEnabled(): boolean;
+  isInfoEnabled(): boolean;
+  isWarnEnabled(): boolean;
+  isErrorEnabled(): boolean;
+  isFatalEnabled(): boolean;
+
+  _log(level: Level, data: any): void;
+
+  addContext(key: string, value: any): void;
+
+  removeContext(key: string): void;
+
+  clearContext(): void;
+
+  /**
+   * Replace the basic parse function with a new custom one
+   * - Note that linesToSkip will be based on the origin of the Error object in addition to the callStackLinesToSkip (at least 1)
+   * @param parseFunction the new parseFunction. Use `undefined` to reset to the base implementation
+   */
+  setParseCallStackFunction(parseFunction: (error: Error, linesToSkip: number) => CallStack | undefined): void;
+
+  /**
+   * Adjust the value of linesToSkip when the parseFunction is called.
+   *
+   * Cannot be less than 0.
+   */
+  callStackLinesToSkip: number;
+
+  trace(message: any, ...args: any[]): void;
+
+  debug(message: any, ...args: any[]): void;
+
+  info(message: any, ...args: any[]): void;
+
+  warn(message: any, ...args: any[]): void;
+
+  error(message: any, ...args: any[]): void;
+
+  fatal(message: any, ...args: any[]): void;
+
+  mark(message: any, ...args: any[]): void;
+};
 
 const locale = Intl.DateTimeFormat().resolvedOptions().locale;
 const formatter = new Intl.DateTimeFormat(locale, {

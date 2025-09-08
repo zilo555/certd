@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.19](https://github.com/certd/certd/compare/v1.36.18...v1.36.19) (2025-09-05)
+
+### Performance Improvements
+
+* ssh 增加超时断开连接，默认10分钟超时 ([c24a040](https://github.com/certd/certd/commit/c24a040c19cacafc79228d7a7649af93837d94a1))
+
 ## [1.36.18](https://github.com/certd/certd/compare/v1.36.17...v1.36.18) (2025-08-28)
 
 ### Performance Improvements

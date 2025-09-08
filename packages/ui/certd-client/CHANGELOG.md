@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.19](https://github.com/certd/certd/compare/v1.36.18...v1.36.19) (2025-09-05)
+
+### Bug Fixes
+
+* 修复批量流水线执行时日志显示错乱的问题 ([4372adc](https://github.com/certd/certd/commit/4372adc703b9a4c785664054ab2a533626d815a8))
+* 修复远程数据选择无法过滤的bug ([6cbb073](https://github.com/certd/certd/commit/6cbb0739f8428d51b0712f718fe4d236cc087cf9))
+* 修复mysql下购买套餐加量包无效的bug ([c26ad4c](https://github.com/certd/certd/commit/c26ad4c8075f0606d45b8da13915737968d6191a))
+
+### Performance Improvements
+
+* 创建证书时支持选择通知时机 ([0e96bfd](https://github.com/certd/certd/commit/0e96bfdfa377824d204e72923d1176408ae6b300))
+* 商业版隐藏文档相关链接 ([4443a1c](https://github.com/certd/certd/commit/4443a1c0308fa6b95a05efd73d15d24b65d641c9))
+* 商业版隐藏文档相关链接 ([db89561](https://github.com/certd/certd/commit/db8956148083bc4f988226ccf719940d08158a27))
+* 支持根据id更新证书（证书Id不变接口），不过该接口为白名单功能，普通腾讯云账户无法使用 ([fe9c4f3](https://github.com/certd/certd/commit/fe9c4f3391ff07c01dd9a252225f69a129c39050))
+* 子域名托管说明 ([39a0223](https://github.com/certd/certd/commit/39a02235cf4416bb5bd1acd3831241efeaa2f602))
+
 ## [1.36.18](https://github.com/certd/certd/compare/v1.36.17...v1.36.18) (2025-08-28)
 
 ### Bug Fixes

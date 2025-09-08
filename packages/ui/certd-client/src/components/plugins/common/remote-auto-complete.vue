@@ -66,7 +66,7 @@ const getOptions = async () => {
   const input = (pluginType === "plugin" ? form?.input : form) || {};
 
   for (let key in define.input) {
-    const inWatches = props.watches.includes(key);
+    const inWatches = props.watches?.includes(key);
     const inputDefine = define.input[key];
     if (inWatches && inputDefine.required) {
       const value = input[key];

@@ -87,6 +87,15 @@ export class SshAccess extends BaseAccess {
   socksProxy!: string;
 
   @AccessInput({
+    title: "超时时间",
+    helper: "执行命令的超时时间，单位秒,默认30分钟",
+    component: {
+      name: "a-input-number",
+    },
+  })
+  timeout: number;
+
+  @AccessInput({
     title: "是否Windows",
     helper: "如果是Windows主机，请勾选此项\n并且需要windows[安装OpenSSH](https://certd.docmirror.cn/guide/use/host/windows.html)",
     component: {

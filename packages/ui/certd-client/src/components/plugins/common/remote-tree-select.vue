@@ -1,30 +1,7 @@
 <template>
   <div class="remote-select">
     <div class="flex flex-row">
-      <a-select class="remote-select-input" show-search :filter-option="filterOption" :options="optionsRef" :value="value" v-bind="attrs" @click="onClick" @update:value="emit('update:value', $event)">
-        <template #dropdownRender="{ menuNode: menu }">
-          <template v-if="search">
-            <div class="flex w-full" style="padding: 4px 8px">
-              <a-input ref="inputRef" v-model:value="searchKeyRef" class="flex-1" allow-clear placeholder="查询关键字" @keydown.enter="doSearch" />
-              <a-button class="ml-2" :loading="loading" type="text" @click="doSearch">
-                <template #icon>
-                  <search-outlined />
-                </template>
-                查询
-              </a-button>
-            </div>
-            <div v-if="hasError" class="helper p-2" :class="{ error: hasError }">
-              {{ message }}
-            </div>
-            <a-divider style="margin: 4px 0" />
-          </template>
-          <v-nodes :vnodes="menu" />
-
-          <div v-if="pager === true" class="pager text-center p-5">
-            <a-pagination v-model:current="pagerRef.pageNo" simple :total="pagerRef.total" :page-size="pagerRef.pageSize" @change="onPageChange" />
-          </div>
-        </template>
-      </a-select>
+      <a-tree-select class="remote-tree-select-input" :tree-data="optionsRef" :value="value" tree-checkable allow-clear v-bind="attrs" @click="onClick" @update:value="emit('update:value', $event)"> </a-tree-select>
       <div class="ml-5">
         <fs-button :loading="loading" title="刷新选项" icon="ion:refresh-outline" @click="refreshOptions"></fs-button>
       </div>
@@ -40,19 +17,7 @@ import { defineComponent, inject, ref, useAttrs, watch, Ref } from "vue";
 import { PluginDefine } from "@certd/pipeline";
 
 defineOptions({
-  name: "RemoteSelect",
-});
-
-const VNodes = defineComponent({
-  props: {
-    vnodes: {
-      type: Object,
-      required: true,
-    },
-  },
-  render() {
-    return this.vnodes;
-  },
+  name: "RemoteTreeSelect",
 });
 
 const props = defineProps<
@@ -88,6 +53,7 @@ const pagerRef: Ref = ref({
   current: 1,
 });
 const getOptions = async () => {
+  debugger;
   if (loading.value) {
     return;
   }
@@ -166,10 +132,6 @@ const getOptions = async () => {
   } finally {
     loading.value = false;
   }
-};
-
-const filterOption = (input: string, option: any) => {
-  return option.label.toLowerCase().includes(input.toLowerCase()) || String(option.value).toLowerCase().includes(input.toLowerCase());
 };
 
 async function onClick() {

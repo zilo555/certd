@@ -219,6 +219,7 @@ export default {
     triggerCronHelper:
       "Click the button above to choose a daily execution time.\nIt is recommended to trigger once per day. The task will be skipped if the certificate has not expired and will not be executed repeatedly.",
     notificationTitle: "Failure Notification",
+    notificationWhen: "Notification Timing",
     notificationHelper: "Get real-time alerts when the task fails",
     groupIdTitle: "Pipeline Group",
   },
