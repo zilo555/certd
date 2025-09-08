@@ -12,6 +12,7 @@ import { utils } from "/@/utils";
 import { cloneDeep, merge } from "lodash-es";
 import { useI18n } from "/src/locales";
 export interface SettingState {
+  skipReset?: boolean; // 注销登录时，不清空此store的状态
   sysPublic?: SysPublicSetting;
   installInfo?: {
     siteId: string;
@@ -64,6 +65,7 @@ const defaultSiteInfo: SiteInfo = {
 export const useSettingStore = defineStore({
   id: "app.setting",
   state: (): SettingState => ({
+    skipReset: true,
     plusInfo: {
       isPlus: false,
       vipType: "free",
