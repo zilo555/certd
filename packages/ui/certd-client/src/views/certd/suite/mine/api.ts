@@ -9,7 +9,8 @@ export type SuiteValue = {
 export type SuiteDetail = {
   enabled?: boolean;
   suites?: any[];
-  addons?: any[];
+  suiteList?: any[];
+  addonList?: any[];
   expiresTime?: number;
   pipelineCount?: SuiteValue;
   domainCount?: SuiteValue;
