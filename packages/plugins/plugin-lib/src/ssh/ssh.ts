@@ -543,8 +543,16 @@ export class SshClient {
           }
         }
 
-        if (isLinux && options.stopOnError !== false) {
-          script = "set -e\n" + script;
+        if (isLinux) {
+          if (options.connectConf.scriptType == "bash") {
+            script = "#!/usr/bin/env bash \n" + script;
+          } else if (options.connectConf.scriptType == "sh") {
+            script = "#!/bin/sh\n" + script;
+          }
+
+          if (options.connectConf.scriptType != "fish" && options.stopOnError !== false) {
+            script = "set -e\n" + script;
+          }
         }
 
         return await conn.exec(script as string, { throwOnStdErr });
