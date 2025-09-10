@@ -20,6 +20,10 @@
                 </template>
               </a-input-password>
             </a-form-item>
+
+            <a-form-item required name="captcha">
+              <captcha v-model:model-value="formState.captcha"></captcha>
+            </a-form-item>
           </template>
         </a-tab-pane>
         <a-tab-pane v-if="sysPublicSettings.smsLoginEnabled === true" key="sms" :tab="t('authentication.smsTab')">
@@ -111,6 +115,7 @@ export default defineComponent({
       imgCode: "",
       smsCode: "",
       randomStr: "",
+      captcha: {},
     });
 
     const rules = {

@@ -6,12 +6,13 @@ import {RoleService} from '../../sys/authority/service/role-service.js';
 import {UserEntity} from '../../sys/authority/entity/user.js';
 import {SysSettingsService} from '@certd/lib-server';
 import {SysPrivateSettings} from '@certd/lib-server';
-import {cache, utils} from '@certd/basic';
+import { cache, logger, utils } from "@certd/basic";
 import {LoginErrorException} from '@certd/lib-server/dist/basic/exception/login-error-exception.js';
 import {CodeService} from '../../basic/service/code-service.js';
 import {TwoFactorService} from "../../mine/service/two-factor-service.js";
 import {UserSettingsService} from '../../mine/service/user-settings-service.js';
 import {isPlus} from "@certd/plus-core";
+import { AddonService } from "@certd/lib-server/dist/user/addon/service/addon-service.js";
 
 /**
  * 系统用户
@@ -35,6 +36,8 @@ export class LoginService {
   userSettingsService: UserSettingsService;
   @Inject()
   twoFactorService: TwoFactorService;
+  @Inject()
+  addonService: AddonService;
 
   checkIsBlocked(username: string) {
     const blockDurationKey = `login_block_duration:${username}`;
@@ -96,6 +99,31 @@ export class LoginService {
     }
     throw new LoginErrorException(errorMessage, leftTimes);
   }
+
+  async doCaptchaValidate(opts:{form:any}){
+
+    const pubSetting = await this.sysSettingsService.getPublicSettings()
+
+    if (pubSetting.captchaEnabled) {
+      const prvSetting = await this.sysSettingsService.getPrivateSettings()
+
+      const addon = await this.addonService.getById(prvSetting.captchaAddonId,0)
+      if (!addon) {
+        logger.warn('验证码插件还未配置，忽略验证码校验')
+        return true
+      }
+      if (addon.addonType !==  pubSetting.captchaType) {
+        logger.warn('验证码插件类型错误，忽略验证码校验')
+        return true
+      }
+
+      return await addon.onValidate(opts.form)
+    }
+
+    return true
+
+  }
+
 
 
   async loginBySmsCode(req: { mobile: string; phoneCode: string; smsCode: string; randomStr: string }) {

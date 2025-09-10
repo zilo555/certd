@@ -46,6 +46,10 @@ export type SysPublicSetting = {
   aiChatEnabled?: boolean;
 
   showRunStrategy?: boolean;
+
+  captchaEnabled?: boolean;
+  captchaType?: number;
+  captchaAddonId?: number;
 };
 export type SuiteSetting = {
   enabled?: boolean;

@@ -30,6 +30,12 @@ export class SysPublicSettings extends BaseSettings {
   mpsNo?: string;
   robots?: boolean = true;
   aiChatEnabled = true;
+
+
+  //验证码是否开启
+  captchaEnabled = false;
+  //验证码类型
+  captchaType?: string;
 }
 
 export class SysPrivateSettings extends BaseSettings {
@@ -43,6 +49,9 @@ export class SysPrivateSettings extends BaseSettings {
   httpProxy? = '';
   dnsResultOrder? = '';
   commonCnameEnabled?: boolean = true;
+
+  //验证码配置id
+  captchaAddonId?: number;
 
   sms?: {
     type?: string;
@@ -206,5 +215,4 @@ export class SysSafeSetting extends BaseSettings {
     autoHiddenTimes: 5,
   };
 }
-
 

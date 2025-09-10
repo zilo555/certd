@@ -22,6 +22,7 @@ export class LoginController extends BaseController {
     @Body(ALL)
     user: any
   ) {
+    await this.loginService.doCaptchaValidate({form:user})
     const token = await this.loginService.loginByPassword(user);
     this.writeTokenCookie(token);
     return this.ok(token);

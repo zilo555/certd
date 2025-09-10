@@ -69,9 +69,15 @@ export class Registry<T = any> {
     return this.storage;
   }
 
-  getDefineList() {
+  getDefineList(prefix?: string) {
     let list = [];
+    if (prefix) {
+      prefix = prefix + ":";
+    }
     for (const key in this.storage) {
+      if (prefix && !key.startsWith(prefix)) {
+        continue;
+      }
       const define = this.getDefine(key);
       if (define) {
         if (define?.deprecated) {
@@ -90,7 +96,10 @@ export class Registry<T = any> {
     return list;
   }
 
-  getDefine(key: string) {
+  getDefine(key: string, prefix?: string) {
+    if (prefix) {
+      key = prefix + ":" + key;
+    }
     const item = this.storage[key];
     if (!item) {
       return;
