@@ -107,7 +107,6 @@ export default defineConfig({
                     text: "常见问题",
                     items: [
                         {text: "QA", link: "/guide/qa/use.md"},
-                        {text: "常见报错处理", link: "/guide/qa/"},
                         {text: "群晖证书部署", link: "/guide/use/synology/"},
                         {text: "腾讯云密钥获取", link: "/guide/use/tencent/"},
                         {text: "连接windows主机", link: "/guide/use/host/windows.md"},
