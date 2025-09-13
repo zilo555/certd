@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.20](https://github.com/certd/certd/compare/v1.36.19...v1.36.20) (2025-09-13)
+
+### Bug Fixes
+
+* 修复商业版退出登录后，丢失站点个性化设置的bug ([d75dd05](https://github.com/certd/certd/commit/d75dd058d65c85f80c49e1fa7a910e6c6f08e824))
+* 修复授权类型和名称字段排到最后的bug ([43b7977](https://github.com/certd/certd/commit/43b79778ea9034065f6a15af3296274315597c6b))
+* 修复证书监控某些情况下报 options.lookup不能为null的bug ([d2ecfe5](https://github.com/certd/certd/commit/d2ecfe5491b2639eb30b5cae293af6062d58bb9f))
+* 修复证书手动托管时新上传的证书无效的bug ([506385e](https://github.com/certd/certd/commit/506385e5a2600887fe30854e0713583caaa2e689))
+* 修复secret patch 类型多了type：的bug ([d04f383](https://github.com/certd/certd/commit/d04f3831611011a90ec0594724b9694490d5edd0))
+
+### Performance Improvements
+
+* 登录支持极验验证码 ([370db62](https://github.com/certd/certd/commit/370db62bf0aece241859244927beabba32d6a257))
+* 登录注册、找回密码都支持极验验证码和图片验证码 ([7bdde68](https://github.com/certd/certd/commit/7bdde68ecea29fe2c570fd3cb082139db6c93d93))
+* 优化加量包展示效果 ([3c65f37](https://github.com/certd/certd/commit/3c65f37d84177ba107d4a6462648af12d2fc4b7a))
+* 证书到期剩余天数进度条根据实际证书有效期计算 ([#528](https://github.com/certd/certd/issues/528)) nicheng-he ([2d4586b](https://github.com/certd/certd/commit/2d4586b1c42c39f97d2a95b9453cca4bc8bfbe61))
+* add preferred chain option ([#519](https://github.com/certd/certd/issues/519))  @ZeroClover  ([902359f](https://github.com/certd/certd/commit/902359f24ed12eee4f9b65178f1d6a60378351d2))
+* ssh配置增加脚本类型设置，bash还是sh ([ae41c60](https://github.com/certd/certd/commit/ae41c6038b27c9476e64a2402a8daf247c38a5b6))
+* start.sh增加sudo ([b7271d7](https://github.com/certd/certd/commit/b7271d7a464773a1bf87d7d1f24d933ba0f86915))
+
 ## [1.36.19](https://github.com/certd/certd/compare/v1.36.18...v1.36.19) (2025-09-05)
 
 ### Bug Fixes
