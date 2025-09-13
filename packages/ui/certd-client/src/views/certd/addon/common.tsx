@@ -6,6 +6,7 @@ import { Modal } from "ant-design-vue";
 import { mitter } from "/@/utils/util.mitt";
 import { useI18n } from "/src/locales";
 import * as pipelineApi from "/@/views/certd/pipeline/api";
+import { getAddonTypeDefine } from "/@/views/certd/addon/api";
 
 export function addonProvide(api: any) {
   provide("addonApi", api);
@@ -104,7 +105,7 @@ export function getCommonColumnDefine(crudExpose: any, typeRef: any, api: any, a
     //   },
     // },
     type: {
-      title: t("certd.notificationType"),
+      title: t("certd.addonType"),
       type: "dict-select",
       dict: addonTypeDictRef,
       search: {
@@ -138,7 +139,7 @@ export function getCommonColumnDefine(crudExpose: any, typeRef: any, api: any, a
             );
           },
         },
-        rules: [{ required: true, message: t("certd.selectNotificationType") }],
+        rules: [{ required: true, message: t("certd.addonTypeSelect") }],
         valueChange: {
           immediate: true,
           async handle({ value, mode, form, immediate }) {
@@ -173,14 +174,14 @@ export function getCommonColumnDefine(crudExpose: any, typeRef: any, api: any, a
       },
     } as ColumnCompositionProps,
     name: {
-      title: t("certd.notificationName"),
+      title: t("certd.addonName"),
       search: {
         show: true,
       },
       type: ["text"],
       form: {
         rules: [{ required: true, message: t("certd.enterName") }],
-        helper: t("certd.helperNotificationName"),
+        helper: t("certd.addonNameHelper"),
       },
       column: {
         width: 200,
@@ -196,6 +197,9 @@ export function getCommonColumnDefine(crudExpose: any, typeRef: any, api: any, a
         ],
       }),
       form: {
+        show: computed(() => {
+          return getAddonTypeDefine(addonType)?.showDefault ?? false;
+        }),
         value: false,
         rules: [{ required: true, message: t("certd.selectIsDefault") }],
         order: 999,
@@ -203,6 +207,9 @@ export function getCommonColumnDefine(crudExpose: any, typeRef: any, api: any, a
       column: {
         align: "center",
         width: 100,
+        show: computed(() => {
+          return getAddonTypeDefine(addonType)?.showDefault ?? false;
+        }),
         component: {
           name: "a-switch",
           vModel: "checked",
@@ -210,6 +217,7 @@ export function getCommonColumnDefine(crudExpose: any, typeRef: any, api: any, a
             return value === true;
           }),
           on: {
+            // @ts-ignore
             change({ row }) {
               Modal.confirm({
                 title: t("certd.prompt"),
@@ -226,12 +234,12 @@ export function getCommonColumnDefine(crudExpose: any, typeRef: any, api: any, a
           },
         },
       },
-    } as ColumnCompositionProps,
+    },
     test: {
       title: t("certd.test"),
       form: {
         show: compute(({ form }) => {
-          return !!form.type;
+          return !!form.type && currentDefine.value?.showTest === true;
         }),
         component: {
           name: "api-test",

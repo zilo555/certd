@@ -5,22 +5,24 @@ import { ICaptchaAddon } from "../api.js";
 @IsAddon({
   addonType:"captcha",
   name: 'geetest',
-  title: '极验验证码',
+  title: '极验验证码v4',
   desc: '',
+  showTest:false,
 })
 export class GeeTestCaptcha extends BaseAddon implements ICaptchaAddon{
 
   @AddonInput({
-    title: 'captchaId',
+    title: '验证ID',
     component: {
       placeholder: 'captchaId',
     },
+    helper:"[极验验证码v4](https://console.geetest.com/sensbot/management) -> 创建业务模块 -> 新增业务场景",
     required: true,
   })
   captchaId = '';
 
   @AddonInput({
-    title: 'captchaKey',
+    title: '验证Key',
     component: {
       placeholder: 'captchaKey',
     },

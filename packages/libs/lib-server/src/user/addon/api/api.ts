@@ -23,6 +23,7 @@ export type AddonDefine = Registrable & {
   input?: {
     [key: string]: AddonInputDefine;
   };
+  showTest?: boolean;
 };
 
 export type AddonInstanceConfig = {

@@ -127,3 +127,16 @@ export function createAddonApi(opts: { from: any; addonType: string }) {
     },
   };
 }
+
+export const AddonTypeDefines = {
+  captcha: {
+    name: "captcha",
+    title: "验证码",
+    showDefault: false,
+    showTest: false,
+  },
+};
+
+export function getAddonTypeDefine(addonType: string) {
+  return AddonTypeDefines[addonType];
+}

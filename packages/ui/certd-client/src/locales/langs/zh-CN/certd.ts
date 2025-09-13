@@ -695,7 +695,10 @@ export default {
   setAsDefault: "设为默认",
   disabledLabel: "禁用",
   confirmToggleStatus: "确定要{action}吗？",
-
+  addonType: "类型",
+  addonName: "名称",
+  addonNameHelper: "随意填写，相同类型助于区分即可",
+  addonTypeSelect: "请选择",
   template: {
     title: "流水线模版",
     edit: "流水线模版编辑",
@@ -717,7 +720,12 @@ export default {
 
       captchaEnabled: "启用登录验证码",
       captchaHelper: "登录时是否启用验证码",
-      captchaType: "验证码类型",
+      captchaType: "验证码配置",
+
+      baseSetting: "基本设置",
+      registerSetting: "注册设置",
+      safeSetting: "安全设置",
+      paymentSetting: "支付设置",
     },
   },
   modal: {

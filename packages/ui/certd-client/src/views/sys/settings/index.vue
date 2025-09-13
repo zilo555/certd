@@ -5,17 +5,17 @@
     <!--    </template>-->
     <div class="sys-settings-body md:p-5">
       <a-tabs :active-key="activeKey" type="card" class="sys-settings-tabs" @update:active-key="onChange">
-        <a-tab-pane key="base" tab="基本设置">
+        <a-tab-pane key="base" :tab="t('certd.sys.setting.baseSetting')">
           <SettingBase v-if="activeKey === 'base'" />
         </a-tab-pane>
-        <a-tab-pane key="register" tab="注册设置">
+        <a-tab-pane key="register" :tab="t('certd.sys.setting.registerSetting')">
           <SettingRegister v-if="activeKey === 'register'" />
         </a-tab-pane>
-        <a-tab-pane v-if="settingsStore.isComm" key="payment" tab="支付设置">
+        <a-tab-pane v-if="settingsStore.isComm" key="payment" :tab="t('certd.sys.setting.paymentSetting')">
           <SettingPayment v-if="activeKey === 'payment'" />
         </a-tab-pane>
-        <a-tab-pane key="save" tab="安全设置">
-          <SettingSafe v-if="activeKey === 'save'" />
+        <a-tab-pane key="safe" :tab="t('certd.sys.setting.safeSetting')">
+          <SettingSafe v-if="activeKey === 'safe'" />
         </a-tab-pane>
       </a-tabs>
     </div>
@@ -30,9 +30,11 @@ import SettingSafe from "/@/views/sys/settings/tabs/safe.vue";
 import { useRoute, useRouter } from "vue-router";
 import { ref } from "vue";
 import { useSettingStore } from "/@/store/settings";
+import { useI18n } from "/@/locales";
 defineOptions({
   name: "SysSettings",
 });
+const { t } = useI18n();
 const settingsStore = useSettingStore();
 const activeKey = ref("base");
 const route = useRoute();

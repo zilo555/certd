@@ -707,6 +707,10 @@ export default {
     pipeline: "Pipeline",
   },
 
+  addonType: "Type",
+  addonName: "Name",
+  addonNameHelper: "Fill freely, helps to distinguish when multiple same type exist",
+  addonTypeSelect: "Select type",
   sys: {
     setting: {
       showRunStrategy: "Show RunStrategy",
@@ -714,7 +718,12 @@ export default {
 
       captchaEnabled: "Enable Login Captcha",
       captchaHelper: "Whether to enable captcha verification for login",
-      captchaType: "Captcha Type",
+      captchaType: "Captcha Setting",
+
+      baseSetting: "Base Settings",
+      registerSetting: "Register Settings",
+      safeSetting: "Safe Settings",
+      paymentSetting: "Payment Settings",
     },
   },
   modal: {

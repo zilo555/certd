@@ -8,6 +8,7 @@ import { nanoid } from "nanoid";
   name: 'image',
   title: '图片验证码',
   desc: '',
+  showTest:false,
 })
 export class ImageCaptcha extends BaseAddon implements ICaptchaAddon{
 
