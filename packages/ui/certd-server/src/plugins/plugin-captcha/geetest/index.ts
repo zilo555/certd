@@ -1,4 +1,4 @@
-import { AddonInput, BaseAddon, IsAddon } from "@certd/lib-server/dist/user/addon/api/index.js";
+import { AddonInput, BaseAddon, IsAddon } from "@certd/lib-server";
 import crypto from 'crypto';
 import { ICaptchaAddon } from "../api.js";
 @IsAddon({
