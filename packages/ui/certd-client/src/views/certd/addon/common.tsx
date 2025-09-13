@@ -123,6 +123,7 @@ export function getCommonColumnDefine(crudExpose: any, typeRef: any, api: any, a
         },
       },
       form: {
+        order: -22,
         component: {
           disabled: false,
           showSearch: true,
@@ -180,6 +181,7 @@ export function getCommonColumnDefine(crudExpose: any, typeRef: any, api: any, a
       },
       type: ["text"],
       form: {
+        order: -2,
         rules: [{ required: true, message: t("certd.enterName") }],
         helper: t("certd.addonNameHelper"),
       },

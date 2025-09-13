@@ -87,6 +87,7 @@ export function getCommonColumnDefine(crudExpose: any, typeRef: any, api: any) {
         order: -1,
       },
       form: {
+        order: -1,
         component: {
           disabled: false,
           showSearch: true,
