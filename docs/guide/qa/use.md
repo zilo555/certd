@@ -18,3 +18,16 @@
 ```
 "detail": too many certificates (5) already issued for this exact set of idantifiers in the last 168hm0s
 ```
+
+## ssl.com报错  CAA record does not include ssl.com which is required to issue the certificate
+ssl.com申请证书要求必须设置CAA记录，表示允许ssl.com为该域名颁发证书
+请按如下格式添加CAA记录
+
+| 示例    | 类型  | 域名前缀 | flag      | tag    | 值                    |
+|-------|-----| -- |-----------|--------|----------------------|
+| 顶级域名  | CAA | @ | 0         | issue  |  "ssl.com"  （注意有双引号） |
+| 一级泛域名 | CAA | * | 0         | issue/issuewild | "ssl.com" |
+| 固定子域名 | CAA | sub |  0         | issue  |"ssl.com" |
+
+
+
