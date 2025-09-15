@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.21](https://github.com/certd/certd/compare/v1.36.20...v1.36.21) (2025-09-15)
+
+### Bug Fixes
+
+* 修复导入插件对话框无法打开的bug，修复插件编辑页面打开多个代码编辑器消失的bug ([e5a080a](https://github.com/certd/certd/commit/e5a080aebe0d2f3e3c0f86bf863f75069c1bf7ab))
+* 修复ssl.com报EMAILADDRESS数量不对的bug ([c560cc5](https://github.com/certd/certd/commit/c560cc5adda6e15bf3a8865d874042550a6c2688))
+
 ## [1.36.20](https://github.com/certd/certd/compare/v1.36.19...v1.36.20) (2025-09-13)
 
 ### Bug Fixes
