@@ -25,7 +25,7 @@
           <a-tab-pane key="editor" tab="元数据"> </a-tab-pane>
         </a-tabs>
         <div class="metadata-body">
-          <code-editor id="metadata" v-model:model-value="plugin.metadata" language="yaml" @save="doSave"></code-editor>
+          <code-editor :id="`metadata_${idRef}`" v-model:model-value="plugin.metadata" language="yaml" @save="doSave"></code-editor>
         </div>
       </div>
       <div class="script">
@@ -33,7 +33,7 @@
           <a-tab-pane key="script" tab="脚本"> </a-tab-pane>
         </a-tabs>
         <div class="script-body">
-          <code-editor id="content" v-model:model-value="plugin.content" language="javascript" @save="doSave"></code-editor>
+          <code-editor :id="`content_${idRef}`" v-model:model-value="plugin.content" language="javascript" @save="doSave"></code-editor>
         </div>
       </div>
     </div>
@@ -83,6 +83,7 @@ function initFormOptions() {
 }
 initFormOptions();
 
+const idRef = ref(route.query.id);
 async function getPlugin() {
   const id = route.query.id;
   const pluginObj = await api.GetObj(id);

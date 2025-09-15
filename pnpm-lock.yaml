@@ -214,7 +214,7 @@ importers:
         version: link:../basic
       '@certd/plus-core':
         specifier: ^1.36.20
-        version: link:../../pro/plus-core
+        version: 1.36.20
       dayjs:
         specifier: ^1.11.7
         version: 1.11.13
@@ -468,7 +468,7 @@ importers:
         version: link:../../core/pipeline
       '@certd/plus-core':
         specifier: ^1.36.20
-        version: link:../../pro/plus-core
+        version: 1.36.20
       '@midwayjs/cache':
         specifier: ~3.14.0
         version: 3.14.0
@@ -792,19 +792,19 @@ importers:
   packages/pro/commercial-core:
     dependencies:
       '@certd/basic':
-        specifier: ^1.36.20
+        specifier: ^1.36.19
         version: link:../../core/basic
       '@certd/lib-server':
-        specifier: ^1.36.20
+        specifier: ^1.36.19
         version: link:../../libs/lib-server
       '@certd/pipeline':
-        specifier: ^1.36.20
+        specifier: ^1.36.19
         version: link:../../core/pipeline
       '@certd/plugin-plus':
-        specifier: ^1.36.20
+        specifier: ^1.36.19
         version: link:../plugin-plus
       '@certd/plus-core':
-        specifier: ^1.36.20
+        specifier: ^1.36.19
         version: link:../plus-core
       '@midwayjs/core':
         specifier: ~3.20.3
@@ -889,22 +889,22 @@ importers:
         specifier: ^1.0.2
         version: 1.0.3
       '@certd/basic':
-        specifier: ^1.36.20
+        specifier: ^1.36.19
         version: link:../../core/basic
       '@certd/lib-k8s':
-        specifier: ^1.36.20
+        specifier: ^1.36.19
         version: link:../../libs/lib-k8s
       '@certd/pipeline':
-        specifier: ^1.36.20
+        specifier: ^1.36.19
         version: link:../../core/pipeline
       '@certd/plugin-cert':
-        specifier: ^1.36.20
+        specifier: ^1.36.19
         version: link:../../plugins/plugin-cert
       '@certd/plugin-lib':
-        specifier: ^1.36.20
+        specifier: ^1.36.19
         version: link:../../plugins/plugin-lib
       '@certd/plus-core':
-        specifier: ^1.36.20
+        specifier: ^1.36.19
         version: link:../plus-core
       ali-oss:
         specifier: ^6.21.0
@@ -1007,7 +1007,7 @@ importers:
   packages/pro/plus-core:
     dependencies:
       '@certd/basic':
-        specifier: ^1.36.20
+        specifier: ^1.36.19
         version: link:../../core/basic
       dayjs:
         specifier: ^1.11.7
@@ -1493,7 +1493,7 @@ importers:
         version: link:../../core/basic
       '@certd/commercial-core':
         specifier: ^1.36.20
-        version: link:../../pro/commercial-core
+        version: 1.36.20(better-sqlite3@11.10.0)(encoding@0.1.13)(mysql2@3.14.1)(pg@8.16.0)(reflect-metadata@0.2.2)(ts-node@10.9.2(@types/node@18.19.100)(typescript@5.8.3))
       '@certd/cv4pve-api-javascript':
         specifier: ^8.4.2
         version: 8.4.2
@@ -1523,10 +1523,10 @@ importers:
         version: link:../../plugins/plugin-lib
       '@certd/plugin-plus':
         specifier: ^1.36.20
-        version: link:../../pro/plugin-plus
+        version: 1.36.20(encoding@0.1.13)
       '@certd/plus-core':
         specifier: ^1.36.20
-        version: link:../../pro/plus-core
+        version: 1.36.20
       '@huaweicloud/huaweicloud-sdk-cdn':
         specifier: ^3.1.120
         version: 3.1.149
@@ -2769,8 +2769,17 @@ packages:
   '@better-scroll/zoom@2.5.1':
     resolution: {integrity: sha512-aGvFY5ooeZWS4RcxQLD+pGLpQHQxpPy0sMZV3yadcd2QK53PK9gS4Dp+BYfRv8lZ4/P2LoNEhr6Wq1DN6+uPlA==}
 
+  '@certd/commercial-core@1.36.20':
+    resolution: {integrity: sha512-5l+Kev+y8t1KVPzbTzHVEfXHJtVdBtwIIM8i7VEfui0Mnrq896d7g/kUVFsOVZ1QnPlJnT17qYX8jaP9eSzr8Q==}
+
   '@certd/cv4pve-api-javascript@8.4.2':
     resolution: {integrity: sha512-udGce7ewrVl4DmZvX+17PjsnqsdDIHEDatr8QP0AVrY2p+8JkaSPW4mXCKiLGf82C9K2+GXgT+qNIqgW7tfF9Q==}
+
+  '@certd/plugin-plus@1.36.20':
+    resolution: {integrity: sha512-aaslvdORKbEnxWXoGHUKOlP5KlD0+OLhK9fVyPBdgu5s1cZ3tOx0lB+Bu2XXZex1fZvEQ6/qn0A9QI55UmIicA==}
+
+  '@certd/plus-core@1.36.20':
+    resolution: {integrity: sha512-Ji8nsVuNNfDSsSUnL+Rm3kwXt+3WymoMq2UGVNNzJC1ywnCaLkbaBEBawHqnZJLriwt3sidtZy2PYRP6VLo5bA==}
 
   '@certd/vue-js-cron-core@6.0.3':
     resolution: {integrity: sha512-kqzoAMhYz9j6FGNWEODRYtt4NpUEUwjpkU89z5WVg2tCtOcI5VhwyUGOd8AxiBCRfd6PtXvzuqw85PaOps9wrQ==}
@@ -15466,11 +15475,83 @@ snapshots:
     dependencies:
       '@better-scroll/core': 2.5.1
 
+  '@certd/commercial-core@1.36.20(better-sqlite3@11.10.0)(encoding@0.1.13)(mysql2@3.14.1)(pg@8.16.0)(reflect-metadata@0.2.2)(ts-node@10.9.2(@types/node@18.19.100)(typescript@5.8.3))':
+    dependencies:
+      '@certd/basic': link:packages/core/basic
+      '@certd/lib-server': link:packages/libs/lib-server
+      '@certd/pipeline': link:packages/core/pipeline
+      '@certd/plugin-plus': 1.36.20(encoding@0.1.13)
+      '@certd/plus-core': 1.36.20
+      '@midwayjs/core': 3.20.4
+      '@midwayjs/koa': 3.20.5
+      '@midwayjs/logger': 3.4.2
+      '@midwayjs/typeorm': 3.20.4
+      alipay-sdk: 4.14.0
+      dayjs: 1.11.13
+      typeorm: 0.3.24(better-sqlite3@11.10.0)(mysql2@3.14.1)(pg@8.16.0)(reflect-metadata@0.2.2)(ts-node@10.9.2(@types/node@18.19.100)(typescript@5.8.3))
+      wechatpay-node-v3: 2.2.1
+    transitivePeerDependencies:
+      - '@google-cloud/spanner'
+      - '@sap/hana-client'
+      - babel-plugin-macros
+      - better-sqlite3
+      - encoding
+      - hdb-pool
+      - ioredis
+      - mongodb
+      - mssql
+      - mysql2
+      - oracledb
+      - pg
+      - pg-native
+      - pg-query-stream
+      - proxy-agent
+      - redis
+      - reflect-metadata
+      - sql.js
+      - sqlite3
+      - supports-color
+      - ts-node
+      - typeorm-aurora-data-api-driver
+
   '@certd/cv4pve-api-javascript@8.4.2':
     dependencies:
       debug: 4.4.1(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
+
+  '@certd/plugin-plus@1.36.20(encoding@0.1.13)':
+    dependencies:
+      '@alicloud/pop-core': 1.8.0
+      '@baiducloud/sdk': 1.0.3
+      '@certd/basic': link:packages/core/basic
+      '@certd/lib-k8s': link:packages/libs/lib-k8s
+      '@certd/pipeline': link:packages/core/pipeline
+      '@certd/plugin-cert': link:packages/plugins/plugin-cert
+      '@certd/plugin-lib': link:packages/plugins/plugin-lib
+      '@certd/plus-core': 1.36.20
+      ali-oss: 6.23.0
+      baidu-aip-sdk: 4.16.16
+      basic-ftp: 5.0.5
+      cos-nodejs-sdk-v5: 2.14.7
+      crypto-js: 4.2.0
+      dayjs: 1.11.13
+      form-data: 4.0.2
+      https-proxy-agent: 7.0.6
+      js-yaml: 4.1.0
+      jsencrypt: 3.3.2
+      jsrsasign: 11.1.0
+      qiniu: 7.14.0
+      tencentcloud-sdk-nodejs: 4.1.112(encoding@0.1.13)
+    transitivePeerDependencies:
+      - encoding
+      - proxy-agent
+      - supports-color
+
+  '@certd/plus-core@1.36.20':
+    dependencies:
+      '@certd/basic': link:packages/core/basic
+      dayjs: 1.11.13
 
   '@certd/vue-js-cron-core@6.0.3':
     dependencies:

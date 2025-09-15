@@ -1,12 +1,14 @@
 import * as api from "/@/views/sys/plugin/api";
-import { useFormWrapper } from "@fast-crud/fast-crud";
+import { dict, useFormWrapper } from "@fast-crud/fast-crud";
 import { useI18n } from "/@/locales";
-import { Modal, notification } from "ant-design-vue";
+import { notification } from "ant-design-vue";
+
 export function usePluginImport() {
   const { openCrudFormDialog } = useFormWrapper();
   const { t } = useI18n();
 
-  async function openImportDialog({ crudExpose }) {
+  async function openImportDialog(opts: any) {
+    const { crudExpose } = opts;
     function createCrudOptions() {
       return {
         crudOptions: {
