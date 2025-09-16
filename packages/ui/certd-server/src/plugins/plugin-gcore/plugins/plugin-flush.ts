@@ -22,6 +22,7 @@ export class GcoreflushPlugin extends AbstractTaskPlugin {
   certName!: string;
   @TaskInput({
     title: '证书ID',
+    required:true,
   })
   ssl_id!: string;
 
@@ -66,6 +67,10 @@ export class GcoreflushPlugin extends AbstractTaskPlugin {
 
   async execute(): Promise<void> {
     const { cert, accessId } = this;
+
+    if(!this.ssl_id){
+      throw new Error('请填写要刷新的证书ID');
+    }
     const access = (await this.getAccess(accessId)) as GcoreAccess;
     let otp = null;
     if (access.otpkey) {
