@@ -7,6 +7,13 @@ import * as https from "node:https";
 import { merge } from "lodash-es";
 import { safePromise } from "./util.promise.js";
 import fs from "fs";
+
+const errorMap: Record<string, string> = {
+  "ssl3_get_record:wrong version number": "http协议错误，服务端要求http协议，请检查是否使用了https请求",
+  "getaddrinfo EAI_AGAIN": "无法解析域名，请检查网络连接或dns配置，更换docker-compose.yaml中dns配置",
+  "self-signed certificate": "目标站点为自签名证书，请勾选忽略证书校验",
+};
+
 export class HttpError extends Error {
   status?: number;
   statusText?: string;
@@ -21,11 +28,12 @@ export class HttpError extends Error {
     super(error.message || error.response?.statusText);
 
     const message = error?.message;
-    if (message && typeof message === "string") {
-      if (message.indexOf && message.indexOf("ssl3_get_record:wrong version number") >= 0) {
-        this.message = `${message}(http协议错误，服务端要求http协议，请检查是否使用了https请求)`;
-      } else if (message.indexOf("getaddrinfo EAI_AGAIN") >= 0) {
-        this.message = `${message}(无法解析域名，请检查网络连接或dns配置，更换docker-compose.yaml中dns配置)`;
+    if (message && typeof message === "string" && message.indexOf) {
+      for (const key in errorMap) {
+        if (message.indexOf(key) > -1) {
+          this.message = `${this.message}(${errorMap[key]})`;
+          break;
+        }
       }
     }
 
