@@ -375,7 +375,7 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
   async onInit() {
     let eab: EabAccess = null;
 
-    if (this.sslProvider !== "letsencrypt") {
+    if (this.sslProvider && this.sslProvider !== "letsencrypt") {
       if (this.sslProvider === "google" && this.googleAccessId) {
         this.logger.info("当前正在使用 google服务账号授权获取EAB");
         const googleAccess = await this.getAccess(this.googleAccessId);
