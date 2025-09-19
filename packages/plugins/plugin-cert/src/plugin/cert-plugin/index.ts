@@ -38,6 +38,53 @@ export type DomainsVerifyPlanInput = {
   [key: string]: DomainVerifyPlanInput;
 };
 
+const preferredChainConfigs = {
+  letsencrypt: {
+    helper: "如无特殊需求保持默认即可",
+    options: [
+      { value: "ISRG Root X1", label: "ISRG Root X1" },
+      { value: "ISRG Root X2", label: "ISRG Root X2" },
+    ],
+  },
+  google: {
+    helper: "GlobalSign 提供对老旧设备更好的兼容性，但证书链会变长",
+    options: [
+      { value: "GTS Root R1", label: "GTS Root R1" },
+      { value: "GlobalSign", label: "GlobalSign" },
+    ],
+  },
+} as const;
+
+const preferredChainSupportedProviders = Object.keys(preferredChainConfigs);
+
+const preferredChainMergeScript = (() => {
+  const configs = JSON.stringify(preferredChainConfigs);
+  const supportedProviders = JSON.stringify(preferredChainSupportedProviders);
+  const defaultProvider = JSON.stringify(preferredChainSupportedProviders[0]);
+  return `
+    const chainConfigs = ${configs};
+    const supportedProviders = ${supportedProviders};
+    const defaultProvider = ${defaultProvider};
+    const getConfig = (provider)=> chainConfigs[provider] || chainConfigs[defaultProvider];
+    return {
+        show: ctx.compute(({form})=> supportedProviders.includes(form.sslProvider)),
+        component: {
+            options: ctx.compute(({form})=> getConfig(form.sslProvider).options)
+        },
+        helper: ctx.compute(({form})=> getConfig(form.sslProvider).helper),
+        value: ctx.compute(({form})=>{
+            const { options } = getConfig(form.sslProvider);
+            const allowed = options.map(item=>item.value);
+            const current = form.preferredChain;
+            if(allowed.includes(current)){
+                return current;
+            }
+            return allowed[0];
+        })
+    };
+  `;
+})();
+
 @IsTaskPlugin({
   name: "CertApply",
   title: "证书申请（JS版）",
@@ -294,24 +341,14 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
 
   @TaskInput({
     title: "首选链",
-    value: "ISRG Root X1",
     component: {
       name: "a-select",
       vModel: "value",
-      options: [
-        { value: "ISRG Root X1", label: "ISRG Root X1" },
-        { value: "ISRG Root X2", label: "ISRG Root X2" },
-      ],
+      options: preferredChainConfigs.letsencrypt.options,
     },
-    helper: "仅 Let's Encrypt 可选，默认为 ISRG Root X1",
+    helper: preferredChainConfigs.letsencrypt.helper,
     required: false,
-    mergeScript: `
-    return {
-        show: ctx.compute(({form})=>{
-            return form.sslProvider === 'letsencrypt'
-        })
-    }
-    `,
+    mergeScript: preferredChainMergeScript,
   })
   preferredChain!: string;
 
