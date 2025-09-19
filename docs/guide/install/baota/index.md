@@ -21,13 +21,13 @@
 
 #### 2.2 容器编排方式部署
 
-1. 打开`docker-compose.yaml`,整个内容复制下来    
+1. 打开`docker-compose.yaml`,整个内容复制下来
    https://gitee.com/certd/certd/raw/v2/docker/run/docker-compose.yaml
 
 
-然后到宝塔里面进到docker->容器编排->添加容器编排   
-![](./images/1.png)   
-点击确定，等待启动完成   
+然后到宝塔里面进到docker->容器编排->添加容器编排
+![](./images/1.png)
+点击确定，等待启动完成
 ![](./images/2.png)
 
 > certd默认使用sqlite数据库，另外支持`mysql`和`postgresql`数据库，[点我了解如何切换其他数据库](../database)
@@ -35,16 +35,16 @@
 
 ## 二、访问应用
 
-http://ip:7001    
-https://ip:7002     
-默认账号密码    
-admin/123456   
+http://ip:7001
+https://ip:7002
+默认账号密码
+admin/123456
 登录后请及时修改密码
 
 ## 三、如何升级
 宝塔升级certd非常简单
 
-打开容器页面： `docker`->`容器编排`->`左侧选择Certd`->`更新镜像`     
+打开容器页面： `docker`->`容器编排`->`左侧选择Certd`->`更新镜像`
 
 ![img.png](./images/upgrade.png)
 
@@ -80,5 +80,8 @@ admin/123456
 ### 1. 无法访问Certd
 1. 确认服务器的安全规则，是否放开了对应端口
 2. 确认宝塔防火墙是否放开对应端口
-3. 尝试将Certd容器加入宝塔的`bridge`网络 
+3. 尝试将Certd容器加入宝塔的`bridge`网络
 ![](./images/network.png)
+
+### 2. 动态IP无法加白名单问题
+[Nginx代理解决方案](../../use/baota/white_list.md)
