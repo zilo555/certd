@@ -38,6 +38,53 @@ export type DomainsVerifyPlanInput = {
   [key: string]: DomainVerifyPlanInput;
 };
 
+const preferredChainConfigs = {
+  letsencrypt: {
+    helper: "如无特殊需求保持默认即可",
+    options: [
+      { value: "ISRG Root X1", label: "ISRG Root X1" },
+      { value: "ISRG Root X2", label: "ISRG Root X2" },
+    ],
+  },
+  google: {
+    helper: "GlobalSign 提供对老旧设备更好的兼容性，但证书链会变长",
+    options: [
+      { value: "GTS Root R1", label: "GTS Root R1" },
+      { value: "GlobalSign", label: "GlobalSign" },
+    ],
+  },
+} as const;
+
+const preferredChainSupportedProviders = Object.keys(preferredChainConfigs);
+
+const preferredChainMergeScript = (() => {
+  const configs = JSON.stringify(preferredChainConfigs);
+  const supportedProviders = JSON.stringify(preferredChainSupportedProviders);
+  const defaultProvider = JSON.stringify(preferredChainSupportedProviders[0]);
+  return `
+    const chainConfigs = ${configs};
+    const supportedProviders = ${supportedProviders};
+    const defaultProvider = ${defaultProvider};
+    const getConfig = (provider)=> chainConfigs[provider] || chainConfigs[defaultProvider];
+    return {
+        show: ctx.compute(({form})=> supportedProviders.includes(form.sslProvider)),
+        component: {
+            options: ctx.compute(({form})=> getConfig(form.sslProvider).options)
+        },
+        helper: ctx.compute(({form})=> getConfig(form.sslProvider).helper),
+        value: ctx.compute(({form})=>{
+            const { options } = getConfig(form.sslProvider);
+            const allowed = options.map(item=>item.value);
+            const current = form.preferredChain;
+            if(allowed.includes(current)){
+                return current;
+            }
+            return allowed[0];
+        })
+    };
+  `;
+})();
+
 @IsTaskPlugin({
   name: "CertApply",
   title: "证书申请（JS版）",
@@ -89,9 +136,10 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
         { value: "letsencrypt", label: "Let's Encrypt", icon: "simple-icons:letsencrypt" },
         { value: "google", label: "Google", icon: "flat-color-icons:google" },
         { value: "zerossl", label: "ZeroSSL", icon: "emojione:digit-zero" },
+        { value: "sslcom", label: "SSL.com（仅主域名和www免费）", icon: "la:expeditedssl" },
       ],
     },
-    helper: "Let's Encrypt：申请最简单\nGoogle：大厂光环，兼容性好，仅首次需要翻墙获取EAB授权\nZeroSSL：需要EAB授权，无需翻墙",
+    helper: "Let's Encrypt：申请最简单\nGoogle：大厂光环，兼容性好，仅首次需要翻墙获取EAB授权\nZeroSSL：需要EAB授权，无需翻墙\nSSL.com：仅主域名和www免费,必须设置CAA记录",
     required: true,
   })
   sslProvider!: SSLProvider;
@@ -104,7 +152,7 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
     mergeScript: `
     return {
       show: ctx.compute(({form})=>{
-          return form.challengeType === 'dns' 
+          return form.challengeType === 'dns'
       }),
       component:{
         onSelectedChange: ctx.compute(({form})=>{
@@ -137,7 +185,7 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
         })
       },
       show: ctx.compute(({form})=>{
-          return form.challengeType === 'dns' 
+          return form.challengeType === 'dns'
       })
     }
     `,
@@ -195,6 +243,13 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
   zerosslCommonEabAccessId!: number;
 
   @TaskInput({
+    title: "SSL.com公共EAB授权",
+    isSys: true,
+    show: false,
+  })
+  sslcomCommonEabAccessId!: number;
+
+  @TaskInput({
     title: "EAB授权",
     component: {
       name: "access-selector",
@@ -203,11 +258,16 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
     maybeNeed: true,
     required: false,
     helper:
-      "需要提供EAB授权\nZeroSSL：请前往[zerossl开发者中心](https://app.zerossl.com/developer),生成 'EAB Credentials'\n Google:请查看[google获取eab帮助文档](https://certd.docmirror.cn/guide/use/google/)，用过一次后会绑定邮箱，后续复用EAB要用同一个邮箱",
+      "需要提供EAB授权" +
+      "\nZeroSSL：请前往[zerossl开发者中心](https://app.zerossl.com/developer),生成 'EAB Credentials'" +
+      "\nGoogle:请查看[google获取eab帮助文档](https://certd.docmirror.cn/guide/use/google/)，用过一次后会绑定邮箱，后续复用EAB要用同一个邮箱" +
+      "\nSSL.com:[SSL.com账号页面](https://secure.ssl.com/account),然后点击api credentials链接，然后点击编辑按钮，查看Secret key和HMAC key",
     mergeScript: `
     return {
         show: ctx.compute(({form})=>{
-            return (form.sslProvider === 'zerossl' && !form.zerosslCommonEabAccessId) || (form.sslProvider === 'google' && !form.googleCommonEabAccessId)
+            return (form.sslProvider === 'zerossl' && !form.zerosslCommonEabAccessId)
+            || (form.sslProvider === 'google' && !form.googleCommonEabAccessId)
+            || (form.sslProvider === 'sslcom' && !form.sslcomCommonEabAccessId)
         })
     }
     `,
@@ -280,6 +340,19 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
   certProfile!: string;
 
   @TaskInput({
+    title: "首选链",
+    component: {
+      name: "a-select",
+      vModel: "value",
+      options: preferredChainConfigs.letsencrypt.options,
+    },
+    helper: preferredChainConfigs.letsencrypt.helper,
+    required: false,
+    mergeScript: preferredChainMergeScript,
+  })
+  preferredChain!: string;
+
+  @TaskInput({
     title: "使用代理",
     value: false,
     component: {
@@ -339,8 +412,8 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
   async onInit() {
     let eab: EabAccess = null;
 
-    if (this.sslProvider === "google") {
-      if (this.googleAccessId) {
+    if (this.sslProvider && this.sslProvider !== "letsencrypt") {
+      if (this.sslProvider === "google" && this.googleAccessId) {
         this.logger.info("当前正在使用 google服务账号授权获取EAB");
         const googleAccess = await this.getAccess(this.googleAccessId);
         const googleClient = new GoogleClient({
@@ -348,24 +421,19 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
           logger: this.logger,
         });
         eab = await googleClient.getEab();
-      } else if (this.eabAccessId) {
-        this.logger.info("当前正在使用 google EAB授权");
-        eab = await this.getAccess(this.eabAccessId);
-      } else if (this.googleCommonEabAccessId) {
-        this.logger.info("当前正在使用 google 公共EAB授权");
-        eab = await this.getAccess(this.googleCommonEabAccessId, true);
       } else {
-        throw new Error("google需要配置EAB授权或服务账号授权");
-      }
-    } else if (this.sslProvider === "zerossl") {
-      if (this.eabAccessId) {
-        this.logger.info("当前正在使用 zerossl EAB授权");
-        eab = await this.getAccess(this.eabAccessId);
-      } else if (this.zerosslCommonEabAccessId) {
-        this.logger.info("当前正在使用 zerossl 公共EAB授权");
-        eab = await this.getAccess(this.zerosslCommonEabAccessId, true);
-      } else {
-        throw new Error("zerossl需要配置EAB授权");
+        const getEab = async (type: string) => {
+          if (this.eabAccessId) {
+            this.logger.info(`当前正在使用 ${type} EAB授权`);
+            eab = await this.getAccess(this.eabAccessId);
+          } else if (this[`${type}CommonEabAccessId`]) {
+            this.logger.info(`当前正在使用 ${type} 公共EAB授权`);
+            eab = await this.getAccess(this[`${type}CommonEabAccessId`], true);
+          } else {
+            throw new Error(`${type}需要配置EAB授权`);
+          }
+        };
+        await getEab(this.sslProvider);
       }
     }
     this.eab = eab;
@@ -397,12 +465,12 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
 
     const csrInfo = _.merge(
       {
-        country: "CN",
-        state: "GuangDong",
-        locality: "ShengZhen",
-        organization: "CertD Org.",
-        organizationUnit: "IT Department",
-        emailAddress: email,
+        // country: "CN",
+        // state: "GuangDong",
+        // locality: "ShengZhen",
+        // organization: "CertD Org.",
+        // organizationUnit: "IT Department",
+        // emailAddress: email,
       },
       this.csrInfo ? JSON.parse(this.csrInfo) : {}
     );
@@ -430,6 +498,7 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
         isTest: false,
         privateKeyType: this.privateKeyType,
         profile: this.certProfile,
+        preferredChain: this.preferredChain,
       });
 
       const certInfo = this.formatCerts(cert);

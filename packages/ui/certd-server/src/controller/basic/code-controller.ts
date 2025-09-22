@@ -1,8 +1,9 @@
-import { Rule, RuleType } from '@midwayjs/validate';
-import { ALL, Body, Controller, Get, Inject, Post, Provide, Query } from '@midwayjs/core';
-import { BaseController, Constants } from '@certd/lib-server';
-import { CodeService } from '../../modules/basic/service/code-service.js';
-import { EmailService } from '../../modules/basic/service/email-service.js';
+import { Rule, RuleType } from "@midwayjs/validate";
+import { ALL, Body, Controller, Inject, Post, Provide, Query } from "@midwayjs/core";
+import { BaseController, Constants, SysSettingsService } from "@certd/lib-server";
+import { CodeService } from "../../modules/basic/service/code-service.js";
+import { EmailService } from "../../modules/basic/service/email-service.js";
+import { CaptchaService } from "../../modules/basic/service/captcha-service.js";
 
 export class SmsCodeReq {
   @Rule(RuleType.string().required())
@@ -11,11 +12,8 @@ export class SmsCodeReq {
   @Rule(RuleType.string().required())
   mobile: string;
 
-  @Rule(RuleType.string().required().max(10))
-  randomStr: string;
-
-  @Rule(RuleType.string().required().max(4))
-  imgCode: string;
+  @Rule(RuleType.required())
+  captcha: any;
 
   @Rule(RuleType.string())
   verificationType: string;
@@ -25,11 +23,8 @@ export class EmailCodeReq {
   @Rule(RuleType.string().required())
   email: string;
 
-  @Rule(RuleType.string().required().max(10))
-  randomStr: string;
-
-  @Rule(RuleType.string().required().max(4))
-  imgCode: string;
+  @Rule(RuleType.required())
+  captcha: any;
 
   @Rule(RuleType.string())
   verificationType: string;
@@ -48,6 +43,17 @@ export class BasicController extends BaseController {
 
   @Inject()
   emailService: EmailService;
+  @Inject()
+  sysSettingsService: SysSettingsService;
+
+  @Inject()
+  captchaService: CaptchaService;
+
+  @Post('/captcha/get', { summary: Constants.per.guest })
+  async getCaptcha(@Query("captchaAddonId") captchaAddonId:number) {
+      const form = await this.captchaService.getCaptcha(captchaAddonId)
+      return this.ok(form);
+  }
 
   @Post('/sendSmsCode', { summary: Constants.per.guest })
   public async sendSmsCode(
@@ -64,8 +70,8 @@ export class BasicController extends BaseController {
       // opts.verificationCodeLength = 6; //部分厂商这里会设置参数长度这里就不改了
     }
 
-    await this.codeService.checkCaptcha(body.randomStr, body.imgCode);
-    await this.codeService.sendSmsCode(body.phoneCode, body.mobile, body.randomStr, opts);
+    await this.codeService.checkCaptcha(body.captcha);
+    await this.codeService.sendSmsCode(body.phoneCode, body.mobile, opts);
     return this.ok(null);
   }
 
@@ -88,16 +94,10 @@ export class BasicController extends BaseController {
       opts.verificationCodeLength = 6;
     }
 
-    await this.codeService.checkCaptcha(body.randomStr, body.imgCode);
-    await this.codeService.sendEmailCode(body.email, body.randomStr, opts);
+    await this.codeService.checkCaptcha(body.captcha);
+    await this.codeService.sendEmailCode(body.email, opts);
     // 设置缓存内容
     return this.ok(null);
   }
 
-  @Get('/captcha', { summary: Constants.per.guest })
-  public async getCaptcha(@Query('randomStr') randomStr: any) {
-    const captcha = await this.codeService.generateCaptcha(randomStr);
-    this.ctx.res.setHeader('Content-Type', 'image/svg+xml');
-    return captcha.data;
-  }
 }

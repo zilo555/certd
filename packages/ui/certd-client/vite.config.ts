@@ -68,6 +68,7 @@ export default ({ command, mode }) => {
       rollupOptions: {
         plugins: [visualizer()],
       },
+      minify: "esbuild",
     },
     css: {
       preprocessorOptions: {

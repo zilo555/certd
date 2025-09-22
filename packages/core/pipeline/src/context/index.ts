@@ -21,9 +21,9 @@ export type PageRes = {
 export class Pager {
   pageNo: number;
   pageSize: number;
-  constructor(req: PageSearch) {
-    this.pageNo = req.pageNo ?? 1;
-    this.pageSize = req.pageSize || 50;
+  constructor(req?: PageSearch) {
+    this.pageNo = req?.pageNo ?? 1;
+    this.pageSize = req?.pageSize || 50;
   }
 
   getOffset() {

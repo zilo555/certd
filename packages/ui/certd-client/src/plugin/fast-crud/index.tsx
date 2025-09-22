@@ -2,7 +2,7 @@ import { request } from "/src/api/service";
 // import "/src/mock";
 import { ColumnCompositionProps, CrudOptions, FastCrud, PageQuery, PageRes, setLogger, TransformResProps, useColumns, UseCrudProps, UserPageQuery, useTypes, utils } from "@fast-crud/fast-crud";
 import "@fast-crud/fast-crud/dist/style.css";
-import { FsExtendsCopyable, FsExtendsEditor, FsExtendsJson, FsExtendsTime, FsExtendsUploader, FsExtendsInput, FsUploaderS3SignedUrlType, FsUploaderGetAuthContext, FsUploaderAliossSTS } from "@fast-crud/fast-extends";
+import { FsExtendsCopyable, FsExtendsEditor, FsExtendsJson, FsExtendsTime, FsExtendsUploader, FsExtendsInput } from "@fast-crud/fast-extends";
 import "@fast-crud/fast-extends/dist/style.css";
 import UiAntdv from "@fast-crud/ui-antdv4";
 import "@fast-crud/ui-antdv4/dist/style.css";
@@ -12,6 +12,9 @@ import { App } from "vue";
 import { notification } from "ant-design-vue";
 import { usePreferences } from "/@/vben/preferences";
 import { LocalStorage } from "/@/utils/util.storage";
+
+import { FsEditorCode } from "@fast-crud/editor-code";
+import "@fast-crud/editor-code/dist/style.css"
 
 class ColumnSizeSaver {
   save: (key: string, size: number) => void;
@@ -272,6 +275,7 @@ function install(app: App, options: any = {}) {
   app.use(FsExtendsTime);
   app.use(FsExtendsCopyable);
   app.use(FsExtendsInput);
+  app.use(FsEditorCode);
 
   const { addTypes, getType } = useTypes();
   //此处演示修改官方字段类型

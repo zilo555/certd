@@ -3,6 +3,42 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.21](https://github.com/certd/certd/compare/v1.36.20...v1.36.21) (2025-09-15)
+
+### Bug Fixes
+
+* 修复导入插件对话框无法打开的bug，修复插件编辑页面打开多个代码编辑器消失的bug ([e5a080a](https://github.com/certd/certd/commit/e5a080aebe0d2f3e3c0f86bf863f75069c1bf7ab))
+
+## [1.36.20](https://github.com/certd/certd/compare/v1.36.19...v1.36.20) (2025-09-13)
+
+### Bug Fixes
+
+* 修复商业版退出登录后，丢失站点个性化设置的bug ([d75dd05](https://github.com/certd/certd/commit/d75dd058d65c85f80c49e1fa7a910e6c6f08e824))
+* 修复授权类型和名称字段排到最后的bug ([43b7977](https://github.com/certd/certd/commit/43b79778ea9034065f6a15af3296274315597c6b))
+
+### Performance Improvements
+
+* 登录支持极验验证码 ([370db62](https://github.com/certd/certd/commit/370db62bf0aece241859244927beabba32d6a257))
+* 登录注册、找回密码都支持极验验证码和图片验证码 ([7bdde68](https://github.com/certd/certd/commit/7bdde68ecea29fe2c570fd3cb082139db6c93d93))
+* 优化加量包展示效果 ([3c65f37](https://github.com/certd/certd/commit/3c65f37d84177ba107d4a6462648af12d2fc4b7a))
+* 证书到期剩余天数进度条根据实际证书有效期计算 ([#528](https://github.com/certd/certd/issues/528)) nicheng-he ([2d4586b](https://github.com/certd/certd/commit/2d4586b1c42c39f97d2a95b9453cca4bc8bfbe61))
+
+## [1.36.19](https://github.com/certd/certd/compare/v1.36.18...v1.36.19) (2025-09-05)
+
+### Bug Fixes
+
+* 修复批量流水线执行时日志显示错乱的问题 ([4372adc](https://github.com/certd/certd/commit/4372adc703b9a4c785664054ab2a533626d815a8))
+* 修复远程数据选择无法过滤的bug ([6cbb073](https://github.com/certd/certd/commit/6cbb0739f8428d51b0712f718fe4d236cc087cf9))
+* 修复mysql下购买套餐加量包无效的bug ([c26ad4c](https://github.com/certd/certd/commit/c26ad4c8075f0606d45b8da13915737968d6191a))
+
+### Performance Improvements
+
+* 创建证书时支持选择通知时机 ([0e96bfd](https://github.com/certd/certd/commit/0e96bfdfa377824d204e72923d1176408ae6b300))
+* 商业版隐藏文档相关链接 ([4443a1c](https://github.com/certd/certd/commit/4443a1c0308fa6b95a05efd73d15d24b65d641c9))
+* 商业版隐藏文档相关链接 ([db89561](https://github.com/certd/certd/commit/db8956148083bc4f988226ccf719940d08158a27))
+* 支持根据id更新证书（证书Id不变接口），不过该接口为白名单功能，普通腾讯云账户无法使用 ([fe9c4f3](https://github.com/certd/certd/commit/fe9c4f3391ff07c01dd9a252225f69a129c39050))
+* 子域名托管说明 ([39a0223](https://github.com/certd/certd/commit/39a02235cf4416bb5bd1acd3831241efeaa2f602))
+
 ## [1.36.18](https://github.com/certd/certd/compare/v1.36.17...v1.36.18) (2025-08-28)
 
 ### Bug Fixes

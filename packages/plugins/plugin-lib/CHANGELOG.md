@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.21](https://github.com/certd/certd/compare/v1.36.20...v1.36.21) (2025-09-15)
+
+**Note:** Version bump only for package @certd/plugin-lib
+
+## [1.36.20](https://github.com/certd/certd/compare/v1.36.19...v1.36.20) (2025-09-13)
+
+### Performance Improvements
+
+* ssh配置增加脚本类型设置，bash还是sh ([ae41c60](https://github.com/certd/certd/commit/ae41c6038b27c9476e64a2402a8daf247c38a5b6))
+
+## [1.36.19](https://github.com/certd/certd/compare/v1.36.18...v1.36.19) (2025-09-05)
+
+### Performance Improvements
+
+* ssh 增加超时断开连接，默认10分钟超时 ([c24a040](https://github.com/certd/certd/commit/c24a040c19cacafc79228d7a7649af93837d94a1))
+
 ## [1.36.18](https://github.com/certd/certd/compare/v1.36.17...v1.36.18) (2025-08-28)
 
 ### Performance Improvements

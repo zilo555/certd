@@ -238,9 +238,12 @@ export class UserService extends BaseService<UserEntity> {
 
   async forgotPassword(
     data: {
-      type: ForgotPasswordType; input?: string, phoneCode?: string,
-      randomStr: string, imgCode:string, validateCode: string,
-      password: string, confirmPassword: string,
+      type: ForgotPasswordType;
+      input?: string,
+      phoneCode?: string,
+      validateCode: string,
+      password: string,
+      confirmPassword: string,
     }
   ) {
     if(!data.type) {
@@ -249,7 +252,13 @@ export class UserService extends BaseService<UserEntity> {
     if(data.password !== data.confirmPassword) {
       throw new CommonException('两次输入的密码不一致');
     }
-    const user = await this.findOne([{ [data.type]: data.input }]);
+    const where :any= {
+      [data.type]: data.input,
+    };
+    if (data.type === 'mobile' ) {
+      where.phoneCode = data.phoneCode ??  '86';
+    }
+    const user = await this.findOne({ [data.type]: data.input });
     console.log('user', user)
     if(!user) {
       throw new CommonException('用户不存在');

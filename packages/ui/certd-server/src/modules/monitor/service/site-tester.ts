@@ -80,7 +80,11 @@ export class SiteTester {
       }
     }
 
-    options.agent = new https.Agent({ keepAlive: false, lookup: customLookup });
+    const agentOptions:any = { keepAlive: false };
+    if (customLookup) {
+      agentOptions.lookup = customLookup
+    }
+    options.agent = new https.Agent(agentOptions);
 
     // 创建 HTTPS 请求
     const requestPromise = safePromise((resolve, reject) => {

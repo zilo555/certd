@@ -50,7 +50,7 @@ export type CertInfo = {
   one?: string;
   p7b?: string;
 };
-export type SSLProvider = "letsencrypt" | "google" | "zerossl";
+export type SSLProvider = "letsencrypt" | "google" | "zerossl" | "sslcom";
 export type PrivateKeyType = "rsa_1024" | "rsa_2048" | "rsa_3072" | "rsa_4096" | "ec_256" | "ec_384" | "ec_521";
 type AcmeServiceOptions = {
   userContext: IContext;
@@ -329,8 +329,9 @@ export class AcmeService {
     isTest?: boolean;
     privateKeyType?: string;
     profile?: string;
+    preferredChain?: string;
   }): Promise<CertInfo> {
-    const { email, isTest, csrInfo, dnsProvider, domainsVerifyPlan, profile } = options;
+    const { email, isTest, csrInfo, dnsProvider, domainsVerifyPlan, profile, preferredChain } = options;
     const client: acme.Client = await this.getAcmeClient(email, isTest);
 
     let domains = options.domains;
@@ -373,6 +374,7 @@ export class AcmeService {
         commonName,
         ...csrInfo,
         altNames,
+        // emailAddress: email,
       },
       privateKey
     );
@@ -403,6 +405,7 @@ export class AcmeService {
       },
       signal: this.options.signal,
       profile,
+      preferredChain,
     });
 
     const crtString = crt.toString();

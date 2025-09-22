@@ -1,6 +1,6 @@
 # Certd
 
-[English](./README_en.md) | [中文](./README.md)
+中文 | [English](./README_en.md)
 
 Certd® 是一个免费的全自动证书管理系统，让你的网站证书永不过期。   
 后缀d取自linux守护进程的命名风格，意为证书守护进程
@@ -152,7 +152,7 @@ https://certd.handfree.work/
 
 ## 八、捐赠
 ************************
-支持开源，为爱发电，我已入驻爱发电   
+支持开源，为爱发电，我已入驻爱发电
 https://afdian.com/a/greper
 
 发电权益：
@@ -171,6 +171,7 @@ https://afdian.com/a/greper
 | 自动部署插件  | 阿里云CDN、腾讯云、七牛CDN、主机部署、宝塔、1Panel等大部分插件 | 群晖                             |
 | 通知      | 邮件通知、自定义webhook                       | 邮件免配置、企微、钉钉、飞书、anpush、server酱等 |
 
+************************
 
 ************************
 

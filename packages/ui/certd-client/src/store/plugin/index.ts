@@ -167,7 +167,7 @@ export const usePluginStore = defineStore({
     },
     async clear() {
       this.group = null;
-      this.originGroup = null
+      this.originGroup = null;
     },
     async getList(): Promise<PluginDefine[]> {
       await this.init();

@@ -103,6 +103,10 @@ export class DeployCertToTencentEO extends AbstractTaskPlugin {
       logger: this.logger,
     });
 
+    if (this.cert == null){
+      throw new Error('请选择域名证书');
+    }
+
     let tencentCertId = this.cert as string;
     if (typeof this.cert !== 'string') {
       const certReader = new CertReader(this.cert);

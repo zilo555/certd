@@ -25,8 +25,8 @@
                 </template>
               </a-input-password>
             </a-form-item>
-            <a-form-item has-feedback name="imgCode" label="图片验证码" :rules="rules.imgCode">
-              <image-code v-model:value="formState.imgCode" v-model:random-str="formState.randomStr"></image-code>
+            <a-form-item has-feedback name="captcha" label="验证码" :rules="rules.captcha">
+              <CaptchaInput v-model:model-value="formState.captcha"></CaptchaInput>
             </a-form-item>
           </template>
         </a-tab-pane>
@@ -61,12 +61,12 @@
               </a-input-password>
             </a-form-item>
 
-            <a-form-item has-feedback name="imgCode" label="图片验证码" :rules="rules.imgCode">
-              <image-code v-model:value="formState.imgCode" v-model:random-str="formState.randomStr"></image-code>
+            <a-form-item has-feedback name="imgCode" label="验证码" :rules="rules.imgCode">
+              <CaptchaInput v-model:model-value="formState.captchaForEmail"></CaptchaInput>
             </a-form-item>
 
             <a-form-item has-feedback name="validateCode" :rules="rules.validateCode" label="邮件验证码">
-              <email-code v-model:value="formState.validateCode" :img-code="formState.imgCode" :email="formState.email" :random-str="formState.randomStr" />
+              <email-code v-model:value="formState.validateCode" :captcha="formState.captchaForEmail" :email="formState.email" />
             </a-form-item>
           </template>
         </a-tab-pane>
@@ -86,13 +86,13 @@
 import { defineComponent, reactive, ref, toRaw } from "vue";
 import { useUserStore } from "/src/store/user";
 import { utils } from "@fast-crud/fast-crud";
-import ImageCode from "/@/views/framework/login/image-code.vue";
 import EmailCode from "./email-code.vue";
 import { useSettingStore } from "/@/store/settings";
 import { notification } from "ant-design-vue";
+import CaptchaInput from "/@/components/captcha/captcha-input.vue";
 export default defineComponent({
   name: "RegisterPage",
-  components: { EmailCode, ImageCode },
+  components: { CaptchaInput, EmailCode },
   setup() {
     const settingsStore = useSettingStore();
     const registerType = ref("email");
@@ -114,7 +114,7 @@ export default defineComponent({
       username: "",
       password: "",
       confirmPassword: "",
-      randomStr: "",
+      captcha: null,
     });
 
     const rules = {
@@ -159,17 +159,6 @@ export default defineComponent({
         },
       ],
 
-      imgCode: [
-        {
-          required: true,
-          message: "请输入图片验证码",
-        },
-        {
-          min: 4,
-          max: 4,
-          message: "请输入4位图片验证码",
-        },
-      ],
       smsCode: [
         {
           required: true,
@@ -198,9 +187,8 @@ export default defineComponent({
           type: registerType.value,
           password: formState.password,
           username: formState.username,
-          imgCode: formState.imgCode,
-          randomStr: formState.randomStr,
           email: formState.email,
+          captcha: formState.captcha,
           validateCode: formState.validateCode,
         }) as any
       );
@@ -214,16 +202,7 @@ export default defineComponent({
       formRef.value.resetFields();
     };
 
-    const imageCodeUrl = ref();
-    function resetImageCode() {
-      let url = "/basic/code";
-      imageCodeUrl.value = url + "?t=" + new Date().getTime();
-    }
-    resetImageCode();
-
     return {
-      resetImageCode,
-      imageCodeUrl,
       formState,
       formRef,
       rules,

@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.21](https://github.com/certd/certd/compare/v1.36.20...v1.36.21) (2025-09-15)
+
+### Bug Fixes
+
+* 修复ssl.com报EMAILADDRESS数量不对的bug ([c560cc5](https://github.com/certd/certd/commit/c560cc5adda6e15bf3a8865d874042550a6c2688))
+
+## [1.36.20](https://github.com/certd/certd/compare/v1.36.19...v1.36.20) (2025-09-13)
+
+### Bug Fixes
+
+* 修复证书手动托管时新上传的证书无效的bug ([506385e](https://github.com/certd/certd/commit/506385e5a2600887fe30854e0713583caaa2e689))
+
+### Performance Improvements
+
+* 证书到期剩余天数进度条根据实际证书有效期计算 ([#528](https://github.com/certd/certd/issues/528)) nicheng-he ([2d4586b](https://github.com/certd/certd/commit/2d4586b1c42c39f97d2a95b9453cca4bc8bfbe61))
+* add preferred chain option ([#519](https://github.com/certd/certd/issues/519))  @ZeroClover  ([902359f](https://github.com/certd/certd/commit/902359f24ed12eee4f9b65178f1d6a60378351d2))
+
+## [1.36.19](https://github.com/certd/certd/compare/v1.36.18...v1.36.19) (2025-09-05)
+
+### Performance Improvements
+
+* 支持ssl.com证书颁发机构 ([27b6dfa](https://github.com/certd/certd/commit/27b6dfa4d2ab3bddd284c3a34511a72e1a513a4c))
+* 子域名托管说明 ([39a0223](https://github.com/certd/certd/commit/39a02235cf4416bb5bd1acd3831241efeaa2f602))
+
 ## [1.36.18](https://github.com/certd/certd/compare/v1.36.17...v1.36.18) (2025-08-28)
 
 ### Performance Improvements

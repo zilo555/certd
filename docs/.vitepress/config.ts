@@ -107,7 +107,6 @@ export default defineConfig({
                     text: "常见问题",
                     items: [
                         {text: "QA", link: "/guide/qa/use.md"},
-                        {text: "常见报错处理", link: "/guide/qa/"},
                         {text: "群晖证书部署", link: "/guide/use/synology/"},
                         {text: "腾讯云密钥获取", link: "/guide/use/tencent/"},
                         {text: "连接windows主机", link: "/guide/use/host/windows.md"},
@@ -120,6 +119,7 @@ export default defineConfig({
                         {text: "邮箱配置", link: "/guide/use/email/index.md"},
                         {text: "IPv6支持", link: "/guide/use/setting/ipv6.md"},
                         {text: "ESXi", link: "/guide/use/ESXi/index.md"},
+                        {text: "宝塔动态IP白名单", link: "/guide/use/baota/white_list.md"},
                         {text: "子域名托管", link: "/guide/use/cert/subdomain.md"},
                     ]
                 },

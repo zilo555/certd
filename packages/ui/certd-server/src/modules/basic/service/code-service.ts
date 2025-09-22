@@ -8,6 +8,7 @@ import { EmailService } from './email-service.js';
 import { AccessService } from '@certd/lib-server';
 import { AccessSysGetter } from '@certd/lib-server';
 import { isComm } from '@certd/plus-core';
+import { CaptchaService } from "./captcha-service.js";
 
 // {data: '<svg.../svg>', text: 'abcd'}
 /**
@@ -23,44 +24,19 @@ export class CodeService {
   @Inject()
   accessService: AccessService;
 
-  /**
-   */
-  async generateCaptcha(randomStr) {
-    const svgCaptcha = await import('svg-captcha');
-    const c = svgCaptcha.create();
-    //{data: '<svg.../svg>', text: 'abcd'}
-    const imgCode = c.text; // = RandomUtil.randomStr(4, true);
-    cache.set('imgCode:' + randomStr, imgCode, {
-      ttl: 2 * 60 * 1000, //过期时间 2分钟
-    });
-    return c;
-  }
+  @Inject()
+  captchaService: CaptchaService;
 
-  async getCaptchaText(randomStr) {
-    return cache.get('imgCode:' + randomStr);
-  }
 
-  async removeCaptcha(randomStr) {
-    cache.delete('imgCode:' + randomStr);
-  }
 
-  async checkCaptcha(randomStr: string, userCaptcha: string) {
-    const code = await this.getCaptchaText(randomStr);
-    if (code == null) {
-      throw new Error('验证码已过期');
-    }
-    if (code.toLowerCase() !== userCaptcha.toLowerCase()) {
-      throw new Error('验证码不正确');
-    }
-    await this.removeCaptcha(randomStr);
-    return true;
+  async checkCaptcha(body:any) {
+    return await this.captchaService.doValidate({form:body})
   }
   /**
    */
   async sendSmsCode(
     phoneCode = '86',
     mobile: string,
-    randomStr: string,
     opts?: {
       duration?: number,
       verificationType?: string,
@@ -69,9 +45,6 @@ export class CodeService {
   ) {
     if (!mobile) {
       throw new Error('手机号不能为空');
-    }
-    if (!randomStr) {
-      throw new Error('randomStr不能为空');
     }
 
     const verificationCodeLength =  Math.floor(Math.max(Math.min(opts?.verificationCodeLength || 4, 8), 4));
@@ -96,7 +69,7 @@ export class CodeService {
       phoneCode,
     });
 
-    const key = this.buildSmsCodeKey(phoneCode, mobile, randomStr, opts?.verificationType);
+    const key = this.buildSmsCodeKey(phoneCode, mobile,  opts?.verificationType);
     cache.set(key, smsCode, {
       ttl: duration * 60 * 1000, //5分钟
     });
@@ -106,12 +79,10 @@ export class CodeService {
   /**
    *
    * @param email 收件邮箱
-   * @param randomStr
    * @param opts title标题 content内容模版 duration有效时间单位分钟 verificationType验证类型
    */
   async sendEmailCode(
     email: string,
-    randomStr: string,
     opts?: {
       title?: string,
       content?: string,
@@ -123,9 +94,7 @@ export class CodeService {
     if (!email) {
       throw new Error('Email不能为空');
     }
-    if (!randomStr) {
-      throw new Error('randomStr不能为空');
-    }
+
 
     let siteTitle = 'Certd';
     if (isComm()) {
@@ -149,7 +118,7 @@ export class CodeService {
       receivers: [email],
     });
 
-    const key = this.buildEmailCodeKey(email, randomStr, opts?.verificationType);
+    const key = this.buildEmailCodeKey(email,opts?.verificationType);
     cache.set(key, code, {
       ttl: duration * 60 * 1000, //5分钟
     });
@@ -159,31 +128,32 @@ export class CodeService {
   /**
    * checkSms
    */
-  async checkSmsCode(opts: { mobile: string; phoneCode: string; smsCode: string; randomStr: string; verificationType?: string; throwError: boolean; errorNum?: number }) {
-    const key = this.buildSmsCodeKey(opts.phoneCode, opts.mobile, opts.randomStr, opts.verificationType);
-    if (isDev()) {
+  async checkSmsCode(opts: { mobile: string; phoneCode: string; smsCode: string;  verificationType?: string; throwError: boolean; maxErrorCount?: number }) {
+    const key = this.buildSmsCodeKey(opts.phoneCode, opts.mobile, opts.verificationType);
+    return this.checkValidateCode("sms",key, opts.smsCode, opts.throwError, opts.maxErrorCount);
+
+  }
+
+  buildSmsCodeKey(phoneCode: string, mobile: string, verificationType?: string) {
+    return ['sms', verificationType, phoneCode, mobile].filter(item => !!item).join(':');
+  }
+
+  buildEmailCodeKey(email: string, verificationType?: string) {
+    return ['email', verificationType, email].filter(item => !!item).join(':');
+  }
+  checkValidateCode(type:string,key: string, userCode: string, throwError = true, maxErrorCount = 3) {
+    // 记录异常次数key
+    if (isDev() && userCode==="1234567") {
       return true;
     }
-    return this.checkValidateCode(key, opts.smsCode, opts.throwError, opts.errorNum);
-  }
-
-  buildSmsCodeKey(phoneCode: string, mobile: string, randomStr: string, verificationType?: string) {
-    return ['sms', verificationType, phoneCode, mobile, randomStr].filter(item => !!item).join(':');
-  }
-
-  buildEmailCodeKey(email: string, randomStr: string, verificationType?: string) {
-    return ['email', verificationType, email, randomStr].filter(item => !!item).join(':');
-  }
-  checkValidateCode(key: string, userCode: string, throwError = true, errorNum = 3) {
-    // 记录异常次数key
     const err_num_key = key + ':err_num';
-    //验证图片验证码
+    //验证邮件验证码
     const code = cache.get(key);
     if (code == null || code !== userCode) {
       let maxRetryCount = false;
-      if (!!code && errorNum > 0) {
+      if (!!code && maxErrorCount > 0) {
         const err_num = cache.get(err_num_key) || 0
-        if(err_num >= errorNum - 1) {
+        if(err_num >= maxErrorCount - 1) {
           maxRetryCount = true;
           cache.delete(key);
           cache.delete(err_num_key);
@@ -194,7 +164,8 @@ export class CodeService {
         }
       }
       if (throwError) {
-        throw new CodeErrorException(!maxRetryCount ? '验证码错误': '验证码错误请获取新的验证码');
+        const label = type ==='sms' ? '手机' : '邮箱';
+        throw new CodeErrorException(!maxRetryCount ? `${label}验证码错误`: `${label}验证码错误请获取新的验证码`);
       }
       return false;
     }
@@ -203,9 +174,9 @@ export class CodeService {
     return true;
   }
 
-  checkEmailCode(opts: { randomStr: string; validateCode: string; email: string; verificationType?: string; throwError: boolean; errorNum?: number }) {
-    const key = this.buildEmailCodeKey(opts.email, opts.randomStr, opts.verificationType);
-    return this.checkValidateCode(key, opts.validateCode, opts.throwError, opts.errorNum);
+  checkEmailCode(opts: { validateCode: string; email: string; verificationType?: string; throwError: boolean; maxErrorCount?: number }) {
+    const key = this.buildEmailCodeKey(opts.email,  opts.verificationType);
+    return this.checkValidateCode('email',key, opts.validateCode, opts.throwError, opts.maxErrorCount);
   }
 
   compile(templateString: string) {

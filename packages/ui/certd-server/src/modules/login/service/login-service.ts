@@ -1,17 +1,22 @@
-import {Config, Inject, Provide, Scope, ScopeEnum} from '@midwayjs/core';
-import {UserService} from '../../sys/authority/service/user-service.js';
-import jwt from 'jsonwebtoken';
-import {AuthException, CommonException, Need2FAException} from "@certd/lib-server";
-import {RoleService} from '../../sys/authority/service/role-service.js';
-import {UserEntity} from '../../sys/authority/entity/user.js';
-import {SysSettingsService} from '@certd/lib-server';
-import {SysPrivateSettings} from '@certd/lib-server';
-import {cache, utils} from '@certd/basic';
-import {LoginErrorException} from '@certd/lib-server/dist/basic/exception/login-error-exception.js';
-import {CodeService} from '../../basic/service/code-service.js';
-import {TwoFactorService} from "../../mine/service/two-factor-service.js";
-import {UserSettingsService} from '../../mine/service/user-settings-service.js';
-import {isPlus} from "@certd/plus-core";
+import { Config, Inject, Provide, Scope, ScopeEnum } from "@midwayjs/core";
+import { UserService } from "../../sys/authority/service/user-service.js";
+import jwt from "jsonwebtoken";
+import {
+  AuthException,
+  CommonException,
+  Need2FAException,
+  SysPrivateSettings,
+  SysSettingsService
+} from "@certd/lib-server";
+import { RoleService } from "../../sys/authority/service/role-service.js";
+import { UserEntity } from "../../sys/authority/entity/user.js";
+import { cache, utils } from "@certd/basic";
+import { LoginErrorException } from "@certd/lib-server/dist/basic/exception/login-error-exception.js";
+import { CodeService } from "../../basic/service/code-service.js";
+import { TwoFactorService } from "../../mine/service/two-factor-service.js";
+import { UserSettingsService } from "../../mine/service/user-settings-service.js";
+import { isPlus } from "@certd/plus-core";
+import { AddonService } from "@certd/lib-server/dist/user/addon/service/addon-service.js";
 
 /**
  * 系统用户
@@ -35,6 +40,8 @@ export class LoginService {
   userSettingsService: UserSettingsService;
   @Inject()
   twoFactorService: TwoFactorService;
+  @Inject()
+  addonService: AddonService;
 
   checkIsBlocked(username: string) {
     const blockDurationKey = `login_block_duration:${username}`;
@@ -106,13 +113,12 @@ export class LoginService {
       mobile: req.mobile,
       phoneCode: req.phoneCode,
       smsCode: req.smsCode,
-      randomStr: req.randomStr,
       throwError: false,
     });
 
     const {mobile, phoneCode} = req;
     if (!smsChecked) {
-      this.addErrorTimes(mobile, '验证码错误');
+      this.addErrorTimes(mobile, '手机验证码错误');
     }
     let info = await this.userService.findOne({phoneCode, mobile: mobile});
     if (info == null) {

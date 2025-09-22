@@ -76,9 +76,26 @@ export class TencentSslClient {
     return res;
   }
 
-  async DescribeCertificates(params: any) {
+  async DescribeHostUploadUpdateRecordDetail(params: any) {
     const client = await this.getSslClient();
-    const res = await client.DescribeCertificates(params);
+    const res = await client.request("DescribeHostUploadUpdateRecordDetail", params);
+    this.checkRet(res);
+    return res;
+  }
+
+  async UploadUpdateCertificateInstance(params: any) {
+    const client = await this.getSslClient();
+    const res = await client.request("UploadUpdateCertificateInstance", params);
+    this.checkRet(res);
+    return res;
+  }
+
+  async DescribeCertificates(params: { Limit?: number; Offset?: number; SearchKey?: string }) {
+    const client = await this.getSslClient();
+    const res = await client.DescribeCertificates({
+      ExpirationSort: "ASC",
+      ...params,
+    });
     this.checkRet(res);
     return res;
   }

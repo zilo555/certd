@@ -1,6 +1,6 @@
 # Certd
 
-[English](./README_en.md) | [中文](./README.md)
+[中文](./README.md) | English
 
 Certd® is a free, fully automated certificate management system that ensures your website certificates never expire. The suffix 'd' is inspired by the naming convention of Linux daemons, representing a certificate daemon.
 
@@ -134,6 +134,8 @@ You can also add the author as a friend.
 | QR Code | <img height="230" src="./docs/guide/contact/images/me.png"> |
 
 ## 8. Donation
+************************
+ [![Sponsor](https://img.shields.io/badge/Sponsor-%E2%9D%A4-red)](https://github.com/sponsors/greper)
 ************************
 Support open-source projects and contribute with love. I've joined Afdian.
 https://afdian.com/a/greper

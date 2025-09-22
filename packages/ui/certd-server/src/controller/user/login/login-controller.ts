@@ -1,8 +1,9 @@
-import { ALL, Body, Controller, Inject, Post, Provide } from '@midwayjs/core';
-import { LoginService } from '../../../modules/login/service/login-service.js';
-import { BaseController, Constants, SysPublicSettings, SysSettingsService } from '@certd/lib-server';
-import { CodeService } from '../../../modules/basic/service/code-service.js';
-import { checkComm } from '@certd/plus-core';
+import { ALL, Body, Controller, Inject, Post, Provide } from "@midwayjs/core";
+import { LoginService } from "../../../modules/login/service/login-service.js";
+import { AddonService, BaseController, Constants, SysPublicSettings, SysSettingsService } from "@certd/lib-server";
+import { CodeService } from "../../../modules/basic/service/code-service.js";
+import { checkComm } from "@certd/plus-core";
+import { CaptchaService } from "../../../modules/basic/service/captcha-service.js";
 
 /**
  */
@@ -16,13 +17,22 @@ export class LoginController extends BaseController {
 
   @Inject()
   sysSettingsService: SysSettingsService;
+  @Inject()
+  addonService: AddonService;
+
+  @Inject()
+  captchaService: CaptchaService;
 
   @Post('/login', { summary: Constants.per.guest })
   public async login(
     @Body(ALL)
-    user: any
+    body: any
   ) {
-    const token = await this.loginService.loginByPassword(user);
+   const settings = await this.sysSettingsService.getPublicSettings()
+    if (settings.captchaEnabled === true) {
+      await this.captchaService.doValidate({form:body.captcha,must:false,captchaAddonId:settings.captchaAddonId})
+    }
+    const token = await this.loginService.loginByPassword(body);
     this.writeTokenCookie(token);
     return this.ok(token);
   }

@@ -3,6 +3,56 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.21](https://github.com/certd/certd/compare/v1.36.20...v1.36.21) (2025-09-15)
+
+### Bug Fixes
+
+* 修复导入插件对话框无法打开的bug，修复插件编辑页面打开多个代码编辑器消失的bug ([e5a080a](https://github.com/certd/certd/commit/e5a080aebe0d2f3e3c0f86bf863f75069c1bf7ab))
+* 修复ssl.com报EMAILADDRESS数量不对的bug ([c560cc5](https://github.com/certd/certd/commit/c560cc5adda6e15bf3a8865d874042550a6c2688))
+
+## [1.36.20](https://github.com/certd/certd/compare/v1.36.19...v1.36.20) (2025-09-13)
+
+### Bug Fixes
+
+* 修复商业版退出登录后，丢失站点个性化设置的bug ([d75dd05](https://github.com/certd/certd/commit/d75dd058d65c85f80c49e1fa7a910e6c6f08e824))
+* 修复授权类型和名称字段排到最后的bug ([43b7977](https://github.com/certd/certd/commit/43b79778ea9034065f6a15af3296274315597c6b))
+* 修复证书监控某些情况下报 options.lookup不能为null的bug ([d2ecfe5](https://github.com/certd/certd/commit/d2ecfe5491b2639eb30b5cae293af6062d58bb9f))
+* 修复证书手动托管时新上传的证书无效的bug ([506385e](https://github.com/certd/certd/commit/506385e5a2600887fe30854e0713583caaa2e689))
+* 修复secret patch 类型多了type：的bug ([d04f383](https://github.com/certd/certd/commit/d04f3831611011a90ec0594724b9694490d5edd0))
+
+### Performance Improvements
+
+* 登录支持极验验证码 ([370db62](https://github.com/certd/certd/commit/370db62bf0aece241859244927beabba32d6a257))
+* 登录注册、找回密码都支持极验验证码和图片验证码 ([7bdde68](https://github.com/certd/certd/commit/7bdde68ecea29fe2c570fd3cb082139db6c93d93))
+* 优化加量包展示效果 ([3c65f37](https://github.com/certd/certd/commit/3c65f37d84177ba107d4a6462648af12d2fc4b7a))
+* 证书到期剩余天数进度条根据实际证书有效期计算 ([#528](https://github.com/certd/certd/issues/528)) nicheng-he ([2d4586b](https://github.com/certd/certd/commit/2d4586b1c42c39f97d2a95b9453cca4bc8bfbe61))
+* add preferred chain option ([#519](https://github.com/certd/certd/issues/519))  @ZeroClover  ([902359f](https://github.com/certd/certd/commit/902359f24ed12eee4f9b65178f1d6a60378351d2))
+* ssh配置增加脚本类型设置，bash还是sh ([ae41c60](https://github.com/certd/certd/commit/ae41c6038b27c9476e64a2402a8daf247c38a5b6))
+* start.sh增加sudo ([b7271d7](https://github.com/certd/certd/commit/b7271d7a464773a1bf87d7d1f24d933ba0f86915))
+
+## [1.36.19](https://github.com/certd/certd/compare/v1.36.18...v1.36.19) (2025-09-05)
+
+### Bug Fixes
+
+* 前置任务输出不存在时输出警告提示 ([b59052c](https://github.com/certd/certd/commit/b59052cc43b7b070fabd8b8e914e4c2a5e0ad61c))
+* 修复批量流水线执行时日志显示错乱的问题 ([4372adc](https://github.com/certd/certd/commit/4372adc703b9a4c785664054ab2a533626d815a8))
+* 修复远程数据选择无法过滤的bug ([6cbb073](https://github.com/certd/certd/commit/6cbb0739f8428d51b0712f718fe4d236cc087cf9))
+* 修复mysql下购买套餐加量包无效的bug ([c26ad4c](https://github.com/certd/certd/commit/c26ad4c8075f0606d45b8da13915737968d6191a))
+
+### Performance Improvements
+
+* 创建证书时支持选择通知时机 ([0e96bfd](https://github.com/certd/certd/commit/0e96bfdfa377824d204e72923d1176408ae6b300))
+* 创建k8s secret 时设置type为tls ([79ebabf](https://github.com/certd/certd/commit/79ebabfcfb9e5a534049c84f5f1a642b357fc856))
+* 去掉宝塔url后面的斜杠 ([8a0c2b9](https://github.com/certd/certd/commit/8a0c2b9b13628da750c25757e0cb8ed3038775ba))
+* 商业版隐藏文档相关链接 ([4443a1c](https://github.com/certd/certd/commit/4443a1c0308fa6b95a05efd73d15d24b65d641c9))
+* 商业版隐藏文档相关链接 ([db89561](https://github.com/certd/certd/commit/db8956148083bc4f988226ccf719940d08158a27))
+* 增加健康检查探针  /health/liveliness 和 /health/readiness ([44019e1](https://github.com/certd/certd/commit/44019e104289fedd32a867db00e9c6cb71b389cc))
+* 支持根据id更新证书（证书Id不变接口），不过该接口为白名单功能，普通腾讯云账户无法使用 ([fe9c4f3](https://github.com/certd/certd/commit/fe9c4f3391ff07c01dd9a252225f69a129c39050))
+* 支持godaddy ([b7980aa](https://github.com/certd/certd/commit/b7980aad5ab50f58662eaddf5d84aa82876a98eb))
+* 支持ssl.com证书颁发机构 ([27b6dfa](https://github.com/certd/certd/commit/27b6dfa4d2ab3bddd284c3a34511a72e1a513a4c))
+* 子域名托管说明 ([39a0223](https://github.com/certd/certd/commit/39a02235cf4416bb5bd1acd3831241efeaa2f602))
+* ssh 增加超时断开连接，默认10分钟超时 ([c24a040](https://github.com/certd/certd/commit/c24a040c19cacafc79228d7a7649af93837d94a1))
+
 ## [1.36.18](https://github.com/certd/certd/compare/v1.36.17...v1.36.18) (2025-08-28)
 
 ### Bug Fixes

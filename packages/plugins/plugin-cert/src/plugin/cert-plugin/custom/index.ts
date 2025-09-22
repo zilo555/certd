@@ -118,7 +118,7 @@ export class CertApplyUploadPlugin extends CertApplyBaseConvertPlugin {
   }
 
   async execute(): Promise<string | void> {
-    const certReader = await this.getCertFromStore();
+    let certReader = await this.getCertFromStore();
     const crtMd5 = this.ctx.utils.hash.md5(certReader.cert.crt);
 
     const leftDays = dayjs(certReader.expires).diff(dayjs(), "day");
@@ -141,9 +141,13 @@ export class CertApplyUploadPlugin extends CertApplyBaseConvertPlugin {
       this.logger.info("输入参数有变化，重新部署");
     }
 
+    certReader = new CertReader(this.uploadCert);
     this.clearLastStatus();
     //输出证书MD5
-    this.certMd5 = crtMd5;
+    this.certMd5 = this.ctx.utils.hash.md5(certReader.cert.crt);
+    const newLeftDays = dayjs(certReader.expires).diff(dayjs(), "day");
+    this.logger.info(`新证书过期时间${dayjs(certReader.expires).format("YYYY-MM-DD HH:mm:ss")},剩余${newLeftDays}天`);
+
     await this.output(certReader, true);
 
     //必须output之后执行

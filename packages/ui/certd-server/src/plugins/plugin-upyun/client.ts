@@ -65,7 +65,7 @@ export class UpyunClient {
         Cookie: req.cookie
       }
     });
-    if (res.msg.errors.length > 0) {
+    if (res.msg?.errors?.length > 0) {
       throw new Error(JSON.stringify(res.msg));
     }
     if(res.data?.error_code){

@@ -4,10 +4,14 @@
       <div class="title">
         {{ t("certd.subdomainHosting") }}
         <span class="sub">
-          {{ t("certd.subdomainHostingHint") }}； {{ t("certd.subdomainHelpText") }}
-          <a href="https://certd.docmirror.cn/guide/use/cert/subdomain.html" target="_blank">
-            {{ t("certd.subdomainManagement") }}
-          </a>
+          {{ t("certd.subdomainHostingHint") }}；
+
+          <span v-comm="false">
+            {{ t("certd.subdomainHelpText") }}
+            <a href="https://certd.docmirror.cn/guide/use/cert/subdomain.html" target="_blank">
+              {{ t("certd.subdomainManagement") }}
+            </a>
+          </span>
         </span>
       </div>
     </template>

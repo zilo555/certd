@@ -469,7 +469,8 @@ export class SshClient {
 
   async isCmd(conn: AsyncSsh2Client) {
     const spec = await conn.exec("echo %COMSPEC% ");
-    if (spec.toString().trim() === "%COMSPEC%") {
+    const ret = spec.toString().trim();
+    if (ret.includes("%COMSPEC%") && !ret.includes("echo %COMSPEC%")) {
       return false;
     } else {
       return true;
@@ -542,8 +543,16 @@ export class SshClient {
           }
         }
 
-        if (isLinux && options.stopOnError !== false) {
-          script = "set -e\n" + script;
+        if (isLinux) {
+          if (options.connectConf.scriptType == "bash") {
+            script = "#!/usr/bin/env bash \n" + script;
+          } else if (options.connectConf.scriptType == "sh") {
+            script = "#!/bin/sh\n" + script;
+          }
+
+          if (options.connectConf.scriptType != "fish" && options.stopOnError !== false) {
+            script = "set -e\n" + script;
+          }
         }
 
         return await conn.exec(script as string, { throwOnStdErr });
@@ -587,10 +596,15 @@ export class SshClient {
       }
       throw e;
     }
-
+    let timeoutId = null;
     try {
+      timeoutId = setTimeout(() => {
+        this.logger.info("执行超时，断开连接");
+        conn.end();
+      }, 1000 * (connectConf.timeout || 1800));
       return await callable(conn);
     } finally {
+      clearTimeout(timeoutId);
       conn.end();
     }
   }

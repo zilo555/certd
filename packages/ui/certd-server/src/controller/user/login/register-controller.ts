@@ -13,8 +13,7 @@ export type RegisterReq = {
   phoneCode?: string;
 
   validateCode: string;
-  imgCode: string;
-  randomStr: string;
+  captcha:any;
 };
 
 /**
@@ -52,7 +51,7 @@ export class RegisterController extends BaseController {
         throw new Error('用户名不能为空');
       }
 
-      await this.codeService.checkCaptcha(body.randomStr, body.imgCode);
+      await this.codeService.checkCaptcha(body.captcha);
       const newUser = await this.userService.register(body.type, {
         username: body.username,
         password: body.password,
@@ -68,7 +67,6 @@ export class RegisterController extends BaseController {
         mobile: body.mobile,
         phoneCode: body.phoneCode,
         smsCode: body.validateCode,
-        randomStr: body.randomStr,
         throwError: true,
       });
       const newUser = await this.userService.register(body.type, {
@@ -85,7 +83,6 @@ export class RegisterController extends BaseController {
       checkPlus();
       this.codeService.checkEmailCode({
         email: body.email,
-        randomStr: body.randomStr,
         validateCode: body.validateCode,
         throwError: true,
       });

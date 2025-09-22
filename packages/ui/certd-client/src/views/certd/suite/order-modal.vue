@@ -1,5 +1,5 @@
 <template>
-  <a-modal v-model:open="openRef" class="order-modal" :title="$t('certd.order.confirmTitle')" @ok="orderCreate">
+  <a-modal v-model:open="openRef" class="order-modal" :title="$t('certd.order.confirmTitle')" :width="670" @ok="orderCreate">
     <div v-if="product" class="order-box">
       <div class="flex-o mt-5">
         <span class="label">{{ $t("certd.order.package") }}：</span>{{ product.title }}
@@ -13,6 +13,7 @@
           <span class="flex-o"> {{ $t("certd.order.pipeline") }}<suite-value class="ml-5" :model-value="product.content.maxPipelineCount" :unit="$t('certd.order.unit.pieces')" />； </span>
           <span class="flex-o"> {{ $t("certd.order.domain") }}<suite-value class="ml-5" :model-value="product.content.maxDomainCount" :unit="$t('certd.order.unit.count')" />； </span>
           <span class="flex-o"> {{ $t("certd.order.deployTimes") }}<suite-value class="ml-5" :model-value="product.content.maxDeployCount" :unit="$t('certd.order.unit.times')" />； </span>
+          <span class="flex-o"> {{ $t("certd.order.monitorCount") }}<suite-value class="ml-5" :model-value="product.content.maxMonitorCount" :unit="$t('certd.order.unit.times')" />； </span>
         </span>
       </div>
 

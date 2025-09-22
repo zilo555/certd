@@ -1,4 +1,4 @@
-import {ALL, Body, Controller, Inject, Post, Provide, Query} from '@midwayjs/core';
+import { ALL, Body, Controller, Inject, Post, Provide, Query } from "@midwayjs/core";
 import {
   CrudController,
   SysPrivateSettings,
@@ -6,14 +6,14 @@ import {
   SysSafeSetting,
   SysSettingsEntity,
   SysSettingsService
-} from '@certd/lib-server';
-import {cloneDeep, merge} from 'lodash-es';
-import {PipelineService} from '../../../modules/pipeline/service/pipeline-service.js';
-import {UserSettingsService} from '../../../modules/mine/service/user-settings-service.js';
-import {getEmailSettings} from '../../../modules/sys/settings/fix.js';
-import {http, logger, simpleNanoId, utils} from '@certd/basic';
-import {CodeService} from '../../../modules/basic/service/code-service.js';
-import {SmsServiceFactory} from '../../../modules/basic/sms/factory.js';
+} from "@certd/lib-server";
+import { cloneDeep, merge } from "lodash-es";
+import { PipelineService } from "../../../modules/pipeline/service/pipeline-service.js";
+import { UserSettingsService } from "../../../modules/mine/service/user-settings-service.js";
+import { getEmailSettings } from "../../../modules/sys/settings/fix.js";
+import { http, logger, utils } from "@certd/basic";
+import { CodeService } from "../../../modules/basic/service/code-service.js";
+import { SmsServiceFactory } from "../../../modules/basic/sms/factory.js";
 
 
 /**
@@ -158,7 +158,7 @@ export class SysSettingsController extends CrudController<SysSettingsService> {
 
   @Post('/testSms', { summary: 'sys:settings:edit' })
   async testSms(@Body(ALL) body) {
-    await this.codeService.sendSmsCode(body.phoneCode, body.mobile, simpleNanoId());
+    await this.codeService.sendSmsCode(body.phoneCode, body.mobile );
     return this.ok({});
   }
 

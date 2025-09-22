@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.21](https://github.com/certd/certd/compare/v1.36.20...v1.36.21) (2025-09-15)
+
+**Note:** Version bump only for package @certd/lib-k8s
+
+## [1.36.20](https://github.com/certd/certd/compare/v1.36.19...v1.36.20) (2025-09-13)
+
+### Bug Fixes
+
+* 修复secret patch 类型多了type：的bug ([d04f383](https://github.com/certd/certd/commit/d04f3831611011a90ec0594724b9694490d5edd0))
+
+## [1.36.19](https://github.com/certd/certd/compare/v1.36.18...v1.36.19) (2025-09-05)
+
+### Bug Fixes
+
+* 修复远程数据选择无法过滤的bug ([6cbb073](https://github.com/certd/certd/commit/6cbb0739f8428d51b0712f718fe4d236cc087cf9))
+
+### Performance Improvements
+
+* 创建k8s secret 时设置type为tls ([79ebabf](https://github.com/certd/certd/commit/79ebabfcfb9e5a534049c84f5f1a642b357fc856))
+
 ## [1.36.18](https://github.com/certd/certd/compare/v1.36.17...v1.36.18) (2025-08-28)
 
 ### Performance Improvements

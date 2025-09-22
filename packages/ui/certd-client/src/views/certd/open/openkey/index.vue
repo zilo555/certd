@@ -3,7 +3,7 @@
     <template #header>
       <div class="title">开放接口密钥管理</div>
       <div class="more">
-        <a :href="OPEN_API_DOC" target="_blank">开放接口文档</a>
+        <a v-comm="false" :href="OPEN_API_DOC" target="_blank">开放接口文档</a>
       </div>
     </template>
     <fs-crud ref="crudRef" v-bind="crudBinding"> </fs-crud>

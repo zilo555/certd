@@ -1,22 +1,4 @@
-import log4js, { LoggingEvent, Logger } from "log4js";
-
-const OutputAppender = {
-  configure: (config: any, layouts: any, findAppender: any, levels: any) => {
-    let layout = layouts.basicLayout;
-    if (config.layout) {
-      layout = layouts.layout(config.layout.type, config.layout);
-    }
-    function customAppender(layout: any, timezoneOffset: any) {
-      return (loggingEvent: LoggingEvent) => {
-        if (loggingEvent.context.outputHandler?.write) {
-          const text = `${layout(loggingEvent, timezoneOffset)}\n`;
-          loggingEvent.context.outputHandler.write(text);
-        }
-      };
-    }
-    return customAppender(layout, config.timezoneOffset);
-  },
-};
+import log4js, { CallStack, Level } from "log4js";
 
 let logFilePath = "./logs/app.log";
 export function resetLogConfigure() {
@@ -24,7 +6,6 @@ export function resetLogConfigure() {
   log4js.configure({
     appenders: {
       std: { type: "stdout" },
-      output: { type: OutputAppender },
       file: {
         type: "dateFile",
         filename: logFilePath,
@@ -33,7 +14,7 @@ export function resetLogConfigure() {
         numBackups: 3,
       },
     },
-    categories: { default: { appenders: ["std", "file"], level: "info" }, pipeline: { appenders: ["std", "file", "output"], level: "info" } },
+    categories: { default: { appenders: ["std", "file"], level: "info" }, pipeline: { appenders: ["std", "file"], level: "info" } },
   });
 }
 resetLogConfigure();
@@ -44,15 +25,98 @@ export function resetLogFilePath(filePath: string) {
   resetLogConfigure();
 }
 export function buildLogger(write: (text: string) => void) {
-  const logger = log4js.getLogger("pipeline");
-  const _secrets: string[] = [];
-  //@ts-ignore
-  logger.addSecret = (secret: string) => {
-    _secrets.push(secret);
-  };
-  logger.addContext("outputHandler", {
-    write: (text: string) => {
-      for (const item of _secrets) {
+  return new PipelineLogger("pipeline", write);
+}
+
+export type ILogger = {
+  readonly category: string;
+  level: Level | string;
+  log(level: Level | string, ...args: any[]): void;
+
+  isLevelEnabled(level?: string): boolean;
+
+  isTraceEnabled(): boolean;
+  isDebugEnabled(): boolean;
+  isInfoEnabled(): boolean;
+  isWarnEnabled(): boolean;
+  isErrorEnabled(): boolean;
+  isFatalEnabled(): boolean;
+
+  _log(level: Level, data: any): void;
+
+  addContext(key: string, value: any): void;
+
+  removeContext(key: string): void;
+
+  clearContext(): void;
+
+  /**
+   * Replace the basic parse function with a new custom one
+   * - Note that linesToSkip will be based on the origin of the Error object in addition to the callStackLinesToSkip (at least 1)
+   * @param parseFunction the new parseFunction. Use `undefined` to reset to the base implementation
+   */
+  setParseCallStackFunction(parseFunction: (error: Error, linesToSkip: number) => CallStack | undefined): void;
+
+  /**
+   * Adjust the value of linesToSkip when the parseFunction is called.
+   *
+   * Cannot be less than 0.
+   */
+  callStackLinesToSkip: number;
+
+  trace(message: any, ...args: any[]): void;
+
+  debug(message: any, ...args: any[]): void;
+
+  info(message: any, ...args: any[]): void;
+
+  warn(message: any, ...args: any[]): void;
+
+  error(message: any, ...args: any[]): void;
+
+  fatal(message: any, ...args: any[]): void;
+
+  mark(message: any, ...args: any[]): void;
+};
+
+const locale = Intl.DateTimeFormat().resolvedOptions().locale;
+const formatter = new Intl.DateTimeFormat(locale, {
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  hour: "2-digit",
+  minute: "2-digit",
+  second: "2-digit",
+  hour12: false,
+});
+function formatDateIntl(date = new Date()) {
+  const milliseconds = date.getMilliseconds(); // 获取毫秒
+  const formattedMilliseconds = milliseconds.toString().padStart(3, "0");
+  return formatter.format(date) + "." + formattedMilliseconds;
+}
+
+// @ts-ignore
+export class PipelineLogger implements ILogger {
+  callStackLinesToSkip: number = 3;
+  readonly category: string = "pipeline";
+  level: Level | string = "info";
+  _secrets: string[] = [];
+  logger: ILogger;
+  customWriter!: (text: string) => void;
+
+  constructor(name: string, write: (text: string) => void) {
+    this.customWriter = write;
+    this.logger = log4js.getLogger(name);
+  }
+
+  addSecret(secret: string) {
+    this._secrets.push(secret);
+  }
+
+  _doLog(level: string, ...args: any[]) {
+    let text = args.join(" ");
+    if (this.customWriter) {
+      for (const item of this._secrets) {
         if (item == null) {
           continue;
         }
@@ -66,10 +130,88 @@ export function buildLogger(write: (text: string) => void) {
           text = text.replaceAll(item, "*".repeat(item.length));
         }
       }
-      write(text);
-    },
-  });
-  return logger;
-}
+      text = `[${formatDateIntl()}] [${level.toUpperCase()}] - ${text} \n`;
+      this.customWriter(text);
+    }
+    // @ts-ignore
+    this.logger[level](...args);
+  }
 
-export type ILogger = Logger;
+  _log(level: Level, data: any): void {}
+
+  addContext(key: string, value: any): void {}
+
+  clearContext(): void {}
+
+  debug(message: any, ...args: any[]): void {
+    if (this.isDebugEnabled()) {
+      this._doLog("debug", message, ...args);
+    }
+  }
+
+  error(message: any, ...args: any[]): void {
+    if (this.isErrorEnabled()) {
+      this._doLog("error", message, ...args);
+    }
+  }
+
+  fatal(message: any, ...args: any[]): void {
+    if (this.isFatalEnabled()) {
+      this._doLog("fatal", message, ...args);
+    }
+  }
+
+  info(message: any, ...args: any[]): void {
+    if (this.isInfoEnabled()) {
+      this._doLog("info", message, ...args);
+    }
+  }
+
+  trace(message: any, ...args: any[]): void {
+    if (this.isTraceEnabled()) {
+      this._doLog("trace", message, ...args);
+    }
+  }
+
+  warn(message: any, ...args: any[]): void {
+    if (this.isWarnEnabled()) {
+      this._doLog("warn", message, ...args);
+    }
+  }
+
+  isDebugEnabled(): boolean {
+    return logger.isDebugEnabled();
+  }
+
+  isErrorEnabled(): boolean {
+    return logger.isErrorEnabled();
+  }
+
+  isFatalEnabled(): boolean {
+    return logger.isFatalEnabled();
+  }
+
+  isInfoEnabled(): boolean {
+    return logger.isInfoEnabled();
+  }
+
+  isLevelEnabled(level?: string): boolean {
+    return logger.isLevelEnabled();
+  }
+
+  isTraceEnabled(): boolean {
+    return logger.isTraceEnabled();
+  }
+
+  isWarnEnabled(): boolean {
+    return logger.isWarnEnabled();
+  }
+
+  log(level: Level | string, ...args: any[]): void {}
+
+  mark(message: any, ...args: any[]): void {}
+
+  removeContext(key: string): void {}
+
+  setParseCallStackFunction(parseFunction: (error: Error, linesToSkip: number) => CallStack | undefined): void {}
+}

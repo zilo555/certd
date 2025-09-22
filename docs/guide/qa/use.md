@@ -1,4 +1,4 @@
-# 使用问题
+# 常见问题
 
 
 ## 1. 是否支持IP证书
@@ -7,8 +7,27 @@
 
 
 ## 2. 建议设置多长时间运行一次流水线
-建议每天运行一次，检查证书过期时间    
+建议每天运行一次，检查证书过期时间
 当证书没过期时，自动跳过部署
 当证书到期前35天（创建流水线时可以修改），将会自动重新申请证书，自动部署
+
+
+## 3. too many certificates 错误
+当出现如下报错时，说明相同的域名短时间内申请超过5次
+解决方案：可以加多一个子域名，重新执行就可以规避次错误
+```
+"detail": too many certificates (5) already issued for this exact set of idantifiers in the last 168hm0s
+```
+
+## ssl.com报错  CAA record does not include ssl.com which is required to issue the certificate
+ssl.com申请证书要求必须设置CAA记录，表示允许ssl.com为该域名颁发证书
+请按如下格式添加CAA记录
+
+| 示例    | 类型  | 域名前缀 | flag      | tag    | 值                    |
+|-------|-----| -- |-----------|--------|----------------------|
+| 顶级域名  | CAA | @ | 0         | issue  |  "ssl.com"  （注意有双引号） |
+| 一级泛域名 | CAA | * | 0         | issue/issuewild | "ssl.com" |
+| 固定子域名 | CAA | sub |  0         | issue  |"ssl.com" |
+
 
 

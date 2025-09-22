@@ -502,7 +502,7 @@ class AcmeClient {
             await verify[challenge.type](authz, challenge, keyAuthorization);
         };
 
-        log('Waiting for ACME challenge verification（等待ACME挑战验证）', this.backoffOpts);
+        log('Waiting for ACME challenge verification（等待ACME挑战验证）');
         return util.retry(verifyFn, this.backoffOpts);
     }
 

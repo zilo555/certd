@@ -39,6 +39,7 @@ function transformPG() {
     pgSql = pgSql.replaceAll(/boolean DEFAULT \(0\)/g, 'boolean DEFAULT (false)');
     pgSql = pgSql.replaceAll(/boolean.*NOT NULL DEFAULT \(0\)/g, 'boolean NOT NULL DEFAULT (false)');
     pgSql = pgSql.replaceAll(/integer/g, 'bigint');
+    pgSql = pgSql.replaceAll(/INTEGER/g, 'bigint');
     pgSql = pgSql.replaceAll(/last_insert_rowid\(\)/g, 'LASTVAL()');
     fs.writeFileSync(`./migration-pg/${notFile}`, pgSql);
   }
@@ -66,6 +67,7 @@ function transformMysql() {
     //DEFAULT (xxx) 替换成 DEFAULT xxx
     pgSql = pgSql.replaceAll(/DEFAULT \(([^)]*)\)/g, 'DEFAULT $1');
     pgSql = pgSql.replaceAll(/integer/g, 'bigint');
+    pgSql = pgSql.replaceAll(/INTEGER/g, 'bigint');
     pgSql = pgSql.replaceAll(/last_insert_rowid\(\)/g, 'LAST_INSERT_ID()');
     //text 改成longtext
     pgSql = pgSql.replaceAll(/text/g, 'longtext');

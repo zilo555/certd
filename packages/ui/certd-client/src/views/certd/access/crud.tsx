@@ -79,6 +79,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           },
           form: {
             rules: [{ required: true, message: "必填项" }],
+            order: -11,
           },
           column: {
             width: 300,

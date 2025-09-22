@@ -4,7 +4,7 @@
       <div class="title">
         {{ t("certd.cnameRecord") }}
         <span class="sub">
-          <a href="https://certd.docmirror.cn/guide/feature/cname/" target="_blank">
+          <a v-comm="false" href="https://certd.docmirror.cn/guide/feature/cname/" target="_blank">
             {{ t("certd.cname_feature_guide") }}
           </a>
         </span>

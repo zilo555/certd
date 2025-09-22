@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.21](https://github.com/certd/certd/compare/v1.36.20...v1.36.21) (2025-09-15)
+
+**Note:** Version bump only for package @certd/ui-server
+
+## [1.36.20](https://github.com/certd/certd/compare/v1.36.19...v1.36.20) (2025-09-13)
+
+### Bug Fixes
+
+* 修复证书监控某些情况下报 options.lookup不能为null的bug ([d2ecfe5](https://github.com/certd/certd/commit/d2ecfe5491b2639eb30b5cae293af6062d58bb9f))
+* 修复证书手动托管时新上传的证书无效的bug ([506385e](https://github.com/certd/certd/commit/506385e5a2600887fe30854e0713583caaa2e689))
+
+### Performance Improvements
+
+* 登录支持极验验证码 ([370db62](https://github.com/certd/certd/commit/370db62bf0aece241859244927beabba32d6a257))
+* 登录注册、找回密码都支持极验验证码和图片验证码 ([7bdde68](https://github.com/certd/certd/commit/7bdde68ecea29fe2c570fd3cb082139db6c93d93))
+* 证书到期剩余天数进度条根据实际证书有效期计算 ([#528](https://github.com/certd/certd/issues/528)) nicheng-he ([2d4586b](https://github.com/certd/certd/commit/2d4586b1c42c39f97d2a95b9453cca4bc8bfbe61))
+* add preferred chain option ([#519](https://github.com/certd/certd/issues/519))  @ZeroClover  ([902359f](https://github.com/certd/certd/commit/902359f24ed12eee4f9b65178f1d6a60378351d2))
+
+## [1.36.19](https://github.com/certd/certd/compare/v1.36.18...v1.36.19) (2025-09-05)
+
+### Bug Fixes
+
+* 前置任务输出不存在时输出警告提示 ([b59052c](https://github.com/certd/certd/commit/b59052cc43b7b070fabd8b8e914e4c2a5e0ad61c))
+* 修复mysql下购买套餐加量包无效的bug ([c26ad4c](https://github.com/certd/certd/commit/c26ad4c8075f0606d45b8da13915737968d6191a))
+
+### Performance Improvements
+
+* 增加健康检查探针  /health/liveliness 和 /health/readiness ([44019e1](https://github.com/certd/certd/commit/44019e104289fedd32a867db00e9c6cb71b389cc))
+* 支持根据id更新证书（证书Id不变接口），不过该接口为白名单功能，普通腾讯云账户无法使用 ([fe9c4f3](https://github.com/certd/certd/commit/fe9c4f3391ff07c01dd9a252225f69a129c39050))
+* 支持godaddy ([b7980aa](https://github.com/certd/certd/commit/b7980aad5ab50f58662eaddf5d84aa82876a98eb))
+* 支持ssl.com证书颁发机构 ([27b6dfa](https://github.com/certd/certd/commit/27b6dfa4d2ab3bddd284c3a34511a72e1a513a4c))
+
 ## [1.36.18](https://github.com/certd/certd/compare/v1.36.17...v1.36.18) (2025-08-28)
 
 ### Bug Fixes

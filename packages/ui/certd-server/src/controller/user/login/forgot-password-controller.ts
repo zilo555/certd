@@ -29,25 +29,23 @@ export class LoginController extends BaseController {
       throw new CommonException('暂未开启自助找回');
     }
     // 找回密码的验证码允许错误次数
-    const errorNum = 5;
+    const maxErrorCount = 5;
 
     if(body.type === 'email') {
       this.codeService.checkEmailCode({
         verificationType: 'forgotPassword',
         email: body.input,
-        randomStr: body.randomStr,
         validateCode: body.validateCode,
-        errorNum,
+        maxErrorCount: maxErrorCount,
         throwError: true,
       });
     } else if(body.type === 'mobile') {
       await this.codeService.checkSmsCode({
         verificationType: 'forgotPassword',
         mobile: body.input,
-        randomStr: body.randomStr,
         phoneCode: body.phoneCode,
         smsCode: body.validateCode,
-        errorNum,
+        maxErrorCount: maxErrorCount,
         throwError: true,
       });
     } else {

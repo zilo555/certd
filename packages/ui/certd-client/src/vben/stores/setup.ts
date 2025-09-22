@@ -38,6 +38,9 @@ export function resetAllStores() {
   }
   const allStores = (pinia as any)._s;
   for (const [_key, store] of allStores) {
+    if (store.skipReset) {
+      continue;
+    }
     store.$reset();
   }
 }
