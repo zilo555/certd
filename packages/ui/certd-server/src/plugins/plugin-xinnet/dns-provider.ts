@@ -25,11 +25,6 @@ export class XinnetProvider extends AbstractDnsProvider<XinnetRecord> {
     //一些初始化的操作
     // 也可以通过ctx成员变量传递context
     this.access = this.ctx.access as XinnetAccess;
-    this.client = new XinnetClient({
-      logger: this.logger,
-      access: this.access,
-      http: this.http
-    });
   }
 
   /**
@@ -42,27 +37,37 @@ export class XinnetProvider extends AbstractDnsProvider<XinnetRecord> {
      * type: 'TXT',
      * domain: 'example.com'
      */
-    const { fullRecord,hostRecord, value, type, domain } = options;
-    this.logger.info('添加域名解析：', fullRecord, value, type, domain);
+    // const { fullRecord,hostRecord, value, type, domain } = options;
+    // this.logger.info('添加域名解析：', fullRecord, value, type, domain);
+
+    // const client = new XinnetClient({
+    //   logger: this.logger,
+    //   access: {
+    //     domain: "",
+    //     password: this.access.password
+    //   },
+    //   http: this.http
+    // });
 
 
 
+    // const domainId = await this.client.getDomainId(domain);
+    // this.logger.info('获取domainId成功:', domainId);
+    //
+    // const res = await this.client.createRecord({
+    //   domain: domain,
+    //   domainId: domainId,
+    //   type: 'TXT',
+    //   host: hostRecord,
+    //   data: value,
+    //   ttl: 300,
+    // })
+    // return {
+    //   id: res.id,
+    //   domainId: domainId,
+    // };
 
-    const domainId = await this.client.getDomainId(domain);
-    this.logger.info('获取domainId成功:', domainId);
-
-    const res = await this.client.createRecord({
-      domain: domain,
-      domainId: domainId,
-      type: 'TXT',
-      host: hostRecord,
-      data: value,
-      ttl: 300,
-    })
-    return {
-      id: res.id,
-      domainId: domainId,
-    };
+    return 1 as any
   }
 
 
@@ -70,29 +75,30 @@ export class XinnetProvider extends AbstractDnsProvider<XinnetRecord> {
    *  删除dns解析记录,清理申请痕迹
    * @param options
    */
-  async removeRecord(options: RemoveRecordOptions<Dns51Record>): Promise<void> {
-    const { fullRecord, value } = options.recordReq;
-    const record = options.recordRes;
-    this.logger.info('删除域名解析：', fullRecord, value);
-    if (!record) {
-      this.logger.info('record为空，不执行删除');
-      return;
-    }
-    //这里调用删除txt dns解析记录接口
-    /**
-     * 请求示例
-     * DELETE /api/record?id=85371689655342080 HTTP/1.1
-     * Authorization: Basic {token}
-     * 请求参数
-     */
-    const {id,domainId} = record
-    await this.client.deleteRecord({
-      id,
-      domainId
-    })
-    this.logger.info(`删除域名解析成功:fullRecord=${fullRecord},id=${id}`);
+  async removeRecord(options: RemoveRecordOptions<XinnetRecord>): Promise<void> {
+    //   const { fullRecord, value } = options.recordReq;
+    //   const record = options.recordRes;
+    //   this.logger.info('删除域名解析：', fullRecord, value);
+    //   if (!record) {
+    //     this.logger.info('record为空，不执行删除');
+    //     return;
+    //   }
+    //   //这里调用删除txt dns解析记录接口
+    //   /**
+    //    * 请求示例
+    //    * DELETE /api/record?id=85371689655342080 HTTP/1.1
+    //    * Authorization: Basic {token}
+    //    * 请求参数
+    //    */
+    //   const {id,domainId} = record
+    //   await this.client.deleteRecord({
+    //     id,
+    //     domainId
+    //   })
+    //   this.logger.info(`删除域名解析成功:fullRecord=${fullRecord},id=${id}`);
+    // }
   }
 }
 
 //实例化这个provider，将其自动注册到系统中
-new Dns51DnsProvider();
+new XinnetProvider();

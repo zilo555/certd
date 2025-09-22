@@ -11,26 +11,15 @@ import { IsAccess, AccessInput, BaseAccess } from '@certd/pipeline';
   desc: '',
 })
 export class XinnetAccess extends BaseAccess {
-  /**
-   * 授权属性配置
-   */
-  @AccessInput({
-    title: '用户名',
-    component: {
-      placeholder: '用户名或手机号',
-    },
-    required: true,
-    encrypt: false,
-  })
-  username = '';
 
   @AccessInput({
-    title: '登录密码',
+    title: '域名登录密码',
     component: {
       name:"a-input-password",
       vModel:"value",
-      placeholder: '密码',
+      placeholder: '域名密码',
     },
+    helper:"您可以在此处[重置域名管理密码](https://domain.xinnet.com/#domain/manage/domain_manage_pwd)",
     required: true,
     encrypt: true,
   })
