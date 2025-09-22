@@ -113,15 +113,13 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
 
     const randomKey = utils.id.simpleNanoId(6).toLowerCase();
 
-    let userIdHash = ""
-    if(param.cnameProviderId < 0){
-      //公共cname服务
-      userIdHash = utils.hash.md5(`userId${userId}_${randomKey}`).substring(0, 10)
-    }else{
-      const installInfo = await  this.sysSettingsService.getSetting<SysInstallInfo>(SysInstallInfo)
-      userIdHash = utils.hash.md5(`${installInfo.siteId}_${randomKey}`).substring(0, 10)
-    }
-    const cnameKey = `${userIdHash}-${randomKey}`;
+    const userIdHex = utils.hash.toHex(userId)
+    let userKeyHash = ""
+    const installInfo = await  this.sysSettingsService.getSetting<SysInstallInfo>(SysInstallInfo)
+    userKeyHash = `${installInfo.siteId}_${userIdHex}_${randomKey}`
+    userKeyHash = utils.hash.md5(userKeyHash).substring(0, 10)
+    logger.info(`userKeyHash:${userKeyHash},subjectId:${installInfo.siteId},randomKey:${randomKey},userIdHex:${userIdHex}`)
+    const cnameKey = `${userKeyHash}-${userIdHex}-${randomKey}`;
     const safeDomain = param.domain.replaceAll('.', '-');
     param.recordValue = `${safeDomain}.${cnameKey}.${cnameProvider.domain}`;
   }
