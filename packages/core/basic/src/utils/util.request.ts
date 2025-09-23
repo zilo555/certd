@@ -207,9 +207,13 @@ export function createAxiosService({ logger }: { logger: ILogger }) {
         case 505:
           error.message = "HTTP版本不受支持";
           break;
+        case 302:
+          //重定向
+          return Promise.resolve(error.response);
         default:
           break;
       }
+
       logger.error(`请求出错：status:${error.response?.status},statusText:${error.response?.statusText},url:${error.config?.url},method:${error.config?.method}。`);
       logger.error("返回数据:", JSON.stringify(error.response?.data));
       if (error.response?.data) {

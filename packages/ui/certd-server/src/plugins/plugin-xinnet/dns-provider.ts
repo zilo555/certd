@@ -3,24 +3,27 @@ import { XinnetAccess } from "./access.js";
 import { XinnetClient } from "@certd/plugin-plus";
 
 export type XinnetRecord = {
-  id: number;
-  domainId: number,
+  recordId: number;
+  recordFullName: string;
+  recordValue: string;
+  type: string;
+  serviceCode: string;
+  dcpCookie: string;
 };
 
 // 这里通过IsDnsProvider注册一个dnsProvider
 @IsDnsProvider({
-  name: 'xinnet',
-  title: '新网',
-  desc: '新网域名解析',
-  icon: 'arcticons:dns-changer-3',
+  name: "xinnet",
+  title: "新网",
+  desc: "新网域名解析",
+  icon: "lsicon:badge-new-filled",
   // 这里是对应的 cloudflare的access类型名称
-  accessType: 'xinnet',
-  order:7,
+  accessType: "xinnet",
+  order: 7
 })
 export class XinnetProvider extends AbstractDnsProvider<XinnetRecord> {
   access!: XinnetAccess;
 
-  client!:XinnetClient;
   async onInstance() {
     //一些初始化的操作
     // 也可以通过ctx成员变量传递context
@@ -37,37 +40,41 @@ export class XinnetProvider extends AbstractDnsProvider<XinnetRecord> {
      * type: 'TXT',
      * domain: 'example.com'
      */
-    // const { fullRecord,hostRecord, value, type, domain } = options;
-    // this.logger.info('添加域名解析：', fullRecord, value, type, domain);
+    const { fullRecord, hostRecord, value, type, domain } = options;
+    this.logger.info("添加域名解析：", fullRecord, value, type, domain);
 
-    // const client = new XinnetClient({
-    //   logger: this.logger,
-    //   access: {
-    //     domain: "",
-    //     password: this.access.password
-    //   },
-    //   http: this.http
-    // });
+    const client = new XinnetClient({
+      logger: this.logger,
+      access: this.access,
+      http: this.http
+    });
 
+    const res = await client.getDomainList({
+      searchKey: domain
+    });
 
+    if (!res.list || res.list.length == 0) {
+      throw new Error("域名不存在");
+    }
+    const serviceCode = res.list[0].serviceCode;
 
-    // const domainId = await this.client.getDomainId(domain);
-    // this.logger.info('获取domainId成功:', domainId);
-    //
-    // const res = await this.client.createRecord({
-    //   domain: domain,
-    //   domainId: domainId,
-    //   type: 'TXT',
-    //   host: hostRecord,
-    //   data: value,
-    //   ttl: 300,
-    // })
-    // return {
-    //   id: res.id,
-    //   domainId: domainId,
-    // };
+    const dcpCookie = await client.getDcpCookie({
+      serviceCode
+    });
 
-    return 1 as any
+    const recordRes = await client.addDomainDnsRecord({
+      recordName: hostRecord,
+      type: type,
+      recordValue: value
+    }, {
+      dcpCookie,
+      serviceCode
+    });
+    return {
+      ...recordRes,
+      serviceCode,
+      dcpCookie
+    };
   }
 
 
@@ -76,27 +83,26 @@ export class XinnetProvider extends AbstractDnsProvider<XinnetRecord> {
    * @param options
    */
   async removeRecord(options: RemoveRecordOptions<XinnetRecord>): Promise<void> {
-    //   const { fullRecord, value } = options.recordReq;
-    //   const record = options.recordRes;
-    //   this.logger.info('删除域名解析：', fullRecord, value);
-    //   if (!record) {
-    //     this.logger.info('record为空，不执行删除');
-    //     return;
-    //   }
-    //   //这里调用删除txt dns解析记录接口
-    //   /**
-    //    * 请求示例
-    //    * DELETE /api/record?id=85371689655342080 HTTP/1.1
-    //    * Authorization: Basic {token}
-    //    * 请求参数
-    //    */
-    //   const {id,domainId} = record
-    //   await this.client.deleteRecord({
-    //     id,
-    //     domainId
-    //   })
-    //   this.logger.info(`删除域名解析成功:fullRecord=${fullRecord},id=${id}`);
-    // }
+    const client = new XinnetClient({
+      logger: this.logger,
+      access: this.access,
+      http: this.http
+    });
+
+    const recordRes = options.recordRes;
+    let dcpCookie = recordRes.dcpCookie;
+    if (!dcpCookie) {
+      dcpCookie = await client.getDcpCookie({
+        serviceCode: recordRes.serviceCode
+      });
+    }
+
+    await client.deleteDomainDnsRecord(recordRes, {
+      dcpCookie,
+      serviceCode: recordRes.serviceCode
+    });
+
+
   }
 }
 

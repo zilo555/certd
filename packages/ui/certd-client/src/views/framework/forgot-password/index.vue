@@ -155,20 +155,15 @@ watch(forgotPasswordType, () => {
 });
 
 const handleFinish = async (values: any) => {
-  try {
-    await userStore.forgotPassword(
-      toRaw({
-        type: forgotPasswordType.value,
-        input: formState.input,
-        validateCode: formState.validateCode,
-        password: formState.password,
-        confirmPassword: formState.confirmPassword,
-      }) as any
-    );
-  } finally {
-    formState.captchaForSms = null;
-    formState.captchaForEmail = null;
-  }
+  await userStore.forgotPassword(
+    toRaw({
+      type: forgotPasswordType.value,
+      input: formState.input,
+      validateCode: formState.validateCode,
+      password: formState.password,
+      confirmPassword: formState.confirmPassword,
+    }) as any
+  );
 };
 
 const handleFinishFailed = (errors: any) => {

@@ -60,7 +60,7 @@ watch(
   },
   value => {
     if (value == null) {
-      reset();
+      resetImageCode();
     }
   }
 );

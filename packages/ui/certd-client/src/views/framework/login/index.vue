@@ -189,7 +189,6 @@ export default defineComponent({
       } finally {
         loading.value = false;
         formState.captcha = null;
-        formState.smsCaptcha = null;
       }
     };
 

@@ -8,7 +8,7 @@ import { XinnetClient } from "@certd/plugin-plus";
 @IsAccess({
   name: "xinnet",
   title: "新网授权",
-  icon: "arcticons:dns-changer-3",
+  icon: "lsicon:badge-new-filled",
   desc: ""
 })
 export class XinnetAccess extends BaseAccess {
@@ -19,7 +19,7 @@ export class XinnetAccess extends BaseAccess {
   @AccessInput({
     title: "用户名",
     component: {
-      placeholder: "手机号"
+      placeholder: "手机号/用户名"
     },
     required: true,
     encrypt: true
@@ -27,13 +27,12 @@ export class XinnetAccess extends BaseAccess {
   username = "";
 
   @AccessInput({
-    title: "域名登录密码",
+    title: "登录密码",
     component: {
       name: "a-input-password",
       vModel: "value",
-      placeholder: "域名密码"
+      placeholder: "登录密码"
     },
-    helper: "您可以在此处[重置域名管理密码](https://domain.xinnet.com/#domain/manage/domain_manage_pwd)",
     required: true,
     encrypt: true
   })
@@ -60,6 +59,19 @@ export class XinnetAccess extends BaseAccess {
     await client.getDomainList({ pageNo: 1, pageSize: 1 });
 
     return "ok";
+  }
+
+
+  getCacheKey () {
+    let hashStr = ""
+    for (const key in this) {
+      if (Object.prototype.hasOwnProperty.call(this, key)) {
+        const element = this[key];
+        hashStr += element;
+      }
+    }
+    const hashCode = this.ctx.utils.hash.sha256(hashStr);
+    return `xinnet-${hashCode}`;
   }
 
 }
