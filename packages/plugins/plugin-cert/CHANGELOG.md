@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.22](https://github.com/certd/certd/compare/v1.36.21...v1.36.22) (2025-09-23)
+
+### Bug Fixes
+
+* 修复旧版本升级上来报错eab授权的bug ([b76f2e2](https://github.com/certd/certd/commit/b76f2e2008a7fefac4c91179c45c56c7a7a84b71))
+
+### Performance Improvements
+
+* add preferred chain for google trust service ([#539](https://github.com/certd/certd/issues/539)) @ZeroClover ([e31d26a](https://github.com/certd/certd/commit/e31d26a8871c6088d9f8c0f580746ff2a810ae0c))
+
 ## [1.36.21](https://github.com/certd/certd/compare/v1.36.20...v1.36.21) (2025-09-15)
 
 ### Bug Fixes
