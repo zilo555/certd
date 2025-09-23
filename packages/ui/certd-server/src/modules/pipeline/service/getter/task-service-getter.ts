@@ -10,6 +10,9 @@ import { DomainVerifierGetter } from "./domain-verifier-getter.js";
 import { DomainService } from "../../../cert/service/domain-service.js";
 import { SubDomainService } from "../sub-domain-service.js";
 
+const serviceNames = [
+  'ocrService',
+]
 export class TaskServiceGetter implements IServiceGetter{
   private userId: number;
   private appCtx : IMidwayContainer;
@@ -29,8 +32,14 @@ export class TaskServiceGetter implements IServiceGetter{
       return await this.getNotificationService() as T
     } else if (serviceName === 'domainVerifierGetter') {
       return await this.getDomainVerifierGetter() as T
-    }else{
-      throw new Error(`service ${serviceName} not found`)
+    } else{
+      if(!serviceNames.includes(serviceName)){
+        throw new Error(`${serviceName} not in whitelist`)
+      }
+      const service = await  this.appCtx.getAsync(serviceName)
+      if (! service){
+        throw new Error(`${serviceName} not found`)
+      }
     }
   }
 

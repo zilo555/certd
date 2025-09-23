@@ -21,6 +21,7 @@ import { DomainParser } from "@certd/plugin-cert/dist/dns-provider/domain-parser
 import punycode from "punycode.js";
 import { SubDomainService } from "../../pipeline/service/sub-domain-service.js";
 import { SubDomainsGetter } from "../../pipeline/service/getter/sub-domain-getter.js";
+import { TaskServiceBuilder } from "../../pipeline/service/getter/task-service-getter.js";
 
 type CnameCheckCacheValue = {
   validating: boolean;
@@ -54,6 +55,10 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
 
   @Inject()
   subDomainService: SubDomainService;
+
+  @Inject()
+  taskServiceBuilder: TaskServiceBuilder;
+
 
   //@ts-ignore
   getRepository() {
@@ -248,8 +253,9 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
         });
       }
 
+      const serviceGetter = this.taskServiceBuilder.create({userId:cnameProvider.userId})
       const access = await this.accessService.getById(cnameProvider.accessId, cnameProvider.userId);
-      const context = {access, logger, http, utils, domainParser};
+      const context = {access, logger, http, utils, domainParser,serviceGetter};
       const dnsProvider: IDnsProvider = await createDnsProvider({
         dnsProviderType: cnameProvider.dnsProviderType,
         context,

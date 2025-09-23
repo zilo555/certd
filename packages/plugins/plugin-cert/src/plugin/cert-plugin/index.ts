@@ -524,6 +524,7 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
       http: this.ctx.http,
       utils,
       domainParser,
+      serviceGetter: this.ctx.serviceGetter,
     };
     return await createDnsProvider({
       dnsProviderType,
