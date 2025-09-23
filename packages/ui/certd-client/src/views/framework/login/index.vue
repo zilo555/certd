@@ -41,7 +41,7 @@
             </a-form-item>
 
             <a-form-item name="smsCode" :rules="rules.smsCode">
-              <sms-code v-model:value="formState.smsCode" :captcha="formState.smsCaptcha" :mobile="formState.mobile" :phone-code="formState.phoneCode" />
+              <sms-code v-model:value="formState.smsCode" :captcha="formState.smsCaptcha" :mobile="formState.mobile" :phone-code="formState.phoneCode" @error="formState.smsCaptcha = null" />
             </a-form-item>
           </template>
         </a-tab-pane>
@@ -188,6 +188,8 @@ export default defineComponent({
         }
       } finally {
         loading.value = false;
+        formState.captcha = null;
+        formState.smsCaptcha = null;
       }
     };
 
@@ -209,18 +211,6 @@ export default defineComponent({
 
     const captchaInputRef = ref();
     const captchaInputForSmsCode = ref();
-    async function doCaptchaValidate() {
-      if (!sysPublicSettings.captchaEnabled) {
-        return {};
-      }
-      const res = await captchaInputRef.value.getValidatedForm();
-      if (!res) {
-        return false;
-      }
-      return {
-        ...res,
-      };
-    }
 
     return {
       t,

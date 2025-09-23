@@ -11,10 +11,11 @@
   </div>
 </template>
 <script setup lang="ts">
-import { defineEmits, defineExpose, defineProps, ref } from "vue";
+import { defineEmits, defineExpose, defineProps, ref, watch } from "vue";
 import { nanoid } from "nanoid";
 
 const props = defineProps<{
+  modelValue: any;
   captchaGet?: () => Promise<any>;
 }>();
 defineOptions({
@@ -42,6 +43,7 @@ function getCaptchaForm() {
 defineExpose({
   resetImageCode,
   getCaptchaForm,
+  reset: resetImageCode,
 });
 
 resetImageCode();
@@ -52,7 +54,18 @@ function onChange(value: string) {
   emitChange(form);
 }
 
-function emitChange(value) {
+watch(
+  () => {
+    return props.modelValue;
+  },
+  value => {
+    if (value == null) {
+      reset();
+    }
+  }
+);
+
+function emitChange(value: any) {
   emit("update:modelValue", value);
   emit("change", value);
 }

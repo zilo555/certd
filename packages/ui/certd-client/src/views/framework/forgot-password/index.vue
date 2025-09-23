@@ -21,10 +21,17 @@
             </a-input>
           </a-form-item>
           <a-form-item has-feedback name="captchaForEmail" label="验证码">
-            <CaptchaInput v-model:model-value="formState.captchaForEmail"></CaptchaInput>
+            <CaptchaInput ref="captchaForEmailRef" v-model:model-value="formState.captchaForEmail"></CaptchaInput>
           </a-form-item>
           <a-form-item has-feedback name="validateCode" label="邮件验证码">
-            <email-code v-model:value="formState.validateCode" :captcha="formState.captchaForEmail" :email="formState.input" :random-str="formState.randomStr" verification-type="forgotPassword" />
+            <email-code
+              v-model:value="formState.validateCode"
+              :captcha="formState.captchaForEmail"
+              :email="formState.input"
+              :random-str="formState.randomStr"
+              verification-type="forgotPassword"
+              @error="formState.captchaForEmail = null"
+            />
           </a-form-item>
         </a-tab-pane>
         <a-tab-pane key="mobile" tab="手机号找回">
@@ -36,10 +43,17 @@
             </a-input>
           </a-form-item>
           <a-form-item has-feedback name="captchaForSms" label="验证码">
-            <CaptchaInput v-model:model-value="formState.captchaForSms"></CaptchaInput>
+            <CaptchaInput ref="captchaForSmsRef" v-model:model-value="formState.captchaForSms"></CaptchaInput>
           </a-form-item>
           <a-form-item name="validateCode" label="手机验证码">
-            <sms-code v-model:value="formState.validateCode" :captcha="formState.captchaForSms" :mobile="formState.input" :phone-code="formState.phoneCode" verification-type="forgotPassword" />
+            <sms-code
+              v-model:value="formState.validateCode"
+              :captcha="formState.captchaForSms"
+              :mobile="formState.input"
+              :phone-code="formState.phoneCode"
+              verification-type="forgotPassword"
+              @error="formState.captchaForSms = null"
+            />
           </a-form-item>
         </a-tab-pane>
       </a-tabs>
@@ -141,15 +155,20 @@ watch(forgotPasswordType, () => {
 });
 
 const handleFinish = async (values: any) => {
-  await userStore.forgotPassword(
-    toRaw({
-      type: forgotPasswordType.value,
-      input: formState.input,
-      validateCode: formState.validateCode,
-      password: formState.password,
-      confirmPassword: formState.confirmPassword,
-    }) as any
-  );
+  try {
+    await userStore.forgotPassword(
+      toRaw({
+        type: forgotPasswordType.value,
+        input: formState.input,
+        validateCode: formState.validateCode,
+        password: formState.password,
+        confirmPassword: formState.confirmPassword,
+      }) as any
+    );
+  } finally {
+    formState.captchaForSms = null;
+    formState.captchaForEmail = null;
+  }
 };
 
 const handleFinishFailed = (errors: any) => {
