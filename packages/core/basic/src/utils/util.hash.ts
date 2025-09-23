@@ -38,5 +38,5 @@ export const hashUtils = {
   hmacSha256,
   toHex,
   hexToStr,
-  hexToNumber
+  hexToNumber,
 };

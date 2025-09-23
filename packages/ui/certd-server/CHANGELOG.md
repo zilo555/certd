@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.22](https://github.com/certd/certd/compare/v1.36.21...v1.36.22) (2025-09-23)
+
+### Performance Improvements
+
+* 7001绑定::地址 ([7188997](https://github.com/certd/certd/commit/7188997dd1979f1c10fa29b30221015e0bd5fe9e))
+* 公共cname支持权限校验 ([9cc5f0f](https://github.com/certd/certd/commit/9cc5f0f889d4362ff36e7a1f0e448e02d32ecee7))
+* dns支持新网域名解析 ([cf3a78e](https://github.com/certd/certd/commit/cf3a78e1145ff0505c87fbc485d9e731b1aa88a8))
+* gcore flush plugin ssl_id改为必填项 ([4b90972](https://github.com/certd/certd/commit/4b909723411c57505aa13b07d8699fb9ac77c937))
+
 ## [1.36.21](https://github.com/certd/certd/compare/v1.36.20...v1.36.21) (2025-09-15)
 
 **Note:** Version bump only for package @certd/ui-server

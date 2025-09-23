@@ -4,7 +4,7 @@ import { cache, http, HttpRequestConfig, logger } from '@certd/basic';
 import { SysInstallInfo, SysLicenseInfo, SysSettingsService } from '../../settings/index.js';
 import { merge } from 'lodash-es';
 
-@Provide()
+@Provide("plusService")
 @Scope(ScopeEnum.Request, { allowDowngrade: true })
 export class PlusService {
   @Inject()

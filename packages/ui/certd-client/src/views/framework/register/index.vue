@@ -66,7 +66,7 @@
             </a-form-item>
 
             <a-form-item has-feedback name="validateCode" :rules="rules.validateCode" label="邮件验证码">
-              <email-code v-model:value="formState.validateCode" :captcha="formState.captchaForEmail" :email="formState.email" />
+              <email-code v-model:value="formState.validateCode" :captcha="formState.captchaForEmail" :email="formState.email" @error="formState.captchaForEmail = null" />
             </a-form-item>
           </template>
         </a-tab-pane>
@@ -182,16 +182,20 @@ export default defineComponent({
     };
 
     const handleFinish = async (values: any) => {
-      await userStore.register(
-        toRaw({
-          type: registerType.value,
-          password: formState.password,
-          username: formState.username,
-          email: formState.email,
-          captcha: formState.captcha,
-          validateCode: formState.validateCode,
-        }) as any
-      );
+      try {
+        await userStore.register(
+          toRaw({
+            type: registerType.value,
+            password: formState.password,
+            username: formState.username,
+            email: formState.email,
+            captcha: formState.captcha,
+            validateCode: formState.validateCode,
+          }) as any
+        );
+      } finally {
+        formState.captcha = null;
+      }
     };
 
     const handleFinishFailed = (errors: any) => {

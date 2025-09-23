@@ -23,7 +23,7 @@ const props = defineProps<{
   captcha?: any;
   verificationType?: string;
 }>();
-const emit = defineEmits(["update:value", "change"]);
+const emit = defineEmits(["update:value", "change", "error"]);
 
 function onChange(value: string) {
   emit("update:value", value);
@@ -54,6 +54,9 @@ async function sendSmsCode() {
       captcha: props.captcha,
       verificationType: props.verificationType,
     });
+  } catch (e) {
+    emit("error", e);
+    throw e;
   } finally {
     loading.value = false;
   }
