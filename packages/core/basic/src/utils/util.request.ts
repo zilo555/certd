@@ -214,7 +214,24 @@ export function createAxiosService({ logger }: { logger: ILogger }) {
           break;
       }
 
-      logger.error(`请求出错：status:${error.response?.status},statusText:${error.response?.statusText},url:${error.config?.url},method:${error.config?.method}。`);
+      const errorCode = error.code;
+      let errorMessage = null;
+      if (errorCode === "ECONNABORTED") {
+        errorMessage = "请求连接终止";
+      } else if (errorCode === "ETIMEDOUT") {
+        errorMessage = "请求连接超时";
+      } else if (errorCode === "ECONNRESET") {
+        errorMessage = "请求连接被重置";
+      } else if (errorCode === "ECONNREFUSED") {
+        errorMessage = "请求连接被服务端拒绝";
+      } else if (errorCode === "ENOTFOUND") {
+        errorMessage = "请求地址不存在";
+      }
+      if (errorMessage) {
+        error.message = errorMessage + "," + error.message;
+      }
+
+      logger.error(`请求出错：status:${error.response?.status || error.code},statusText:${error.response?.statusText || error.code},url:${error.config?.url},method:${error.config?.method}。`);
       logger.error("返回数据:", JSON.stringify(error.response?.data));
       if (error.response?.data) {
         const message = error.response.data.message || error.response.data.msg || error.response.data.error;
