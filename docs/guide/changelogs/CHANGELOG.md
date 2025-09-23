@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.22](https://github.com/certd/certd/compare/v1.36.21...v1.36.22) (2025-09-23)
+
+### Bug Fixes
+
+* 修复旧版本升级上来报错eab授权的bug ([b76f2e2](https://github.com/certd/certd/commit/b76f2e2008a7fefac4c91179c45c56c7a7a84b71))
+* 选择授权对话框编辑时，名称字段排在最后的bug ([31cfb09](https://github.com/certd/certd/commit/31cfb09468bda3272f5f63af65ff3e9272220b39))
+
+### Performance Improvements
+
+* 7001绑定::地址 ([7188997](https://github.com/certd/certd/commit/7188997dd1979f1c10fa29b30221015e0bd5fe9e))
+* 登录失败时清除验证码状态 ([1c15bea](https://github.com/certd/certd/commit/1c15beadc7fe8a7c6ec1903b7e722ca2f52e05b3))
+* 公共cname支持权限校验 ([9cc5f0f](https://github.com/certd/certd/commit/9cc5f0f889d4362ff36e7a1f0e448e02d32ecee7))
+* 优化连接失败的报错提示 ([71d8e7e](https://github.com/certd/certd/commit/71d8e7edd23ad63fdc01a92766b52ede5074fe7c))
+* 增加自签名证书提示 ([877c9c4](https://github.com/certd/certd/commit/877c9c4ff99f81d289f67afd96f440c0796b03ea))
+* add preferred chain for google trust service ([#539](https://github.com/certd/certd/issues/539)) @ZeroClover ([e31d26a](https://github.com/certd/certd/commit/e31d26a8871c6088d9f8c0f580746ff2a810ae0c))
+* dns支持新网域名解析 ([cf3a78e](https://github.com/certd/certd/commit/cf3a78e1145ff0505c87fbc485d9e731b1aa88a8))
+* gcore flush plugin ssl_id改为必填项 ([4b90972](https://github.com/certd/certd/commit/4b909723411c57505aa13b07d8699fb9ac77c937))
+
 ## [1.36.21](https://github.com/certd/certd/compare/v1.36.20...v1.36.21) (2025-09-15)
 
 ### Bug Fixes
