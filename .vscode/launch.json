@@ -1,0 +1,43 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "client",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/packages/ui/certd-client",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": ["run", "dev"],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
+        },
+        {
+            "name": "server",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/packages/ui/certd-server",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": ["run", "dev"],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
+        },
+        {
+            "name": "server-local-plus",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/packages/ui/certd-server",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": ["run", "dev-localplus"],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "env": {
+                "plus_use_prod": "false",
+                "PLUS_SERVER_BASE_URL": "http://127.0.0.1:11007"
+            }
+        }
+    ]
+}
