@@ -541,7 +541,7 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
       const mainDomain = await domainParser.parse(domain);
       const planSetting: DomainVerifyPlanInput = verifyPlanSetting[mainDomain];
       if (planSetting == null) {
-        throw new Error(`没有找到域名（${domain}）的校验计划`);
+        throw new Error(`没有找到域名（${domain}）的校验计划（如果您在流水线创建之后设置了子域名托管，需要重新编辑一下证书申请任务和cname记录的校验状态）`);
       }
       if (planSetting.type === "dns") {
         plan[domain] = await this.createDnsDomainVerifyPlan(planSetting, domain, mainDomain);
