@@ -17,7 +17,7 @@
           <fs-icon class="ml-5 color-red" icon="ion:warning-outline"></fs-icon>
         </a-tooltip>
         <a-tooltip v-if="cnameRecord.status === 'valid'" title="重置校验状态，重新校验">
-          <fs-icon class="ml-2 color-yellow text-md point" icon="solar:undo-left-square-bold" @click="resetStatus"></fs-icon>
+          <fs-icon class="ml-2 color-yellow text-md pointer" icon="solar:undo-left-square-bold" @click="resetStatus"></fs-icon>
         </a-tooltip>
       </td>
       <td class="center">

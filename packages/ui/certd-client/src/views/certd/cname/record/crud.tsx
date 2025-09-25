@@ -5,7 +5,7 @@ import { useRouter } from "vue-router";
 import { AddReq, compute, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, EditReq, UserPageQuery, UserPageRes } from "@fast-crud/fast-crud";
 import { useUserStore } from "/@/store/user";
 import { useSettingStore } from "/@/store/settings";
-import { message } from "ant-design-vue";
+import { message, Modal } from "ant-design-vue";
 import CnameTip from "/@/components/plugins/cert/domains-verify-plan-editor/cname-tip.vue";
 export default function ({ crudExpose, context }: CreateCrudOptionsProps): CreateCrudOptionsRet {
   const router = useRouter();
@@ -190,12 +190,28 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             width: 120,
             align: "center",
             cellRender({ value, row }) {
+              async function resetStatus() {
+                Modal.confirm({
+                  title: "重置状态",
+                  content: "确定要重置校验状态吗？",
+                  onOk: async () => {
+                    await api.ResetStatus(row.id);
+                    await crudExpose.doRefresh();
+                  },
+                });
+              }
               return (
                 <div class={"flex flex-center"}>
                   <fs-values-format modelValue={value} dict={dictRef}></fs-values-format>
                   {row.error && (
                     <a-tooltip title={row.error}>
                       <fs-icon class={"ml-5 color-red"} icon="ion:warning-outline"></fs-icon>
+                    </a-tooltip>
+                  )}
+
+                  {row.status === "valid" && (
+                    <a-tooltip title={"重置校验状态，重新校验"}>
+                      <fs-icon class={"ml-5 pointer "} icon="solar:undo-left-square-bold" onClick={resetStatus}></fs-icon>
                     </a-tooltip>
                   )}
                 </div>

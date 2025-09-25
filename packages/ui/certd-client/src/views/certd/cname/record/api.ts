@@ -67,3 +67,13 @@ export async function DoVerify(id: number) {
     },
   });
 }
+
+export async function ResetStatus(id: number) {
+  return await request({
+    url: apiPrefix + "/resetStatus",
+    method: "post",
+    data: {
+      id,
+    },
+  });
+}
