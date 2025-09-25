@@ -1,10 +1,11 @@
-import { Provide, Scope, ScopeEnum } from "@midwayjs/core";
+import { Inject, Provide, Scope, ScopeEnum } from "@midwayjs/core";
 import { InjectEntityModel } from "@midwayjs/typeorm";
 import { In, Repository } from "typeorm";
 import { AddonDefine, BaseService, PageReq, PermissionException, ValidateException } from "../../../index.js";
 import { addonRegistry, newAddon } from "../api/index.js";
 import { AddonEntity } from "../entity/addon.js";
 import { http, logger, utils } from "@certd/basic";
+import { TaskServiceBuilder } from "@certd/ui-server/dist/modules/pipeline/service/getter/task-service-getter.js";
 
 /**
  * Addon
@@ -14,6 +15,9 @@ import { http, logger, utils } from "@certd/basic";
 export class AddonService extends BaseService<AddonEntity> {
   @InjectEntityModel(AddonEntity)
   repository: Repository<AddonEntity>;
+
+  @Inject()
+  private taskServiceBuilder: TaskServiceBuilder;
 
   //@ts-ignore
   getRepository() {
@@ -76,12 +80,13 @@ export class AddonService extends BaseService<AddonEntity> {
   }
 
   async getAddonById(id: any, checkUserId: boolean, userId?: number): Promise<any> {
+    const serviceGetter = this.taskServiceBuilder.create({userId:userId??0})
     const ctx = {
       http: http,
       logger: logger,
       utils: utils,
+      serviceGetter
     };
-
 
     if (!id){
       //使用图片验证码
