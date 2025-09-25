@@ -139,10 +139,10 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
     if (!old) {
       throw new ValidateException('数据不存在');
     }
-    if (old.domain !== param.domain) {
+    if (param.domain && old.domain !== param.domain) {
       throw new ValidateException('域名不允许修改');
     }
-    if (old.cnameProviderId !== param.cnameProviderId) {
+    if (param.cnameProviderId && old.cnameProviderId !== param.cnameProviderId) {
       const cnameProvider = await this.cnameProviderService.info(param.cnameProviderId);
       await this.cnameProviderChanged(old.userId, param, cnameProvider);
       param.status = 'cname';
@@ -201,7 +201,7 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
       record.mainDomain = record.domain.replace(domainPrefix, "");
       await this.update({
         id: record.id,
-        mainDomain: domainPrefix,
+        mainDomain: record.mainDomain,
       })
     }
 

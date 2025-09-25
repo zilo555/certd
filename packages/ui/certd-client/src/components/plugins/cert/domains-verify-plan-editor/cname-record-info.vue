@@ -17,7 +17,7 @@
           <fs-icon class="ml-5 color-red" icon="ion:warning-outline"></fs-icon>
         </a-tooltip>
         <a-tooltip v-if="cnameRecord.status === 'valid'" title="重置校验状态，重新校验">
-          <fs-icon class="ml-5 color-red" icon="solar:undo-left-square-bold" @click="resetStatus"></fs-icon>
+          <fs-icon class="ml-2 color-yellow text-md point" icon="solar:undo-left-square-bold" @click="resetStatus"></fs-icon>
         </a-tooltip>
       </td>
       <td class="center">
@@ -38,6 +38,7 @@ import { ref, watch } from "vue";
 import { dict } from "@fast-crud/fast-crud";
 import * as api from "./api.js";
 import CnameTip from "./cname-tip.vue";
+import { Modal } from "ant-design-vue";
 const statusDict = dict({
   data: [
     { label: "待设置CNAME", value: "cname", color: "warning" },
@@ -122,8 +123,14 @@ async function doVerify() {
 }
 
 async function resetStatus() {
-  await api.ResetStatus(cnameRecord.value.id);
-  await loadRecord();
+  Modal.confirm({
+    title: "重置状态",
+    content: "确定要重置校验状态吗？",
+    onOk: async () => {
+      await api.ResetStatus(cnameRecord.value.id);
+      await loadRecord();
+    },
+  });
 }
 </script>
 
