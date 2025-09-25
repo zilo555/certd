@@ -16,6 +16,9 @@
         <a-tooltip v-if="cnameRecord.error" :title="cnameRecord.error">
           <fs-icon class="ml-5 color-red" icon="ion:warning-outline"></fs-icon>
         </a-tooltip>
+        <a-tooltip v-if="cnameRecord.status === 'valid'" title="重置校验状态，重新校验">
+          <fs-icon class="ml-5 color-red" icon="solar:undo-left-square-bold" @click="resetStatus"></fs-icon>
+        </a-tooltip>
       </td>
       <td class="center">
         <template v-if="cnameRecord.status !== 'valid'">
@@ -71,12 +74,15 @@ function onRecordChange() {
   });
 }
 
+async function loadRecord() {
+  cnameRecord.value = await GetByDomain(props.domain);
+}
 let refreshIntervalId: any = null;
 async function doRefresh() {
   if (!props.domain) {
     return;
   }
-  cnameRecord.value = await GetByDomain(props.domain);
+  await loadRecord();
   onRecordChange();
 
   if (cnameRecord.value.status === "validating") {
@@ -113,6 +119,11 @@ async function doVerify() {
     loading.value = false;
   }
   await doRefresh();
+}
+
+async function resetStatus() {
+  await api.ResetStatus(cnameRecord.value.id);
+  await loadRecord();
 }
 </script>
 

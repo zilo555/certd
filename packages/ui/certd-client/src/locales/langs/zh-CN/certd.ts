@@ -725,7 +725,8 @@ export default {
       captchaEnabled: "启用登录验证码",
       captchaHelper: "登录时是否启用验证码",
       captchaType: "验证码配置",
-
+      captchaTest: "测试验证码",
+      captchaTestHelper: "保存后再点击测试，请务必测试通过了，再开启登录验证码",
       baseSetting: "基本设置",
       registerSetting: "注册设置",
       safeSetting: "安全设置",

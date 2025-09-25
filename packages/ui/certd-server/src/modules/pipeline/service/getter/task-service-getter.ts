@@ -68,10 +68,6 @@ export class TaskServiceGetter implements IServiceGetter{
     return new DomainVerifierGetter(this.userId, domainService);
   }
 }
-export type TaskServiceCreateReq = {
-  userId: number;
-}
-
 @Provide()
 @Scope(ScopeEnum.Request, { allowDowngrade: true })
 export class TaskServiceBuilder  {
@@ -82,6 +78,10 @@ export class TaskServiceBuilder  {
     const userId = req.userId;
     return new TaskServiceGetter(userId,this.appCtx)
   }
+}
+
+export type TaskServiceCreateReq = {
+  userId: number;
 }
 
 

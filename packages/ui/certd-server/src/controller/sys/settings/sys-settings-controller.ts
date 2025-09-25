@@ -192,4 +192,11 @@ export class SysSettingsController extends CrudController<SysSettingsService> {
     await this.service.saveSetting(blankSetting);
     return this.ok({});
   }
+
+
+  @Post("/captchaTest", { summary: "sys:settings:edit" })
+  async captchaTest(@Body(ALL) body: any) {
+    await this.codeService.checkCaptcha(body)
+    return this.ok({});
+  }
 }

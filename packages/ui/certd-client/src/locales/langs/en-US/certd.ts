@@ -723,7 +723,9 @@ export default {
       captchaEnabled: "Enable Login Captcha",
       captchaHelper: "Whether to enable captcha verification for login",
       captchaType: "Captcha Setting",
-
+      captchaTest: "Captcha Test",
+      // 保存后再点击测试，请务必测试通过了，再开启登录验证码
+      captchaTestHelper: "Save and click test, please make sure the test is passed before enabling login captcha",
       baseSetting: "Base Settings",
       registerSetting: "Register Settings",
       safeSetting: "Safe Settings",

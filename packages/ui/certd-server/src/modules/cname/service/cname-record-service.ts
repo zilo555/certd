@@ -115,6 +115,7 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
       hostRecord = hostRecord.substring(0, hostRecord.length - 1);
     }
     param.hostRecord = hostRecord;
+    param.mainDomain = realDomain;
 
     const randomKey = utils.id.simpleNanoId(6).toLowerCase();
 
@@ -191,6 +192,19 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
         throw new ValidateException(`找不到${domain}的CNAME记录`);
       }
     }
+
+    if (!record.mainDomain){
+      let domainPrefix = record.hostRecord.replace("_acme-challenge", "");
+      if (domainPrefix.startsWith(".")) {
+        domainPrefix = domainPrefix.substring(1);
+      }
+      record.mainDomain = record.domain.replace(domainPrefix, "");
+      await this.update({
+        id: record.id,
+        mainDomain: domainPrefix,
+      })
+    }
+
     const provider = await this.cnameProviderService.info(record.cnameProviderId);
     if (provider == null) {
       throw new ValidateException(`找不到${domain}的CNAME服务`);
@@ -208,7 +222,7 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
    * 验证是否配置好cname
    * @param id
    */
-  async verify(id: string) {
+  async verify(id: number) {
     const bean = await this.info(id);
     if (!bean) {
       throw new ValidateException(`CnameRecord:${id} 不存在`);
@@ -439,5 +453,12 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
       }
     }
 
+  }
+
+  async resetStatus (id: number) {
+    if (!id) {
+      throw new ValidateException('id不能为空');
+    }
+    await this.getRepository().update(id, {status: 'cname',mainDomain: ""});
   }
 }
