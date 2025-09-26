@@ -14,7 +14,6 @@ async function loadCaptchaScript() {
   await loadScript("https://static.geetest.com/v4/gt4.js");
   loaded.value = true;
 }
-loadCaptchaScript();
 
 defineOptions({
   name: "GeetestCaptcha",
@@ -25,15 +24,10 @@ const props = defineProps<{
   captchaGet: () => Promise<any>;
 }>();
 const captchaRef = ref(null);
-// const addonApi = createAddonApi();
-const settingStore = useSettingStore();
 
 const captchaInstanceRef: Ref = ref({});
 async function init() {
-  // if (!initGeetest4) {
-  //   await import("https://static.geetest.com/v4/gt4.js");
-  // }
-
+  await loadCaptchaScript();
   const { captchaId } = await props.captchaGet();
   // @ts-ignore
   initGeetest4(

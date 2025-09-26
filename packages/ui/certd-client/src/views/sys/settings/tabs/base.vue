@@ -47,24 +47,6 @@
         <div class="helper" v-html="t('certd.commonCnameHelper')"></div>
       </a-form-item>
 
-      <a-form-item :label="t('certd.sys.setting.captchaEnabled')" :name="['public', 'captchaEnabled']">
-        <a-switch v-model:checked="formState.public.captchaEnabled" />
-        <div class="helper" v-html="t('certd.sys.setting.captchaHelper')"></div>
-      </a-form-item>
-      <a-form-item :label="t('certd.sys.setting.captchaType')" :name="['public', 'captchaAddonId']">
-        <addon-selector v-model:model-value="formState.public.captchaAddonId" addon-type="captcha" from="sys" @selected-change="onAddonChanged" />
-      </a-form-item>
-      <a-form-item v-if="formState.public.captchaType" :label="t('certd.sys.setting.captchaTest')">
-        <div class="flex">
-          <CaptchaInput v-model:model-value="captchaTestForm.captcha" class="w-50%"></CaptchaInput>
-          <a-button class="ml-2" type="primary" @click="doCaptchaValidate">后端验证</a-button>
-        </div>
-      </a-form-item>
-
-      <a-form-item :name="['public', 'captchaType']" class="hidden">
-        <a-input v-model:model-value="formState.public.captchaType"></a-input>
-      </a-form-item>
-
       <a-form-item label=" " :colon="false" :wrapper-col="{ span: 8 }">
         <a-button :loading="saveLoading" type="primary" html-type="submit">{{ t("certd.saveButton") }}</a-button>
       </a-form-item>
@@ -88,25 +70,6 @@ const { t } = useI18n();
 defineOptions({
   name: "SettingBase",
 });
-
-const captchaTestForm = reactive({
-  captcha: null,
-  pass: false,
-});
-
-async function doCaptchaValidate() {
-  if (!captchaTestForm.captcha) {
-    notification.error({
-      message: "请进行验证码验证",
-    });
-    return;
-  }
-  await api.TestCaptcha(captchaTestForm.captcha);
-  notification.success({
-    message: "校验通过",
-  });
-  captchaTestForm.pass = true;
-}
 
 const formState = reactive<Partial<SysSettings>>({
   public: {
@@ -133,13 +96,6 @@ const onFinish = async (form: any) => {
   try {
     saveLoading.value = true;
 
-    if (form.public.captchaEnabled && !captchaTestForm.pass) {
-      notification.error({
-        message: "请先通过验证码测试之后再开启登录验证码",
-      });
-      return;
-    }
-
     await api.SysSettingsSave(form);
     await settingsStore.loadSysSettings();
     notification.success({
@@ -147,24 +103,8 @@ const onFinish = async (form: any) => {
     });
   } finally {
     saveLoading.value = false;
-    captchaTestForm.pass = false;
   }
 };
-
-const onFinishFailed = (errorInfo: any) => {
-  // console.log("Failed:", errorInfo);
-};
-
-async function stopOtherUserTimer() {
-  await api.stopOtherUserTimer();
-  notification.success({
-    message: t("certd.stopSuccess"),
-  });
-}
-
-function onAddonChanged(target: any) {
-  formState.public.captchaType = target.type;
-}
 
 const testProxyLoading = ref(false);
 async function testProxy() {

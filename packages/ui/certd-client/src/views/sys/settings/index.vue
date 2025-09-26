@@ -17,6 +17,9 @@
         <a-tab-pane key="safe" :tab="t('certd.sys.setting.safeSetting')">
           <SettingSafe v-if="activeKey === 'safe'" />
         </a-tab-pane>
+        <a-tab-pane key="captcha" :tab="t('certd.sys.setting.captchaSetting')">
+          <SettingCaptcha v-if="activeKey === 'captcha'" />
+        </a-tab-pane>
       </a-tabs>
     </div>
   </fs-page>
@@ -27,6 +30,8 @@ import SettingBase from "/@/views/sys/settings/tabs/base.vue";
 import SettingRegister from "/@/views/sys/settings/tabs/register.vue";
 import SettingPayment from "/@/views/sys/settings/tabs/payment.vue";
 import SettingSafe from "/@/views/sys/settings/tabs/safe.vue";
+import SettingCaptcha from "/@/views/sys/settings/tabs/captcha.vue";
+
 import { useRoute, useRouter } from "vue-router";
 import { ref } from "vue";
 import { useSettingStore } from "/@/store/settings";

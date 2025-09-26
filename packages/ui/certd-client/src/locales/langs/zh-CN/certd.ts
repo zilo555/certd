@@ -731,6 +731,7 @@ export default {
       registerSetting: "注册设置",
       safeSetting: "安全设置",
       paymentSetting: "支付设置",
+      captchaSetting: "验证码设置",
     },
   },
   modal: {

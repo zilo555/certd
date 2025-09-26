@@ -730,6 +730,7 @@ export default {
       registerSetting: "Register Settings",
       safeSetting: "Safe Settings",
       paymentSetting: "Payment Settings",
+      captchaSetting: "Captcha Setting",
     },
   },
   modal: {
