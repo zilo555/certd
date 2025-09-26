@@ -4,7 +4,8 @@
       <div class="sweep-animation"></div>
       <div class="box-content">
         <div class="box-icon">✓</div>
-        <span class="status-text">点击进行校验</span>
+        <span v-if="modelValue == null" class="status-text">点击进行验证</span>
+        <span v-else class="status-text">验证成功</span>
       </div>
     </div>
   </div>
@@ -12,6 +13,17 @@
 <script setup lang="ts">
 import { onMounted, defineProps, defineEmits, ref, onUnmounted, Ref, watch } from "vue";
 import { notification } from "ant-design-vue";
+
+import { loadScript } from "vue-plugin-load-script";
+const loaded = ref(false);
+async function loadCaptchaScript() {
+  // 加载验证码js
+  // var appid = "您的CaptchaAppId";
+  // loadScript("https://turing.captcha.qq.com/TJCaptcha.js?appid=" + appid);
+  await loadScript("https://turing.captcha.qcloud.com/TJCaptcha.js");
+  loaded.value = true;
+}
+loadCaptchaScript();
 
 defineOptions({
   name: "TencentCaptcha",
@@ -42,7 +54,6 @@ function callback(res: { ret: number; ticket: string; randstr: string; errorCode
   // res（请求验证码发生错误，验证码自动返回trerror_前缀的容灾票据） = {ret: 0, ticket: "String", randstr: "String",  errorCode: Number, errorMessage: "String"}
   // 此处代码仅为验证结果的展示示例，真实业务接入，建议基于ticket和errorCode情况做不同的业务处理
   if (res.ret === 0) {
-    debugger;
     emitChange({
       ticket: res.ticket,
       randstr: res.randstr,
@@ -69,6 +80,13 @@ function loadErrorCallback(error: any) {
   });
 }
 async function triggerCaptcha() {
+  if (!loaded.value) {
+    notification.error({
+      message: "验证码还未加载完成，请稍后再试",
+    });
+    return;
+  }
+
   const { captchaAppId } = await props.captchaGet();
 
   try {

@@ -97,6 +97,7 @@
     "vue-cropperjs": "^5.0.0",
     "vue-echarts": "^7.0.3",
     "vue-i18n": "^9.10.2",
+    "vue-plugin-load-script": "2.1.1",
     "vue-router": "^4.3.0",
     "vuedraggable": "^4.1.0",
     "watermark-js-plus": "^1.5.8",

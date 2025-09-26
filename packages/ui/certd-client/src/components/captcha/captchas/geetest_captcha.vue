@@ -7,6 +7,15 @@ import { useSettingStore } from "/@/store/settings";
 import { request } from "/src/api/service";
 import { notification } from "ant-design-vue";
 
+import { loadScript } from "vue-plugin-load-script";
+const loaded = ref(false);
+async function loadCaptchaScript() {
+  // 加载验证码js
+  await loadScript("https://static.geetest.com/v4/gt4.js");
+  loaded.value = true;
+}
+loadCaptchaScript();
+
 defineOptions({
   name: "GeetestCaptcha",
 });
