@@ -217,14 +217,10 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             show: false,
           },
           column: {
-            sorter: true,
+            sorter: false,
             conditionalRender: false,
             cellRender({ row }) {
-              const {
-                applyTime,
-                effectiveTime,
-                expiresTime,
-              } = row || {};
+              const { applyTime, effectiveTime, expiresTime } = row || {};
               if (!expiresTime) {
                 return "-";
               }
