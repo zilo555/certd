@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.23](https://github.com/certd/certd/compare/v1.36.22...v1.36.23) (2025-09-26)
+
+### Performance Improvements
+
+* 支持腾讯云验证码 ([03f317f](https://github.com/certd/certd/commit/03f317ffdb6595ce70e8a2302b05f390c52110c8))
+
 ## [1.36.22](https://github.com/certd/certd/compare/v1.36.21...v1.36.22) (2025-09-23)
 
 **Note:** Version bump only for package @certd/lib-server

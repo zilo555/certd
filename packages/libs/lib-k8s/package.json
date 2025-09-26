@@ -1,7 +1,7 @@
 {
   "name": "@certd/lib-k8s",
   "private": false,
-  "version": "1.36.22",
+  "version": "1.36.23",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -17,7 +17,7 @@
     "pub": "npm publish"
   },
   "dependencies": {
-    "@certd/basic": "^1.36.22",
+    "@certd/basic": "^1.36.23",
     "@kubernetes/client-node": "0.21.0"
   },
   "devDependencies": {

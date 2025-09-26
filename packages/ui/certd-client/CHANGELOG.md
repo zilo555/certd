@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.23](https://github.com/certd/certd/compare/v1.36.22...v1.36.23) (2025-09-26)
+
+### Bug Fixes
+
+* 授权页面，id列位置不在第一列的bug ([3f1722d](https://github.com/certd/certd/commit/3f1722d54debcb4849dc14521a2da0d9b304b69f))
+
+### Performance Improvements
+
+* 动态加载验证码script ([dcc396a](https://github.com/certd/certd/commit/dcc396afb7a23aeb8af57c01014b09af5f033e61))
+* 验证码支持测试，登录验证码需要测试通过后才能开启 ([83e6476](https://github.com/certd/certd/commit/83e6476408090b741fabb1b542fb458d9a8b4134))
+
 ## [1.36.22](https://github.com/certd/certd/compare/v1.36.21...v1.36.22) (2025-09-23)
 
 ### Bug Fixes
