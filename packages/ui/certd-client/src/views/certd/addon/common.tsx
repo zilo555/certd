@@ -75,6 +75,7 @@ export function getCommonColumnDefine(crudExpose: any, typeRef: any, api: any, a
       type: "number",
       column: {
         width: 100,
+        order: -999,
       },
       form: {
         show: false,
