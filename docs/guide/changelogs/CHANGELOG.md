@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.23](https://github.com/certd/certd/compare/v1.36.22...v1.36.23) (2025-09-26)
+
+### Bug Fixes
+
+* 授权页面，id列位置不在第一列的bug ([3f1722d](https://github.com/certd/certd/commit/3f1722d54debcb4849dc14521a2da0d9b304b69f))
+
+### Performance Improvements
+
+* 动态加载验证码script ([dcc396a](https://github.com/certd/certd/commit/dcc396afb7a23aeb8af57c01014b09af5f033e61))
+* 开启子域名托管之后cname记录支持重置 ([54c8d62](https://github.com/certd/certd/commit/54c8d622437761d350db0f17e07f7517f1911211))
+* 手动上传证书优化，增加到期前报错提醒 ([3d42bfd](https://github.com/certd/certd/commit/3d42bfd479eaacc4a49c401224815a6e2a0204b0))
+* 验证码支持测试，登录验证码需要测试通过后才能开启 ([83e6476](https://github.com/certd/certd/commit/83e6476408090b741fabb1b542fb458d9a8b4134))
+* 支持腾讯云验证码 ([03f317f](https://github.com/certd/certd/commit/03f317ffdb6595ce70e8a2302b05f390c52110c8))
+
 ## [1.36.22](https://github.com/certd/certd/compare/v1.36.21...v1.36.22) (2025-09-23)
 
 ### Bug Fixes
