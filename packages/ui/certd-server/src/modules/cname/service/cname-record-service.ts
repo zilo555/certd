@@ -193,17 +193,7 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
       }
     }
 
-    if (!record.mainDomain){
-      let domainPrefix = record.hostRecord.replace("_acme-challenge", "");
-      if (domainPrefix.startsWith(".")) {
-        domainPrefix = domainPrefix.substring(1);
-      }
-      record.mainDomain = record.domain.replace(domainPrefix, "");
-      await this.update({
-        id: record.id,
-        mainDomain: record.mainDomain,
-      })
-    }
+    await this.fillMainDomain(record);
 
     const provider = await this.cnameProviderService.info(record.cnameProviderId);
     if (provider == null) {
@@ -216,6 +206,20 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
         ...provider,
       } as CnameProvider,
     } as CnameRecord;
+  }
+
+  private async fillMainDomain(record: CnameRecordEntity) {
+    if (!record.mainDomain) {
+      let domainPrefix = record.hostRecord.replace("_acme-challenge", "");
+      if (domainPrefix.startsWith(".")) {
+        domainPrefix = domainPrefix.substring(1);
+      }
+      record.mainDomain = record.domain.replace(domainPrefix+".", "");
+      await this.update({
+        id: record.id,
+        mainDomain: record.mainDomain
+      });
+    }
   }
 
   /**
