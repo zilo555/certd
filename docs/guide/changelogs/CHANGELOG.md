@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.24](https://github.com/certd/certd/compare/v1.36.23...v1.36.24) (2025-09-27)
+
+### Bug Fixes
+
+* 修复 ui-server 加载失败问题 ([c2ccdbe](https://github.com/certd/certd/commit/c2ccdbec9dd08bca4688eeb2f34d0105eec43ba1))
+* 修复 ui-server 加载失败问题 ([063f5c3](https://github.com/certd/certd/commit/063f5c3b55e47df22543a64f02e039e84f92cd14))
+
+### Performance Improvements
+
+* 重置管理员密码同时会关闭验证码，防止验证码失效之后无法登录 ([03899d4](https://github.com/certd/certd/commit/03899d4d9c76fc2077dacc53ab88e2c9ca41af7c))
+
 ## [1.36.23](https://github.com/certd/certd/compare/v1.36.22...v1.36.23) (2025-09-26)
 
 ### Bug Fixes
