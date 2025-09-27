@@ -16,7 +16,7 @@ import { CodeService } from "../../basic/service/code-service.js";
 import { TwoFactorService } from "../../mine/service/two-factor-service.js";
 import { UserSettingsService } from "../../mine/service/user-settings-service.js";
 import { isPlus } from "@certd/plus-core";
-import { AddonService } from "@certd/lib-server/dist/user/addon/service/addon-service.js";
+import { AddonService } from "@certd/lib-server";
 
 /**
  * 系统用户
