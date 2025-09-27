@@ -1,7 +1,7 @@
 {
   "name": "@certd/lib-iframe",
   "private": false,
-  "version": "1.36.24",
+  "version": "1.36.25",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",

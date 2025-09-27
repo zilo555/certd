@@ -1,6 +1,6 @@
 {
   "name": "@certd/midway-flyway-js",
-  "version": "1.36.24",
+  "version": "1.36.25",
   "description": "midway with flyway, sql upgrade way ",
   "private": false,
   "type": "module",
@@ -25,10 +25,10 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "better-sqlite3": "^11.1.2",
     "@midwayjs/core": "3.20.11",
     "@midwayjs/logger": "3.4.2",
-    "@midwayjs/typeorm": "3.20.11"
+    "@midwayjs/typeorm": "3.20.11",
+    "better-sqlite3": "^11.1.2"
   },
   "devDependencies": {
     "@types/chai": "^4.3.3",

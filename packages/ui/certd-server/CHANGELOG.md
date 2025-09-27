@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.25](https://github.com/certd/certd/compare/v1.36.24...v1.36.25) (2025-09-27)
+
+### Bug Fixes
+
+* 固定midwayjs版本，修复ui-server import 错误的bug ([eb4d125](https://github.com/certd/certd/commit/eb4d125eaf4a41e88c752d0c68993829589f8f27))
+
 ## [1.36.24](https://github.com/certd/certd/compare/v1.36.23...v1.36.24) (2025-09-27)
 
 ### Bug Fixes
