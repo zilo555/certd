@@ -123,7 +123,7 @@
     "uuid": "^10.0.0"
   },
   "devDependencies": {
-    "@midwayjs/mock": "~3.20.3",
+    "@midwayjs/mock": "3.20.11",
     "@types/ali-oss": "^6.16.11",
     "@types/cache-manager": "^4.0.6",
     "@types/jest": "^29.5.13",
@@ -142,7 +142,7 @@
     "why-is-node-running": "^3.2.2"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.0.0"
   },
   "repository": {
     "type": "git",

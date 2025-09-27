@@ -558,14 +558,14 @@ importers:
   packages/libs/midway-flyway-js:
     dependencies:
       '@midwayjs/core':
-        specifier: ~3.20.3
-        version: 3.20.4
+        specifier: 3.20.11
+        version: 3.20.11
       '@midwayjs/logger':
-        specifier: ~3.4.2
+        specifier: 3.4.2
         version: 3.4.2
       '@midwayjs/typeorm':
-        specifier: ~3.20.3
-        version: 3.20.4
+        specifier: 3.20.11
+        version: 3.20.11
       better-sqlite3:
         specifier: ^11.1.2
         version: 11.10.0
@@ -813,17 +813,17 @@ importers:
         specifier: ^1.36.24
         version: link:../plus-core
       '@midwayjs/core':
-        specifier: ~3.20.3
-        version: 3.20.4
+        specifier: 3.20.11
+        version: 3.20.11
       '@midwayjs/koa':
-        specifier: ~3.20.3
-        version: 3.20.5
+        specifier: 3.20.13
+        version: 3.20.13
       '@midwayjs/logger':
-        specifier: ~3.4.2
+        specifier: 3.4.2
         version: 3.4.2
       '@midwayjs/typeorm':
-        specifier: ~3.20.3
-        version: 3.20.4
+        specifier: 3.20.11
+        version: 3.20.11
       alipay-sdk:
         specifier: ^4.13.0
         version: 4.14.0
@@ -1727,8 +1727,8 @@ importers:
         version: 10.0.0
     devDependencies:
       '@midwayjs/mock':
-        specifier: ~3.20.3
-        version: 3.20.4
+        specifier: 3.20.11
+        version: 3.20.11
       '@types/ali-oss':
         specifier: ^6.16.11
         version: 6.16.11
@@ -3734,10 +3734,6 @@ packages:
     resolution: {integrity: sha512-pRsHit3tzhl1jSLuvTmjRteqt+bJ6Vj7QQaGrF4mi1hrO7FrNJ/lAIZ8DHa7ndpXEwOt9BQR1xtLYdWGSpbQYw==}
     engines: {node: '>=12.17.0'}
 
-  '@midwayjs/async-hooks-context-manager@3.20.4':
-    resolution: {integrity: sha512-t1Jq+Ykjgk6kDHckMAS5XhQ0wp70hN9tkeXLMqIDQxu1cuNTZnZ8j16cFTXuQRcIB0cprCf3fHrsVlHEAYJVEg==}
-    engines: {node: '>=12.17.0'}
-
   '@midwayjs/bootstrap@3.20.11':
     resolution: {integrity: sha512-XU4ltfo6b59lowkuO45j/IQ/ySze9Wvf4DIhd85yjZ02TMsHKkYYO7wEWERpXYvUPcTkfchQ23T7V1IIBWlpRA==}
     engines: {node: '>=12.11.0'}
@@ -3752,10 +3748,6 @@ packages:
 
   '@midwayjs/core@3.20.11':
     resolution: {integrity: sha512-BF0g2FWDG9ENzWvsWldUq6ABBAupQdpEAkgCRlwceCMUMlyKVCGA+vl9zRYUGcxb0v0fWhyfiACernx7ozeL4Q==}
-    engines: {node: '>=12'}
-
-  '@midwayjs/core@3.20.4':
-    resolution: {integrity: sha512-ePwj5XFAzhJXErKh2TnkGi1B+QsIJdoQpef3i/c4NEeW5bjXfDTaQO02lxq/Ln6h6hVHi9lPN3Qh4sS1ufqJPA==}
     engines: {node: '>=12'}
 
   '@midwayjs/event-bus@1.11.1':
@@ -3777,24 +3769,16 @@ packages:
     resolution: {integrity: sha512-Y5T6M+XhBm5k9ZeZ8b93TgqWnRuaxHRgHQhDWEgXBdKbr7SFoGWaOIAzZ328/yIXBYQjLIxZ0zOSGoXVGCUDNA==}
     engines: {node: '>=12'}
 
-  '@midwayjs/koa@3.20.5':
-    resolution: {integrity: sha512-E5QboNjRuaGtIxPiDbxjE7o5bSVfBgNnCSRCV94qMw3a8y9FACYi/RI58J3WY0qxvnO8sLEZx9ukvV1gY0PfKQ==}
-    engines: {node: '>=12'}
-
   '@midwayjs/logger@3.4.2':
     resolution: {integrity: sha512-BxSdSMog4jxeqpHwgauuKZT6iAiu/Vr1HDjO9l81iqU+l8c9veAJVeLT08nTqKdjUiQXnxTaW6nYlvnzF2HdMA==}
     engines: {node: '>=10'}
 
-  '@midwayjs/mock@3.20.4':
-    resolution: {integrity: sha512-rjPROfRvbsw+fTOmmKzmkMU6uLSZyFXM5Za2uZ9ud4AS81z+cvf5Q5RmF4ANdu60xkxZ22qUv1LUW2ELhoVKZA==}
+  '@midwayjs/mock@3.20.11':
+    resolution: {integrity: sha512-n/yhIjsWMYoThBiQjRJ8uzLh94FfUXy+8Otjy3ZAXl4yoEECKQ22PeThBXJkiITkleIHMU8bOFLjR2bom1oGmA==}
     engines: {node: '>=12'}
 
   '@midwayjs/session@3.20.11':
     resolution: {integrity: sha512-zGuzyGgWVtNEn7TMMUzevQJynFy0WXiZBjLJirbJ6gJcD2c7kog38Ud0FzZUWGckVdT6mpJgg20+SaK+ciVmbQ==}
-    engines: {node: '>=12'}
-
-  '@midwayjs/session@3.20.5':
-    resolution: {integrity: sha512-Eu3VaerT009wAmNCQTMaR3cdDC4PgHLOxKl5+V3Sml0U6P4X7BKOnwJaEPMoWs1PLbKx0MIhrL33LQX2fVInUQ==}
     engines: {node: '>=12'}
 
   '@midwayjs/static-file@3.20.13':
@@ -3803,11 +3787,6 @@ packages:
 
   '@midwayjs/typeorm@3.20.11':
     resolution: {integrity: sha512-QMCUwLhQStK1RuF+7hbpHoPOGT5DxIt4YalJNC8KtnaBMsIBVf4W+7dHbk9WpsBBx/GCraKfTYIoPA2wJWVj5g==}
-    engines: {node: '>=12'}
-    hasBin: true
-
-  '@midwayjs/typeorm@3.20.4':
-    resolution: {integrity: sha512-sf+inpoHGZIWbhUYR7O0ItqUyW4e2eKyxdpxnA86U0jtaHP7JszAg71rVQ8u/BthEzgI4FtQEUShRUOR7DB4FQ==}
     engines: {node: '>=12'}
     hasBin: true
 
@@ -9226,10 +9205,6 @@ packages:
   koa-static-cache@5.1.4:
     resolution: {integrity: sha512-abVWOHY6z6qSTvNtapWMAnvHS9SUiUCaQQQubClSAT9ybQPsZ6ioKcRarnownS4fMD0sXQgQ5ey8CYEuwoa1Yg==}
     engines: {node: '>= 7.6.0'}
-
-  koa@2.16.1:
-    resolution: {integrity: sha512-umfX9d3iuSxTQP4pnzLOz0HKnPg0FaUUIKcye2lOiz3KPu1Y3M3xlz76dISdFPQs37P9eJz1wUpcTS6KDPn9fA==}
-    engines: {node: ^4.8.4 || ^6.10.1 || ^7.10.1 || >= 8.1.4}
 
   koa@2.16.2:
     resolution: {integrity: sha512-+CCssgnrWKx9aI3OeZwroa/ckG4JICxvIFnSiOUyl2Uv+UTI+xIw0FfFrWS7cQFpoePpr9o8csss7KzsTzNL8Q==}
@@ -16612,8 +16587,6 @@ snapshots:
 
   '@midwayjs/async-hooks-context-manager@3.20.11': {}
 
-  '@midwayjs/async-hooks-context-manager@3.20.4': {}
-
   '@midwayjs/bootstrap@3.20.11':
     dependencies:
       '@midwayjs/async-hooks-context-manager': 3.20.11
@@ -16629,13 +16602,6 @@ snapshots:
       should-send-same-site-none: 2.0.5
 
   '@midwayjs/core@3.20.11':
-    dependencies:
-      '@midwayjs/glob': 1.1.1
-      class-transformer: 0.5.1
-      picomatch: 2.3.1
-      reflect-metadata: 0.2.2
-
-  '@midwayjs/core@3.20.4':
     dependencies:
       '@midwayjs/glob': 1.1.1
       class-transformer: 0.5.1
@@ -16670,28 +16636,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@midwayjs/koa@3.20.5':
-    dependencies:
-      '@koa/router': 12.0.2
-      '@midwayjs/cookies': 1.3.0
-      '@midwayjs/core': 3.20.11
-      '@midwayjs/session': 3.20.5
-      '@types/koa': 2.15.0
-      '@types/qs': 6.9.18
-      koa: 2.16.1
-      koa-bodyparser: 4.4.1
-      qs: 6.14.0
-    transitivePeerDependencies:
-      - supports-color
-
   '@midwayjs/logger@3.4.2':
     dependencies:
       dayjs: 1.11.13
       safe-stable-stringify: 2.5.0
 
-  '@midwayjs/mock@3.20.4':
+  '@midwayjs/mock@3.20.11':
     dependencies:
-      '@midwayjs/async-hooks-context-manager': 3.20.4
+      '@midwayjs/async-hooks-context-manager': 3.20.11
       '@types/superagent': 4.1.14
       '@types/supertest': 2.0.16
       js-yaml: 4.1.0
@@ -16704,10 +16656,6 @@ snapshots:
     dependencies:
       '@midwayjs/cookies': 1.3.0
 
-  '@midwayjs/session@3.20.5':
-    dependencies:
-      '@midwayjs/cookies': 1.3.0
-
   '@midwayjs/static-file@3.20.13':
     dependencies:
       koa-range: 0.3.0
@@ -16717,8 +16665,6 @@ snapshots:
       - supports-color
 
   '@midwayjs/typeorm@3.20.11': {}
-
-  '@midwayjs/typeorm@3.20.4': {}
 
   '@midwayjs/upload@3.20.13':
     dependencies:
@@ -18214,7 +18160,7 @@ snapshots:
   '@types/superagent@4.1.14':
     dependencies:
       '@types/cookiejar': 2.1.5
-      '@types/node': 18.19.100
+      '@types/node': 20.17.47
 
   '@types/supertest@2.0.16':
     dependencies:
@@ -23585,34 +23531,6 @@ snapshots:
       fs-readdir-recursive: 1.1.0
       mime-types: 2.1.35
       mz: 2.7.0
-    transitivePeerDependencies:
-      - supports-color
-
-  koa@2.16.1:
-    dependencies:
-      accepts: 1.3.8
-      cache-content-type: 1.0.1
-      content-disposition: 0.5.4
-      content-type: 1.0.5
-      cookies: 0.9.1
-      debug: 4.4.1(supports-color@8.1.1)
-      delegates: 1.0.0
-      depd: 2.0.0
-      destroy: 1.2.0
-      encodeurl: 1.0.2
-      escape-html: 1.0.3
-      fresh: 0.5.2
-      http-assert: 1.5.0
-      http-errors: 1.8.1
-      is-generator-function: 1.1.0
-      koa-compose: 4.1.0
-      koa-convert: 2.0.0
-      on-finished: 2.4.1
-      only: 0.0.2
-      parseurl: 1.3.3
-      statuses: 1.5.0
-      type-is: 1.6.18
-      vary: 1.1.2
     transitivePeerDependencies:
       - supports-color
 
