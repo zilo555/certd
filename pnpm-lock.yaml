@@ -49,7 +49,7 @@ importers:
   packages/core/acme-client:
     dependencies:
       '@certd/basic':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../basic
       '@peculiar/x509':
         specifier: ^1.11.0
@@ -210,10 +210,10 @@ importers:
   packages/core/pipeline:
     dependencies:
       '@certd/basic':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../basic
       '@certd/plus-core':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../pro/plus-core
       dayjs:
         specifier: ^1.11.7
@@ -418,7 +418,7 @@ importers:
   packages/libs/lib-k8s:
     dependencies:
       '@certd/basic':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../core/basic
       '@kubernetes/client-node':
         specifier: 0.21.0
@@ -458,44 +458,47 @@ importers:
   packages/libs/lib-server:
     dependencies:
       '@certd/acme-client':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../core/acme-client
       '@certd/basic':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../core/basic
       '@certd/pipeline':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../core/pipeline
       '@certd/plugin-lib':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../plugins/plugin-lib
       '@certd/plus-core':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../pro/plus-core
       '@midwayjs/cache':
-        specifier: ~3.14.0
+        specifier: 3.14.0
         version: 3.14.0
       '@midwayjs/core':
-        specifier: ~3.20.3
-        version: 3.20.4
+        specifier: 3.20.11
+        version: 3.20.11
       '@midwayjs/i18n':
-        specifier: ~3.20.3
-        version: 3.20.5
+        specifier: 3.20.13
+        version: 3.20.13
       '@midwayjs/info':
-        specifier: ~3.20.3
-        version: 3.20.5
+        specifier: 3.20.13
+        version: 3.20.13
       '@midwayjs/koa':
-        specifier: ~3.20.3
-        version: 3.20.5
+        specifier: 3.20.13
+        version: 3.20.13
       '@midwayjs/logger':
-        specifier: ~3.4.2
+        specifier: 3.4.2
         version: 3.4.2
       '@midwayjs/typeorm':
-        specifier: ~3.20.3
-        version: 3.20.4
+        specifier: 3.20.11
+        version: 3.20.11
       '@midwayjs/upload':
-        specifier: ^3.20.3
-        version: 3.20.5
+        specifier: 3.20.13
+        version: 3.20.13
+      '@midwayjs/validate':
+        specifier: 3.20.13
+        version: 3.20.13
       better-sqlite3:
         specifier: ^11.1.2
         version: 11.10.0
@@ -613,16 +616,16 @@ importers:
   packages/plugins/plugin-cert:
     dependencies:
       '@certd/acme-client':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../core/acme-client
       '@certd/basic':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../core/basic
       '@certd/pipeline':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../core/pipeline
       '@certd/plugin-lib':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../plugin-lib
       '@google-cloud/publicca':
         specifier: ^1.3.0
@@ -704,10 +707,10 @@ importers:
         specifier: ^3.787.0
         version: 3.810.0(aws-crt@1.26.2)
       '@certd/basic':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../core/basic
       '@certd/pipeline':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../core/pipeline
       '@kubernetes/client-node':
         specifier: 0.21.0
@@ -795,19 +798,19 @@ importers:
   packages/pro/commercial-core:
     dependencies:
       '@certd/basic':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../core/basic
       '@certd/lib-server':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../libs/lib-server
       '@certd/pipeline':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../core/pipeline
       '@certd/plugin-plus':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../plugin-plus
       '@certd/plus-core':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../plus-core
       '@midwayjs/core':
         specifier: ~3.20.3
@@ -892,19 +895,19 @@ importers:
         specifier: ^1.0.2
         version: 1.0.3
       '@certd/basic':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../core/basic
       '@certd/lib-k8s':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../libs/lib-k8s
       '@certd/pipeline':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../core/pipeline
       '@certd/plugin-cert':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../plugins/plugin-cert
       '@certd/plus-core':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../plus-core
       ali-oss:
         specifier: ^6.21.0
@@ -1007,7 +1010,7 @@ importers:
   packages/pro/plus-core:
     dependencies:
       '@certd/basic':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../core/basic
       dayjs:
         specifier: ^1.11.7
@@ -1303,10 +1306,10 @@ importers:
         version: 0.1.3(zod@3.24.4)
     devDependencies:
       '@certd/lib-iframe':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../libs/lib-iframe
       '@certd/pipeline':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../core/pipeline
       '@rollup/plugin-commonjs':
         specifier: ^25.0.7
@@ -1489,46 +1492,46 @@ importers:
         specifier: ^3.705.0
         version: 3.810.0(aws-crt@1.26.2)
       '@certd/acme-client':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../core/acme-client
       '@certd/basic':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../core/basic
       '@certd/commercial-core':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../pro/commercial-core
       '@certd/cv4pve-api-javascript':
         specifier: ^8.4.2
         version: 8.4.2
       '@certd/jdcloud':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../libs/lib-jdcloud
       '@certd/lib-huawei':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../libs/lib-huawei
       '@certd/lib-k8s':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../libs/lib-k8s
       '@certd/lib-server':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../libs/lib-server
       '@certd/midway-flyway-js':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../libs/midway-flyway-js
       '@certd/pipeline':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../core/pipeline
       '@certd/plugin-cert':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../plugins/plugin-cert
       '@certd/plugin-lib':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../plugins/plugin-lib
       '@certd/plugin-plus':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../pro/plugin-plus
       '@certd/plus-core':
-        specifier: ^1.36.22
+        specifier: ^1.36.24
         version: link:../../pro/plus-core
       '@huaweicloud/huaweicloud-sdk-cdn':
         specifier: ^3.1.120
@@ -1540,38 +1543,38 @@ importers:
         specifier: ^5.0.0
         version: 5.0.0
       '@midwayjs/bootstrap':
-        specifier: ~3.20.3
-        version: 3.20.4
+        specifier: 3.20.11
+        version: 3.20.11
       '@midwayjs/cache':
-        specifier: ~3.14.0
+        specifier: 3.14.0
         version: 3.14.0
       '@midwayjs/core':
-        specifier: ~3.20.3
-        version: 3.20.4
+        specifier: 3.20.11
+        version: 3.20.11
       '@midwayjs/i18n':
-        specifier: ~3.20.3
-        version: 3.20.5
+        specifier: 3.20.13
+        version: 3.20.13
       '@midwayjs/info':
-        specifier: ~3.20.3
-        version: 3.20.5
+        specifier: 3.20.13
+        version: 3.20.13
       '@midwayjs/koa':
-        specifier: ~3.20.3
-        version: 3.20.5
+        specifier: 3.20.13
+        version: 3.20.13
       '@midwayjs/logger':
-        specifier: ~3.4.2
+        specifier: 3.4.2
         version: 3.4.2
       '@midwayjs/static-file':
-        specifier: ~3.20.3
-        version: 3.20.5
+        specifier: 3.20.13
+        version: 3.20.13
       '@midwayjs/typeorm':
-        specifier: ~3.20.3
-        version: 3.20.4
+        specifier: 3.20.11
+        version: 3.20.11
       '@midwayjs/upload':
-        specifier: ~3.20.3
-        version: 3.20.5
+        specifier: 3.20.13
+        version: 3.20.13
       '@midwayjs/validate':
-        specifier: ~3.20.3
-        version: 3.20.5
+        specifier: 3.20.13
+        version: 3.20.13
       '@volcengine/openapi':
         specifier: ^1.28.1
         version: 1.30.1(buffer@6.0.3)
@@ -3727,12 +3730,16 @@ packages:
     resolution: {integrity: sha512-3lBouSuF7CqlseLB+FKES0K4FQ02JrbEoRtJhxnsyB1s5v4AP03gsoohN8jp7DcOImhaR9scYdztq3/sLfk/qQ==}
     engines: {node: '>=14.18.0'}
 
+  '@midwayjs/async-hooks-context-manager@3.20.11':
+    resolution: {integrity: sha512-pRsHit3tzhl1jSLuvTmjRteqt+bJ6Vj7QQaGrF4mi1hrO7FrNJ/lAIZ8DHa7ndpXEwOt9BQR1xtLYdWGSpbQYw==}
+    engines: {node: '>=12.17.0'}
+
   '@midwayjs/async-hooks-context-manager@3.20.4':
     resolution: {integrity: sha512-t1Jq+Ykjgk6kDHckMAS5XhQ0wp70hN9tkeXLMqIDQxu1cuNTZnZ8j16cFTXuQRcIB0cprCf3fHrsVlHEAYJVEg==}
     engines: {node: '>=12.17.0'}
 
-  '@midwayjs/bootstrap@3.20.4':
-    resolution: {integrity: sha512-3puwSUrIhzBB0Lig5oNcc8rZVSLY+JpoikBHgyv3jpergdLKD1BCU1IREOT6f53mgMQk6Uo9rem9KSNZeb8vVg==}
+  '@midwayjs/bootstrap@3.20.11':
+    resolution: {integrity: sha512-XU4ltfo6b59lowkuO45j/IQ/ySze9Wvf4DIhd85yjZ02TMsHKkYYO7wEWERpXYvUPcTkfchQ23T7V1IIBWlpRA==}
     engines: {node: '>=12.11.0'}
 
   '@midwayjs/cache@3.14.0':
@@ -3742,6 +3749,10 @@ packages:
   '@midwayjs/cookies@1.3.0':
     resolution: {integrity: sha512-jcgGZq2+Ty6qkZ5rQF+ViIn6ntV6n/JuvZ/OmgDsAkS+/SyNc3UuNPlUHzzGrrVWgtJq2w8MzjXbl7a3paIVdw==}
     engines: {node: '>=10'}
+
+  '@midwayjs/core@3.20.11':
+    resolution: {integrity: sha512-BF0g2FWDG9ENzWvsWldUq6ABBAupQdpEAkgCRlwceCMUMlyKVCGA+vl9zRYUGcxb0v0fWhyfiACernx7ozeL4Q==}
+    engines: {node: '>=12'}
 
   '@midwayjs/core@3.20.4':
     resolution: {integrity: sha512-ePwj5XFAzhJXErKh2TnkGi1B+QsIJdoQpef3i/c4NEeW5bjXfDTaQO02lxq/Ln6h6hVHi9lPN3Qh4sS1ufqJPA==}
@@ -3754,12 +3765,16 @@ packages:
   '@midwayjs/glob@1.1.1':
     resolution: {integrity: sha512-xoNU+JdCxE214KQrB0qgs88+Da7KYVICeuTL9VeKwaxZXj6a/PbpmEaH4+5BHLvZRRe78tHGR19+nKZrmMHBJg==}
 
-  '@midwayjs/i18n@3.20.5':
-    resolution: {integrity: sha512-b1AdEedNvWLJ4Y6SCDMuyidzkPTpEBZelHvZDWWn3nTEyNeQ/E2mDiSGmP8lWibJmy+ByIxmqU+PGIbZQ6DXLA==}
+  '@midwayjs/i18n@3.20.13':
+    resolution: {integrity: sha512-zyQTmoMNL56wMfe7nbgnoAsojkDxXn5EXCEnYZ6ePOzOI0h2qinkLMsjCokjju6X9v6udnFOOX17TM/vtQPynw==}
     engines: {node: '>=12'}
 
-  '@midwayjs/info@3.20.5':
-    resolution: {integrity: sha512-ioXVmnD+7wx8qOSarWQFy4xacKAgWrUbikq89GUUNbTqfhkWch62gXAmSfcP4XsQQKJoqsuwUsKEciWEul5buQ==}
+  '@midwayjs/info@3.20.13':
+    resolution: {integrity: sha512-d9QFtx1u3He9cjLSYygR2DhP035mzqoFvJDwmLspB5lKlNhtAKG5M+c7wlsKFPnRBXpvrbPhsxMS5roz53HJKA==}
+    engines: {node: '>=12'}
+
+  '@midwayjs/koa@3.20.13':
+    resolution: {integrity: sha512-Y5T6M+XhBm5k9ZeZ8b93TgqWnRuaxHRgHQhDWEgXBdKbr7SFoGWaOIAzZ328/yIXBYQjLIxZ0zOSGoXVGCUDNA==}
     engines: {node: '>=12'}
 
   '@midwayjs/koa@3.20.5':
@@ -3774,25 +3789,34 @@ packages:
     resolution: {integrity: sha512-rjPROfRvbsw+fTOmmKzmkMU6uLSZyFXM5Za2uZ9ud4AS81z+cvf5Q5RmF4ANdu60xkxZ22qUv1LUW2ELhoVKZA==}
     engines: {node: '>=12'}
 
+  '@midwayjs/session@3.20.11':
+    resolution: {integrity: sha512-zGuzyGgWVtNEn7TMMUzevQJynFy0WXiZBjLJirbJ6gJcD2c7kog38Ud0FzZUWGckVdT6mpJgg20+SaK+ciVmbQ==}
+    engines: {node: '>=12'}
+
   '@midwayjs/session@3.20.5':
     resolution: {integrity: sha512-Eu3VaerT009wAmNCQTMaR3cdDC4PgHLOxKl5+V3Sml0U6P4X7BKOnwJaEPMoWs1PLbKx0MIhrL33LQX2fVInUQ==}
     engines: {node: '>=12'}
 
-  '@midwayjs/static-file@3.20.5':
-    resolution: {integrity: sha512-EjEmqi1Qw3ob0J+UkMdd8T2zrnHTI3bgGTr+ZmXpRcRSGbJMgYU2T50PSCMFS6C8W07iz6cHO2jt4/Hiq9p2OQ==}
+  '@midwayjs/static-file@3.20.13':
+    resolution: {integrity: sha512-aX67LvpIPYVWpuhuWSATgTBNvaNbvOFk7wbh0BTS0XRaO6vVieNe0mJoBXFkf89w1qExAHgIPHZDPIoEOHEBiQ==}
     engines: {node: '>=12'}
+
+  '@midwayjs/typeorm@3.20.11':
+    resolution: {integrity: sha512-QMCUwLhQStK1RuF+7hbpHoPOGT5DxIt4YalJNC8KtnaBMsIBVf4W+7dHbk9WpsBBx/GCraKfTYIoPA2wJWVj5g==}
+    engines: {node: '>=12'}
+    hasBin: true
 
   '@midwayjs/typeorm@3.20.4':
     resolution: {integrity: sha512-sf+inpoHGZIWbhUYR7O0ItqUyW4e2eKyxdpxnA86U0jtaHP7JszAg71rVQ8u/BthEzgI4FtQEUShRUOR7DB4FQ==}
     engines: {node: '>=12'}
     hasBin: true
 
-  '@midwayjs/upload@3.20.5':
-    resolution: {integrity: sha512-FZIzZcz9MDpDCWLV2A786YUn3MwOr7vs84KOFX8lyPR6wd9ObrBZNAjGNueJZVcNZTLig4akXAdliwfDhSIGPA==}
+  '@midwayjs/upload@3.20.13':
+    resolution: {integrity: sha512-oq2GoKnTAnGM+6GyYWFG4N+CR1bSikU98125tFh2LCYlh3Nl6DymDWefOcz9S4zFaray8rmU3WK9Hum4Ub2vLw==}
     engines: {node: '>=12'}
 
-  '@midwayjs/validate@3.20.5':
-    resolution: {integrity: sha512-x43MIlZyV5cj15/xdK4EjnvYb2k3DipB1E5Ks9G3f/GmmrNZLomjzaEl1rFOyzCn5S+r7MMu/9oxWz7FfBVNLA==}
+  '@midwayjs/validate@3.20.13':
+    resolution: {integrity: sha512-iaumyVf1vdrxhPU1hqVX0Cx4sXYJWP61TzK/DHSAdq5yej9jRGStVyPjXodD3g2iOhY3EW3TInOT2s5RMKxWYw==}
     engines: {node: '>=12'}
 
   '@noble/hashes@1.8.0':
@@ -9205,6 +9229,10 @@ packages:
 
   koa@2.16.1:
     resolution: {integrity: sha512-umfX9d3iuSxTQP4pnzLOz0HKnPg0FaUUIKcye2lOiz3KPu1Y3M3xlz76dISdFPQs37P9eJz1wUpcTS6KDPn9fA==}
+    engines: {node: ^4.8.4 || ^6.10.1 || ^7.10.1 || >= 8.1.4}
+
+  koa@2.16.2:
+    resolution: {integrity: sha512-+CCssgnrWKx9aI3OeZwroa/ckG4JICxvIFnSiOUyl2Uv+UTI+xIw0FfFrWS7cQFpoePpr9o8csss7KzsTzNL8Q==}
     engines: {node: ^4.8.4 || ^6.10.1 || ^7.10.1 || >= 8.1.4}
 
   kolorist@1.8.0:
@@ -16582,11 +16610,13 @@ snapshots:
       jju: 1.4.0
       js-yaml: 4.1.0
 
+  '@midwayjs/async-hooks-context-manager@3.20.11': {}
+
   '@midwayjs/async-hooks-context-manager@3.20.4': {}
 
-  '@midwayjs/bootstrap@3.20.4':
+  '@midwayjs/bootstrap@3.20.11':
     dependencies:
-      '@midwayjs/async-hooks-context-manager': 3.20.4
+      '@midwayjs/async-hooks-context-manager': 3.20.11
       '@midwayjs/event-bus': 1.11.1
 
   '@midwayjs/cache@3.14.0':
@@ -16597,6 +16627,13 @@ snapshots:
     dependencies:
       scmp: 2.1.0
       should-send-same-site-none: 2.0.5
+
+  '@midwayjs/core@3.20.11':
+    dependencies:
+      '@midwayjs/glob': 1.1.1
+      class-transformer: 0.5.1
+      picomatch: 2.3.1
+      reflect-metadata: 0.2.2
 
   '@midwayjs/core@3.20.4':
     dependencies:
@@ -16611,19 +16648,33 @@ snapshots:
     dependencies:
       picomatch: 2.3.1
 
-  '@midwayjs/i18n@3.20.5':
+  '@midwayjs/i18n@3.20.13':
     dependencies:
       picomatch: 2.3.1
 
-  '@midwayjs/info@3.20.5':
+  '@midwayjs/info@3.20.13':
     dependencies:
       picomatch: 2.3.1
+
+  '@midwayjs/koa@3.20.13':
+    dependencies:
+      '@koa/router': 12.0.2
+      '@midwayjs/cookies': 1.3.0
+      '@midwayjs/core': 3.20.11
+      '@midwayjs/session': 3.20.11
+      '@types/koa': 2.15.0
+      '@types/qs': 6.9.18
+      koa: 2.16.2
+      koa-bodyparser: 4.4.1
+      qs: 6.14.0
+    transitivePeerDependencies:
+      - supports-color
 
   '@midwayjs/koa@3.20.5':
     dependencies:
       '@koa/router': 12.0.2
       '@midwayjs/cookies': 1.3.0
-      '@midwayjs/core': 3.20.4
+      '@midwayjs/core': 3.20.11
       '@midwayjs/session': 3.20.5
       '@types/koa': 2.15.0
       '@types/qs': 6.9.18
@@ -16649,11 +16700,15 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@midwayjs/session@3.20.11':
+    dependencies:
+      '@midwayjs/cookies': 1.3.0
+
   '@midwayjs/session@3.20.5':
     dependencies:
       '@midwayjs/cookies': 1.3.0
 
-  '@midwayjs/static-file@3.20.5':
+  '@midwayjs/static-file@3.20.13':
     dependencies:
       koa-range: 0.3.0
       koa-static-cache: 5.1.4
@@ -16661,16 +16716,18 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@midwayjs/typeorm@3.20.11': {}
+
   '@midwayjs/typeorm@3.20.4': {}
 
-  '@midwayjs/upload@3.20.5':
+  '@midwayjs/upload@3.20.13':
     dependencies:
       file-type: 16.5.4
       raw-body: 2.5.2
 
-  '@midwayjs/validate@3.20.5':
+  '@midwayjs/validate@3.20.13':
     dependencies:
-      '@midwayjs/i18n': 3.20.5
+      '@midwayjs/i18n': 3.20.13
       joi: 17.13.3
 
   '@noble/hashes@1.8.0': {}
@@ -23532,6 +23589,34 @@ snapshots:
       - supports-color
 
   koa@2.16.1:
+    dependencies:
+      accepts: 1.3.8
+      cache-content-type: 1.0.1
+      content-disposition: 0.5.4
+      content-type: 1.0.5
+      cookies: 0.9.1
+      debug: 4.4.1(supports-color@8.1.1)
+      delegates: 1.0.0
+      depd: 2.0.0
+      destroy: 1.2.0
+      encodeurl: 1.0.2
+      escape-html: 1.0.3
+      fresh: 0.5.2
+      http-assert: 1.5.0
+      http-errors: 1.8.1
+      is-generator-function: 1.1.0
+      koa-compose: 4.1.0
+      koa-convert: 2.0.0
+      on-finished: 2.4.1
+      only: 0.0.2
+      parseurl: 1.3.3
+      statuses: 1.5.0
+      type-is: 1.6.18
+      vary: 1.1.2
+    transitivePeerDependencies:
+      - supports-color
+
+  koa@2.16.2:
     dependencies:
       accepts: 1.3.8
       cache-content-type: 1.0.1

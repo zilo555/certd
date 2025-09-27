@@ -60,7 +60,7 @@
     "@huaweicloud/huaweicloud-sdk-cdn": "^3.1.120",
     "@huaweicloud/huaweicloud-sdk-core": "^3.1.120",
     "@koa/cors": "^5.0.0",
-    "@midwayjs/bootstrap": "3.20.13",
+    "@midwayjs/bootstrap": "3.20.11",
     "@midwayjs/cache": "3.14.0",
     "@midwayjs/core": "3.20.11",
     "@midwayjs/i18n": "3.20.13",
