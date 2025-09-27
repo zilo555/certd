@@ -11,7 +11,7 @@ import {
 import { RoleService } from "../../sys/authority/service/role-service.js";
 import { UserEntity } from "../../sys/authority/entity/user.js";
 import { cache, utils } from "@certd/basic";
-import { LoginErrorException } from "@certd/lib-server/dist/basic/exception/login-error-exception.js";
+import { LoginErrorException } from "@certd/lib-server";
 import { CodeService } from "../../basic/service/code-service.js";
 import { TwoFactorService } from "../../mine/service/two-factor-service.js";
 import { UserSettingsService } from "../../mine/service/user-settings-service.js";
