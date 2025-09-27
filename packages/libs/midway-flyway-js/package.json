@@ -25,10 +25,10 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@midwayjs/core": "~3.20.3",
-    "@midwayjs/logger": "~3.4.2",
-    "@midwayjs/typeorm": "~3.20.3",
-    "better-sqlite3": "^11.1.2"
+    "better-sqlite3": "^11.1.2",
+    "@midwayjs/core": "3.20.11",
+    "@midwayjs/logger": "3.4.2",
+    "@midwayjs/typeorm": "3.20.11"
   },
   "devDependencies": {
     "@types/chai": "^4.3.3",
