@@ -16,7 +16,7 @@ export class AddonGetterService  {
   addonService: AddonService;
 
 
-  async getAddonById(id: any, checkUserId: boolean, userId?: number): Promise<any> {
+  async getAddonById(id: any, checkUserId: boolean, userId?: number, defaultAddon?:{type:string,name:string} ): Promise<any> {
     const serviceGetter = this.taskServiceBuilder.create({
       userId
     });
@@ -28,13 +28,17 @@ export class AddonGetterService  {
     }
 
     if (!id) {
-      //使用图片验证码
-      return await newAddon("captcha", "image", {}, ctx);
+      if (!defaultAddon) {
+        return null;
+      }
+      return await newAddon(defaultAddon.type, defaultAddon.name, {}, ctx);
     }
     const entity = await this.addonService.info(id);
     if (entity == null) {
-      //使用图片验证码
-      return await newAddon("captcha", "image", {}, ctx);
+      if (!defaultAddon) {
+        return null;
+      }
+      return await newAddon(defaultAddon.type, defaultAddon.name, {}, ctx);
     }
     if (checkUserId) {
       if (userId == null) {

@@ -13,42 +13,45 @@ export class CaptchaService {
   addonGetterService: AddonGetterService;
 
 
-  async getCaptcha(captchaAddonId?:number){
+  async getCaptcha(captchaAddonId?: number) {
     if (!captchaAddonId) {
-      const settings = await this.sysSettingsService.getPublicSettings()
-      captchaAddonId = settings.captchaAddonId ?? 0
+      const settings = await this.sysSettingsService.getPublicSettings();
+      captchaAddonId = settings.captchaAddonId ?? 0;
     }
-    const addon:ICaptchaAddon = await this.addonGetterService.getAddonById(captchaAddonId,true,0)
+    const addon: ICaptchaAddon = await this.addonGetterService.getAddonById(captchaAddonId, true, 0, {
+      type: "captcha",
+      name: "image"
+    });
     if (!addon) {
-      throw new Error('验证码插件还未配置')
+      throw new Error("验证码插件还未配置");
     }
-    return  await addon.getCaptcha()
+    return await addon.getCaptcha();
   }
 
 
-  async doValidate(opts:{form:any,must?:boolean,captchaAddonId?:number}){
+  async doValidate(opts: { form: any, must?: boolean, captchaAddonId?: number }) {
     if (!opts.captchaAddonId) {
-      const settings = await this.sysSettingsService.getPublicSettings()
-      opts.captchaAddonId = settings.captchaAddonId ?? 0
+      const settings = await this.sysSettingsService.getPublicSettings();
+      opts.captchaAddonId = settings.captchaAddonId ?? 0;
     }
-    const addon = await this.addonGetterService.getById(opts.captchaAddonId,0)
+    const addon = await this.addonGetterService.getById(opts.captchaAddonId, 0);
     if (!addon) {
       if (opts.must) {
-        throw new Error('请先配置验证码插件');
+        throw new Error("请先配置验证码插件");
       }
-      logger.warn('验证码插件还未配置，忽略验证码校验')
-      return true
+      logger.warn("验证码插件还未配置，忽略验证码校验");
+      return true;
     }
 
     if (!opts.form) {
-      throw new Error('请输入验证码');
+      throw new Error("请输入验证码");
     }
-    const res = await addon.onValidate(opts.form)
+    const res = await addon.onValidate(opts.form);
     if (!res) {
-      throw new Error('验证码错误');
+      throw new Error("验证码错误");
     }
 
-    return true
+    return true;
 
   }
 
