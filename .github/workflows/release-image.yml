@@ -117,3 +117,15 @@ jobs:
 #            registry.cn-shenzhen.aliyuncs.com/handsfree/certd-agent:${{steps.get_certd_version.outputs.result}}
 #            greper/certd-agent:latest
 #            greper/certd-agent:${{steps.get_certd_version.outputs.result}}
+
+      - name: deploy-certd-doc
+        uses: tyrrrz/action-http-request@master
+        with:
+          url: http://flow-openapi.aliyun.com/pipeline/webhook/IiSxLDp9aOhgDUxJPytv
+          method: POST
+          body: |
+            {}
+          headers: |
+            Content-Type: application/json
+          retry-count: 3
+          retry-delay: 5000

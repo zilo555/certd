@@ -55,14 +55,3 @@ jobs:
           retry-count: 3
           retry-delay: 5000
 
-      - name: deploy-certd-doc
-        uses: tyrrrz/action-http-request@master
-        with:
-          url: http://flow-openapi.aliyun.com/pipeline/webhook/IiSxLDp9aOhgDUxJPytv
-          method: POST
-          body: |
-            {}
-          headers: |
-            Content-Type: application/json
-          retry-count: 3
-          retry-delay: 5000
