@@ -8,7 +8,7 @@ import {
 } from "@certd/plugin-lib";
 import { CertInfo } from '@certd/plugin-cert';
 import { CertApplyPluginNames} from '@certd/plugin-cert';
-import { optionsUtils } from "@certd/basic/dist/utils/util.options.js";
+import { optionsUtils } from "@certd/basic";
 @IsTaskPlugin({
   name: 'DeployCertToAliyunDCDN',
   title: '阿里云-部署证书至DCDN',

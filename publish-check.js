@@ -1,6 +1,7 @@
 
 import fs from 'fs'
 import childProcess from 'child_process';
+import { join } from "path";
 function check(){
     const gitAdd =  fs.readFileSync("./node_modules/@lerna-lite/version/dist/lib/git-add.js","utf-8")
     if(gitAdd.indexOf("('git', ['add', '.']") > -1){
@@ -21,7 +22,7 @@ function check(){
 
 function checkDist(){
 
-  function scanDir(root,excludes){
+  function scanDir(root,excludes,stopDirName = "src"){
     //扫描文件,忽略node_modules
     const files = fs.readdirSync(root)
     const dirs =  []
@@ -30,12 +31,62 @@ function checkDist(){
         continue;
       }
       const filePath = join(root, file);
+
+      if (!fs.statSync(filePath).isDirectory()) {
+        continue;
+      }
+
+      if(file === stopDirName){
+        dirs.push(filePath)
+        continue;
+      }
+
+      const res = scanDir(filePath,excludes,stopDirName)
+      for (const item of res){
+        dirs.push(item)
+      }
     }
 
-    console.log("检查",file)
+    return dirs
+  }
+
+  const srcDirs = scanDir("./packages",["node_modules",".git","dist","certd-client"],"src")
+
+  console.log("检查dist",srcDirs)
+
+  //检查包含 import xxx from "*/dist/*"
+  const hasDistFiles = []
+  for (const srcDir of srcDirs) {
+    const files = fs.readdirSync(srcDir,{recursive:true})
+    for (const file of files) {
+
+      const filePath = join(srcDir, file);
+      if(!file.endsWith(".ts")){
+        continue;
+      }
+      const content = fs.readFileSync(filePath,"utf-8")
+      const lines = content.split("\n")
+      for  (const line of lines) {
+        if( line.indexOf("@certd")>-1 &&  line.indexOf("dist") > -1){
+          hasDistFiles.push({
+            filepath:filePath,
+            line: line
+          })
+          break;
+        }
+      }
+    }
+  }
+
+  if(hasDistFiles.length > 0){
+    console.error("dist文件被引用")
+    console.error(hasDistFiles)
+    throw new Error("dist文件被引用")
+  } else {
+    console.log("dist检查通过 √")
   }
 
 
 }
 checkDist()
-// check()
+check()

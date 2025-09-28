@@ -3,7 +3,7 @@ import { CertApplyPluginNames, CertInfo } from "@certd/plugin-cert";
 import { AwsAccess, AwsRegions } from "../access.js";
 import { AwsAcmClient } from "../libs/aws-acm-client.js";
 import { createCertDomainGetterInputDefine, createRemoteSelectInputDefine } from "@certd/plugin-lib";
-import { optionsUtils } from "@certd/basic/dist/utils/util.options.js";
+import { optionsUtils } from "@certd/basic";
 
 @IsTaskPlugin({
   name: 'AwsDeployToCloudFront',

@@ -5,7 +5,7 @@ import { AddonDefine, BaseService, PageReq, PermissionException, ValidateExcepti
 import { addonRegistry, newAddon } from "../api/index.js";
 import { AddonEntity } from "../entity/addon.js";
 import { http, logger, utils } from "@certd/basic";
-import { TaskServiceBuilder } from "@certd/ui-server/dist/modules/pipeline/service/getter/task-service-getter.js";
+import { TaskServiceBuilder } from "@certd/ui-server";
 
 /**
  * Addon

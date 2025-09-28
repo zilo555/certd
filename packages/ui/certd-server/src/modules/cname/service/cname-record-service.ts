@@ -17,7 +17,7 @@ import { getAuthoritativeDnsResolver, walkTxtRecord } from "@certd/acme-client";
 import { CnameProviderService } from "./cname-provider-service.js";
 import { CnameProviderEntity } from "../entity/cname-provider.js";
 import { CommonDnsProvider } from "./common-provider.js";
-import { DomainParser } from "@certd/plugin-cert/dist/dns-provider/domain-parser.js";
+import { DomainParser } from "@certd/plugin-cert";
 import punycode from "punycode.js";
 import { SubDomainService } from "../../pipeline/service/sub-domain-service.js";
 import { SubDomainsGetter } from "../../pipeline/service/getter/sub-domain-getter.js";
