@@ -3,7 +3,7 @@ on:
   push:
     branches: ['v2-dev']
     paths:
-      - "builder/release.trigger"
+      - "trigger/release.trigger"
 #  workflow_run:
 #    workflows: [ "deploy-demo" ]
 #    types:
