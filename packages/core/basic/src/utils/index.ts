@@ -22,12 +22,14 @@ import { sp } from "./util.sp.js";
 import { hashUtils } from "./util.hash.js";
 import { promises } from "./util.promise.js";
 import { fileUtils } from "./util.file.js";
-import * as _ from "lodash-es";
 import { cache } from "./util.cache.js";
 import dayjs from "dayjs";
 import { domainUtils } from "./util.domain.js";
+export * from "./util.domain.js";
 import { optionsUtils } from "./util.options.js";
+export * from "./util.options.js";
 import { amountUtils } from "./util.amount.js";
+export * from "./util.amount.js";
 import { nanoid } from "nanoid";
 import * as id from "./util.id.js";
 import { locker } from "./util.lock.js";
@@ -43,7 +45,6 @@ export const utils = {
   hash: hashUtils,
   promises,
   file: fileUtils,
-  _,
   mergeUtils,
   cache,
   nanoid,

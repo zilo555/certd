@@ -1,7 +1,8 @@
 import { Inject, Provide, Scope, ScopeEnum } from "@midwayjs/core";
-import { AddonService, SysSettingsService } from "@certd/lib-server";
+import { SysSettingsService } from "@certd/lib-server";
 import { logger } from "@certd/basic";
 import { ICaptchaAddon } from "../../../plugins/plugin-captcha/api.js";
+import { AddonGetterService } from "../../pipeline/service/addon-getter-service.js";
 
 @Provide()
 @Scope(ScopeEnum.Request, { allowDowngrade: true })
@@ -9,7 +10,7 @@ export class CaptchaService {
   @Inject()
   sysSettingsService: SysSettingsService;
   @Inject()
-  addonService: AddonService;
+  addonGetterService: AddonGetterService;
 
 
   async getCaptcha(captchaAddonId?:number){
@@ -17,7 +18,7 @@ export class CaptchaService {
       const settings = await this.sysSettingsService.getPublicSettings()
       captchaAddonId = settings.captchaAddonId ?? 0
     }
-    const addon:ICaptchaAddon = await this.addonService.getAddonById(captchaAddonId,true,0)
+    const addon:ICaptchaAddon = await this.addonGetterService.getAddonById(captchaAddonId,true,0)
     if (!addon) {
       throw new Error('验证码插件还未配置')
     }
@@ -30,7 +31,7 @@ export class CaptchaService {
       const settings = await this.sysSettingsService.getPublicSettings()
       opts.captchaAddonId = settings.captchaAddonId ?? 0
     }
-    const addon = await this.addonService.getById(opts.captchaAddonId,0)
+    const addon = await this.addonGetterService.getById(opts.captchaAddonId,0)
     if (!addon) {
       if (opts.must) {
         throw new Error('请先配置验证码插件');

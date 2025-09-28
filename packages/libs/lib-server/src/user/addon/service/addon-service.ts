@@ -1,23 +1,18 @@
-import { Inject, Provide, Scope, ScopeEnum } from "@midwayjs/core";
+import { Provide, Scope, ScopeEnum } from "@midwayjs/core";
 import { InjectEntityModel } from "@midwayjs/typeorm";
 import { In, Repository } from "typeorm";
-import { AddonDefine, BaseService, PageReq, PermissionException, ValidateException } from "../../../index.js";
-import { addonRegistry, newAddon } from "../api/index.js";
+import { AddonDefine, BaseService, PageReq, ValidateException } from "../../../index.js";
+import { addonRegistry } from "../api/index.js";
 import { AddonEntity } from "../entity/addon.js";
-import { http, logger, utils } from "@certd/basic";
-import { TaskServiceBuilder } from "@certd/ui-server";
 
 /**
  * Addon
  */
 @Provide()
-@Scope(ScopeEnum.Request, {allowDowngrade: true})
+@Scope(ScopeEnum.Request, { allowDowngrade: true })
 export class AddonService extends BaseService<AddonEntity> {
   @InjectEntityModel(AddonEntity)
   repository: Repository<AddonEntity>;
-
-  @Inject()
-  private taskServiceBuilder: TaskServiceBuilder;
 
   //@ts-ignore
   getRepository() {
@@ -34,21 +29,21 @@ export class AddonService extends BaseService<AddonEntity> {
 
   async add(param) {
     let oldEntity = null;
-    if (param._copyFrom){
+    if (param._copyFrom) {
       oldEntity = await this.info(param._copyFrom);
       if (oldEntity == null) {
-        throw new ValidateException('该Addon配置不存在,请确认是否已被删除');
+        throw new ValidateException("该Addon配置不存在,请确认是否已被删除");
       }
-      if (oldEntity.userId  !== param.userId) {
-        throw new ValidateException('您无权查看该Addon配置');
+      if (oldEntity.userId !== param.userId) {
+        throw new ValidateException("您无权查看该Addon配置");
       }
     }
-    if (!param.userId){
-      param.isSystem = true
-    }else{
-      param.isSystem = false
+    if (!param.userId) {
+      param.isSystem = true;
+    } else {
+      param.isSystem = false;
     }
-    delete param._copyFrom
+    delete param._copyFrom;
     return await super.add(param);
   }
 
@@ -60,7 +55,7 @@ export class AddonService extends BaseService<AddonEntity> {
   async update(param) {
     const oldEntity = await this.info(param.id);
     if (oldEntity == null) {
-      throw new ValidateException('该Addon配置不存在,请确认是否已被删除');
+      throw new ValidateException("该Addon配置不存在,请确认是否已被删除");
     }
     return await super.update(param);
   }
@@ -68,55 +63,15 @@ export class AddonService extends BaseService<AddonEntity> {
   async getSimpleInfo(id: number) {
     const entity = await this.info(id);
     if (entity == null) {
-      throw new ValidateException('该Addon配置不存在,请确认是否已被删除');
+      throw new ValidateException("该Addon配置不存在,请确认是否已被删除");
     }
     return {
       id: entity.id,
       name: entity.name,
       userId: entity.userId,
       addonType: entity.addonType,
-      type: entity.type,
+      type: entity.type
     };
-  }
-
-  async getAddonById(id: any, checkUserId: boolean, userId?: number): Promise<any> {
-    const serviceGetter = this.taskServiceBuilder.create({userId:userId??0})
-    const ctx = {
-      http: http,
-      logger: logger,
-      utils: utils,
-      serviceGetter
-    };
-
-    if (!id){
-      //使用图片验证码
-      return await newAddon("captcha", "image", {},ctx);
-    }
-    const entity = await this.info(id);
-    if (entity == null) {
-      //使用图片验证码
-      return await newAddon("captcha", "image", {},ctx);
-    }
-    if (checkUserId) {
-      if (userId == null) {
-        throw new ValidateException('userId不能为空');
-      }
-      if (userId !== entity.userId) {
-        throw new PermissionException('您对该Addon无访问权限');
-      }
-    }
-
-    const setting =  JSON.parse(entity.setting ??"{}")
-    const input = {
-      id: entity.id,
-      ...setting,
-    };
-
-    return await newAddon(entity.addonType, entity.type, input,ctx);
-  }
-
-  async getById(id: any, userId: number): Promise<any> {
-    return await this.getAddonById(id, true, userId);
   }
 
 
@@ -124,8 +79,8 @@ export class AddonService extends BaseService<AddonEntity> {
     return addonRegistry.getDefineList();
   }
 
-  getDefineByType(type: string,prefix?: string)  {
-    return addonRegistry.getDefine(type,prefix) as AddonDefine;
+  getDefineByType(type: string, prefix?: string) {
+    return addonRegistry.getDefine(type, prefix) as AddonDefine;
   }
 
 
@@ -139,31 +94,30 @@ export class AddonService extends BaseService<AddonEntity> {
     return await this.repository.find({
       where: {
         id: In(ids),
-        userId,
+        userId
       },
       select: {
         id: true,
         name: true,
         addonType: true,
         type: true,
-        userId:true,
-        isSystem: true,
-      },
+        userId: true,
+        isSystem: true
+      }
     });
 
   }
 
 
-
-  async getDefault(userId: number,addonType: string): Promise<any> {
+  async getDefault(userId: number, addonType: string): Promise<any> {
     const res = await this.repository.findOne({
       where: {
         userId,
         addonType
       },
       order: {
-        isDefault: 'DESC',
-      },
+        isDefault: "DESC"
+      }
     });
     if (!res) {
       return null;
@@ -179,16 +133,16 @@ export class AddonService extends BaseService<AddonEntity> {
       type: res.type,
       name: res.name,
       userId: res.userId,
-      setting,
+      setting
     };
   }
 
-  async setDefault(id: number, userId: number,addonType:string) {
+  async setDefault(id: number, userId: number, addonType: string) {
     if (!id) {
-      throw new ValidateException('id不能为空');
+      throw new ValidateException("id不能为空");
     }
     if (!userId) {
-      throw new ValidateException('userId不能为空');
+      throw new ValidateException("userId不能为空");
     }
     await this.repository.update(
       {
@@ -196,7 +150,7 @@ export class AddonService extends BaseService<AddonEntity> {
         addonType
       },
       {
-        isDefault: false,
+        isDefault: false
       }
     );
     await this.repository.update(
@@ -206,22 +160,22 @@ export class AddonService extends BaseService<AddonEntity> {
         addonType
       },
       {
-        isDefault: true,
+        isDefault: true
       }
     );
   }
 
-  async getOrCreateDefault(opts:{addonType:string,type:string, inputs: any, userId: any}) {
-    const {addonType,type,inputs,userId} = opts;
+  async getOrCreateDefault(opts: { addonType: string, type: string, inputs: any, userId: any }) {
+    const { addonType, type, inputs, userId } = opts;
 
-   const addonDefine =  this.getDefineByType( type,addonType)
+    const addonDefine = this.getDefineByType(type, addonType);
 
-    const defaultConfig = await this.getDefault(userId,addonType);
+    const defaultConfig = await this.getDefault(userId, addonType);
     if (defaultConfig) {
       return defaultConfig;
     }
     const setting = {
-      ...inputs,
+      ...inputs
     };
     const res = await this.repository.save({
       userId,
@@ -229,7 +183,7 @@ export class AddonService extends BaseService<AddonEntity> {
       type: type,
       name: addonDefine.title,
       setting: JSON.stringify(setting),
-      isDefault: true,
+      isDefault: true
     });
     return this.buildAddonInstanceConfig(res);
   }
