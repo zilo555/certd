@@ -635,8 +635,8 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
     }
 
     // 主域名异常
-    if (cnameRecord.mainDomain !== mainDomain) {
-      throw new Error(`CNAME记录${domain}的域名与配置的主域名不一致，请确认是否在流水线创建之后修改了子域名托管，您需要重新校验CNAME记录的校验状态`);
+    if (cnameRecord.mainDomain && mainDomain && cnameRecord.mainDomain !== mainDomain) {
+      throw new Error(`CNAME记录${domain}的域名与配置的主域名不一致（${cnameRecord.mainDomain}≠${mainDomain}），请确认是否在流水线创建之后修改了子域名托管，您需要重新校验CNAME记录的校验状态`);
     }
 
     let dnsProvider = cnameRecord.commonDnsProvider;
