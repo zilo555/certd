@@ -19,4 +19,23 @@ function check(){
     }
 }
 
-check()
+function checkDist(){
+
+  function scanDir(root,excludes){
+    //扫描文件,忽略node_modules
+    const files = fs.readdirSync(root)
+    const dirs =  []
+    for (const file of files) {
+      if (excludes.includes(file)) {
+        continue;
+      }
+      const filePath = join(root, file);
+    }
+
+    console.log("检查",file)
+  }
+
+
+}
+checkDist()
+// check()
