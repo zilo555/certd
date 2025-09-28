@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.37.0](https://github.com/certd/certd/compare/v1.36.25...v1.37.0) (2025-09-28)
+
+### Features
+
+* @certd/ui-server module import报错的问题 ([0c61d4c](https://github.com/certd/certd/commit/0c61d4c9788677c83c567db5381b9e257ec90bba))
+* dist打包前检查 ([8f6e5bd](https://github.com/certd/certd/commit/8f6e5bd24b3b65fbfcba36c08f532a3abad2d606))
+
 ## [1.36.25](https://github.com/certd/certd/compare/v1.36.24...v1.36.25) (2025-09-27)
 
 ### Bug Fixes

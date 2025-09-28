@@ -1,7 +1,7 @@
 {
   "name": "@certd/pipeline",
   "private": false,
-  "version": "1.36.25",
+  "version": "1.37.0",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -17,8 +17,8 @@
     "pub": "npm publish"
   },
   "dependencies": {
-    "@certd/basic": "^1.36.25",
-    "@certd/plus-core": "^1.36.25",
+    "@certd/basic": "^1.37.0",
+    "@certd/plus-core": "^1.37.0",
     "dayjs": "^1.11.7",
     "lodash-es": "^4.17.21",
     "reflect-metadata": "^0.1.13"
