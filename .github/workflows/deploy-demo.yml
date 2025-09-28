@@ -1,9 +1,9 @@
 name: deploy-demo
 on:
-#  push:
-#    branches: ['v2-dev']
-#    paths:
-#      - "trigger/deploy.trigger"
+  push:
+    branches: ['v2-dev']
+    paths:
+      - "trigger/deploy.trigger"
   workflow_run:
     workflows: [ "build-image" ]
     types:

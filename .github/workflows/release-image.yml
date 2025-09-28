@@ -1,11 +1,11 @@
 name: build-image-for-release
 on:
-#  push:
-#    branches: ['v2-dev']
-#    paths:
-#      - "builder/release.trigger"
+  push:
+    branches: ['v2-dev']
+    paths:
+      - "builder/release.trigger"
 #  workflow_run:
-#    workflows: [ "build-image" ]
+#    workflows: [ "deploy-demo" ]
 #    types:
 #      - completed
 
