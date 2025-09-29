@@ -10,6 +10,8 @@ https://certd.handsfree.work/
 > 注意数据将不定期清理，不定期停止定时任务，生产使用请自行部署    
 > 包含敏感信息，务必自己本地部署进行生产使用
 
+![首页](../images/start/home.png)
+![首页](../images/start/home-2.png)
 
 ## 二、私有化部署
 
