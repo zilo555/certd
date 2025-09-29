@@ -189,7 +189,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           },
           column: {
             width: 120,
-            align: "center",
+            align: "left",
             cellRender({ value, row }) {
               async function resetStatus() {
                 Modal.confirm({
@@ -202,7 +202,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
                 });
               }
               return (
-                <div class={"flex flex-center"}>
+                <div class={"flex flex-left"}>
                   <fs-values-format modelValue={value} dict={dictRef}></fs-values-format>
                   {row.error && (
                     <a-tooltip title={row.error}>
@@ -268,8 +268,15 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             },
           },
         },
+        mainDomain: {
+          title: t("certd.mainDomain"),
+          type: "text",
+          form: {
+            show: false,
+          },
+        },
         createTime: {
-          title: t("certd.create_time"),
+          title: t("certd.createTime"),
           type: "datetime",
           form: {
             show: false,
@@ -281,7 +288,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           },
         },
         updateTime: {
-          title: t("certd.update_time"),
+          title: t("certd.updateTime"),
           type: "datetime",
           form: {
             show: false,

@@ -247,6 +247,8 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
       return true;
     }
 
+    await this.getByDomain(bean.domain, bean.userId);
+
     const subDomainGetter = new SubDomainsGetter(bean.userId, this.subDomainService);
     const domainParser = new DomainParser(subDomainGetter);
 

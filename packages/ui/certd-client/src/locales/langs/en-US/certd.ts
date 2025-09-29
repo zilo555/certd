@@ -447,6 +447,7 @@ export default {
   description: "Description",
   createTime: "Creation Time",
   updateTime: "Update Time",
+  mainDomain: "Main Domain",
   edit: "Edit",
   groupName: "Group Name",
   enterGroupName: "Please enter group name",

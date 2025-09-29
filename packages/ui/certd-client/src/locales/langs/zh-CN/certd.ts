@@ -453,6 +453,7 @@ export default {
   description: "说明",
   createTime: "创建时间",
   updateTime: "更新时间",
+  mainDomain: "主域名",
   edit: "编辑",
   groupName: "分组名称",
   enterGroupName: "请输入分组名称",
