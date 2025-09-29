@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.1](https://github.com/certd/certd/compare/v1.37.0...v1.37.1) (2025-09-29)
+
+### Bug Fixes
+
+* 修复版本比较bug ([109696e](https://github.com/certd/certd/commit/109696e965d68c50c8627ffd40203edd1d2daea5))
+* 修复某些情况下cname申请证书报错主域名不一致的bug ([2671781](https://github.com/certd/certd/commit/2671781e1bb0838981728d85eacf0e1a25a0fa48))
+
+### Performance Improvements
+
+* cname主域名校验提示优化，显示不一致的两方便于排查问题 ([6ebb365](https://github.com/certd/certd/commit/6ebb3659f42155e4e8da600c493fb5227cd08137))
+* dns解析支持阿里esa ([9291fa6](https://github.com/certd/certd/commit/9291fa68aa7a88a05c2f888bf3048df36a8fbde3))
+
 # [1.37.0](https://github.com/certd/certd/compare/v1.36.25...v1.37.0) (2025-09-28)
 
 ### Features
