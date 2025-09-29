@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.1](https://github.com/publishlab/node-acme-client/compare/v1.37.0...v1.37.1) (2025-09-29)
+
+**Note:** Version bump only for package @certd/acme-client
+
 # [1.37.0](https://github.com/publishlab/node-acme-client/compare/v1.36.25...v1.37.0) (2025-09-28)
 
 **Note:** Version bump only for package @certd/acme-client
