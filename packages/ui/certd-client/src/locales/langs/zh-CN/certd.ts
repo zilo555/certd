@@ -181,6 +181,7 @@ export default {
     suiteSetting: "套餐设置",
     orderManager: "订单管理",
     userSuites: "用户套餐",
+    netTest: "网络测试",
   },
   certificateRepo: {
     title: "证书仓库",

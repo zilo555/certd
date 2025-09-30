@@ -175,6 +175,7 @@ export default {
     suiteSetting: "Suite Settings",
     orderManager: "Order Management",
     userSuites: "User Suites",
+    netTest: "Network Test",
   },
   certificateRepo: {
     title: "Certificate Repository",
