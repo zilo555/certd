@@ -129,9 +129,9 @@ async function spawn(opts: SpawnOption): Promise<string> {
         log.error(`child process exited with code ${code}`);
         const e = new Error(stderr || "return " + code);
         //@ts-ignore
-        error.stderr = stderr;
+        e.stderr = stderr;
         //@ts-ignore
-        error.stdout = stdout;
+        e.stdout = stdout;
         reject(e);
       } else {
         resolve(stdout);
