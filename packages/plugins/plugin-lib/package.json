@@ -36,7 +36,8 @@
     "socks-proxy-agent": "^8.0.4",
     "ssh2": "^1.15.0",
     "strip-ansi": "^7.1.0",
-    "tencentcloud-sdk-nodejs": "^4.0.1005"
+    "tencentcloud-sdk-nodejs": "^4.0.1005",
+    "psl": "^1.9.0"
   },
   "devDependencies": {
     "@types/chai": "^4.3.3",

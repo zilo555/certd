@@ -19,14 +19,8 @@
       <!-- 本地IP -->
       <div class="info-item">
         <div class="info-label">本地IP:</div>
-        <div v-if="serverInfo.localIP" class="info-value">
-          <a-list item-layout="horizontal" :data-source="serverInfo.localIP">
-            <template #renderItem="{ item }">
-              <a-list-item>
-                <a-list-item-meta description="{{ item }}" />
-              </a-list-item>
-            </template>
-          </a-list>
+        <div v-if="serverInfo.localIP && serverInfo.localIP.length > 0" class="info-value">
+          <a-tag v-for="ip in serverInfo.localIP" :key="ip" type="info" color="blue">{{ ip }}</a-tag>
         </div>
         <div v-else class="info-empty">暂无信息</div>
       </div>
@@ -34,8 +28,8 @@
       <!-- 外网IP -->
       <div class="info-item">
         <div class="info-label">外网IP:</div>
-        <div v-if="serverInfo.publicIP" class="info-value">
-          {{ serverInfo.publicIP }}
+        <div v-if="serverInfo.publicIP && serverInfo.publicIP.length > 0" class="info-value">
+          <a-tag v-for="ip in serverInfo.publicIP" :key="ip" type="info" color="green">{{ ip }}</a-tag>
         </div>
         <div v-else class="info-empty">暂无信息</div>
       </div>
@@ -44,7 +38,7 @@
       <div class="info-item">
         <div class="info-label">DNS服务器:</div>
         <div v-if="serverInfo.dnsServers && serverInfo.dnsServers.length > 0" class="info-value">
-          {{ serverInfo.dnsServers.join(", ") }}
+          <a-tag v-for="dns in serverInfo.dnsServers" :key="dns" type="info" color="cyan">{{ dns }}</a-tag>
         </div>
         <div v-else class="info-empty">暂无信息</div>
       </div>
@@ -60,7 +54,7 @@ import { GetServerInfo } from "./api";
 // 服务器信息类型
 interface ServerInfo {
   localIP?: string[];
-  publicIP?: string;
+  publicIP?: string[];
   dnsServers?: string[];
 }
 

@@ -42,7 +42,7 @@ export class NetTestService {
       // 判断测试是否成功
       const success = this.isWindows()
         ? output.includes('端口连接成功')
-        : output.includes('succeeded') || output.includes('open');
+        : output.includes('Connected to');
 
       // 处理结果
       return {
@@ -55,8 +55,8 @@ export class NetTestService {
       return {
         success: false,
         message: 'Telnet测试执行失败',
-        testLog: error instanceof Error ? error.message : String(error),
-        error: error instanceof Error ? error.message : String(error)
+        testLog: error.stdout || error.stderr || error?.message || String(error),
+        error: error.stderr || error?.message || String(error),
       };
     }
   }
@@ -133,7 +133,7 @@ export class NetTestService {
       });
 
       // 判断测试是否成功
-      const success = output.includes('Address:') || output.includes('IN A') ||
+      const success = output.includes('Address:') || output.includes('IN	A') || output.includes('IN	AAAA') ||
         (this.isWindows() && output.includes('Name:'));
 
       return {
@@ -153,27 +153,29 @@ export class NetTestService {
   }
 
 
-  async getLocalIP(): Promise<string> {
+  async getLocalIP(): Promise<string[]> {
     try {
       const output = await utils.sp.spawn({
         cmd: 'bash -c "ip a | grep \'inet \' | grep -v \'127.0.0.1\' | awk \'{print $2}\' | cut -d/ -f1"',
         logger: undefined
       });
-      return output.trim();
+      // 去除 inet 前缀
+      let ips = output.trim().replace(/inet /g, '');
+      return ips.split('\n').filter(ip => ip.length > 0);
     } catch (error) {
-      return error instanceof Error ? error.message : String(error);
+      return [error instanceof Error ? error.message : String(error)];
     }
   }
 
-  async getPublicIP(): Promise<string> {
+  async getPublicIP(): Promise<string[]> {
     try {
       const res = await http.request({
         url:"https://ipinfo.io/ip",
         method:"GET",
       })
-      return res
+      return[res]
     } catch (error) {
-      return error instanceof Error ? error.message : String(error);
+      return [error instanceof Error ? error.message : String(error)]
     }
   }
 
@@ -195,8 +197,8 @@ export class NetTestService {
   async serverInfo(): Promise<any> {
 
     const res = {
-      localIP: '',
-      publicIP: '',
+      localIP:  [],
+      publicIP:  [],
       dnsServers: [],
     }
 

@@ -11,8 +11,11 @@
 git clone https://github.com/certd/certd --depth=1
 # git checkout v1.x.x  # 当v2主干分支代码无法正常启动时，可以尝试此命令，1.x.x换成最新版本号
 cd certd
+
 # 启动服务
 ./start.sh
+
+
 
 ```
 >如果是windows，请先安装`git for windows` ，然后右键，选择`open git bash here`打开终端，再执行`./start.sh`命令
