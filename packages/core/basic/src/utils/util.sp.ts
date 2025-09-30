@@ -112,13 +112,23 @@ async function spawn(opts: SpawnOption): Promise<string> {
     });
     ls.on("error", error => {
       log.error(`child process error: ${error}`);
+      const e = error;
+      // @ts-ignore
+      e.stderr = stderr;
+      // @ts-ignore
+      e.stdout = stdout;
       reject(error);
     });
 
     ls.on("close", (code: number) => {
       if (code !== 0) {
         log.error(`child process exited with code ${code}`);
-        reject(new Error(stderr));
+        const e = new Error(stderr || `return ${code}`);
+        // @ts-ignore
+        e.stderr = stderr;
+        // @ts-ignore
+        e.stdout = stdout;
+        reject(e);
       } else {
         resolve(stdout);
       }
