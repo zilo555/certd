@@ -87,7 +87,7 @@ export class NetTestService {
       // 判断测试是否成功
       const success = this.isWindows()
         ? output.includes('TTL=')
-        : output.includes('0% packet loss');
+        : output.includes('time=');
 
       return {
         success,
@@ -100,7 +100,7 @@ export class NetTestService {
       return {
         success: false,
         message: 'Ping测试执行失败',
-        testLog: errorMessage,
+        testLog: error.stderr|| error.stdout ||  errorMessage,
         error: errorMessage
       };
     }
@@ -146,7 +146,7 @@ export class NetTestService {
       return {
         success: false,
         message: '域名解析测试执行失败',
-        testLog: errorMessage,
+        testLog: error.stdoout ||  error.stderr || errorMessage,
         error: errorMessage
       };
     }
@@ -201,12 +201,13 @@ export class NetTestService {
       });
       const line = extDnsServers.trim()
       if (line.includes('ExtServers') && line.includes('[')) {
-        const extDns = extDnsServers.trim().split(' ')[1].replace('[', '').replace(']', '').split(' ');
-        dnsServers = dnsServers.concat(extDns);
+        const extDns = line.substring(line.indexOf('[') + 1, line.indexOf(']')).split(' ');
+        const dnsList = extDns.map(item=>`Ext:${item}`)
+        dnsServers = dnsServers.concat(dnsList); 
       }
     } catch (error) {
-      logger.error('获取DNS服务器失败', error);
-      dnsServers.push(error instanceof Error ? error.message : String(error));
+      logger.error('获取DNS ExtServers 服务器失败', error);
+      // dnsServers.push(error instanceof Error ? error.message : String(error));
     }
     return dnsServers;
   }

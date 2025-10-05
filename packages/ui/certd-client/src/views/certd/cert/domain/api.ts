@@ -57,4 +57,3 @@ export async function DeleteBatch(ids: any[]) {
     data: { ids },
   });
 }
-

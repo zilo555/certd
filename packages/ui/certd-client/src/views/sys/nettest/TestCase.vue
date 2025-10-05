@@ -77,6 +77,7 @@ const runTest = async () => {
 // 暴露方法给父组件
 defineExpose({
   test: runTest,
+  getResult: () => result.value,
 });
 
 // 辅助计算属性，用于模板中显示结果
