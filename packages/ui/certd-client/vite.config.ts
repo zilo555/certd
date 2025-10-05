@@ -25,6 +25,10 @@ export default ({ command, mode }) => {
   // if (mode.startsWith("dev")) {
   //   base = "./";
   // }
+  let proxyTarget = "";
+  if (mode === "remote") {
+    proxyTarget = "http://yfy.docmirror.cn:7001";
+  }
   return {
     base: base,
     plugins: [
@@ -88,7 +92,7 @@ export default ({ command, mode }) => {
         // with options
         "/api": {
           //配套后端 https://github.com/fast-crud/fs-server-js
-          target: "https://127.0.0.1:7002",
+          target: proxyTarget ?? "https://127.0.0.1:7002",
           //忽略证书
           agent: new https.Agent({ rejectUnauthorized: false }),
         },
