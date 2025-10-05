@@ -6,6 +6,7 @@
     "dev": "vite --open",
     "dev:pm": "vite --mode pm",
     "dev:force": "vite --force",
+    "remote": "vite --mode remote --open",
     "debug": "vite --mode debug --open",
     "debug:pm": "vite --mode debugpm",
     "debug:force": "vite --force --mode debug",
