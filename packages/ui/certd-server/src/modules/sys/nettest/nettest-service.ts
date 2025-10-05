@@ -1,5 +1,5 @@
 import { Provide, Scope, ScopeEnum } from '@midwayjs/core';
-import { http, utils } from '@certd/basic';
+import { http, logger, utils } from '@certd/basic';
 
 // 使用@certd/basic包中已有的utils.sp.spawn函数替代自定义的asyncExec
 // 该函数已经内置了Windows系统编码问题的解决方案
@@ -156,7 +156,7 @@ export class NetTestService {
   async getLocalIP(): Promise<string> {
     try {
       const output = await utils.sp.spawn({
-        cmd: 'bash -c "ip a | grep \'inet \' | grep -v \'127.0.0.1\' | awk \'{print $2}\' | cut -d/ -f1"',
+        cmd: 'ip a | grep \'inet \' | grep -v \'127.0.0.1\' | awk \'{print $2}\' | cut -d/ -f1',
         logger: undefined
       });
       return output.trim();
@@ -178,15 +178,35 @@ export class NetTestService {
   }
 
   async getDNSservers(): Promise<string[]> {
+    let dnsServers: string[] = [];
     try {
       const output = await utils.sp.spawn({
         cmd: 'cat /etc/resolv.conf | grep nameserver | awk \'{print $2}\'',
         logger: undefined
       });
-      return output.trim().split('\n');
+      dnsServers = output.trim().split('\n');
     } catch (error) {
-      return [error instanceof Error ? error.message : String(error)];
+      dnsServers = [error instanceof Error ? error.message : String(error)];
     }
+    try{
+      /**
+       * /app # cat /etc/resolv.conf | grep "ExtServers"
+# ExtServers: [223.5.5.5 223.6.6.6]
+       */
+      const extDnsServers = await utils.sp.spawn({
+        cmd: 'cat /etc/resolv.conf | grep "ExtServers"',
+        logger: undefined
+      });
+      const line = extDnsServers.trim()
+      if (line.includes('ExtServers') && line.includes('[')) {
+        const extDns = extDnsServers.trim().split(' ')[1].replace('[', '').replace(']', '').split(' ');
+        dnsServers = dnsServers.concat(extDns);
+      }
+    } catch (error) {
+      logger.error('获取DNS服务器失败', error);
+      dnsServers.push(error instanceof Error ? error.message : String(error));
+    }
+    return dnsServers;
   }
   /**
    * 获取服务器信息（包括本地IP、外网IP和DNS服务器）
