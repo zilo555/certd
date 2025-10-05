@@ -6,7 +6,7 @@
     <div class="nettest-container">
       <!-- 服务端信息 -->
       <server-info-card />
-      
+
       <!-- 测试区域 -->
       <div class="test-areas">
         <!-- 用户输入域名测试 -->

@@ -78,7 +78,7 @@ const createPingTestMethod = async () => {
 const createTelnetTestMethod = async () => {
   const domain = getCurrentDomain();
   const port = getCurrentPort();
-  
+
   return TelnetTest(domain, port);
 };
 
@@ -95,7 +95,7 @@ const getCurrentPort = () => {
 // 运行全部测试
 async function runAllTests() {
   const domain = getCurrentDomain();
-  
+
   // 检查是否有域名
   if (!domain) {
     message.error("请输入域名");
@@ -107,8 +107,6 @@ async function runAllTests() {
   // 通过组件引用调用测试方法
   try {
     await Promise.allSettled([domainResolveRef.value?.test(), pingTestRef.value?.test(), telnetTestRef.value?.test()]);
-
-    message.success("所有测试已完成");
   } catch (error) {
     message.error("部分测试执行失败，请查看详细结果");
   } finally {

@@ -1,7 +1,9 @@
 //转换为import
+//@ts-ignore
 import childProcess from "child_process";
 import { safePromise } from "./util.promise.js";
 import { ILogger, logger } from "./util.log.js";
+//@ts-ignore
 import iconv from "iconv-lite";
 export type ExecOption = {
   cmd: string | string[];
@@ -28,12 +30,13 @@ async function exec(opts: ExecOption): Promise<string> {
       cmd,
       {
         env: {
+          //@ts-ignore
           ...process.env,
           ...opts.env,
         },
         ...opts.options,
       },
-      (error, stdout, stderr) => {
+      (error: any, stdout: { toString: (arg0: string) => any }, stderr: any) => {
         if (error) {
           log.error(`exec error: ${error}`);
           reject(error);
@@ -57,6 +60,7 @@ export type SpawnOption = {
 };
 
 function isWindows() {
+  // @ts-ignore
   return process.platform === "win32";
 }
 function convert(buffer: any) {
@@ -94,39 +98,39 @@ async function spawn(opts: SpawnOption): Promise<string> {
     const ls = childProcess.spawn(cmd, {
       shell: true,
       env: {
+        //@ts-ignore
         ...process.env,
         ...opts.env,
       },
       ...opts.options,
     });
-    ls.stdout.on("data", data => {
+    ls.stdout.on("data", (data: string) => {
       data = convert(data);
       log.info(`stdout: ${data}`);
       stdout += data;
     });
 
-    ls.stderr.on("data", data => {
+    ls.stderr.on("data", (data: string) => {
       data = convert(data);
       log.warn(`stderr: ${data}`);
       stderr += data;
     });
-    ls.on("error", error => {
+    ls.on("error", (error: any) => {
       log.error(`child process error: ${error}`);
-      const e = error;
-      // @ts-ignore
-      e.stderr = stderr;
-      // @ts-ignore
-      e.stdout = stdout;
+      //@ts-ignore
+      error.stderr = stderr;
+      //@ts-ignore
+      error.stdout = stdout;
       reject(error);
     });
 
     ls.on("close", (code: number) => {
       if (code !== 0) {
         log.error(`child process exited with code ${code}`);
-        const e = new Error(stderr || `return ${code}`);
-        // @ts-ignore
+        const e = new Error(stderr || "return " + code);
+        //@ts-ignore
         e.stderr = stderr;
-        // @ts-ignore
+        //@ts-ignore
         e.stdout = stdout;
         reject(e);
       } else {
