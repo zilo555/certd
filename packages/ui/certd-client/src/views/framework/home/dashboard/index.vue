@@ -193,7 +193,6 @@ async function loadLatestVersion() {
 
   const minVersion = settingsStore.productInfo?.app?.minVersion;
   if (minVersion) {
-    debugger;
     if (isNewVersion(version.value, minVersion)) {
       notification.error({
         message: settingsStore.productInfo?.app?.minVersionTip ?? "版本过低，为了您的数据安全，请尽快升级",
