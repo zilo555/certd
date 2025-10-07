@@ -6,7 +6,6 @@ import {
   SshAccess,
   SshClient
 } from "@certd/plugin-lib";
-import path from "node:path";
 
 @IsTaskPlugin({
   //命名规范，插件类型+功能（就是目录plugin-demo中的demo），大写字母开头，驼峰命名
@@ -87,13 +86,21 @@ export class FnOSDeployToNAS extends AbstractTaskPlugin {
           this.logger.info(`----------- 找到证书,开始部署：${item.sum},${item.domain}`)
           const certPath = item.certificate;
           const keyPath = item.privateKey;
-          const certDir = path.dirname(keyPath)
+          const certDir = keyPath.substring(0, keyPath.lastIndexOf("/"));
+          const fullchainPath = certDir+ "/fullchain.crt"
+          const caPath = certDir+ "/issuer_certificate.crt"
           const cmd = `
 sudo tee ${certPath} > /dev/null <<'EOF'
 ${this.cert.crt}
 EOF
 sudo tee ${keyPath} > /dev/null <<'EOF'
 ${this.cert.key}
+EOF
+sudo tee ${fullchainPath} > /dev/null <<'EOF'
+${this.cert.crt}
+EOF
+sudo tee ${caPath} > /dev/null <<'EOF'
+${this.cert.ic}
 EOF
 
 sudo chmod 0755 "${certDir}/" -R
