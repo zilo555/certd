@@ -56,7 +56,7 @@ export class FnOSDeployToNAS extends AbstractTaskPlugin {
   @TaskInput(
     createRemoteSelectInputDefine({
       title: "证书Id",
-      helper: "要更新的证书id",
+      helper: "面板证书请选择fnOS，其他FTP、webdav等证书请选择已使用，可多选（如果证书域名都匹配的话）",
       action: FnOSDeployToNAS.prototype.onGetCertList.name
     })
   )
@@ -164,7 +164,7 @@ echo "服务重启完成！"
     }
 
     if (!list || list.length === 0) {
-      throw new Error("没有找到证书，请先在证书管理也没上传一次证书");
+      throw new Error("没有找到证书，请先在证书管理页面上传一次证书");
     }
     return list
   }
