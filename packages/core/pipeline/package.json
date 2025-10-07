@@ -14,7 +14,8 @@
     "build3": "rollup -c",
     "preview": "vite preview",
     "test": "mocha   --loader=ts-node/esm",
-    "pub": "npm publish"
+    "pub": "npm publish",
+    "compile": "tsc --skipLibCheck --watch"
   },
   "dependencies": {
     "@certd/basic": "^1.37.1",

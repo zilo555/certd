@@ -13,7 +13,8 @@
     "dev-build": "npm run build",
     "preview": "vite preview",
     "test": "mocha   --loader=ts-node/esm",
-    "pub": "npm publish"
+    "pub": "npm publish",
+    "compile": "tsc --skipLibCheck --watch"
   },
   "dependencies": {
     "axios": "^1.7.2",

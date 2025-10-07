@@ -52,7 +52,8 @@
         "lint-types": "tsd",
         "prepublishOnly": "npm run build-docs",
         "test": "mocha -t 60000 \"test/setup.js\" \"test/**/*.spec.js\"",
-        "pub": "npm publish"
+        "pub": "npm publish",
+        "compile": "tsc --skipLibCheck --watch"
     },
     "repository": {
         "type": "git",

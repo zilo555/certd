@@ -17,7 +17,8 @@
     "lint": "mwts check",
     "lint:fix": "mwts fix",
     "prepublish": "npm run build",
-    "pub": "npm publish"
+    "pub": "npm publish",
+    "compile": "tsc --skipLibCheck --watch"
   },
   "keywords": [],
   "author": "greper",
