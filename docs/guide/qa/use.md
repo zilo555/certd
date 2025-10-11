@@ -19,7 +19,7 @@
 "detail": too many certificates (5) already issued for this exact set of idantifiers in the last 168hm0s
 ```
 
-## ssl.com报错  CAA record does not include ssl.com which is required to issue the certificate
+## 4. ssl.com报错  CAA record does not include ssl.com which is required to issue the certificate
 ssl.com申请证书要求必须设置CAA记录，表示允许ssl.com为该域名颁发证书
 请按如下格式添加CAA记录
 
@@ -29,5 +29,18 @@ ssl.com申请证书要求必须设置CAA记录，表示允许ssl.com为该域名
 | 一级泛域名 | CAA | * | 0         | issue/issuewild | "ssl.com" |
 | 固定子域名 | CAA | sub |  0         | issue  |"ssl.com" |
 
+## 5. address family not supported
+启动时出现此错误，是由于您的服务器不支持绑定ipv6地址
+
+请配置环境变量 certd_koa_hostname=0.0.0.0
+
+在docker-compose.yml中添加如下配置
+
+```yaml
+service:
+  certd:
+    environment:
+      certd_koa_hostname: 0.0.0.0
+```
 
 

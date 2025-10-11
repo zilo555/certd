@@ -20,9 +20,13 @@ import * as commercial from '@certd/commercial-core';
 import * as upload from '@midwayjs/upload';
 import { setLogger } from '@certd/acme-client';
 import {HiddenMiddleware} from "./middleware/hidden.js";
+
 process.on('uncaughtException', error => {
   console.error('未捕获的异常：', error);
   // 在这里可以添加日志记录、发送错误通知等操作
+  if(error?.message?.includes('address family not supported')){
+    logger.error("您的服务器不支持监听IPV6格式的地址（::），请配置环境变量: certd_koa_hostname=0.0.0.0");
+  }
 });
 
 @Configuration({
@@ -107,5 +111,6 @@ export class MainConfiguration {
     });
 
     logger.info('当前环境：', this.app.getEnv()); // prod
+    // throw new Error("address family not supported")
   }
 }
