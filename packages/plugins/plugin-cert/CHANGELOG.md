@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.1](https://github.com/certd/certd/compare/v1.37.0...v1.37.1) (2025-09-29)
+
+### Performance Improvements
+
+* cname主域名校验提示优化，显示不一致的两方便于排查问题 ([6ebb365](https://github.com/certd/certd/commit/6ebb3659f42155e4e8da600c493fb5227cd08137))
+
+# [1.37.0](https://github.com/certd/certd/compare/v1.36.25...v1.37.0) (2025-09-28)
+
+**Note:** Version bump only for package @certd/plugin-cert
+
+## [1.36.25](https://github.com/certd/certd/compare/v1.36.24...v1.36.25) (2025-09-27)
+
+**Note:** Version bump only for package @certd/plugin-cert
+
+## [1.36.24](https://github.com/certd/certd/compare/v1.36.23...v1.36.24) (2025-09-27)
+
+**Note:** Version bump only for package @certd/plugin-cert
+
+## [1.36.23](https://github.com/certd/certd/compare/v1.36.22...v1.36.23) (2025-09-26)
+
+### Performance Improvements
+
+* 手动上传证书优化，增加到期前报错提醒 ([3d42bfd](https://github.com/certd/certd/commit/3d42bfd479eaacc4a49c401224815a6e2a0204b0))
+* 支持腾讯云验证码 ([03f317f](https://github.com/certd/certd/commit/03f317ffdb6595ce70e8a2302b05f390c52110c8))
+
+## [1.36.22](https://github.com/certd/certd/compare/v1.36.21...v1.36.22) (2025-09-23)
+
+### Bug Fixes
+
+* 修复旧版本升级上来报错eab授权的bug ([b76f2e2](https://github.com/certd/certd/commit/b76f2e2008a7fefac4c91179c45c56c7a7a84b71))
+
+### Performance Improvements
+
+* add preferred chain for google trust service ([#539](https://github.com/certd/certd/issues/539)) @ZeroClover ([e31d26a](https://github.com/certd/certd/commit/e31d26a8871c6088d9f8c0f580746ff2a810ae0c))
+
 ## [1.36.21](https://github.com/certd/certd/compare/v1.36.20...v1.36.21) (2025-09-15)
 
 ### Bug Fixes

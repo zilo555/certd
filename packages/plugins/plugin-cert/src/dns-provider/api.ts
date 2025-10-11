@@ -1,5 +1,5 @@
 import { HttpClient, ILogger, utils } from "@certd/basic";
-import { IAccess, Registrable } from "@certd/pipeline";
+import { IAccess, IServiceGetter, Registrable } from "@certd/pipeline";
 
 export type DnsProviderDefine = Registrable & {
   accessType: string;
@@ -25,6 +25,7 @@ export type DnsProviderContext = {
   http: HttpClient;
   utils: typeof utils;
   domainParser: IDomainParser;
+  serviceGetter: IServiceGetter;
 };
 
 export interface IDnsProvider<T = any> {

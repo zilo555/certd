@@ -5,7 +5,7 @@ import { useRouter } from "vue-router";
 import { AddReq, compute, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, EditReq, UserPageQuery, UserPageRes } from "@fast-crud/fast-crud";
 import { useUserStore } from "/@/store/user";
 import { useSettingStore } from "/@/store/settings";
-import { message } from "ant-design-vue";
+import { message, Modal } from "ant-design-vue";
 import CnameTip from "/@/components/plugins/cert/domains-verify-plan-editor/cname-tip.vue";
 export default function ({ crudExpose, context }: CreateCrudOptionsProps): CreateCrudOptionsRet {
   const router = useRouter();
@@ -79,6 +79,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           type: "number",
           column: {
             width: 80,
+            order: -999,
           },
           form: {
             show: false,
@@ -188,14 +189,30 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           },
           column: {
             width: 120,
-            align: "center",
+            align: "left",
             cellRender({ value, row }) {
+              async function resetStatus() {
+                Modal.confirm({
+                  title: "重置状态",
+                  content: "确定要重置校验状态吗？",
+                  onOk: async () => {
+                    await api.ResetStatus(row.id);
+                    await crudExpose.doRefresh();
+                  },
+                });
+              }
               return (
-                <div class={"flex flex-center"}>
+                <div class={"flex flex-left"}>
                   <fs-values-format modelValue={value} dict={dictRef}></fs-values-format>
                   {row.error && (
                     <a-tooltip title={row.error}>
                       <fs-icon class={"ml-5 color-red"} icon="ion:warning-outline"></fs-icon>
+                    </a-tooltip>
+                  )}
+
+                  {row.status === "valid" && (
+                    <a-tooltip title={"重置校验状态，重新校验"}>
+                      <fs-icon class={"ml-5 pointer "} icon="solar:undo-left-square-bold" onClick={resetStatus}></fs-icon>
                     </a-tooltip>
                   )}
                 </div>
@@ -251,8 +268,15 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             },
           },
         },
+        mainDomain: {
+          title: t("certd.mainDomain"),
+          type: "text",
+          form: {
+            show: false,
+          },
+        },
         createTime: {
-          title: t("certd.create_time"),
+          title: t("certd.createTime"),
           type: "datetime",
           form: {
             show: false,
@@ -264,7 +288,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           },
         },
         updateTime: {
-          title: t("certd.update_time"),
+          title: t("certd.updateTime"),
           type: "datetime",
           form: {
             show: false,

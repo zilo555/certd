@@ -2,7 +2,7 @@ import { AbstractTaskPlugin, IsTaskPlugin, pluginGroups, RunStrategy, TaskInput 
 import { CertApplyPluginNames, CertInfo } from "@certd/plugin-cert";
 import { UpyunAccess } from "../access.js";
 import { createCertDomainGetterInputDefine, createRemoteSelectInputDefine } from "@certd/plugin-lib";
-import { optionsUtils } from "@certd/basic/dist/utils/util.options.js";
+import { optionsUtils } from "@certd/basic";
 import { UpyunClient } from "../client.js";
 
 @IsTaskPlugin({

@@ -1,6 +1,13 @@
 import { HttpClient, ILogger, utils } from "@certd/basic";
 import {upperFirst} from "lodash-es";
-import { FormItemProps, PluginRequestHandleReq, Registrable } from "@certd/pipeline";
+import {
+  accessRegistry,
+  FormItemProps,
+  IAccessService,
+  IServiceGetter,
+  PluginRequestHandleReq,
+  Registrable
+} from "@certd/pipeline";
 
 
 export type AddonRequestHandleReqInput<T = any> = {
@@ -48,6 +55,7 @@ export type AddonContext = {
   http: HttpClient;
   logger: ILogger;
   utils: typeof utils;
+  serviceGetter: IServiceGetter;
 };
 
 export abstract class BaseAddon implements IAddon {
@@ -58,8 +66,45 @@ export abstract class BaseAddon implements IAddon {
 
 
 
+
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   async onInstance() {}
+
+
+  async getAccess<T = any>(accessId: string | number, isCommon = false) {
+    if (accessId == null) {
+      throw new Error("您还没有配置授权");
+    }
+    const accessService = await this.ctx.serviceGetter.get<IAccessService>("accessService")
+    let res: any = null;
+    if (isCommon) {
+      res = await accessService.getCommonById(accessId);
+    } else {
+      res = await accessService.getById(accessId);
+    }
+    if (res == null) {
+      throw new Error("授权不存在，可能已被删除，请前往任务配置里面重新选择授权");
+    }
+    // @ts-ignore
+    if (this.logger?.addSecret) {
+      // 隐藏加密信息，不在日志中输出
+      const type = res._type;
+      const plugin = accessRegistry.get(type);
+      const define = plugin.define;
+      // @ts-ignore
+      const input = define.input;
+      for (const key in input) {
+        if (input[key].encrypt && res[key] != null) {
+          // @ts-ignore
+          this.logger.addSecret(res[key]);
+        }
+      }
+    }
+
+    return res as T;
+  }
+
+
   setCtx(ctx: AddonContext) {
     this.ctx = ctx;
     this.http = ctx.http;

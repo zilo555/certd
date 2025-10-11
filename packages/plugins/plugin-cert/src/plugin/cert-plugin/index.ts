@@ -524,6 +524,7 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
       http: this.ctx.http,
       utils,
       domainParser,
+      serviceGetter: this.ctx.serviceGetter,
     };
     return await createDnsProvider({
       dnsProviderType,
@@ -540,7 +541,7 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
       const mainDomain = await domainParser.parse(domain);
       const planSetting: DomainVerifyPlanInput = verifyPlanSetting[mainDomain];
       if (planSetting == null) {
-        throw new Error(`没有找到域名（${domain}）的校验计划`);
+        throw new Error(`没有找到域名（${domain}）的校验计划（如果您在流水线创建之后设置了子域名托管，需要重新编辑证书申请任务和重新校验cname记录的校验状态）`);
       }
       if (planSetting.type === "dns") {
         plan[domain] = await this.createDnsDomainVerifyPlan(planSetting, domain, mainDomain);
@@ -629,10 +630,20 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
     if (cnameRecord == null) {
       throw new Error(`请先配置${domain}的CNAME记录，并通过校验`);
     }
+    if (cnameRecord.status !== "valid") {
+      throw new Error(`CNAME记录${domain}的校验状态为${cnameRecord.status}，请等待校验通过`);
+    }
+
+    // 主域名异常
+    if (cnameRecord.mainDomain && mainDomain && cnameRecord.mainDomain !== mainDomain) {
+      throw new Error(`CNAME记录${domain}的域名与配置的主域名不一致（${cnameRecord.mainDomain}≠${mainDomain}），请确认是否在流水线创建之后修改了子域名托管，您需要重新校验CNAME记录的校验状态`);
+    }
+
     let dnsProvider = cnameRecord.commonDnsProvider;
     if (cnameRecord.cnameProvider.id > 0) {
       dnsProvider = await this.createDnsProvider(cnameRecord.cnameProvider.dnsProviderType, cnameRecord.cnameProvider.access);
     }
+
     return {
       type: "cname",
       domain,

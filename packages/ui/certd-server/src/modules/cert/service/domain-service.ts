@@ -4,7 +4,7 @@ import {In, Not, Repository} from 'typeorm';
 import {AccessService, BaseService} from '@certd/lib-server';
 import {DomainEntity} from '../entity/domain.js';
 import {SubDomainService} from "../../pipeline/service/sub-domain-service.js";
-import {DomainParser} from "@certd/plugin-cert/dist/dns-provider/domain-parser.js";
+import {DomainParser} from "@certd/plugin-cert";
 import {DomainVerifiers} from "@certd/plugin-cert";
 import { SubDomainsGetter } from '../../pipeline/service/getter/sub-domain-getter.js';
 import { CnameRecordService } from '../../cname/service/cname-record-service.js';

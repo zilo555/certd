@@ -3,8 +3,8 @@ import { AppKey, PlusRequestService } from '@certd/plus-core';
 import { cache, http, HttpRequestConfig, logger } from '@certd/basic';
 import { SysInstallInfo, SysLicenseInfo, SysSettingsService } from '../../settings/index.js';
 import { merge } from 'lodash-es';
-
-@Provide()
+import fs from 'fs';
+@Provide("plusService")
 @Scope(ScopeEnum.Request, { allowDowngrade: true })
 export class PlusService {
   @Inject()
@@ -85,12 +85,31 @@ export class PlusService {
 
   async sendEmail(email: any) {
     const plusRequestService = await this.getPlusRequestService();
+
+    let attachments = email.attachments || [];
+    if (attachments.length > 0) {
+      const newAttachments: any[] = [];
+      attachments.forEach((item: any) => {
+        const name = item.filename || item.path.split('/').pop();
+        const body = item.content || fs.readFileSync(item.path);
+        const bodyBase64 = Buffer.from(body).toString('base64');
+        item = {
+          name,
+          body: bodyBase64,
+        };
+        newAttachments.push(item);
+      });
+      attachments = newAttachments;
+    }
+
     await plusRequestService.request({
       url: '/activation/emailSend',
       data: {
         subject: email.subject,
-        text: email.content,
         to: email.receivers,
+        text: email.content,
+        html: email.html,
+        attachments,
       },
     });
   }

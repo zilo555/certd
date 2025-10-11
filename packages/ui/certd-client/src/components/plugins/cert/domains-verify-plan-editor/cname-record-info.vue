@@ -16,6 +16,9 @@
         <a-tooltip v-if="cnameRecord.error" :title="cnameRecord.error">
           <fs-icon class="ml-5 color-red" icon="ion:warning-outline"></fs-icon>
         </a-tooltip>
+        <a-tooltip v-if="cnameRecord.status === 'valid'" title="重置校验状态，重新校验">
+          <fs-icon class="ml-2 color-yellow text-md pointer" icon="solar:undo-left-square-bold" @click="resetStatus"></fs-icon>
+        </a-tooltip>
       </td>
       <td class="center">
         <template v-if="cnameRecord.status !== 'valid'">
@@ -35,6 +38,7 @@ import { ref, watch } from "vue";
 import { dict } from "@fast-crud/fast-crud";
 import * as api from "./api.js";
 import CnameTip from "./cname-tip.vue";
+import { Modal } from "ant-design-vue";
 const statusDict = dict({
   data: [
     { label: "待设置CNAME", value: "cname", color: "warning" },
@@ -71,12 +75,15 @@ function onRecordChange() {
   });
 }
 
+async function loadRecord() {
+  cnameRecord.value = await GetByDomain(props.domain);
+}
 let refreshIntervalId: any = null;
 async function doRefresh() {
   if (!props.domain) {
     return;
   }
-  cnameRecord.value = await GetByDomain(props.domain);
+  await loadRecord();
   onRecordChange();
 
   if (cnameRecord.value.status === "validating") {
@@ -113,6 +120,17 @@ async function doVerify() {
     loading.value = false;
   }
   await doRefresh();
+}
+
+async function resetStatus() {
+  Modal.confirm({
+    title: "重置状态",
+    content: "确定要重置校验状态吗？",
+    onOk: async () => {
+      await api.ResetStatus(cnameRecord.value.id);
+      await loadRecord();
+    },
+  });
 }
 </script>
 

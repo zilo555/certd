@@ -3,7 +3,7 @@ import { cache, isDev, randomNumber } from '@certd/basic';
 import { SysSettingsService, SysSiteInfo } from '@certd/lib-server';
 import { SmsServiceFactory } from '../sms/factory.js';
 import { ISmsService } from '../sms/api.js';
-import { CodeErrorException } from '@certd/lib-server/dist/basic/exception/code-error-exception.js';
+import { CodeErrorException } from '@certd/lib-server';
 import { EmailService } from './email-service.js';
 import { AccessService } from '@certd/lib-server';
 import { AccessSysGetter } from '@certd/lib-server';

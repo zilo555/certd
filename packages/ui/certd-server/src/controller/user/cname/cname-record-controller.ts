@@ -85,10 +85,18 @@ export class CnameRecordController extends CrudController<CnameRecordService> {
   }
 
   @Post('/verify', { summary: Constants.per.authOnly })
-  async verify(@Body(ALL) body: { id: string }) {
+  async verify(@Body(ALL) body: { id: number }) {
     const userId = this.getUserId();
     await this.service.checkUserId(body.id, userId);
     const res = await this.service.verify(body.id);
+    return this.ok(res);
+  }
+
+  @Post('/resetStatus', { summary: Constants.per.authOnly })
+  async resetStatus(@Body(ALL) body: { id: number }) {
+    const userId = this.getUserId();
+    await this.service.checkUserId(body.id, userId);
+    const res = await this.service.resetStatus(body.id);
     return this.ok(res);
   }
 }

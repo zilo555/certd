@@ -10,6 +10,7 @@ RUN cp /workspace/certd-client/dist/* /workspace/certd-server/public/ -rf
 RUN cd /workspace/certd-server && pnpm install && npm run build-on-docker
 
 
+
 FROM node:22-alpine
 EXPOSE 7001
 EXPOSE 7002

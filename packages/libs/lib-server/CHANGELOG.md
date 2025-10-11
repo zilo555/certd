@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.1](https://github.com/certd/certd/compare/v1.37.0...v1.37.1) (2025-09-29)
+
+**Note:** Version bump only for package @certd/lib-server
+
+# [1.37.0](https://github.com/certd/certd/compare/v1.36.25...v1.37.0) (2025-09-28)
+
+### Features
+
+* dist打包前检查 ([8f6e5bd](https://github.com/certd/certd/commit/8f6e5bd24b3b65fbfcba36c08f532a3abad2d606))
+
+## [1.36.25](https://github.com/certd/certd/compare/v1.36.24...v1.36.25) (2025-09-27)
+
+### Bug Fixes
+
+* 固定midwayjs版本，修复ui-server import 错误的bug ([eb4d125](https://github.com/certd/certd/commit/eb4d125eaf4a41e88c752d0c68993829589f8f27))
+
+## [1.36.24](https://github.com/certd/certd/compare/v1.36.23...v1.36.24) (2025-09-27)
+
+### Bug Fixes
+
+* 修复 ui-server 加载失败问题 ([c2ccdbe](https://github.com/certd/certd/commit/c2ccdbec9dd08bca4688eeb2f34d0105eec43ba1))
+
+## [1.36.23](https://github.com/certd/certd/compare/v1.36.22...v1.36.23) (2025-09-26)
+
+### Performance Improvements
+
+* 支持腾讯云验证码 ([03f317f](https://github.com/certd/certd/commit/03f317ffdb6595ce70e8a2302b05f390c52110c8))
+
+## [1.36.22](https://github.com/certd/certd/compare/v1.36.21...v1.36.22) (2025-09-23)
+
+**Note:** Version bump only for package @certd/lib-server
+
 ## [1.36.21](https://github.com/certd/certd/compare/v1.36.20...v1.36.21) (2025-09-15)
 
 **Note:** Version bump only for package @certd/lib-server

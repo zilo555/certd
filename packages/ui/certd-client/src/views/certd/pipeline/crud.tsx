@@ -366,10 +366,7 @@ export default function ({ crudExpose, context: { groupDictRef, selectedRowKeys 
           },
           column: {
             cellRender({ row }) {
-              const {
-                certEffectiveTime: effectiveTime,
-                certExpiresTime: expiresTime,
-              } = row?.lastVars || {};
+              const { certEffectiveTime: effectiveTime, certExpiresTime: expiresTime } = row?.lastVars || {};
               if (!expiresTime) {
                 return "-";
               }

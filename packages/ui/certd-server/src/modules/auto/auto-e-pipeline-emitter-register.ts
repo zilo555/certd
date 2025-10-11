@@ -2,7 +2,7 @@ import { Autoload, Init, Inject, Scope, ScopeEnum } from "@midwayjs/core";
 import { CertInfoService } from "../monitor/index.js";
 import { pipelineEmitter } from "@certd/pipeline";
 import { CertInfo, EVENT_CERT_APPLY_SUCCESS } from "@certd/plugin-cert";
-import { PipelineEvent } from "@certd/pipeline/dist/service/emit.js";
+import { PipelineEvent } from "@certd/pipeline";
 
 @Autoload()
 @Scope(ScopeEnum.Request, { allowDowngrade: true })

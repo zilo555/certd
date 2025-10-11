@@ -3,6 +3,74 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.1](https://github.com/certd/certd/compare/v1.37.0...v1.37.1) (2025-09-29)
+
+### Bug Fixes
+
+* 修复版本比较bug ([109696e](https://github.com/certd/certd/commit/109696e965d68c50c8627ffd40203edd1d2daea5))
+* 修复某些情况下cname申请证书报错主域名不一致的bug ([2671781](https://github.com/certd/certd/commit/2671781e1bb0838981728d85eacf0e1a25a0fa48))
+
+### Performance Improvements
+
+* cname主域名校验提示优化，显示不一致的两方便于排查问题 ([6ebb365](https://github.com/certd/certd/commit/6ebb3659f42155e4e8da600c493fb5227cd08137))
+* dns解析支持阿里esa ([9291fa6](https://github.com/certd/certd/commit/9291fa68aa7a88a05c2f888bf3048df36a8fbde3))
+
+# [1.37.0](https://github.com/certd/certd/compare/v1.36.25...v1.37.0) (2025-09-28)
+
+### Features
+
+* @certd/ui-server module import报错的问题 ([0c61d4c](https://github.com/certd/certd/commit/0c61d4c9788677c83c567db5381b9e257ec90bba))
+* dist打包前检查 ([8f6e5bd](https://github.com/certd/certd/commit/8f6e5bd24b3b65fbfcba36c08f532a3abad2d606))
+
+## [1.36.25](https://github.com/certd/certd/compare/v1.36.24...v1.36.25) (2025-09-27)
+
+### Bug Fixes
+
+* 固定midwayjs版本，修复ui-server import 错误的bug ([eb4d125](https://github.com/certd/certd/commit/eb4d125eaf4a41e88c752d0c68993829589f8f27))
+
+## [1.36.24](https://github.com/certd/certd/compare/v1.36.23...v1.36.24) (2025-09-27)
+
+### Bug Fixes
+
+* 修复 ui-server 加载失败问题 ([c2ccdbe](https://github.com/certd/certd/commit/c2ccdbec9dd08bca4688eeb2f34d0105eec43ba1))
+* 修复 ui-server 加载失败问题 ([063f5c3](https://github.com/certd/certd/commit/063f5c3b55e47df22543a64f02e039e84f92cd14))
+
+### Performance Improvements
+
+* 重置管理员密码同时会关闭验证码，防止验证码失效之后无法登录 ([03899d4](https://github.com/certd/certd/commit/03899d4d9c76fc2077dacc53ab88e2c9ca41af7c))
+
+## [1.36.23](https://github.com/certd/certd/compare/v1.36.22...v1.36.23) (2025-09-26)
+
+### Bug Fixes
+
+* 授权页面，id列位置不在第一列的bug ([3f1722d](https://github.com/certd/certd/commit/3f1722d54debcb4849dc14521a2da0d9b304b69f))
+
+### Performance Improvements
+
+* 动态加载验证码script ([dcc396a](https://github.com/certd/certd/commit/dcc396afb7a23aeb8af57c01014b09af5f033e61))
+* 开启子域名托管之后cname记录支持重置 ([54c8d62](https://github.com/certd/certd/commit/54c8d622437761d350db0f17e07f7517f1911211))
+* 手动上传证书优化，增加到期前报错提醒 ([3d42bfd](https://github.com/certd/certd/commit/3d42bfd479eaacc4a49c401224815a6e2a0204b0))
+* 验证码支持测试，登录验证码需要测试通过后才能开启 ([83e6476](https://github.com/certd/certd/commit/83e6476408090b741fabb1b542fb458d9a8b4134))
+* 支持腾讯云验证码 ([03f317f](https://github.com/certd/certd/commit/03f317ffdb6595ce70e8a2302b05f390c52110c8))
+
+## [1.36.22](https://github.com/certd/certd/compare/v1.36.21...v1.36.22) (2025-09-23)
+
+### Bug Fixes
+
+* 修复旧版本升级上来报错eab授权的bug ([b76f2e2](https://github.com/certd/certd/commit/b76f2e2008a7fefac4c91179c45c56c7a7a84b71))
+* 选择授权对话框编辑时，名称字段排在最后的bug ([31cfb09](https://github.com/certd/certd/commit/31cfb09468bda3272f5f63af65ff3e9272220b39))
+
+### Performance Improvements
+
+* 7001绑定::地址 ([7188997](https://github.com/certd/certd/commit/7188997dd1979f1c10fa29b30221015e0bd5fe9e))
+* 登录失败时清除验证码状态 ([1c15bea](https://github.com/certd/certd/commit/1c15beadc7fe8a7c6ec1903b7e722ca2f52e05b3))
+* 公共cname支持权限校验 ([9cc5f0f](https://github.com/certd/certd/commit/9cc5f0f889d4362ff36e7a1f0e448e02d32ecee7))
+* 优化连接失败的报错提示 ([71d8e7e](https://github.com/certd/certd/commit/71d8e7edd23ad63fdc01a92766b52ede5074fe7c))
+* 增加自签名证书提示 ([877c9c4](https://github.com/certd/certd/commit/877c9c4ff99f81d289f67afd96f440c0796b03ea))
+* add preferred chain for google trust service ([#539](https://github.com/certd/certd/issues/539)) @ZeroClover ([e31d26a](https://github.com/certd/certd/commit/e31d26a8871c6088d9f8c0f580746ff2a810ae0c))
+* dns支持新网域名解析 ([cf3a78e](https://github.com/certd/certd/commit/cf3a78e1145ff0505c87fbc485d9e731b1aa88a8))
+* gcore flush plugin ssl_id改为必填项 ([4b90972](https://github.com/certd/certd/commit/4b909723411c57505aa13b07d8699fb9ac77c937))
+
 ## [1.36.21](https://github.com/certd/certd/compare/v1.36.20...v1.36.21) (2025-09-15)
 
 ### Bug Fixes

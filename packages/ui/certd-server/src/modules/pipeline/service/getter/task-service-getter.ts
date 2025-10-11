@@ -10,6 +10,9 @@ import { DomainVerifierGetter } from "./domain-verifier-getter.js";
 import { DomainService } from "../../../cert/service/domain-service.js";
 import { SubDomainService } from "../sub-domain-service.js";
 
+const serviceNames = [
+  'ocrService',
+]
 export class TaskServiceGetter implements IServiceGetter{
   private userId: number;
   private appCtx : IMidwayContainer;
@@ -30,7 +33,13 @@ export class TaskServiceGetter implements IServiceGetter{
     } else if (serviceName === 'domainVerifierGetter') {
       return await this.getDomainVerifierGetter() as T
     }else{
-      throw new Error(`service ${serviceName} not found`)
+      if(!serviceNames.includes(serviceName)){
+        throw new Error(`${serviceName} not in whitelist`)
+      }
+      const service = await  this.appCtx.getAsync(serviceName)
+      if (! service){
+        throw new Error(`${serviceName} not found`)
+      }
     }
   }
 
@@ -43,6 +52,7 @@ export class TaskServiceGetter implements IServiceGetter{
     const accessService:AccessService = await  this.appCtx.getAsync("accessService")
     return new AccessGetter(this.userId, accessService.getById.bind(accessService));
   }
+
 
   async getCnameProxyService(): Promise<CnameProxyService> {
     const cnameRecordService:CnameRecordService = await  this.appCtx.getAsync("cnameRecordService")
@@ -59,10 +69,6 @@ export class TaskServiceGetter implements IServiceGetter{
     return new DomainVerifierGetter(this.userId, domainService);
   }
 }
-export type TaskServiceCreateReq = {
-  userId: number;
-}
-
 @Provide()
 @Scope(ScopeEnum.Request, { allowDowngrade: true })
 export class TaskServiceBuilder  {
@@ -73,6 +79,10 @@ export class TaskServiceBuilder  {
     const userId = req.userId;
     return new TaskServiceGetter(userId,this.appCtx)
   }
+}
+
+export type TaskServiceCreateReq = {
+  userId: number;
 }
 
 

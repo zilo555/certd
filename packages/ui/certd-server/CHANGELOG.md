@@ -3,6 +3,54 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.1](https://github.com/certd/certd/compare/v1.37.0...v1.37.1) (2025-09-29)
+
+### Bug Fixes
+
+* 修复某些情况下cname申请证书报错主域名不一致的bug ([2671781](https://github.com/certd/certd/commit/2671781e1bb0838981728d85eacf0e1a25a0fa48))
+
+### Performance Improvements
+
+* dns解析支持阿里esa ([9291fa6](https://github.com/certd/certd/commit/9291fa68aa7a88a05c2f888bf3048df36a8fbde3))
+
+# [1.37.0](https://github.com/certd/certd/compare/v1.36.25...v1.37.0) (2025-09-28)
+
+### Features
+
+* dist打包前检查 ([8f6e5bd](https://github.com/certd/certd/commit/8f6e5bd24b3b65fbfcba36c08f532a3abad2d606))
+
+## [1.36.25](https://github.com/certd/certd/compare/v1.36.24...v1.36.25) (2025-09-27)
+
+### Bug Fixes
+
+* 固定midwayjs版本，修复ui-server import 错误的bug ([eb4d125](https://github.com/certd/certd/commit/eb4d125eaf4a41e88c752d0c68993829589f8f27))
+
+## [1.36.24](https://github.com/certd/certd/compare/v1.36.23...v1.36.24) (2025-09-27)
+
+### Bug Fixes
+
+* 修复 ui-server 加载失败问题 ([c2ccdbe](https://github.com/certd/certd/commit/c2ccdbec9dd08bca4688eeb2f34d0105eec43ba1))
+
+### Performance Improvements
+
+* 重置管理员密码同时会关闭验证码，防止验证码失效之后无法登录 ([03899d4](https://github.com/certd/certd/commit/03899d4d9c76fc2077dacc53ab88e2c9ca41af7c))
+
+## [1.36.23](https://github.com/certd/certd/compare/v1.36.22...v1.36.23) (2025-09-26)
+
+### Performance Improvements
+
+* 开启子域名托管之后cname记录支持重置 ([54c8d62](https://github.com/certd/certd/commit/54c8d622437761d350db0f17e07f7517f1911211))
+* 验证码支持测试，登录验证码需要测试通过后才能开启 ([83e6476](https://github.com/certd/certd/commit/83e6476408090b741fabb1b542fb458d9a8b4134))
+
+## [1.36.22](https://github.com/certd/certd/compare/v1.36.21...v1.36.22) (2025-09-23)
+
+### Performance Improvements
+
+* 7001绑定::地址 ([7188997](https://github.com/certd/certd/commit/7188997dd1979f1c10fa29b30221015e0bd5fe9e))
+* 公共cname支持权限校验 ([9cc5f0f](https://github.com/certd/certd/commit/9cc5f0f889d4362ff36e7a1f0e448e02d32ecee7))
+* dns支持新网域名解析 ([cf3a78e](https://github.com/certd/certd/commit/cf3a78e1145ff0505c87fbc485d9e731b1aa88a8))
+* gcore flush plugin ssl_id改为必填项 ([4b90972](https://github.com/certd/certd/commit/4b909723411c57505aa13b07d8699fb9ac77c937))
+
 ## [1.36.21](https://github.com/certd/certd/compare/v1.36.20...v1.36.21) (2025-09-15)
 
 **Note:** Version bump only for package @certd/ui-server

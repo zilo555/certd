@@ -3,6 +3,45 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.1](https://github.com/certd/certd/compare/v1.37.0...v1.37.1) (2025-09-29)
+
+### Bug Fixes
+
+* 修复版本比较bug ([109696e](https://github.com/certd/certd/commit/109696e965d68c50c8627ffd40203edd1d2daea5))
+
+# [1.37.0](https://github.com/certd/certd/compare/v1.36.25...v1.37.0) (2025-09-28)
+
+**Note:** Version bump only for package @certd/ui-client
+
+## [1.36.25](https://github.com/certd/certd/compare/v1.36.24...v1.36.25) (2025-09-27)
+
+**Note:** Version bump only for package @certd/ui-client
+
+## [1.36.24](https://github.com/certd/certd/compare/v1.36.23...v1.36.24) (2025-09-27)
+
+**Note:** Version bump only for package @certd/ui-client
+
+## [1.36.23](https://github.com/certd/certd/compare/v1.36.22...v1.36.23) (2025-09-26)
+
+### Bug Fixes
+
+* 授权页面，id列位置不在第一列的bug ([3f1722d](https://github.com/certd/certd/commit/3f1722d54debcb4849dc14521a2da0d9b304b69f))
+
+### Performance Improvements
+
+* 动态加载验证码script ([dcc396a](https://github.com/certd/certd/commit/dcc396afb7a23aeb8af57c01014b09af5f033e61))
+* 验证码支持测试，登录验证码需要测试通过后才能开启 ([83e6476](https://github.com/certd/certd/commit/83e6476408090b741fabb1b542fb458d9a8b4134))
+
+## [1.36.22](https://github.com/certd/certd/compare/v1.36.21...v1.36.22) (2025-09-23)
+
+### Bug Fixes
+
+* 选择授权对话框编辑时，名称字段排在最后的bug ([31cfb09](https://github.com/certd/certd/commit/31cfb09468bda3272f5f63af65ff3e9272220b39))
+
+### Performance Improvements
+
+* 登录失败时清除验证码状态 ([1c15bea](https://github.com/certd/certd/commit/1c15beadc7fe8a7c6ec1903b7e722ca2f52e05b3))
+
 ## [1.36.21](https://github.com/certd/certd/compare/v1.36.20...v1.36.21) (2025-09-15)
 
 ### Bug Fixes

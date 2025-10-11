@@ -93,6 +93,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           type: "number",
           column: {
             width: 100,
+            order: -999,
           },
           form: {
             show: false,

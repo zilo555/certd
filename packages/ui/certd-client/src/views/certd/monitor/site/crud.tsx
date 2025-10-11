@@ -385,10 +385,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           column: {
             conditionalRender: false,
             cellRender({ row }) {
-              const {
-                certEffectiveTime: effectiveTime,
-                certExpiresTime: expiresTime,
-              } = row || {};
+              const { certEffectiveTime: effectiveTime, certExpiresTime: expiresTime } = row || {};
               if (!expiresTime) {
                 return "-";
               }
