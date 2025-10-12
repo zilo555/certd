@@ -27,7 +27,7 @@ const development = {
   },
   keys: 'certd',
   koa: {
-    hostname:"::",
+    hostname:"0.0.0.0",
     port: 7001,
   },
   https: {
