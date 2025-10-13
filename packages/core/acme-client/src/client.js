@@ -502,7 +502,7 @@ class AcmeClient {
             await verify[challenge.type](authz, challenge, keyAuthorization);
         };
 
-        log('Waiting for ACME challenge verification（等待ACME挑战验证）');
+        log('Waiting for ACME challenge verification（等待ACME检查验证）');
         return util.retry(verifyFn, this.backoffOpts);
     }
 
@@ -570,7 +570,7 @@ class AcmeClient {
             const resp = await this.api.apiRequest(item.url, null, [200]);
 
             /* Verify status */
-            log(`[${d}] Item has status（挑战状态）: ${resp.data.status}`);
+            log(`[${d}] Item has status（检查状态）: ${resp.data.status}`);
 
             if (invalidStates.includes(resp.data.status)) {
                 abort();
