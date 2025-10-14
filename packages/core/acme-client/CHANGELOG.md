@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.2](https://github.com/publishlab/node-acme-client/compare/v1.37.1...v1.37.2) (2025-10-14)
+
+### Bug Fixes
+
+* aliyunoss 选择证书接入点选择新加坡无法上传的bug ([e00733a](https://github.com/publishlab/node-acme-client/commit/e00733a34644c23ffe926486b15dc96bf2fa4b57))
+
 ## [1.37.1](https://github.com/publishlab/node-acme-client/compare/v1.37.0...v1.37.1) (2025-09-29)
 
 **Note:** Version bump only for package @certd/acme-client
