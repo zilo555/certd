@@ -169,8 +169,9 @@ export class SiteInfoService extends BaseService<SiteInfoEntity> {
       if (!notify) {
         return;
       }
+
       try {
-        await this.sendExpiresNotify(site);
+        await this.sendExpiresNotify(site.id);
       } catch (e) {
         logger.error("send notify error", e);
       }
@@ -186,7 +187,7 @@ export class SiteInfoService extends BaseService<SiteInfoEntity> {
         return;
       }
       try {
-        await this.sendCheckErrorNotify(site);
+        await this.sendCheckErrorNotify(site.id);
       } catch (e) {
         logger.error("send notify error", e);
       }
@@ -231,8 +232,7 @@ export class SiteInfoService extends BaseService<SiteInfoEntity> {
         ipErrorCount: errorCount
       });
       try {
-        site = await this.info(site.id);
-        await this.sendCheckErrorNotify(site, true);
+        await this.sendCheckErrorNotify(site.id, true);
       } catch (e) {
         logger.error("send notify error", e);
       }
@@ -254,7 +254,8 @@ export class SiteInfoService extends BaseService<SiteInfoEntity> {
     return await this.doCheck(site, notify, retryTimes);
   }
 
-  async sendCheckErrorNotify(site: SiteInfoEntity, fromIpCheck = false) {
+  async sendCheckErrorNotify(siteId: number, fromIpCheck = false) {
+    const site = await this.info(siteId);
     const url = await this.notificationService.getBindUrl("#/certd/monitor/site");
     const setting = await this.userSettingsService.getSetting<UserSiteMonitorSetting>(site.userId, UserSiteMonitorSetting)
     // 发邮件
@@ -274,7 +275,8 @@ export class SiteInfoService extends BaseService<SiteInfoEntity> {
     );
   }
 
-  async sendExpiresNotify(site: SiteInfoEntity) {
+  async sendExpiresNotify(siteId: number) {
+    const site = await this.info(siteId);
     const setting = await this.userSettingsService.getSetting<UserSiteMonitorSetting>(site.userId, UserSiteMonitorSetting)
     const tipDays = setting?.certValidDays || 10;
 
