@@ -1,14 +1,13 @@
 #
 set -e
 
-
 # 设置SUDO命令
-if [[ "$(uname -s)" == "Linux" ]]; then
-    SUDO_CMD="sudo"
-    SUDO_CMD_E="sudo -E"
-else
+if [[ "$(uname -s)" =~ ^MINGW || "$(uname -s)" =~ ^CYGWIN || "$(uname -s)" =~ ^MSYS ]]; then
     SUDO_CMD=""
     SUDO_CMD_E=""
+else
+    SUDO_CMD="sudo"
+    SUDO_CMD_E="sudo -E"
 fi
 
 # echo "即将删除packages下除ui之外的其他目录，按y确认（如果您没有修改过源码，按y即可）"
