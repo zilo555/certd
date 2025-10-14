@@ -55,7 +55,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
     const setting = await settingApi.SiteMonitorSettingsGet();
     certValidDaysRef.value = setting?.certValidDays || 10;
   }
-  loadSetting()
+  loadSetting();
 
   function checkAll() {
     Modal.confirm({
@@ -395,7 +395,6 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           column: {
             conditionalRender: false,
             cellRender({ row }) {
-
               const certValidDays = certValidDaysRef.value;
               const { certEffectiveTime: effectiveTime, certExpiresTime: expiresTime } = row || {};
               if (!expiresTime) {
