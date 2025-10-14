@@ -5,19 +5,26 @@ set -e
 # 设置SUDO命令
 if [[ "$(uname -s)" == "Linux" ]]; then
     SUDO_CMD="sudo"
+    SUDO_CMD_E="sudo -E"
 else
     SUDO_CMD=""
+    SUDO_CMD_E=""
 fi
 
-echo "即将删除packages下除ui之外的其他目录，按y确认（如果您没有修改过源码，按y即可）"
-read -p "y/n: " confirm
-if [ $confirm != "y" ]; then
-  echo "取消操作"
-  exit 1
-fi
+# echo "即将删除packages下除ui之外的其他目录，按y确认（如果您没有修改过源码，按y即可）"
+# read -p "y/n: " confirm
+# if [ $confirm != "y" ]; then
+#   echo "取消操作"
+#   exit 1
+# fi
+# find ./packages -mindepth 1 -maxdepth 1 -type d ! -name 'ui' -exec rm -rf {} +
+# echo "删除成功"
 
-find ./packages -mindepth 1 -maxdepth 1 -type d ! -name 'ui' -exec rm -rf {} +
-echo "删除成功"
+cat > pnpm-workspace.yaml << EOF
+packages:
+  - 'packages/ui/**'
+EOF
+
 
 # 检查输入是否正确 循环输入
 while true; do
@@ -41,12 +48,12 @@ echo "开始构建"
 echo "构建certd-client"
 export NODE_OPTIONS=--max-old-space-size=32768
 cd packages/ui/certd-client
-$SUDO_CMD -E pnpm run build
+$SUDO_CMD_E pnpm run build
 cp -r dist/* ../certd-server/public
 
 echo "构建certd-server"
 cd ../certd-server
-$SUDO_CMD -E pnpm run build
+$SUDO_CMD_E pnpm run build
 echo "构建完成"
 echo "启动服务"
 
