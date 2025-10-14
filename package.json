@@ -34,7 +34,8 @@
     "docs:build": "npm run copylogs && vitepress build docs",
     "docs:preview": "vitepress preview docs",
     "pub": "echo 1",
-    "dev": "pnpm run -r --parallel  compile "
+    "dev": "pnpm run -r --parallel  compile ",
+    "release": "time /t >trigger/release.trigger && git add trigger/release.trigger && git commit -m \"build: release\" && git push"
   },
   "license": "AGPL-3.0",
   "dependencies": {
