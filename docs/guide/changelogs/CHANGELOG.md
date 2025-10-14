@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.2](https://github.com/certd/certd/compare/v1.37.1...v1.37.2) (2025-10-14)
+
+### Bug Fixes
+
+* 修复飞牛证书部署后无法生效的bug ([bf156a1](https://github.com/certd/certd/commit/bf156a13bd443cdadb73c9dff79bbef7231b4401))
+* aliyunoss 选择证书接入点选择新加坡无法上传的bug ([e00733a](https://github.com/certd/certd/commit/e00733a34644c23ffe926486b15dc96bf2fa4b57))
+
+### Performance Improvements
+
+* 优化start.sh脚本，去掉删除非ui目录的操作及提示 ([7993a7c](https://github.com/certd/certd/commit/7993a7cdb01885535950c63187e3f67d67ba2f75))
+* 增加飞牛证书id选择的提示 ([5a4d812](https://github.com/certd/certd/commit/5a4d8121462b1afe921d028465687be8c9679814))
+* 证书监控支持设置证书即将过期天数 ([cd35568](https://github.com/certd/certd/commit/cd35568e042e6ab928685efad51cdbed823d2d4f))
+* 支持网络测试 ([2bef608](https://github.com/certd/certd/commit/2bef608e07ceb56d52007f290667e0afef401b22))
+* 支持新网代理方式 ([f612509](https://github.com/certd/certd/commit/f612509cac87b859e81a7a52fe94b2eaccad22f9))
+* dns支持新网互联 ([f415190](https://github.com/certd/certd/commit/f41519048326d971acd9e0a30462231f77a299a6))
+* start.sh脚本支持根据当前系统判断是否使用sudo ([567cb7d](https://github.com/certd/certd/commit/567cb7d737023e26ec58403c6f28f109e212d379))
+
 ## [1.37.1](https://github.com/certd/certd/compare/v1.37.0...v1.37.1) (2025-09-29)
 
 ### Bug Fixes
