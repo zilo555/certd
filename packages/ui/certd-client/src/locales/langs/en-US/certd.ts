@@ -281,6 +281,8 @@ export default {
       cronTrigger: "Scheduled trigger for monitoring",
       dnsServer: "DNS Server",
       dnsServerHelper: "Use a custom domain name resolution server, such as: 1.1.1.1 , support multiple",
+      certValidDays: "Certificate Valid Days",
+      certValidDaysHelper: "Number of days before expiration to send a notification",
     },
   },
   checkStatus: {

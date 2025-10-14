@@ -133,9 +133,9 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
       name: "icon-select",
       vModel: "value",
       options: [
-        { value: "letsencrypt", label: "Let's Encrypt", icon: "simple-icons:letsencrypt" },
-        { value: "google", label: "Google", icon: "flat-color-icons:google" },
-        { value: "zerossl", label: "ZeroSSL", icon: "emojione:digit-zero" },
+        { value: "letsencrypt", label: "Let's Encrypt（免费，新手推荐）", icon: "simple-icons:letsencrypt" },
+        { value: "google", label: "Google（免费）", icon: "flat-color-icons:google" },
+        { value: "zerossl", label: "ZeroSSL（免费）", icon: "emojione:digit-zero" },
         { value: "sslcom", label: "SSL.com（仅主域名和www免费）", icon: "la:expeditedssl" },
       ],
     },
