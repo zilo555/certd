@@ -2,7 +2,6 @@
  * ACME auto helper
  */
 import { readCsrDomains } from "./crypto/index.js";
-import { log } from "./logger.js";
 import { wait } from "./wait.js";
 import { CancelError } from "./error.js";
 
@@ -45,6 +44,9 @@ export default async (client, userOpts) => {
         accountPayload.externalAccountBinding = opts.externalAccountBinding;
     }
 
+    const log = (...args)=>{
+        return client.logger.info(...args);
+    }
     /**
      * Register account
      */

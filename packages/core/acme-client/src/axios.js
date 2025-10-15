@@ -3,9 +3,9 @@
  */
 import axios from 'axios';
 import { parseRetryAfterHeader } from './util.js';
-import { log } from './logger.js';
 const { AxiosError } = axios;
 import {getGlobalAgents, HttpError} from '@certd/basic'
+import { log } from './logger.js';
 /**
  * Defaults
  */
