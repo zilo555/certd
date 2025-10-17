@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.2](https://github.com/certd/certd/compare/v1.37.1...v1.37.2) (2025-10-14)
+
+### Performance Improvements
+
+* 证书监控支持设置证书即将过期天数 ([cd35568](https://github.com/certd/certd/commit/cd35568e042e6ab928685efad51cdbed823d2d4f))
+* 支持网络测试 ([2bef608](https://github.com/certd/certd/commit/2bef608e07ceb56d52007f290667e0afef401b22))
+
 ## [1.37.1](https://github.com/certd/certd/compare/v1.37.0...v1.37.1) (2025-09-29)
 
 ### Bug Fixes

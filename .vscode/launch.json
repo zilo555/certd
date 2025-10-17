@@ -10,8 +10,8 @@
             "type": "node",
             "request": "launch",
             "cwd": "${workspaceFolder}/packages/ui/certd-client",
-            "runtimeExecutable": "npm",
-            "runtimeArgs": ["run", "dev"],
+            "runtimeExecutable": "pnpm",
+            "runtimeArgs": ["dev"],
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen"
         },
@@ -20,8 +20,8 @@
             "type": "node",
             "request": "launch",
             "cwd": "${workspaceFolder}/packages/ui/certd-server",
-            "runtimeExecutable": "npm",
-            "runtimeArgs": ["run", "dev"],
+            "runtimeExecutable": "pnpm",
+            "runtimeArgs": ["dev"],
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen"
         },

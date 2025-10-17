@@ -249,6 +249,17 @@ export const sysResources = [
           },
         ],
       },
+      {
+        title: "certd.sysResources.netTest",
+        name: "NetTest",
+        path: "/sys/nettest",
+        component: "/sys/nettest/index.vue",
+        meta: {
+          icon: "ion:build-outline",
+          auth: true,
+          keepAlive: true,
+        },
+      },
     ],
   },
 ];

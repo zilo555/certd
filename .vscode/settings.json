@@ -1,4 +1,5 @@
 {
     "eslint.debug": false,
-    "eslint.format.enable": true
+    "eslint.format.enable": true,
+    "typescript.tsc.autoDetect": "watch"
 }

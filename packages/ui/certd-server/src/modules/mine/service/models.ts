@@ -28,6 +28,7 @@ export class UserSiteMonitorSetting extends BaseSettings {
   cron?:string = undefined;
   retryTimes?:number = 3;
   dnsServer?:string[] = undefined;
+  certValidDays?:number = 10;
 }
 
 export class UserEmailSetting extends BaseSettings {

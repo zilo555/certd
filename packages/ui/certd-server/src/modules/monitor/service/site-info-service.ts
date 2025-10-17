@@ -275,13 +275,12 @@ export class SiteInfoService extends BaseService<SiteInfoEntity> {
   }
 
   async sendExpiresNotify(site: SiteInfoEntity) {
-
-    const tipDays = 10;
+    const setting = await this.userSettingsService.getSetting<UserSiteMonitorSetting>(site.userId, UserSiteMonitorSetting)
+    const tipDays = setting?.certValidDays || 10;
 
     const expires = site.certExpiresTime;
     const validDays = dayjs(expires).diff(dayjs(), "day");
     const url = await this.notificationService.getBindUrl("#/certd/monitor/site");
-    const setting = await this.userSettingsService.getSetting<UserSiteMonitorSetting>(site.userId, UserSiteMonitorSetting)
     const content = `站点名称： ${site.name} \n站点域名： ${site.domain} \n证书域名： ${site.certDomains} \n颁发机构： ${site.certProvider} \n过期时间： ${dayjs(site.certExpiresTime).format("YYYY-MM-DD")} \n`;
     if (validDays >= 0 && validDays < tipDays) {
       // 发通知

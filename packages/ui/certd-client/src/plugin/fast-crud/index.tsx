@@ -14,7 +14,7 @@ import { usePreferences } from "/@/vben/preferences";
 import { LocalStorage } from "/@/utils/util.storage";
 
 import { FsEditorCode } from "@fast-crud/editor-code";
-import "@fast-crud/editor-code/dist/style.css"
+import "@fast-crud/editor-code/dist/style.css";
 
 class ColumnSizeSaver {
   save: (key: string, size: number) => void;

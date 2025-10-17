@@ -121,7 +121,7 @@ export class DeployCertToAliyunOSS extends AbstractTaskPlugin {
       name: 'a-select',
       options: [
         { value: 'cn-hangzhou', label: '中国大陆' },
-        { value: 'southeast-1', label: '新加坡' },
+        { value: 'ap-southeast-1', label: '新加坡' },
         { value: 'eu-central-1', label: '德国（法兰克福）' },
       ],
     },

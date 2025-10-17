@@ -181,6 +181,7 @@ export default {
     suiteSetting: "套餐设置",
     orderManager: "订单管理",
     userSuites: "用户套餐",
+    netTest: "网络测试",
   },
   certificateRepo: {
     title: "证书仓库",
@@ -285,6 +286,8 @@ export default {
       cronTrigger: "定时触发监控",
       dnsServer: "DNS服务器",
       dnsServerHelper: "使用自定义的域名解析服务器，如：1.1.1.1 , 支持多个",
+      certValidDays: "证书到期前天数",
+      certValidDaysHelper: "证书到期前多少天发送通知",
     },
   },
   checkStatus: {

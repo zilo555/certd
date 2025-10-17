@@ -5,9 +5,8 @@ const { Bootstrap } = require('@midwayjs/bootstrap');
 const DirectoryFileDetector = require('@midwayjs/core').DirectoryFileDetector;
 
 const baseDir = process.cwd();
-const pipelineDir = baseDir + './node_modules/@certd/pipeline/dist';
 const customFileDetector = new DirectoryFileDetector({
-  loadDir: [baseDir, pipelineDir],
+  loadDir: [baseDir],
 });
 
 module.exports = async () => {
