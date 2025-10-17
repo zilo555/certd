@@ -10,7 +10,7 @@ import { resetLogConfigure } from "@certd/basic";
   title: '华为云-上传证书至CCM',
   icon: 'svg:icon-huawei',
   group: pluginGroups.huawei.key,
-  desc: '上传证书到华为云CCM',
+  desc: '上传证书到华为云云证书管理（CCM）',
   default: {
     strategy: {
       runStrategy: RunStrategy.SkipWhenSucceed,
