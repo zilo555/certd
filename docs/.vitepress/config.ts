@@ -95,10 +95,10 @@ export default defineConfig({
                         },
                         {
                             text: "插件列表", items: [
-                                {text: "授权提供商", link: "/guide/plugins/access.md"},
                                 {text: "DNS提供商", link: "/guide/plugins/dns-provider.md"},
                                 {text: "任务插件", link: "/guide/plugins/deploy.md"},
                                 {text: "通知插件", link: "/guide/plugins/notification.md"},
+                                {text: "授权提供商", link: "/guide/plugins/access.md"},
                             ]
                         },
                     ]
