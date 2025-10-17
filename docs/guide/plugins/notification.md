@@ -14,6 +14,9 @@
 | 10.| **Slack通知** | Slack消息推送通知 | 
 | 11.| **Bark 通知** | Bark 推送通知插件 | 
 | 12.| **飞书通知** | 飞书群聊webhook通知 | 
+| 13.| **钉钉通知** | 钉钉群聊通知 | 
+| 14.| **VoceChat通知** | https://voce.chat | 
+| 15.| **OneBot V11 通知** | 通过动态拼接URL发送 OneBot V11 协议消息 | 
 
 <style module>
 table th:first-of-type {

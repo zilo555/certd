@@ -37,6 +37,9 @@ import { mitter } from "./util.mitter.js";
 
 import * as request from "./util.request.js";
 export * from "./util.cache.js";
+
+export * from "./util.id.js";
+
 export const utils = {
   sleep,
   http,
