@@ -17,6 +17,12 @@
           </div>
           <div class="helper">{{ t("certd.monitor.setting.monitorRetryTimes") }}</div>
         </a-form-item>
+        <a-form-item :label="t('certd.monitor.setting.certValidDays')" :name="['certValidDays']">
+          <div class="flex">
+            <a-input-number v-model:value="formState.certValidDays" />
+          </div>
+          <div class="helper">{{ t("certd.monitor.setting.certValidDaysHelper") }}</div>
+        </a-form-item>
         <a-form-item :label="t('certd.monitor.setting.dnsServer')" :name="['dnsServer']">
           <div class="flex">
             <a-select v-model:value="formState.dnsServer" mode="tags" :open="false" />

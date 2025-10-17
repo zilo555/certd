@@ -82,9 +82,9 @@ export class AcmeService {
     this.sslProvider = options.sslProvider || "letsencrypt";
     this.eab = options.eab;
     this.skipLocalVerify = options.skipLocalVerify ?? false;
-    acme.setLogger((message: any, ...args: any[]) => {
-      this.logger.info(message, ...args);
-    });
+    // acme.setLogger((message: any, ...args: any[]) => {
+    //   this.logger.info(message, ...args);
+    // });
   }
 
   async getAccountConfig(email: string, urlMapping: UrlMapping): Promise<any> {
@@ -155,6 +155,7 @@ export class AcmeService {
       backoffMax: 10000,
       urlMapping,
       signal: this.options.signal,
+      logger: this.logger,
     });
 
     if (conf.accountUrl == null) {

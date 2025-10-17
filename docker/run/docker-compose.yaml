@@ -47,8 +47,8 @@ services:
 #     配置规则： certd_ + 配置项, 点号用_代替
 #                                    #↓↓↓↓ ----------------------------- 如果忘记管理员密码，可以设置为true，docker compose up -d 重建容器之后，管理员密码将改成123456，然后请及时修改回false
       - certd_system_resetAdminPasswd=false
-                        # ↓↓↓ 如果启动时报address family not supported错误，将此配置修改为0.0.0.0
-#      - certd_koa_hostname=::
+                        # ↓↓↓ 要使用ipv6，将此配置修改为::
+      - certd_koa_hostname=0.0.0.0
 
 #     默认使用sqlite文件数据库，如果需要使用其他数据库，请设置以下环境变量
 #     注意： 选定使用一种数据库之后，不支持更换数据库。

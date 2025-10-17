@@ -5,7 +5,6 @@
  */
 import { createHash } from 'crypto';
 import  { getPemBodyAsB64u } from './crypto/index.js';
-import { log } from './logger.js';
 import HttpClient from './http.js';
 import AcmeApi from './api.js';
 import verify from './verify.js';
@@ -104,8 +103,13 @@ class AcmeClient {
             max: this.opts.backoffMax,
         };
 
-        this.http = new HttpClient(this.opts.directoryUrl, this.opts.accountKey, this.opts.externalAccountBinding, this.opts.urlMapping);
+        this.http = new HttpClient(this.opts.directoryUrl, this.opts.accountKey, this.opts.externalAccountBinding, this.opts.urlMapping, opts.logger);
         this.api = new AcmeApi(this.http, this.opts.accountUrl);
+        this.logger = opts.logger;
+    }
+
+    log(...args) {
+        this.logger.info(...args);
     }
 
     /**
@@ -177,7 +181,7 @@ class AcmeClient {
             this.getAccountUrl();
 
             /* Account URL exists */
-            log('Account URL exists, returning updateAccount()');
+            this.log('Account URL exists, returning updateAccount()');
             return this.updateAccount(data);
         }
         catch (e) {
@@ -185,7 +189,7 @@ class AcmeClient {
 
             /* HTTP 200: Account exists */
             if (resp.status === 200) {
-                log('Account already exists (HTTP 200), returning updateAccount()');
+                this.log('Account already exists (HTTP 200), returning updateAccount()');
                 return this.updateAccount(data);
             }
 
@@ -214,7 +218,7 @@ class AcmeClient {
             this.api.getAccountUrl();
         }
         catch (e) {
-            log('No account URL found, returning createAccount()');
+            this.log('No account URL found, returning createAccount()');
             return this.createAccount(data);
         }
 
@@ -502,7 +506,7 @@ class AcmeClient {
             await verify[challenge.type](authz, challenge, keyAuthorization);
         };
 
-        log('Waiting for ACME challenge verification（等待ACME挑战验证）');
+        this.log('Waiting for ACME challenge verification（等待ACME检查验证）');
         return util.retry(verifyFn, this.backoffOpts);
     }
 
@@ -570,7 +574,7 @@ class AcmeClient {
             const resp = await this.api.apiRequest(item.url, null, [200]);
 
             /* Verify status */
-            log(`[${d}] Item has status（挑战状态）: ${resp.data.status}`);
+            this.log(`[${d}] Item has status（检查状态）: ${resp.data.status}`);
 
             if (invalidStates.includes(resp.data.status)) {
                 abort();
@@ -586,7 +590,7 @@ class AcmeClient {
             throw new Error(`[${d}] Unexpected item status: ${resp.data.status}`);
         };
 
-        log(`[${d}] Waiting for valid status （等待valid状态）: ${item.url}`, this.backoffOpts);
+        this.log(`[${d}] Waiting for valid status （等待valid状态）: ${item.url}`, this.backoffOpts);
         return util.retry(verifyFn, this.backoffOpts);
     }
 

@@ -2,6 +2,7 @@
 import { useI18n } from "/src/locales";
 import { AddReq, ColumnCompositionProps, compute, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, EditReq, UserPageQuery, UserPageRes } from "@fast-crud/fast-crud";
 import { siteInfoApi } from "./api";
+import * as settingApi from "./setting/api";
 import dayjs from "dayjs";
 import { Modal, notification } from "ant-design-vue";
 import { useSettingStore } from "/@/store/settings";
@@ -9,6 +10,7 @@ import { mySuiteApi } from "/@/views/certd/suite/mine/api";
 import { mitter } from "/@/utils/util.mitt";
 import { useSiteIpMonitor } from "./ip/use";
 import { useSiteImport } from "/@/views/certd/monitor/site/use";
+import { ref } from "vue";
 
 export default function ({ crudExpose, context }: CreateCrudOptionsProps): CreateCrudOptionsRet {
   const { t } = useI18n();
@@ -46,6 +48,14 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
 
   const { openSiteIpMonitorDialog } = useSiteIpMonitor();
   const { openSiteImportDialog } = useSiteImport();
+
+  const certValidDaysRef = ref(10);
+
+  async function loadSetting() {
+    const setting = await settingApi.SiteMonitorSettingsGet();
+    certValidDaysRef.value = setting?.certValidDays || 10;
+  }
+  loadSetting();
 
   function checkAll() {
     Modal.confirm({
@@ -385,6 +395,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           column: {
             conditionalRender: false,
             cellRender({ row }) {
+              const certValidDays = certValidDaysRef.value;
               const { certEffectiveTime: effectiveTime, certExpiresTime: expiresTime } = row || {};
               if (!expiresTime) {
                 return "-";
@@ -397,7 +408,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
               const effectiveDays = Math.max(90, dayjs(expiresTime).diff(applyDate, "day"));
               // 距离失效时间剩余天数
               const leftDays = dayjs(expiresTime).diff(dayjs(), "day");
-              const color = leftDays < 20 ? "red" : "#389e0d";
+              const color = leftDays < certValidDays ? "red" : "#389e0d";
               const percent = (leftDays / effectiveDays) * 100;
               // console.log('cellRender', 'effectiveDays', effectiveDays, 'expiresTime', expiresTime, 'applyTime', applyTime, 'percent', percent, row)
               return <a-progress title={expireDate + t("certd.monitor.expired")} percent={percent} strokeColor={color} format={(percent: number) => `${leftDays}${t("certd.monitor.days")}`} />;
