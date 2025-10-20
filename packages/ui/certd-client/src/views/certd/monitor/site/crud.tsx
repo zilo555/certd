@@ -4,7 +4,7 @@ import { AddReq, ColumnCompositionProps, compute, CreateCrudOptionsProps, Create
 import { siteInfoApi } from "./api";
 import * as settingApi from "./setting/api";
 import dayjs from "dayjs";
-import { Modal, notification } from "ant-design-vue";
+import { message, Modal, notification } from "ant-design-vue";
 import { useSettingStore } from "/@/store/settings";
 import { mySuiteApi } from "/@/views/certd/suite/mine/api";
 import { mitter } from "/@/utils/util.mitt";
@@ -57,6 +57,27 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
   }
   loadSetting();
 
+  const selectedRowKeys = ref([]);
+
+  const handleBatchDelete = () => {
+    if (selectedRowKeys.value?.length > 0) {
+      Modal.confirm({
+        title: "确认",
+        content: `确定要批量删除这${selectedRowKeys.value.length}条记录吗`,
+        async onOk() {
+          await api.BatchDelObj(selectedRowKeys.value);
+          message.info("删除成功");
+          crudExpose.doRefresh();
+          selectedRowKeys.value = [];
+        },
+      });
+    } else {
+      message.error("请先勾选记录");
+    }
+  };
+
+  context.handleBatchDelete = handleBatchDelete;
+
   function checkAll() {
     Modal.confirm({
       title: t("certd.monitor.confirmTitle"), // "确认"
@@ -78,6 +99,21 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
         addRequest,
         editRequest,
         delRequest,
+      },
+      settings: {
+        plugins: {
+          //这里使用行选择插件，生成行选择crudOptions配置，最终会与crudOptions合并
+          rowSelection: {
+            enabled: true,
+            props: {
+              multiple: true,
+              crossPage: false,
+              selectedRowKeys: () => {
+                return selectedRowKeys;
+              },
+            },
+          },
+        },
       },
       form: {
         labelCol: {

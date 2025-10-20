@@ -1,5 +1,8 @@
 {
     "eslint.debug": false,
     "eslint.format.enable": true,
-    "typescript.tsc.autoDetect": "watch"
+    "typescript.tsc.autoDetect": "watch",
+    "git.scanRepositories": [
+        "./packages/pro"
+    ]
 }

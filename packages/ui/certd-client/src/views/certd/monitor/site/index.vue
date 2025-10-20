@@ -15,7 +15,13 @@
         </div>
       </div>
     </template>
-    <fs-crud ref="crudRef" v-bind="crudBinding"> </fs-crud>
+    <fs-crud ref="crudRef" v-bind="crudBinding">
+      <template #pagination-left>
+        <a-tooltip title="批量删除">
+          <fs-button icon="DeleteOutlined" @click="handleBatchDelete"></fs-button>
+        </a-tooltip>
+      </template>
+    </fs-crud>
   </fs-page>
 </template>
 
@@ -26,12 +32,14 @@ import createCrudOptions from "./crud";
 import { siteInfoApi } from "./api";
 import { Modal, notification } from "ant-design-vue";
 import { useI18n } from "/src/locales";
-
+import * as api from "./api";
 const { t } = useI18n();
 defineOptions({
   name: "SiteCertMonitor",
 });
-const { crudBinding, crudRef, crudExpose } = useFs({ createCrudOptions, context: {} });
+const { crudBinding, crudRef, crudExpose, context } = useFs({ createCrudOptions });
+
+const handleBatchDelete = context.handleBatchDelete;
 
 // 页面打开后获取列表数据
 onMounted(() => {
