@@ -232,6 +232,7 @@ export default {
   },
   notificationDefault: "使用默认通知",
   monitor: {
+    remark: "备注",
     title: "站点证书监控",
     description: "每天0点，检查网站证书的过期时间，到期前10天时将发出提醒（使用默认通知渠道）;",
     settingLink: "站点监控设置",
@@ -253,6 +254,7 @@ export default {
     certDomains: "证书域名",
     certProvider: "颁发机构",
     certStatus: "证书状态",
+    error: "错误信息",
     status: {
       ok: "正常",
       expired: "过期",

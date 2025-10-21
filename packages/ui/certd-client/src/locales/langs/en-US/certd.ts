@@ -227,6 +227,7 @@ export default {
   },
   notificationDefault: "Use Default Notification",
   monitor: {
+    remark: "Remark",
     title: "Site Certificate Monitoring",
     description: "Check website certificates' expiration at 0:00 daily; reminders sent 10 days before expiration (using default notification channel);",
     settingLink: "Site Monitoring Settings",
@@ -248,6 +249,7 @@ export default {
     certDomains: "Certificate Domains",
     certProvider: "Issuer",
     certStatus: "Certificate Status",
+    error: "Error",
     status: {
       ok: "Valid",
       expired: "Expired",
