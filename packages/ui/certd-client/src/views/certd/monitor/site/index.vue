@@ -26,13 +26,10 @@
 </template>
 
 <script lang="ts" setup>
-import { onActivated, onMounted } from "vue";
 import { useFs } from "@fast-crud/fast-crud";
+import { onActivated, onMounted } from "vue";
 import createCrudOptions from "./crud";
-import { siteInfoApi } from "./api";
-import { Modal, notification } from "ant-design-vue";
 import { useI18n } from "/src/locales";
-import * as api from "./api";
 const { t } = useI18n();
 defineOptions({
   name: "SiteCertMonitor",

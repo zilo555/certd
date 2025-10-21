@@ -393,7 +393,7 @@ export class SiteInfoService extends BaseService<SiteInfoEntity> {
     }
   }
 
-  async doImport(req: { text: string; userId: number }) {
+  async doImport(req: { text: string; userId: number,groupId?:number }) {
     if (!req.text) {
       throw new Error("text is required");
     }
@@ -421,17 +421,22 @@ export class SiteInfoService extends BaseService<SiteInfoEntity> {
         } catch (e) {
           throw new Error(`${item}格式错误`);
         }
-
       }
       if (arr.length > 2) {
         name = arr[2] || domain;
+      }
+      let remark:string = "";
+      if (arr.length > 3) {
+        remark = arr[3] || "";
       }
 
       list.push({
         domain,
         name,
         httpsPort: port,
-        userId: req.userId
+        userId: req.userId,
+        remark,
+        groupId: req.groupId
       });
     }
 

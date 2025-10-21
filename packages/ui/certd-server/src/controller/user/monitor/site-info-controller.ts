@@ -119,6 +119,7 @@ export class SiteInfoController extends CrudController<SiteInfoService> {
     const userId = this.getUserId();
     await this.service.doImport({
       text:body.text,
+      groupId:body.groupId,
       userId
     })
     return this.ok();
