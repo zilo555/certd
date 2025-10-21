@@ -62,6 +62,7 @@ export default {
   suiteBuy: "套餐购买",
   myTrade: "我的订单",
   paymentReturn: "支付返回",
+  hasExpired: "已过期",
 
   user: {
     greeting: "您好",
@@ -141,6 +142,10 @@ export default {
     updateTime: "更新时间",
     triggerType: "触发类型",
     pipelineId: "流水线Id",
+  },
+  pi: {
+    validTime: "流水线有效期",
+    validTimeHelper: "不填则为永久有效",
   },
   types: {
     certApply: "证书申请",

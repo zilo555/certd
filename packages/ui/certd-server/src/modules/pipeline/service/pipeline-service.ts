@@ -457,11 +457,11 @@ export class PipelineService extends BaseService<PipelineEntity> {
       return;
     }
     cron = cron.trim();
-    if (cron.startsWith("* *")) {
-      cron = cron.replace("\* \*", "0 0");
+    if (cron.startsWith("* * ")) {
+      cron = "0 0 " + cron.substring(5);
     }
-    if (cron.startsWith("*")) {
-      cron = cron.replace("\*", "0");
+    if (cron.startsWith("* ")) {
+      cron = "0 " + cron.substring(2);
     }
     const triggerId = trigger.id;
     const name = this.buildCronKey(pipelineId, triggerId);
@@ -493,6 +493,9 @@ export class PipelineService extends BaseService<PipelineEntity> {
    */
   async run(id: number, triggerId: string, stepId?: string) {
     const entity: PipelineEntity = await this.info(id);
+    if (entity.validTime > 0 && entity.validTime < Date.now()) {
+      return;
+    }
     await this.doRun(entity, triggerId, stepId);
   }
 

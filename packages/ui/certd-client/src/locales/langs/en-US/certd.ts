@@ -57,6 +57,7 @@ export default {
   suiteBuy: "Suite Purchase",
   myTrade: "My Orders",
   paymentReturn: "Payment Return",
+  hasExpired: "Expired",
   user: {
     greeting: "Hello",
     profile: "Account Info",
@@ -135,6 +136,10 @@ export default {
     updateTime: "Update Time",
     triggerType: "Trigger Type",
     pipelineId: "Pipeline Id",
+  },
+  pi: {
+    validTime: "Piepline Valid Time",
+    validTimeHelper: "Not filled in means permanent validity",
   },
   types: {
     certApply: "Certificate Application",

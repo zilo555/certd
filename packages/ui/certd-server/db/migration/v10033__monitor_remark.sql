@@ -15,3 +15,6 @@ CREATE TABLE "cd_group"
 --分组字段
 ALTER TABLE cd_site_info ADD COLUMN "group_id" integer;
 
+
+--流水线有效期
+ALTER TABLE pi_pipeline ADD COLUMN "valid_time" integer;

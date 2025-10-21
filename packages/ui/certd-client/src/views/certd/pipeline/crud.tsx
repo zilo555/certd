@@ -555,16 +555,36 @@ export default function ({ crudExpose, context: { groupDictRef, selectedRowKeys 
             sorter: true,
           },
         },
-        createTime: {
-          title: t("certd.fields.createTime"),
-          type: "datetime",
+        validTime: {
+          title: t("certd.pi.validTime"),
+          type: "date",
           form: {
-            show: false,
+            show: true,
+            helper: t("certd.pi.validTimeHelper"),
+            valueResolve({ form, key, value }) {
+              if (value) {
+                form[key] = value.valueOf();
+              }
+            },
+            valueBuilder({ form, key, value }) {
+              if (value) {
+                form[key] = dayjs(value);
+              }
+            },
           },
           column: {
             sorter: true,
             width: 155,
             align: "center",
+            cellRender({ value }) {
+              if (!value || value <= 0) {
+                return "-";
+              }
+              if (value < Date.now()) {
+                return t("certd.hasExpired");
+              }
+              return dayjs(value).format("YYYY-MM-DD");
+            },
           },
         },
         updateTime: {
