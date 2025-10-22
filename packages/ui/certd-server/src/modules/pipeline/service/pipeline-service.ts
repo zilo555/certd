@@ -535,12 +535,7 @@ export class PipelineService extends BaseService<PipelineEntity> {
       const res = await this.beforeCheck(entity);
       suite = res.suite
     } catch (e) {
-      if(!triggerId){ 
-        //手动执行
-        throw e;
-      }
       logger.error(`流水线${entity.id}触发${triggerId}失败：${e.message}`);
-      
     }
 
     const id = entity.id;
