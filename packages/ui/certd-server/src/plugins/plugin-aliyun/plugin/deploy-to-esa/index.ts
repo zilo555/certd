@@ -12,7 +12,7 @@ import {
   title: "阿里云-部署至ESA",
   icon: "svg:icon-aliyun",
   group: pluginGroups.aliyun.key,
-  desc: "部署证书到阿里云ESA(边缘安全加速)",
+  desc: "部署证书到阿里云ESA(边缘安全加速)，自动删除过期证书",
   needPlus: false,
   default: {
     strategy: {
@@ -125,6 +125,7 @@ export class AliyunDeployCertToESA extends AbstractTaskPlugin {
     const { certId, certName } = await this.getAliyunCertId(access);
 
     for (const siteId of this.siteIds) {
+
       try {
         const res = await client.doRequest({
           // 接口名称
@@ -158,6 +159,7 @@ export class AliyunDeployCertToESA extends AbstractTaskPlugin {
 
     }
   }
+
 
   async getClient(access: AliyunAccess) {
     const endpoint = `esa.${this.regionId}.aliyuncs.com`;
@@ -211,19 +213,24 @@ export class AliyunDeployCertToESA extends AbstractTaskPlugin {
       this.logger.info(`证书${item.Name}状态：${item.Status}`);
       if (item.Status === "Expired") {
         this.logger.info(`证书${item.Name}已过期，执行删除`);
-        await client.doRequest({
-          action: "DeleteCertificate",
-          version: "2024-09-10",
-          // 接口 HTTP 方法
-          method: "GET",
-           data:{
-             query: {
-               SiteId: siteId,
-               Id: item.id
-             }
-           }
-        });
-        this.logger.info(`证书${item.Name}已删除`);
+        try{
+          await client.doRequest({
+            action: "DeleteCertificate",
+            version: "2024-09-10",
+            // 接口 HTTP 方法
+            method: "GET",
+            data:{
+              query: {
+                SiteId: siteId,
+                Id: item.id
+              }
+            }
+          });
+          this.logger.info(`证书${item.Name}已删除`);
+        }catch (e) {
+          this.logger.error(`过期证书${item.Name}删除失败：`,e.message)
+        }
+
       }
     }
   }
