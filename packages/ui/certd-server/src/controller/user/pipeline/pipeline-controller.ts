@@ -101,7 +101,7 @@ export class PipelineController extends CrudController<PipelineService> {
   @Post('/trigger', { summary: Constants.per.authOnly })
   async trigger(@Query('id') id: number, @Query('stepId') stepId?: string) {
     await this.authService.checkEntityUserId(this.ctx, this.getService(), id);
-    await this.service.trigger(id, stepId);
+    await this.service.trigger(id, stepId,true);
     return this.ok({});
   }
 

@@ -746,7 +746,7 @@ export default {
       captchaTest: "测试验证码",
       captchaTestHelper: "保存后再点击测试，请务必测试通过了，再开启登录验证码",
 
-      pipelineValidTimeEnabled: "流水线有效期",
+      pipelineValidTimeEnabled: "启用流水线有效期",
       pipelineValidTimeEnabledHelper: "是否启用流水线有效期",
       certDomainAddToMonitorEnabled: "证书域名添加到证书监控",
       certDomainAddToMonitorEnabledHelper: "创建证书流水线时是否可以选择将域名添加到证书监控",

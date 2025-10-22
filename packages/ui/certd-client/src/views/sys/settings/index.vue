@@ -34,7 +34,7 @@ import SettingRegister from "/@/views/sys/settings/tabs/register.vue";
 import SettingPayment from "/@/views/sys/settings/tabs/payment.vue";
 import SettingSafe from "/@/views/sys/settings/tabs/safe.vue";
 import SettingCaptcha from "/@/views/sys/settings/tabs/captcha.vue";
-
+import SettingCert from "/@/views/sys/settings/tabs/cert.vue";
 import { useRoute, useRouter } from "vue-router";
 import { ref } from "vue";
 import { useSettingStore } from "/@/store/settings";

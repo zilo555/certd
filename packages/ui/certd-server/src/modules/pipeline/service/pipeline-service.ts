@@ -368,17 +368,21 @@ export class PipelineService extends BaseService<PipelineEntity> {
     }
 
     if (immediateTriggerOnce) {
-      await this.trigger(pipeline.id);
-      await sleep(200);
+      try{
+        await this.trigger(pipeline.id);
+        await sleep(200);
+      }catch(e){
+        logger.error(e);
+      }
+     
     }
   }
 
-  async trigger(id: any, stepId?: string) {
+  async trigger(id: any, stepId?: string , doCheck = false) {
     const entity: PipelineEntity = await this.info(id);
-    if (isComm()) {
-      await this.checkHasDeployCount(id, entity.userId);
+    if (doCheck) {
+      await this.beforeCheck(entity);
     }
-    await this.checkUserStatus(entity.userId);
     this.cron.register({
       name: `pipeline.${id}.trigger.once`,
       cron: null,
@@ -504,28 +508,42 @@ export class PipelineService extends BaseService<PipelineEntity> {
    */
   async run(id: number, triggerId: string, stepId?: string) {
     const entity: PipelineEntity = await this.info(id);
-    const validTimeEnabled = await this.isPipelineValidTimeEnabled(entity)
-    if (!validTimeEnabled) {
-      logger.info(`流水线${id}已过期，不予执行`);
-      return;
-    }
     await this.doRun(entity, triggerId, stepId);
   }
 
-  async doRun(entity: PipelineEntity, triggerId: string, stepId?: string) {
-    const id = entity.id;
+  async beforeCheck(entity: PipelineEntity) {
+    const validTimeEnabled = await this.isPipelineValidTimeEnabled(entity)
+    if (!validTimeEnabled) {
+      throw new Error(`流水线${entity.id}已过期，不予执行`);
+    }
+   
     let suite: UserSuiteEntity = null;
     if (isComm()) {
-      suite = await this.checkHasDeployCount(id, entity.userId);
+      suite = await this.checkHasDeployCount(entity.id, entity.userId);
     }
-    try {
-      await this.checkUserStatus(entity.userId);
+    await this.checkUserStatus(entity.userId);
+
+    return {
+      suite
+    }
+  }
+
+  async doRun(entity: PipelineEntity, triggerId: string, stepId?: string) {
+
+    let suite:any = null
+    try{
+      const res = await this.beforeCheck(entity);
+      suite = res.suite
     } catch (e) {
-      logger.info(e.message);
-      return;
+      if(!triggerId){ 
+        //手动执行
+        throw e;
+      }
+      logger.error(`流水线${entity.id}触发${triggerId}失败：`, e);
+      
     }
 
-
+    const id = entity.id;
     const pipeline = JSON.parse(entity.content);
     if (!pipeline.id) {
       pipeline.id = id;

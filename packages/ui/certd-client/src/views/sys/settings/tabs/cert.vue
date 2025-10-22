@@ -7,7 +7,7 @@
           <vip-button class="ml-5" mode="button"></vip-button>
         </div>
 
-        <div class="helper">{{ t("certd.pipelineValidTimeEnabledHelper") }}</div>
+        <div class="helper">{{ t("certd.sys.setting.pipelineValidTimeEnabledHelper") }}</div>
       </a-form-item>
       <a-form-item :label="t('certd.sys.setting.certDomainAddToMonitorEnabled')" :name="['public', 'certDomainAddToMonitorEnabled']">
         <div class="flex items-center">
