@@ -539,7 +539,7 @@ export class PipelineService extends BaseService<PipelineEntity> {
         //手动执行
         throw e;
       }
-      logger.error(`流水线${entity.id}触发${triggerId}失败：`, e);
+      logger.error(`流水线${entity.id}触发${triggerId}失败：${e.message}`);
       
     }
 
