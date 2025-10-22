@@ -559,7 +559,9 @@ export default function ({ crudExpose, context: { groupDictRef, selectedRowKeys 
           title: t("certd.pi.validTime"),
           type: "date",
           form: {
-            show: true,
+            show: computed(() => {
+              return settingStore.isPlus && settingStore.sysPublic.pipelineValidTimeEnabled;
+            }),
             helper: t("certd.pi.validTimeHelper"),
             valueResolve({ form, key, value }) {
               if (value) {
@@ -573,6 +575,9 @@ export default function ({ crudExpose, context: { groupDictRef, selectedRowKeys 
             },
           },
           column: {
+            show: computed(() => {
+              return settingStore.isPlus && settingStore.sysPublic.pipelineValidTimeEnabled;
+            }),
             sorter: true,
             width: 155,
             align: "center",

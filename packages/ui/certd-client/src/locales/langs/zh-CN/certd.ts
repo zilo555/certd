@@ -730,6 +730,13 @@ export default {
   },
   sys: {
     setting: {
+      baseSetting: "基本设置",
+      registerSetting: "注册设置",
+      safeSetting: "安全设置",
+      paymentSetting: "支付设置",
+      captchaSetting: "验证码设置",
+      certSetting: "证书设置",
+
       showRunStrategy: "显示运行策略选择",
       showRunStrategyHelper: "任务设置中是否允许选择运行策略",
 
@@ -738,11 +745,11 @@ export default {
       captchaType: "验证码配置",
       captchaTest: "测试验证码",
       captchaTestHelper: "保存后再点击测试，请务必测试通过了，再开启登录验证码",
-      baseSetting: "基本设置",
-      registerSetting: "注册设置",
-      safeSetting: "安全设置",
-      paymentSetting: "支付设置",
-      captchaSetting: "验证码设置",
+
+      pipelineValidTimeEnabled: "流水线有效期",
+      pipelineValidTimeEnabledHelper: "是否启用流水线有效期",
+      certDomainAddToMonitorEnabled: "证书域名添加到证书监控",
+      certDomainAddToMonitorEnabledHelper: "创建证书流水线时是否可以选择将域名添加到证书监控",
     },
   },
   modal: {

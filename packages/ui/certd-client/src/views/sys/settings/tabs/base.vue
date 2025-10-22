@@ -1,6 +1,6 @@
 <template>
   <div class="sys-settings-form sys-settings-base">
-    <a-form :model="formState" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" @finish="onFinish" @finish-failed="onFinishFailed">
+    <a-form :model="formState" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" @finish="onFinish">
       <a-form-item :label="t('certd.icpRegistrationNumber')" :name="['public', 'icpNo']">
         <a-input v-model:value="formState.public.icpNo" :placeholder="t('certd.icpPlaceholder')" />
       </a-form-item>

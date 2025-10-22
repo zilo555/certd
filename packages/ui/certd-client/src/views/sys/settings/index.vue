@@ -20,6 +20,9 @@
         <a-tab-pane key="captcha" :tab="t('certd.sys.setting.captchaSetting')">
           <SettingCaptcha v-if="activeKey === 'captcha'" />
         </a-tab-pane>
+        <a-tab-pane key="cert" :tab="t('certd.sys.setting.certSetting')">
+          <SettingCert v-if="activeKey === 'cert'" />
+        </a-tab-pane>
       </a-tabs>
     </div>
   </fs-page>

@@ -137,6 +137,7 @@ export default {
     triggerType: "Trigger Type",
     pipelineId: "Pipeline Id",
   },
+
   pi: {
     validTime: "Piepline Valid Time",
     validTimeHelper: "Not filled in means permanent validity",
@@ -728,6 +729,13 @@ export default {
   addonTypeSelect: "Select type",
   sys: {
     setting: {
+      baseSetting: "Base Settings",
+      registerSetting: "Register Settings",
+      safeSetting: "Safe Settings",
+      paymentSetting: "Payment Settings",
+      captchaSetting: "Captcha Setting",
+      certSetting: "Certificate Settings",
+
       showRunStrategy: "Show RunStrategy",
       showRunStrategyHelper: "Allow modify the run strategy of the task",
 
@@ -737,11 +745,11 @@ export default {
       captchaTest: "Captcha Test",
       // 保存后再点击测试，请务必测试通过了，再开启登录验证码
       captchaTestHelper: "Save and click test, please make sure the test is passed before enabling login captcha",
-      baseSetting: "Base Settings",
-      registerSetting: "Register Settings",
-      safeSetting: "Safe Settings",
-      paymentSetting: "Payment Settings",
-      captchaSetting: "Captcha Setting",
+
+      pipelineValidTimeEnabled: "Enable Pipeline Valid Time",
+      pipelineValidTimeEnabledHelper: "Whether to enable the valid time of the pipeline",
+      certDomainAddToMonitorEnabled: "Add Domain to Certificate Monitor",
+      certDomainAddToMonitorEnabledHelper: "Whether to add the domain to the certificate monitor",
     },
   },
   modal: {
