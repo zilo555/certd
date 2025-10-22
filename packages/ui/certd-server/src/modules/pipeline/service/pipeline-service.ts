@@ -485,6 +485,17 @@ export class PipelineService extends BaseService<PipelineEntity> {
     logger.info("当前定时器数量：", this.cron.getTaskSize());
   }
 
+
+  async isPipelineValidTimeEnabled(entity: PipelineEntity) {
+    const settings = await this.sysSettingsService.getPublicSettings();
+    if (isPlus() && settings.pipelineValidTimeEnabled){
+      if (entity.validTime > 0 && entity.validTime < Date.now()){
+        return false
+      }
+    }
+    return true
+  }
+
   /**
    *
    * @param id
@@ -493,7 +504,9 @@ export class PipelineService extends BaseService<PipelineEntity> {
    */
   async run(id: number, triggerId: string, stepId?: string) {
     const entity: PipelineEntity = await this.info(id);
-    if (entity.validTime > 0 && entity.validTime < Date.now()) {
+    const validTimeEnabled = await this.isPipelineValidTimeEnabled(entity)
+    if (!validTimeEnabled) {
+      logger.info(`流水线${id}已过期，不予执行`);
       return;
     }
     await this.doRun(entity, triggerId, stepId);
