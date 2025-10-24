@@ -143,9 +143,10 @@ export default {
     validTimeHelper: "Not filled in means permanent validity",
   },
   types: {
-    certApply: "Certificate Application",
-    certUpload: "Certificate Upload",
+    certApply: "Cert Apply",
+    certUpload: "Cert Upload",
     custom: "Custom",
+    template: "Template",
   },
   myPipelines: "My Pipelines",
   selectedCount: "Selected {count} items",
@@ -730,6 +731,10 @@ export default {
   addonName: "Name",
   addonNameHelper: "Fill freely, helps to distinguish when multiple same type exist",
   addonTypeSelect: "Select type",
+  dates: {
+    years: "{count} years",
+    months: "{count} months",
+  },
   sys: {
     setting: {
       baseSetting: "Base Settings",
@@ -737,8 +742,7 @@ export default {
       safeSetting: "Safe Settings",
       paymentSetting: "Payment Settings",
       captchaSetting: "Captcha Setting",
-      certSetting: "Certificate Apply Settings",
-
+      pipelineSetting: "Pipeline Settings",
       showRunStrategy: "Show RunStrategy",
       showRunStrategyHelper: "Allow modify the run strategy of the task",
 

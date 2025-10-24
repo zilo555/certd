@@ -1,6 +1,13 @@
 <template>
-  <div class="sys-settings-form sys-settings-cert">
+  <div class="sys-settings-form sys-settings-pipeline">
     <a-form :model="formState" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" @finish="onFinish">
+      <a-form-item :label="t('certd.manageOtherUserPipeline')" :name="['public', 'managerOtherUserPipeline']">
+        <a-switch v-model:checked="formState.public.managerOtherUserPipeline" />
+      </a-form-item>
+      <a-form-item :label="t('certd.limitUserPipelineCount')" :name="['public', 'limitUserPipelineCount']">
+        <a-input-number v-model:value="formState.public.limitUserPipelineCount" />
+        <div class="helper">{{ t("certd.limitUserPipelineCountHelper") }}</div>
+      </a-form-item>
       <a-form-item :label="t('certd.sys.setting.pipelineValidTimeEnabled')" :name="['public', 'pipelineValidTimeEnabled']">
         <div class="flex items-center">
           <a-switch v-model:checked="formState.public.pipelineValidTimeEnabled" :disabled="!settingsStore.isPlus" />
@@ -35,7 +42,7 @@ import { useI18n } from "/src/locales";
 const { t } = useI18n();
 
 defineOptions({
-  name: "SettingCert",
+  name: "SettingPipeline",
 });
 
 const formState = reactive<Partial<SysSettings>>({
@@ -65,7 +72,4 @@ const onFinish = async (form: any) => {
   }
 };
 </script>
-<style lang="less">
-.sys-settings-cert {
-}
-</style>
+<style lang="less"></style>

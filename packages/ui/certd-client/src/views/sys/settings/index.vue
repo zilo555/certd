@@ -20,8 +20,8 @@
         <a-tab-pane key="captcha" :tab="t('certd.sys.setting.captchaSetting')">
           <SettingCaptcha v-if="activeKey === 'captcha'" />
         </a-tab-pane>
-        <a-tab-pane key="cert" :tab="t('certd.sys.setting.certSetting')">
-          <SettingCert v-if="activeKey === 'cert'" />
+        <a-tab-pane key="pipeline" :tab="t('certd.sys.setting.pipelineSetting')">
+          <SettingPipeline v-if="activeKey === 'pipeline'" />
         </a-tab-pane>
       </a-tabs>
     </div>
@@ -34,7 +34,7 @@ import SettingRegister from "/@/views/sys/settings/tabs/register.vue";
 import SettingPayment from "/@/views/sys/settings/tabs/payment.vue";
 import SettingSafe from "/@/views/sys/settings/tabs/safe.vue";
 import SettingCaptcha from "/@/views/sys/settings/tabs/captcha.vue";
-import SettingCert from "/@/views/sys/settings/tabs/cert.vue";
+import SettingPipeline from "/@/views/sys/settings/tabs/pipeline.vue";
 import { useRoute, useRouter } from "vue-router";
 import { ref } from "vue";
 import { useSettingStore } from "/@/store/settings";

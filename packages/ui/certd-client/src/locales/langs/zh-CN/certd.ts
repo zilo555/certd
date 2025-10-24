@@ -151,6 +151,7 @@ export default {
     certApply: "证书申请",
     certUpload: "证书上传",
     custom: "自定义",
+    template: "模版",
   },
   myPipelines: "我的流水线",
   selectedCount: "已选择 {count} 项",
@@ -730,6 +731,10 @@ export default {
     copyPipelineConfig: "复制该流水线配置作为模板来源",
     pipeline: "流水线",
   },
+  dates: {
+    years: "{count}年",
+    months: "{count}月",
+  },
   sys: {
     setting: {
       baseSetting: "基本设置",
@@ -737,7 +742,7 @@ export default {
       safeSetting: "安全设置",
       paymentSetting: "支付设置",
       captchaSetting: "验证码设置",
-      certSetting: "证书申请设置",
+      pipelineSetting: "流水线设置",
 
       showRunStrategy: "显示运行策略选择",
       showRunStrategyHelper: "任务设置中是否允许选择运行策略",

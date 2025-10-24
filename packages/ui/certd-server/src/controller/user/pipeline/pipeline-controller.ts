@@ -85,6 +85,12 @@ export class PipelineController extends CrudController<PipelineService> {
     } else {
       bean.userId = this.getUserId();
     }
+
+    if(!this.isAdmin()){
+      // 非管理员用户 不允许设置流水线有效期
+      delete bean.validTime
+    }
+
     await this.service.save(bean);
     //是否增加证书监控
     if (bean.addToMonitorEnabled && bean.addToMonitorDomains) {
