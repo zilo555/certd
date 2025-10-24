@@ -246,7 +246,7 @@ export class UploadCertToHostPlugin extends AbstractTaskPlugin {
       rows: 5,
       placeholder: 'systemctl restart nginx ',
     },
-    helper: '上传后执行脚本命令，让证书生效（比如重启nginx），不填则不执行\n注意：sudo需要配置免密\n注意：如果目标主机是windows，且终端是cmd，系统会自动将多行命令通过“&&”连接成一行',
+    helper: '上传后执行脚本命令，让证书生效（比如重启nginx），不填则不执行\n注意：sudo需要配置免密，不要使用-i这种交互式命令\n注意：如果目标主机是windows，且终端是cmd，系统会自动将多行命令通过“&&”连接成一行',
     required: false,
   })
   script!: string;

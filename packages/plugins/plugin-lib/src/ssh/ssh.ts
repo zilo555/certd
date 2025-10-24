@@ -188,6 +188,11 @@ export class AsyncSsh2Client {
     //   script += "\r\nexit\r\n";
     //   //保证windows下正常退出
     // }
+
+    if (script.includes(" -i ")) {
+      this.logger.warn("不支持交互式命令，请不要使用-i参数");
+    }
+
     return safePromise((resolve, reject) => {
       this.logger.info(`执行命令：[${this.connConf.host}][exec]: \n` + script);
       // pty 伪终端，window下的输出会带上conhost.exe之类的多余的字符串，影响返回结果判断
