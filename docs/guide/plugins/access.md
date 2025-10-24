@@ -62,7 +62,9 @@
 | 58.| **Dokploy授权** |  | 
 | 59.| **godaddy授权** |  | 
 | 60.| **新网授权** |  | 
-| 61.| **雨云授权** | https://app.rainyun.com/ | 
+| 61.| **新网授权（代理方式）** |  | 
+| 62.| **新网互联授权** | 仅支持代理账号，ip需要加入白名单 | 
+| 63.| **雨云授权** | https://app.rainyun.com/ | 
 
 <style module>
 table th:first-of-type {

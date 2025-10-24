@@ -7,15 +7,17 @@
 | 3.| **火山引擎** | 火山引擎DNS解析提供商 | 
 | 4.| **京东云** | 京东云DNS解析提供商 | 
 | 5.| **新网** | 新网域名解析 | 
-| 6.| **腾讯云** | 腾讯云域名DNS解析提供者 | 
-| 7.| **华为云** | 华为云DNS解析提供商 | 
-| 8.| **西部数码** | west dns provider | 
-| 9.| **dns.la** | dns.la | 
-| 10.| **雨云** | 雨云DNS解析提供商 | 
-| 11.| **cloudflare** | cloudflare dns provider | 
-| 12.| **namesilo** | namesilo dns provider | 
-| 13.| **godaddy** | GoDaddy | 
-| 14.| **51dns** | 51DNS | 
+| 6.| **新网(代理方式)** | 新网域名解析(代理方式) | 
+| 7.| **腾讯云** | 腾讯云域名DNS解析提供者 | 
+| 8.| **华为云** | 华为云DNS解析提供商 | 
+| 9.| **西部数码** | west dns provider | 
+| 10.| **dns.la** | dns.la | 
+| 11.| **雨云** | 雨云DNS解析提供商 | 
+| 12.| **cloudflare** | cloudflare dns provider | 
+| 13.| **namesilo** | namesilo dns provider | 
+| 14.| **godaddy** | GoDaddy | 
+| 15.| **51dns** | 51DNS | 
+| 16.| **新网互联** | 新网互联 | 
 
 <style module>
 table th:first-of-type {
