@@ -234,6 +234,8 @@ export default {
     notificationWhen: "通知时机",
     notificationHelper: "任务执行失败实时提醒",
     groupIdTitle: "流水线分组",
+    addToMonitorEnabled: "添加到证书监控",
+    addToMonitorDomains: "添加到监控域名",
   },
   notificationDefault: "使用默认通知",
   monitor: {

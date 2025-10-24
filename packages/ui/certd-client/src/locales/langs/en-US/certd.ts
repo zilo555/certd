@@ -230,6 +230,9 @@ export default {
     notificationWhen: "Notification Timing",
     notificationHelper: "Get real-time alerts when the task fails",
     groupIdTitle: "Pipeline Group",
+
+    addToMonitorEnabled: "Add to Cert Monitor",
+    addToMonitorDomains: "Add to Monitor Domains",
   },
   notificationDefault: "Use Default Notification",
   monitor: {

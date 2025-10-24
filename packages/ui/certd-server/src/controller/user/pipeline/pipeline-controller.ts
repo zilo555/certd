@@ -4,6 +4,8 @@ import { PipelineService } from '../../../modules/pipeline/service/pipeline-serv
 import { PipelineEntity } from '../../../modules/pipeline/entity/pipeline.js';
 import { HistoryService } from '../../../modules/pipeline/service/history-service.js';
 import { AuthService } from '../../../modules/sys/authority/service/auth-service.js';
+import { SiteInfoService } from '../../../modules/monitor/index.js';
+import { isPlus } from '@certd/plus-core';
 
 /**
  * 证书
@@ -19,6 +21,9 @@ export class PipelineController extends CrudController<PipelineService> {
   authService: AuthService;
   @Inject()
   sysSettingsService: SysSettingsService;
+
+  @Inject()
+  siteInfoService: SiteInfoService;
 
   getService() {
     return this.service;
@@ -74,13 +79,24 @@ export class PipelineController extends CrudController<PipelineService> {
   }
 
   @Post('/save', { summary: Constants.per.authOnly })
-  async save(@Body(ALL) bean: PipelineEntity) {
+  async save(@Body(ALL) bean: {addToMonitorEnabled: boolean, addToMonitorDomains: string} & PipelineEntity) {
     if (bean.id > 0) {
       await this.authService.checkEntityUserId(this.ctx, this.getService(), bean.id);
     } else {
       bean.userId = this.getUserId();
     }
     await this.service.save(bean);
+    //是否增加证书监控
+    if (bean.addToMonitorEnabled && bean.addToMonitorDomains) {
+      const sysPublicSettings = await this.sysSettingsService.getPublicSettings();
+      if (isPlus() && sysPublicSettings.certDomainAddToMonitorEnabled) {
+        //增加证书监控
+        await this.siteInfoService.doImport({
+          text: bean.addToMonitorDomains,
+          userId: this.getUserId(),
+        });
+      }
+    }
     return this.ok(bean.id);
   }
 
