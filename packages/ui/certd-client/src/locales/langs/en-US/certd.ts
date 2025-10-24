@@ -737,7 +737,7 @@ export default {
       safeSetting: "Safe Settings",
       paymentSetting: "Payment Settings",
       captchaSetting: "Captcha Setting",
-      certSetting: "Certificate Settings",
+      certSetting: "Certificate Apply Settings",
 
       showRunStrategy: "Show RunStrategy",
       showRunStrategyHelper: "Allow modify the run strategy of the task",

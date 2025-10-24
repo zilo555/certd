@@ -737,7 +737,7 @@ export default {
       safeSetting: "安全设置",
       paymentSetting: "支付设置",
       captchaSetting: "验证码设置",
-      certSetting: "证书设置",
+      certSetting: "证书申请设置",
 
       showRunStrategy: "显示运行策略选择",
       showRunStrategyHelper: "任务设置中是否允许选择运行策略",
