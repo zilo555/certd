@@ -13,3 +13,4 @@ export * from './feishu/index.js';
 export * from './dingtalk/index.js';
 export * from './vocechat/index.js';
 export * from './onebot/index.js';
+export * from './meow/index.js';

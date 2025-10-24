@@ -4,6 +4,7 @@ import { BaseNotification, IsNotification, NotificationBody, NotificationInput }
   name: 'email',
   title: '电子邮件',
   desc: '电子邮件通知',
+  order: -100,
 })
 export class EmailNotification extends BaseNotification {
   @NotificationInput({

@@ -108,6 +108,9 @@ export class NotificationController extends CrudController<NotificationService> 
       });
     }
     dict = dict.sort(a => {
+      return a.order ? 0 : -1;
+    });
+    dict = dict.sort(a => {
       return a.needPlus ? 0 : -1;
     });
     return this.ok(dict);
