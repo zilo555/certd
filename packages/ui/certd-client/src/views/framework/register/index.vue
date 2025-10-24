@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <a-form ref="formRef" class="user-layout-register" name="custom-validation" :model="formState" :rules="rules" v-bind="layout" :label-col="{ span: 6 }" @finish="handleFinish" @finish-failed="handleFinishFailed">
-      <a-tabs v-model:active-key="registerType">
+      <a-tabs v-model:active-key="registerType" @change="handleTabChange">
         <a-tab-pane key="username" tab="用户名注册" :disabled="!settingsStore.sysPublic.usernameRegisterEnabled">
           <template v-if="registerType === 'username'">
             <a-form-item required has-feedback name="username" label="用户名" :rules="rules.username">
@@ -70,6 +70,8 @@
             </a-form-item>
           </template>
         </a-tab-pane>
+
+        <a-tab-pane v-if="settingsStore.sysPublic.smsLoginEnabled" key="mobile" tab="手机号注册"> </a-tab-pane>
       </a-tabs>
 
       <a-form-item>
@@ -90,6 +92,7 @@ import EmailCode from "./email-code.vue";
 import { useSettingStore } from "/@/store/settings";
 import { notification } from "ant-design-vue";
 import CaptchaInput from "/@/components/captcha/captcha-input.vue";
+import { useRouter } from "vue-router";
 export default defineComponent({
   name: "RegisterPage",
   components: { CaptchaInput, EmailCode },
@@ -171,6 +174,18 @@ export default defineComponent({
           message: "请输入邮件验证码",
         },
       ],
+      captcha: [
+        {
+          required: true,
+          message: "请通过验证码",
+        },
+      ],
+      imgCode: [
+        {
+          required: true,
+          message: "请输入验证码",
+        },
+      ],
     };
     const layout = {
       labelCol: {
@@ -206,6 +221,13 @@ export default defineComponent({
       formRef.value.resetFields();
     };
 
+    const router = useRouter();
+    const handleTabChange = (key: string) => {
+      if (key === "mobile") {
+        router.push({ path: "/login", query: { loginType: "sms" } });
+      }
+    };
+
     return {
       formState,
       formRef,
@@ -216,6 +238,7 @@ export default defineComponent({
       resetForm,
       registerType,
       settingsStore,
+      handleTabChange,
     };
   },
 });

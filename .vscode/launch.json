@@ -25,6 +25,36 @@
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen"
         },
+         {
+            "name": "server-mysql",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/packages/ui/certd-server",
+            "runtimeExecutable": "pnpm",
+            "runtimeArgs": ["dev-mysql"],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
+        },
+         {
+            "name": "server-pg",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/packages/ui/certd-server",
+            "runtimeExecutable": "pnpm",
+            "runtimeArgs": ["dev-pg"],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
+        },
+        {
+            "name": "server-common",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/packages/ui/certd-server",
+            "runtimeExecutable": "pnpm",
+            "runtimeArgs": ["dev-commpro"],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
+        },
         {
             "name": "server-local-plus",
             "type": "node",

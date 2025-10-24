@@ -12,9 +12,6 @@ CREATE TABLE "cd_group"
   "update_time" datetime     NOT NULL DEFAULT (CURRENT_TIMESTAMP)
 );
 
---分组字段
 ALTER TABLE cd_site_info ADD COLUMN "group_id" integer;
 
-
---流水线有效期
 ALTER TABLE pi_pipeline ADD COLUMN "valid_time" integer;

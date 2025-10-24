@@ -95,11 +95,14 @@ import SmsCode from "/@/views/framework/login/sms-code.vue";
 import { useI18n } from "/@/locales";
 import { LanguageToggle } from "/@/vben/layouts";
 import CaptchaInput from "/@/components/captcha/captcha-input.vue";
+import { useRoute } from "vue-router";
 export default defineComponent({
   name: "LoginPage",
   components: { LanguageToggle, SmsCode, CaptchaInput },
   setup() {
     const { t } = useI18n();
+    const route = useRoute();
+    const urlLoginType = route.query.loginType as string | undefined;
     const verifyCodeInputRef = ref();
     const loading = ref(false);
     const userStore = useUserStore();
@@ -110,7 +113,7 @@ export default defineComponent({
       phoneCode: "86",
       mobile: "",
       password: "",
-      loginType: "password", //password
+      loginType: urlLoginType || "password", //password
       smsCode: "",
       captcha: null,
       smsCaptcha: null,

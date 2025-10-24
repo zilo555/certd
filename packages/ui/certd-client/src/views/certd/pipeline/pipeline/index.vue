@@ -28,10 +28,10 @@
               未设置触发源，不会自动执行
             </span>
           </a-tag>
-          <a-tag v-if="pipelineEntity.validTime > 0 && settingStore.sysPublic.pipelineValidTimeEnabled" v-plus="true" :color="pipelineEntity.validTime > Date.now() ? 'green' : 'red'">
+          <a-tag v-if="pipelineEntity.validTime > 0 && settingStore.sysPublic.pipelineValidTimeEnabled && settingStore.isPlus" :color="pipelineEntity.validTime > Date.now() ? 'green' : 'red'">
             <span class="flex">
               <fs-icon icon="ion:time-outline"></fs-icon>
-              <span v-if="pipelineEntity.validTime > Date.now()"> 有效期：<FsTimeHumanize :model-value="pipelineEntity.validTime" :options="{ units: ['d'] }"></FsTimeHumanize> </span>
+              <span v-if="pipelineEntity.validTime > Date.now()"> 有效期：<FsTimeHumanize :model-value="pipelineEntity.validTime" :options="{ units: ['d'] }" format="YYYY-MM-DD"></FsTimeHumanize> </span>
               <span v-else> 已过期 </span>
             </span>
           </a-tag>
