@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.3](https://github.com/certd/certd/compare/v1.37.2...v1.37.3) (2025-10-24)
+
+### Performance Improvements
+
+*  注册页面增加手机注册tab页签 ([6b2f1fc](https://github.com/certd/certd/commit/6b2f1fcd3e058061b814c3331cda8ce1b2d80d73))
+* 流水线创建时支持添加到证书监控 ([59ba408](https://github.com/certd/certd/commit/59ba4080706548828ef1c0a9cd893c1c9a7d591f))
+* 流水线支持有效期设置 ([911e69e](https://github.com/certd/certd/commit/911e69e3bc0cdd48b62953b5d0981d640fc1f8ac))
+* 站点证书监控增加导出和分组功能 ([2ed12c4](https://github.com/certd/certd/commit/2ed12c429eb58274a4f9dd0ed3b66e160d283ded))
+* 证书监控增加批量删除 ([e578c52](https://github.com/certd/certd/commit/e578c52fdf2f838038062aa4209b655fbae461fb))
+
 ## [1.37.2](https://github.com/certd/certd/compare/v1.37.1...v1.37.2) (2025-10-14)
 
 ### Performance Improvements
