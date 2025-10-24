@@ -37,6 +37,7 @@ const pipelineOptions: PipelineOptions = {
         type: detail.pipeline.type,
         from: detail.pipeline.from,
       },
+      validTime: detail.pipeline.validTime,
     } as PipelineDetail;
   },
 
