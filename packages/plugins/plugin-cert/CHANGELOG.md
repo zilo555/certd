@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.4](https://github.com/certd/certd/compare/v1.37.3...v1.37.4) (2025-10-28)
+
+### Bug Fixes
+
+* 修复lego模式下 私钥加密类型错误的bug ([f7cf7c1](https://github.com/certd/certd/commit/f7cf7c198d7f77b222099770f81accc637bc6619))
+
 ## [1.37.3](https://github.com/certd/certd/compare/v1.37.2...v1.37.3) (2025-10-24)
 
 ### Bug Fixes
