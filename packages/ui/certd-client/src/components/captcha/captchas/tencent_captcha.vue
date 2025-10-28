@@ -53,6 +53,13 @@ function callback(res: { ret: number; ticket: string; randstr: string; errorCode
   // res（验证成功） = {ret: 0, ticket: "String", randstr: "String"}
   // res（请求验证码发生错误，验证码自动返回trerror_前缀的容灾票据） = {ret: 0, ticket: "String", randstr: "String",  errorCode: Number, errorMessage: "String"}
   // 此处代码仅为验证结果的展示示例，真实业务接入，建议基于ticket和errorCode情况做不同的业务处理
+
+  if (res.errorCode && res.errorCode > 0) {
+    notification.error({
+      message: `验证码验证失败：${res.errorMessage || res.errorCode}`,
+    });
+  }
+
   if (res.ret === 0) {
     emitChange({
       ticket: res.ticket,
@@ -116,7 +123,7 @@ function emitChange(value: any) {
   emit("change", value);
 }
 function reset() {
-  captchaInstanceRef.value.instance.reset();
+  captchaInstanceRef.value?.instance?.reset();
 }
 
 watch(

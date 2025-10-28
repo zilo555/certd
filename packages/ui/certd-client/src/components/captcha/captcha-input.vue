@@ -56,10 +56,10 @@ function onChange(data: any) {
 }
 
 async function getCaptchaForm() {
-  return await captchaRef.value.getCaptchaForm();
+  return await captchaRef.value?.getCaptchaForm();
 }
 async function reset() {
-  await captchaRef.value.reset();
+  await captchaRef.value?.reset();
 }
 defineExpose({
   getCaptchaForm,

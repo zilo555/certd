@@ -61,7 +61,7 @@
               </a-input-password>
             </a-form-item>
 
-            <a-form-item has-feedback name="imgCode" label="验证码" :rules="rules.imgCode">
+            <a-form-item has-feedback name="captchaForEmail" label="验证码" :rules="rules.captchaForEmail">
               <CaptchaInput v-model:model-value="formState.captchaForEmail"></CaptchaInput>
             </a-form-item>
 
@@ -118,6 +118,7 @@ export default defineComponent({
       password: "",
       confirmPassword: "",
       captcha: null,
+      captchaForEmail: null,
     });
 
     const rules = {
@@ -180,10 +181,10 @@ export default defineComponent({
           message: "请通过验证码",
         },
       ],
-      imgCode: [
+      captchaForEmail: [
         {
           required: true,
-          message: "请输入验证码",
+          message: "请通过验证码",
         },
       ],
     };
@@ -204,7 +205,7 @@ export default defineComponent({
             password: formState.password,
             username: formState.username,
             email: formState.email,
-            captcha: formState.captcha,
+            captcha: registerType.value === "email" ? formState.captchaForEmail : formState.captcha,
             validateCode: formState.validateCode,
           }) as any
         );
