@@ -830,10 +830,6 @@ export default defineComponent({
         saveLoading.value = true;
         try {
           if (props.options.doSave) {
-            if (pipeline.value.version == null) {
-              pipeline.value.version = 0;
-            }
-            pipeline.value.version++;
             currentPipeline.value = pipeline.value;
 
             //移除空阶段

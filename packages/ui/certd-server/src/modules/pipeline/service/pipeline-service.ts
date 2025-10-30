@@ -255,6 +255,11 @@ export class PipelineService extends BaseService<PipelineEntity> {
       bean.title = pipeline.title;
     }
     pipeline.id = bean.id;
+
+    if (pipeline.version == null) {
+      pipeline.version = 0;
+    }
+    pipeline.version++;
     bean.content = JSON.stringify(pipeline);
     await this.addOrUpdate(bean);
     await this.registerTrigger(bean);
