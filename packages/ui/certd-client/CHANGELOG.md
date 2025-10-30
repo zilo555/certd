@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.4](https://github.com/certd/certd/compare/v1.37.3...v1.37.4) (2025-10-28)
+
+### Bug Fixes
+
+* 修复站点证书监控复制按钮无效的bug ([efa26a0](https://github.com/certd/certd/commit/efa26a067f06402f30befc016d9934cadcd5a563))
+
 ## [1.37.3](https://github.com/certd/certd/compare/v1.37.2...v1.37.3) (2025-10-24)
 
 ### Performance Improvements

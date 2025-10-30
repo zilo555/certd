@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.4](https://github.com/certd/certd/compare/v1.37.3...v1.37.4) (2025-10-28)
+
+### Performance Improvements
+
+* 优化数据备份效率，流式写入文件 ([c38dbbb](https://github.com/certd/certd/commit/c38dbbb1d72bd00a92fe275b76aea82a791e7199))
+
 ## [1.37.3](https://github.com/certd/certd/compare/v1.37.2...v1.37.3) (2025-10-24)
 
 ### Bug Fixes
