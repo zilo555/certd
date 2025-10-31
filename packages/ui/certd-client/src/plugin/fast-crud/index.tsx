@@ -1,6 +1,6 @@
 import { request } from "/src/api/service";
 // import "/src/mock";
-import { ColumnCompositionProps, CrudOptions, FastCrud, PageQuery, PageRes, setLogger, TransformResProps, useColumns, UseCrudProps, UserPageQuery, useTypes, utils } from "@fast-crud/fast-crud";
+import { ColumnCompositionProps, CrudOptions, FastCrud, PageQuery, PageRes, setLogger, TransformResProps, useColumns, UseCrudProps, UserPageQuery, useTypes, utils, forEachTableColumns } from "@fast-crud/fast-crud";
 import "@fast-crud/fast-crud/dist/style.css";
 import { FsExtendsCopyable, FsExtendsEditor, FsExtendsJson, FsExtendsTime, FsExtendsUploader, FsExtendsInput } from "@fast-crud/fast-extends";
 import "@fast-crud/fast-extends/dist/style.css";
@@ -17,22 +17,24 @@ import { FsEditorCode } from "@fast-crud/editor-code";
 import "@fast-crud/editor-code/dist/style.css";
 
 class ColumnSizeSaver {
-  save: (key: string, size: number) => void;
-  constructor() {
-    this.save = debounce((key: string, size: number) => {
+  type: string;
+  save: (key: string, value: any) => void;
+  constructor(type: string = "columnSize") {
+    this.type = type;
+    this.save = debounce((key: string, value: any) => {
       const saveKey = this.getKey();
       let data = LocalStorage.get(saveKey);
       if (!data) {
         data = {};
       }
-      data[key] = size;
+      data[key] = value;
       LocalStorage.set(saveKey, data);
     });
   }
   getKey() {
     const loc = window.location;
     const currentUrl = `${loc.pathname}${loc.search}${loc.hash}`;
-    return `columnSize-${currentUrl}`;
+    return `${this.type}-${currentUrl}`;
   }
   get(key: string) {
     const saveKey = this.getKey();
@@ -45,6 +47,7 @@ class ColumnSizeSaver {
   }
 }
 const columnSizeSaver = new ColumnSizeSaver();
+const tableSortSaver = new ColumnSizeSaver("tableSorter");
 
 function install(app: App, options: any = {}) {
   app.use(UiAntdv);
@@ -63,6 +66,8 @@ function install(app: App, options: any = {}) {
     commonOptions(props: UseCrudProps): CrudOptions {
       utils.logger.debug("commonOptions:", props);
       const crudBinding = props.crudExpose?.crudBinding;
+      const crudExpose = props.crudExpose;
+
       const { isMobile } = usePreferences();
       const opts: CrudOptions = {
         settings: {
@@ -73,6 +78,20 @@ function install(app: App, options: any = {}) {
                 isMobile: isMobile,
               },
             },
+          },
+          onUseCrud(bindings: any) {
+            const oldSorter = tableSortSaver.get("sorter");
+            if (oldSorter) {
+              const { prop, order } = oldSorter;
+              forEachTableColumns(bindings.table.columns, (column: any) => {
+                if (column.key === prop) {
+                  column.sortOrder = order;
+                } else {
+                  column.sortOrder = false;
+                }
+              });
+              bindings.table.sort = oldSorter;
+            }
           },
         },
         table: {
@@ -103,6 +122,30 @@ function install(app: App, options: any = {}) {
             render() {
               return "-";
             },
+          },
+          onSortChange: (sortChange: any) => {
+            const { isServerSort, prop, asc, order } = sortChange;
+            const oldSort = crudBinding.value.table.sort;
+            const newSorter = isServerSort ? { prop, order, asc } : null;
+
+            forEachTableColumns(crudBinding.value.table.columns, (column: any) => {
+              if (column.key === prop) {
+                column.sortOrder = order;
+              } else {
+                column.sortOrder = false;
+              }
+            });
+
+            crudBinding.value.table.sort = newSorter;
+            if (newSorter) {
+              tableSortSaver.save("sorter", newSorter);
+            } else {
+              tableSortSaver.clear();
+            }
+
+            if (isServerSort || oldSort != null) {
+              crudExpose.doRefresh();
+            }
           },
         },
         toolbar: {
@@ -189,6 +232,10 @@ function install(app: App, options: any = {}) {
           },
           wrapperCol: {
             span: null,
+            buttons: {
+              copy: { show: false },
+              paste: { show: false },
+            },
           },
           wrapper: {
             saveRemind: true,
