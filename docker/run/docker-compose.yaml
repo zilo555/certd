@@ -11,6 +11,7 @@ services:
       #   ↓↓↓↓↓ -------------------------------------------------------- 数据库以及证书存储路径,默认存在宿主机的/data/certd/目录下，【您需要定时备份此目录，以保障数据容灾】
       #                                                                  只要修改冒号前面的，冒号后面的/app/data不要动
       - /data/certd:/app/data
+      #- /volume1/docker/certd:/app/data:delegated  #群晖使用这个配置
       #   ↓↓↓↓↓ -------------------------------------------------------- 如果走时不准，考虑挂载localtime文件
       #- /etc/localtime:/etc/localtime
       #- /etc/timezone:/etc/timezone
