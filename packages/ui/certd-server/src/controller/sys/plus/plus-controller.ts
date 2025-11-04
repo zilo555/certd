@@ -1,5 +1,6 @@
 import { ALL, Body, Controller, Inject, Post, Provide } from '@midwayjs/core';
 import { BaseController, PlusService, SysInstallInfo, SysSettingsService } from '@certd/lib-server';
+import { logger } from '@certd/basic';
 
 /**
  */
@@ -31,8 +32,13 @@ export class SysPlusController extends BaseController {
     installInfo.bindUrl = url;
     await this.sysSettingsService.saveSetting(installInfo);
 
-    //重新验证配置
-    await this.plusService.verify();
+    //重新验证vip
+    try{
+      await this.plusService.verify();
+    }catch(e){
+      logger.error(`验证配置失败:${e}`);
+    }
+  
 
     return this.ok(true);
   }
