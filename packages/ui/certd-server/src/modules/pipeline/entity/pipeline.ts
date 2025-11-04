@@ -43,28 +43,19 @@ export class PipelineEntity {
   @Column({ name:"is_template", comment: '是否模版', nullable: true, default: false })
   isTemplate: boolean;
 
-  @Column({
-    name: 'last_history_time',
-    comment: '最后一次执行时间',
-    nullable: true,
-  })
+  @Column({name: 'last_history_time',comment: '最后一次执行时间',nullable: true,})
   lastHistoryTime: number;
+
+  @Column({name: 'valid_time',comment: '到期时间',nullable: true,default: 0})
+  validTime: number;
 
   // 变量
   lastVars: any;
 
-  @Column({
-    name: 'order',
-    comment: '排序',
-    nullable: true,
-  })
+  @Column({name: 'order', comment: '排序', nullable: true,})
   order: number;
 
-  @Column({
-    name: 'create_time',
-    comment: '创建时间',
-    default: () => 'CURRENT_TIMESTAMP',
-  })
+  @Column({name: 'create_time',comment: '创建时间', default: () => 'CURRENT_TIMESTAMP',})
   createTime: Date;
   @Column({
     name: 'update_time',

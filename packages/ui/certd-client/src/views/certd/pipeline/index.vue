@@ -26,7 +26,6 @@
 import { onActivated, onMounted, ref } from "vue";
 import { dict, useFs } from "@fast-crud/fast-crud";
 import createCrudOptions from "./crud";
-import PiCertdForm from "./certd-form/index.vue";
 import ChangeGroup from "./components/change-group.vue";
 import ChangeTrigger from "./components/change-trigger.vue";
 import { Modal, notification } from "ant-design-vue";

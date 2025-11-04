@@ -117,11 +117,11 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
       ],
     },
     required: true,
-    helper: `1. <b>DNS直接验证</b>：域名dns解析是在阿里云/腾讯云/华为云/CF/NameSilo/西数/火山/dns.la/京东云/51dns的，选它
-2.  <b>CNAME代理验证</b>：支持任何注册商的域名，第一次需要手动添加[CNAME记录](#/certd/cname/record)（建议将DNS服务器修改为阿里云/腾讯云的，然后使用DNS直接验证）
+    helper: `1. <b>DNS直接验证</b>：当域名dns解析已被本系统支持时（即下方DNS解析服务商选项中可选），推荐选择此方式
+2.  <b>CNAME代理验证</b>：支持任何注册商的域名，第一次需要手动添加[CNAME记录](#/certd/cname/record)（如果经常申请失败，建议将DNS服务器修改为阿里云/腾讯云的，然后使用DNS直接验证）
 3.  <b>HTTP文件验证</b>：不支持泛域名，需要配置网站文件上传
 4.  <b>多DNS提供商</b>：每个域名可以选择独立的DNS提供商
-5.  <b>自动匹配</b>：需要在[域名管理](#/certd/cert/domain)中事先配置好校验方式
+5.  <b>自动匹配</b>：此处无需选择校验方式，需要在[域名管理](#/certd/cert/domain)中提前配置好校验方式
 `,
   })
   challengeType!: string;
@@ -133,9 +133,9 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
       name: "icon-select",
       vModel: "value",
       options: [
-        { value: "letsencrypt", label: "Let's Encrypt", icon: "simple-icons:letsencrypt" },
-        { value: "google", label: "Google", icon: "flat-color-icons:google" },
-        { value: "zerossl", label: "ZeroSSL", icon: "emojione:digit-zero" },
+        { value: "letsencrypt", label: "Let's Encrypt（免费，新手推荐）", icon: "simple-icons:letsencrypt" },
+        { value: "google", label: "Google（免费）", icon: "flat-color-icons:google" },
+        { value: "zerossl", label: "ZeroSSL（免费）", icon: "emojione:digit-zero" },
         { value: "sslcom", label: "SSL.com（仅主域名和www免费）", icon: "la:expeditedssl" },
       ],
     },
@@ -541,7 +541,7 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
       const mainDomain = await domainParser.parse(domain);
       const planSetting: DomainVerifyPlanInput = verifyPlanSetting[mainDomain];
       if (planSetting == null) {
-        throw new Error(`没有找到域名（${domain}）的校验计划`);
+        throw new Error(`没有找到域名（${domain}）的校验计划（如果您在流水线创建之后设置了子域名托管，需要重新编辑证书申请任务和重新校验cname记录的校验状态）`);
       }
       if (planSetting.type === "dns") {
         plan[domain] = await this.createDnsDomainVerifyPlan(planSetting, domain, mainDomain);
@@ -630,10 +630,20 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
     if (cnameRecord == null) {
       throw new Error(`请先配置${domain}的CNAME记录，并通过校验`);
     }
+    if (cnameRecord.status !== "valid") {
+      throw new Error(`CNAME记录${domain}的校验状态为${cnameRecord.status}，请等待校验通过`);
+    }
+
+    // 主域名异常
+    if (cnameRecord.mainDomain && mainDomain && cnameRecord.mainDomain !== mainDomain) {
+      throw new Error(`CNAME记录${domain}的域名与配置的主域名不一致（${cnameRecord.mainDomain}≠${mainDomain}），请确认是否在流水线创建之后修改了子域名托管，您需要重新校验CNAME记录的校验状态`);
+    }
+
     let dnsProvider = cnameRecord.commonDnsProvider;
     if (cnameRecord.cnameProvider.id > 0) {
       dnsProvider = await this.createDnsProvider(cnameRecord.cnameProvider.dnsProviderType, cnameRecord.cnameProvider.access);
     }
+
     return {
       type: "cname",
       domain,

@@ -19,7 +19,7 @@ import { getJwk } from './crypto/index.js';
  */
 
 class HttpClient {
-    constructor(directoryUrl, accountKey, externalAccountBinding = {}, urlMapping = {}) {
+    constructor(directoryUrl, accountKey, externalAccountBinding = {}, urlMapping = {},logger) {
         this.directoryUrl = directoryUrl;
         this.accountKey = accountKey;
         this.externalAccountBinding = externalAccountBinding;
@@ -31,6 +31,7 @@ class HttpClient {
         this.directoryMaxAge = 86400;
         this.directoryTimestamp = 0;
         this.urlMapping = urlMapping;
+        this.log = logger? logger.info.bind(logger) : log;
     }
 
     /**
@@ -48,7 +49,7 @@ class HttpClient {
             for (const key in this.urlMapping.mappings) {
                 if (url.includes(key)) {
                     const newUrl = url.replace(key, this.urlMapping.mappings[key]);
-                    log(`use reverse proxy: ${newUrl}`);
+                    this.log(`use reverse proxy: ${newUrl}`);
                     url = newUrl;
                 }
             }
@@ -65,10 +66,10 @@ class HttpClient {
         opts.headers['Content-Type'] = 'application/jose+json';
 
         /* Request */
-        log(`HTTP request: ${method} ${url}`);
+        this.log(`HTTP request: ${method} ${url}`);
         const resp = await axios.request(opts);
 
-        log(`RESP ${resp.status} ${method} ${url}`);
+        this.log(`RESP ${resp.status} ${method} ${url}`);
         return resp;
     }
 
@@ -85,7 +86,7 @@ class HttpClient {
         const age = (now - this.directoryTimestamp);
 
         if (!this.directoryCache || (age > this.directoryMaxAge)) {
-            log(`Refreshing ACME directory, age: ${age}`);
+            this.log(`Refreshing ACME directory, age: ${age}`);
             const resp = await this.request(this.directoryUrl, 'get');
 
             if (resp.status >= 400) {
@@ -187,7 +188,7 @@ class HttpClient {
 
         /* Nonce */
         if (nonce) {
-            log(`Using nonce: ${nonce}`);
+            this.log(`Using nonce: ${nonce}`);
             header.nonce = nonce;
         }
 
@@ -314,7 +315,7 @@ class HttpClient {
             nonce = resp.headers['replay-nonce'] || null;
             attempts += 1;
 
-            log(`Caught invalid nonce error, retrying (${attempts}/${this.maxBadNonceRetries}) signed request to: ${url}`);
+            this.log(`Caught invalid nonce error, retrying (${attempts}/${this.maxBadNonceRetries}) signed request to: ${url}`);
             return this.signedRequest(url, payload, { kid, nonce, includeExternalAccountBinding }, attempts);
         }
 

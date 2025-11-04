@@ -1,13 +1,6 @@
 <template>
   <div class="sys-settings-form sys-settings-register">
     <a-form :model="formState" name="register" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" @finish="onFinish">
-      <a-form-item :label="t('certd.manageOtherUserPipeline')" :name="['public', 'managerOtherUserPipeline']">
-        <a-switch v-model:checked="formState.public.managerOtherUserPipeline" />
-      </a-form-item>
-      <a-form-item :label="t('certd.limitUserPipelineCount')" :name="['public', 'limitUserPipelineCount']">
-        <a-input-number v-model:value="formState.public.limitUserPipelineCount" />
-        <div class="helper">{{ t("certd.limitUserPipelineCountHelper") }}</div>
-      </a-form-item>
       <a-form-item :label="t('certd.enableSelfRegistration')" :name="['public', 'registerEnabled']">
         <a-switch v-model:checked="formState.public.registerEnabled" />
       </a-form-item>

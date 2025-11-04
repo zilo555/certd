@@ -1,6 +1,6 @@
 <template>
   <div class="sys-settings-form sys-settings-base">
-    <a-form :model="formState" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" @finish="onFinish" @finish-failed="onFinishFailed">
+    <a-form :model="formState" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" @finish="onFinish">
       <a-form-item :label="t('certd.icpRegistrationNumber')" :name="['public', 'icpNo']">
         <a-input v-model:value="formState.public.icpNo" :placeholder="t('certd.icpPlaceholder')" />
       </a-form-item>
@@ -47,18 +47,6 @@
         <div class="helper" v-html="t('certd.commonCnameHelper')"></div>
       </a-form-item>
 
-      <a-form-item :label="t('certd.sys.setting.captchaEnabled')" :name="['public', 'captchaEnabled']">
-        <a-switch v-model:checked="formState.public.captchaEnabled" />
-        <div class="helper" v-html="t('certd.sys.setting.captchaHelper')"></div>
-      </a-form-item>
-      <a-form-item :label="t('certd.sys.setting.captchaType')" :name="['public', 'captchaAddonId']">
-        <addon-selector v-model:model-value="formState.public.captchaAddonId" addon-type="captcha" from="sys" @selected-change="onAddonChanged" />
-      </a-form-item>
-
-      <a-form-item :name="['public', 'captchaType']" class="hidden">
-        <a-input v-model:model-value="formState.public.captchaType"></a-input>
-      </a-form-item>
-
       <a-form-item label=" " :colon="false" :wrapper-col="{ span: 8 }">
         <a-button :loading="saveLoading" type="primary" html-type="submit">{{ t("certd.saveButton") }}</a-button>
       </a-form-item>
@@ -76,6 +64,7 @@ import { notification } from "ant-design-vue";
 import { util } from "/@/utils";
 import { useI18n } from "/src/locales";
 import AddonSelector from "../../../certd/addon/addon-selector/index.vue";
+import CaptchaInput from "/@/components/captcha/captcha-input.vue";
 const { t } = useI18n();
 
 defineOptions({
@@ -106,6 +95,7 @@ const settingsStore = useSettingStore();
 const onFinish = async (form: any) => {
   try {
     saveLoading.value = true;
+
     await api.SysSettingsSave(form);
     await settingsStore.loadSysSettings();
     notification.success({
@@ -115,21 +105,6 @@ const onFinish = async (form: any) => {
     saveLoading.value = false;
   }
 };
-
-const onFinishFailed = (errorInfo: any) => {
-  // console.log("Failed:", errorInfo);
-};
-
-async function stopOtherUserTimer() {
-  await api.stopOtherUserTimer();
-  notification.success({
-    message: t("certd.stopSuccess"),
-  });
-}
-
-function onAddonChanged(target: any) {
-  formState.public.captchaType = target.type;
-}
 
 const testProxyLoading = ref(false);
 async function testProxy() {

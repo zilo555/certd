@@ -18,6 +18,12 @@
 ### 3. 配置Certd项目
 
 ![](./images/3.png)
+建议加上 `:delegated` 提升性能
+```yaml
+  volumes:
+                                          ↓↓↓↓------加上这个提升性能
+    - /volume1/docker/certd:/app/data:delegated
+```
 
 ### 4. 外网访问设置
 

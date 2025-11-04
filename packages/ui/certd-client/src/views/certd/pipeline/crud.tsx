@@ -366,10 +366,7 @@ export default function ({ crudExpose, context: { groupDictRef, selectedRowKeys 
           },
           column: {
             cellRender({ row }) {
-              const {
-                certEffectiveTime: effectiveTime,
-                certExpiresTime: expiresTime,
-              } = row?.lastVars || {};
+              const { certEffectiveTime: effectiveTime, certExpiresTime: expiresTime } = row?.lastVars || {};
               if (!expiresTime) {
                 return "-";
               }
@@ -469,7 +466,7 @@ export default function ({ crudExpose, context: { groupDictRef, selectedRowKeys 
           },
           column: {
             sorter: true,
-            width: 80,
+            width: 100,
             align: "center",
             component: {
               name: "fs-dict-switch",
@@ -516,7 +513,7 @@ export default function ({ crudExpose, context: { groupDictRef, selectedRowKeys 
               { value: "cert", label: t("certd.types.certApply") },
               { value: "cert_upload", label: t("certd.types.certUpload") },
               { value: "custom", label: t("certd.types.custom") },
-              { value: "template", label: "模版" },
+              { value: "template", label: t("certd.types.template") },
             ],
           }),
           form: {
@@ -525,7 +522,7 @@ export default function ({ crudExpose, context: { groupDictRef, selectedRowKeys 
           },
           column: {
             sorter: true,
-            width: 90,
+            width: 110,
             align: "center",
             show: true,
             component: {
@@ -558,16 +555,53 @@ export default function ({ crudExpose, context: { groupDictRef, selectedRowKeys 
             sorter: true,
           },
         },
-        createTime: {
-          title: t("certd.fields.createTime"),
-          type: "datetime",
+        validTime: {
+          title: t("certd.pi.validTime"),
+          type: "date",
           form: {
-            show: false,
+            show: computed(() => {
+              return settingStore.isPlus && settingStore.sysPublic.pipelineValidTimeEnabled && userStore.isAdmin;
+            }),
+            helper: t("certd.pi.validTimeHelper"),
+            valueResolve({ form, key, value }) {
+              if (value) {
+                form[key] = value.valueOf();
+              }
+            },
+            valueBuilder({ form, key, value }) {
+              if (value) {
+                form[key] = dayjs(value);
+              }
+            },
+            component: {
+              presets: [
+                { label: t("certd.dates.months", { count: 3 }), value: dayjs().add(3, "month") },
+                { label: t("certd.dates.months", { count: 6 }), value: dayjs().add(6, "month") },
+                { label: t("certd.dates.years", { count: 1 }), value: dayjs().add(1, "year") },
+                { label: t("certd.dates.years", { count: 2 }), value: dayjs().add(2, "year") },
+                { label: t("certd.dates.years", { count: 3 }), value: dayjs().add(3, "year") },
+                { label: t("certd.dates.years", { count: 4 }), value: dayjs().add(4, "year") },
+                { label: t("certd.dates.years", { count: 5 }), value: dayjs().add(5, "year") },
+                { label: t("certd.dates.years", { count: 6 }), value: dayjs().add(6, "year") },
+              ],
+            },
           },
           column: {
+            show: computed(() => {
+              return settingStore.isPlus && settingStore.sysPublic.pipelineValidTimeEnabled;
+            }),
             sorter: true,
             width: 155,
             align: "center",
+            cellRender({ value }) {
+              if (!value || value <= 0) {
+                return "-";
+              }
+              if (value < Date.now()) {
+                return t("certd.hasExpired");
+              }
+              return dayjs(value).format("YYYY-MM-DD");
+            },
           },
         },
         updateTime: {

@@ -62,6 +62,7 @@ export default {
   suiteBuy: "套餐购买",
   myTrade: "我的订单",
   paymentReturn: "支付返回",
+  hasExpired: "已过期",
 
   user: {
     greeting: "您好",
@@ -142,10 +143,15 @@ export default {
     triggerType: "触发类型",
     pipelineId: "流水线Id",
   },
+  pi: {
+    validTime: "流水线有效期",
+    validTimeHelper: "不填则为永久有效",
+  },
   types: {
     certApply: "证书申请",
     certUpload: "证书上传",
     custom: "自定义",
+    template: "模版",
   },
   myPipelines: "我的流水线",
   selectedCount: "已选择 {count} 项",
@@ -181,6 +187,7 @@ export default {
     suiteSetting: "套餐设置",
     orderManager: "订单管理",
     userSuites: "用户套餐",
+    netTest: "网络测试",
   },
   certificateRepo: {
     title: "证书仓库",
@@ -228,9 +235,12 @@ export default {
     notificationWhen: "通知时机",
     notificationHelper: "任务执行失败实时提醒",
     groupIdTitle: "流水线分组",
+    addToMonitorEnabled: "添加到证书监控",
+    addToMonitorDomains: "添加到监控域名",
   },
   notificationDefault: "使用默认通知",
   monitor: {
+    remark: "备注",
     title: "站点证书监控",
     description: "每天0点，检查网站证书的过期时间，到期前10天时将发出提醒（使用默认通知渠道）;",
     settingLink: "站点监控设置",
@@ -252,6 +262,7 @@ export default {
     certDomains: "证书域名",
     certProvider: "颁发机构",
     certStatus: "证书状态",
+    error: "错误信息",
     status: {
       ok: "正常",
       expired: "过期",
@@ -285,6 +296,8 @@ export default {
       cronTrigger: "定时触发监控",
       dnsServer: "DNS服务器",
       dnsServerHelper: "使用自定义的域名解析服务器，如：1.1.1.1 , 支持多个",
+      certValidDays: "证书到期前天数",
+      certValidDaysHelper: "证书到期前多少天发送通知",
     },
   },
   checkStatus: {
@@ -294,9 +307,9 @@ export default {
   },
   domainList: {
     title: "域名列表",
-    helper: "格式【域名:端口:名称】，一行一个，其中端口、名称可以省略\n比如：\nwww.baidu.com:443:百度\nwww.taobao.com::淘宝\nwww.google.com",
+    helper: "格式【域名:端口:名称:备注】，一行一个，其中端口、名称、备注可以省略\n比如：\nwww.baidu.com:443:百度:备注文本\nwww.taobao.com::淘宝\nwww.google.com",
     required: "请输入要导入的域名",
-    placeholder: "www.baidu.com:443:百度\nwww.taobao.com::淘宝\nwww.google.com\n",
+    placeholder: "www.baidu.com:443:百度:备注文本\nwww.taobao.com::淘宝\nwww.google.com\n",
   },
   accountInfo: "账号信息",
   securitySettings: "认证安全设置",
@@ -453,6 +466,7 @@ export default {
   description: "说明",
   createTime: "创建时间",
   updateTime: "更新时间",
+  mainDomain: "主域名",
   edit: "编辑",
   groupName: "分组名称",
   enterGroupName: "请输入分组名称",
@@ -461,7 +475,7 @@ export default {
   batchDeleteConfirm: "确定要批量删除这{count}条记录吗",
   selectRecordFirst: "请先勾选记录",
   subdomainHosted: "托管的子域名",
-  subdomainHelpText: "如果您不理解什么是子域托管，请不要随意设置，可能导致证书无法申请，可以参考文档",
+  subdomainHelpText: "如果您不理解什么是子域托管，请不要随意设置（可能导致证书无法申请，以前设置过的cname记录也需要重新配置），可以参考文档",
   subdomainManagement: "子域管理",
   isDisabled: "是否禁用",
   enabled: "启用",
@@ -717,19 +731,32 @@ export default {
     copyPipelineConfig: "复制该流水线配置作为模板来源",
     pipeline: "流水线",
   },
+  dates: {
+    years: "{count}年",
+    months: "{count}月",
+  },
   sys: {
     setting: {
+      baseSetting: "基本设置",
+      registerSetting: "注册设置",
+      safeSetting: "安全设置",
+      paymentSetting: "支付设置",
+      captchaSetting: "验证码设置",
+      pipelineSetting: "流水线设置",
+
       showRunStrategy: "显示运行策略选择",
       showRunStrategyHelper: "任务设置中是否允许选择运行策略",
 
       captchaEnabled: "启用登录验证码",
       captchaHelper: "登录时是否启用验证码",
       captchaType: "验证码配置",
+      captchaTest: "测试验证码",
+      captchaTestHelper: "保存后再点击测试，请务必测试通过了，再开启登录验证码",
 
-      baseSetting: "基本设置",
-      registerSetting: "注册设置",
-      safeSetting: "安全设置",
-      paymentSetting: "支付设置",
+      pipelineValidTimeEnabled: "启用流水线有效期",
+      pipelineValidTimeEnabledHelper: "是否启用流水线有效期",
+      certDomainAddToMonitorEnabled: "证书域名添加到证书监控",
+      certDomainAddToMonitorEnabledHelper: "创建证书流水线时是否可以选择将域名添加到证书监控",
     },
   },
   modal: {

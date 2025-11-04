@@ -3,6 +3,84 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.4](https://github.com/certd/certd/compare/v1.37.3...v1.37.4) (2025-10-28)
+
+### Performance Improvements
+
+* 优化数据备份效率，流式写入文件 ([c38dbbb](https://github.com/certd/certd/commit/c38dbbb1d72bd00a92fe275b76aea82a791e7199))
+
+## [1.37.3](https://github.com/certd/certd/compare/v1.37.2...v1.37.3) (2025-10-24)
+
+### Bug Fixes
+
+* 修复网络测试，telnet的bug ([c03a70f](https://github.com/certd/certd/commit/c03a70fde23c8e840bd0fdb4fcbca8990f6c65eb))
+* 修复站点证书监控，证书已经更新到最新日期了，仍然发出警告通知的bug ([1f42f93](https://github.com/certd/certd/commit/1f42f933f07860b27aa3d016e40916ff2b063eac))
+
+### Performance Improvements
+
+*  注册页面增加手机注册tab页签 ([6b2f1fc](https://github.com/certd/certd/commit/6b2f1fcd3e058061b814c3331cda8ce1b2d80d73))
+* 流水线创建时支持添加到证书监控 ([59ba408](https://github.com/certd/certd/commit/59ba4080706548828ef1c0a9cd893c1c9a7d591f))
+* 流水线支持有效期设置 ([911e69e](https://github.com/certd/certd/commit/911e69e3bc0cdd48b62953b5d0981d640fc1f8ac))
+* 通知支持meow ([c77645e](https://github.com/certd/certd/commit/c77645e1733670214aaca5544cf8759d7e4adda4))
+* 站点证书监控增加导出和分组功能 ([2ed12c4](https://github.com/certd/certd/commit/2ed12c429eb58274a4f9dd0ed3b66e160d283ded))
+* 证书监控增加批量删除 ([e578c52](https://github.com/certd/certd/commit/e578c52fdf2f838038062aa4209b655fbae461fb))
+* esa 自动删除过期证书提示 ([8bf1f82](https://github.com/certd/certd/commit/8bf1f828b9eaa9208f32e8ee7460b86420fed0c7))
+* ssh 增加禁止-i参数提示 ([3a8931f](https://github.com/certd/certd/commit/3a8931feeffd7157163ff7d46b693e5e1a434b9c))
+
+## [1.37.2](https://github.com/certd/certd/compare/v1.37.1...v1.37.2) (2025-10-14)
+
+### Bug Fixes
+
+* 修复飞牛证书部署后无法生效的bug ([bf156a1](https://github.com/certd/certd/commit/bf156a13bd443cdadb73c9dff79bbef7231b4401))
+* aliyunoss 选择证书接入点选择新加坡无法上传的bug ([e00733a](https://github.com/certd/certd/commit/e00733a34644c23ffe926486b15dc96bf2fa4b57))
+
+### Performance Improvements
+
+* 增加飞牛证书id选择的提示 ([5a4d812](https://github.com/certd/certd/commit/5a4d8121462b1afe921d028465687be8c9679814))
+* 证书监控支持设置证书即将过期天数 ([cd35568](https://github.com/certd/certd/commit/cd35568e042e6ab928685efad51cdbed823d2d4f))
+* 支持网络测试 ([2bef608](https://github.com/certd/certd/commit/2bef608e07ceb56d52007f290667e0afef401b22))
+* 支持新网代理方式 ([f612509](https://github.com/certd/certd/commit/f612509cac87b859e81a7a52fe94b2eaccad22f9))
+* dns支持新网互联 ([f415190](https://github.com/certd/certd/commit/f41519048326d971acd9e0a30462231f77a299a6))
+
+## [1.37.1](https://github.com/certd/certd/compare/v1.37.0...v1.37.1) (2025-09-29)
+
+### Bug Fixes
+
+* 修复某些情况下cname申请证书报错主域名不一致的bug ([2671781](https://github.com/certd/certd/commit/2671781e1bb0838981728d85eacf0e1a25a0fa48))
+
+### Performance Improvements
+
+* dns解析支持阿里esa ([9291fa6](https://github.com/certd/certd/commit/9291fa68aa7a88a05c2f888bf3048df36a8fbde3))
+
+# [1.37.0](https://github.com/certd/certd/compare/v1.36.25...v1.37.0) (2025-09-28)
+
+### Features
+
+* dist打包前检查 ([8f6e5bd](https://github.com/certd/certd/commit/8f6e5bd24b3b65fbfcba36c08f532a3abad2d606))
+
+## [1.36.25](https://github.com/certd/certd/compare/v1.36.24...v1.36.25) (2025-09-27)
+
+### Bug Fixes
+
+* 固定midwayjs版本，修复ui-server import 错误的bug ([eb4d125](https://github.com/certd/certd/commit/eb4d125eaf4a41e88c752d0c68993829589f8f27))
+
+## [1.36.24](https://github.com/certd/certd/compare/v1.36.23...v1.36.24) (2025-09-27)
+
+### Bug Fixes
+
+* 修复 ui-server 加载失败问题 ([c2ccdbe](https://github.com/certd/certd/commit/c2ccdbec9dd08bca4688eeb2f34d0105eec43ba1))
+
+### Performance Improvements
+
+* 重置管理员密码同时会关闭验证码，防止验证码失效之后无法登录 ([03899d4](https://github.com/certd/certd/commit/03899d4d9c76fc2077dacc53ab88e2c9ca41af7c))
+
+## [1.36.23](https://github.com/certd/certd/compare/v1.36.22...v1.36.23) (2025-09-26)
+
+### Performance Improvements
+
+* 开启子域名托管之后cname记录支持重置 ([54c8d62](https://github.com/certd/certd/commit/54c8d622437761d350db0f17e07f7517f1911211))
+* 验证码支持测试，登录验证码需要测试通过后才能开启 ([83e6476](https://github.com/certd/certd/commit/83e6476408090b741fabb1b542fb458d9a8b4134))
+
 ## [1.36.22](https://github.com/certd/certd/compare/v1.36.21...v1.36.22) (2025-09-23)
 
 ### Performance Improvements

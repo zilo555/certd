@@ -3,6 +3,50 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.4](https://github.com/certd/certd/compare/v1.37.3...v1.37.4) (2025-10-28)
+
+### Bug Fixes
+
+* 修复lego模式下 私钥加密类型错误的bug ([f7cf7c1](https://github.com/certd/certd/commit/f7cf7c198d7f77b222099770f81accc637bc6619))
+
+## [1.37.3](https://github.com/certd/certd/compare/v1.37.2...v1.37.3) (2025-10-24)
+
+### Bug Fixes
+
+* 修复并发情况下证书申请日志混乱的bug ([bb2714f](https://github.com/certd/certd/commit/bb2714ff241f9db4a71d805b23a1b0f9f2f6413a))
+
+## [1.37.2](https://github.com/certd/certd/compare/v1.37.1...v1.37.2) (2025-10-14)
+
+### Performance Improvements
+
+* 证书监控支持设置证书即将过期天数 ([cd35568](https://github.com/certd/certd/commit/cd35568e042e6ab928685efad51cdbed823d2d4f))
+* 支持新网代理方式 ([f612509](https://github.com/certd/certd/commit/f612509cac87b859e81a7a52fe94b2eaccad22f9))
+
+## [1.37.1](https://github.com/certd/certd/compare/v1.37.0...v1.37.1) (2025-09-29)
+
+### Performance Improvements
+
+* cname主域名校验提示优化，显示不一致的两方便于排查问题 ([6ebb365](https://github.com/certd/certd/commit/6ebb3659f42155e4e8da600c493fb5227cd08137))
+
+# [1.37.0](https://github.com/certd/certd/compare/v1.36.25...v1.37.0) (2025-09-28)
+
+**Note:** Version bump only for package @certd/plugin-cert
+
+## [1.36.25](https://github.com/certd/certd/compare/v1.36.24...v1.36.25) (2025-09-27)
+
+**Note:** Version bump only for package @certd/plugin-cert
+
+## [1.36.24](https://github.com/certd/certd/compare/v1.36.23...v1.36.24) (2025-09-27)
+
+**Note:** Version bump only for package @certd/plugin-cert
+
+## [1.36.23](https://github.com/certd/certd/compare/v1.36.22...v1.36.23) (2025-09-26)
+
+### Performance Improvements
+
+* 手动上传证书优化，增加到期前报错提醒 ([3d42bfd](https://github.com/certd/certd/commit/3d42bfd479eaacc4a49c401224815a6e2a0204b0))
+* 支持腾讯云验证码 ([03f317f](https://github.com/certd/certd/commit/03f317ffdb6595ce70e8a2302b05f390c52110c8))
+
 ## [1.36.22](https://github.com/certd/certd/compare/v1.36.21...v1.36.22) (2025-09-23)
 
 ### Bug Fixes

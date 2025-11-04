@@ -12,6 +12,14 @@ const props = defineProps({
     type: Object,
     default: () => ({}),
   },
+  type: {
+    type: String,
+    default: "image",
+  },
+  addonId: {
+    type: Number,
+    default: 0,
+  },
 });
 const captchaRef = ref(null);
 const settingStore = useSettingStore();
@@ -23,7 +31,7 @@ const captchaAddonId = computed(() => {
   return settingStore.sysPublic.captchaAddonId ?? 0;
 });
 const captchaComponent = computed(() => {
-  let type: any = "image";
+  let type: any = props.type ?? "image";
   if (settingStore.sysPublic.captchaAddonId && settingStore.sysPublic.captchaType) {
     type = settingStore.sysPublic.captchaType;
   }
@@ -48,10 +56,10 @@ function onChange(data: any) {
 }
 
 async function getCaptchaForm() {
-  return await captchaRef.value.getCaptchaForm();
+  return await captchaRef.value?.getCaptchaForm();
 }
 async function reset() {
-  await captchaRef.value.reset();
+  await captchaRef.value?.reset();
 }
 defineExpose({
   getCaptchaForm,

@@ -7,6 +7,7 @@ import {logger, safePromise} from '@certd/basic';
 export type HttpsServerOptions = {
   enabled: boolean;
   app?: Application;
+  hostname?: string;
   port: number;
   key: string;
   cert: string;
@@ -58,7 +59,7 @@ export class HttpsServer {
       opts.app.callback()
     );
     this.server = httpServer;
-    const hostname = '::';
+    let hostname = opts.hostname ||  '::';
     // A function that runs in the context of the http server
     // and reports what type of server listens on which port
     function listeningReporter() {
@@ -70,7 +71,19 @@ export class HttpsServer {
       httpServer.listen(opts.port, hostname, listeningReporter);
       return httpServer;
     } catch (e) {
-      logger.error('启动https服务失败', e);
+      if ( e.message?.includes("address family not supported")) {
+        hostname = "0.0.0.0"
+        logger.error(`${e.message}，尝试监听${hostname}`, e);
+        try{
+          httpServer.listen(opts.port, hostname, listeningReporter);
+          return httpServer;
+        }catch (e) {
+          logger.error('启动https服务失败', e);
+        }
+      }else{
+        logger.error('启动https服务失败', e);
+      }
+
     }
   }
 }

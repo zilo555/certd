@@ -35,6 +35,14 @@ export const siteInfoApi = {
     });
   },
 
+  async BatchDelObj(ids: number[]) {
+    return await request({
+      url: apiPrefix + "/batchDelete",
+      method: "post",
+      data: { ids },
+    });
+  },
+
   async GetObj(id: number) {
     return await request({
       url: apiPrefix + "/info",

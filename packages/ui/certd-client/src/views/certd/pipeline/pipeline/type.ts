@@ -3,6 +3,7 @@ import { PluginGroups } from "/@/store/plugin";
 
 export type PipelineDetail = {
   pipeline: Pipeline;
+  validTime?: number;
 };
 
 export type RunHistory = {

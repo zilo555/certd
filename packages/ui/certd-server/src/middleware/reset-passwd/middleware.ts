@@ -1,6 +1,6 @@
 import { Autoload, Config, Init, Inject, Provide, Scope, ScopeEnum } from '@midwayjs/core';
 import { IMidwayKoaContext, IWebMiddleware, NextFunction } from '@midwayjs/koa';
-import { CommonException } from '@certd/lib-server';
+import { CommonException, SysSettingsService } from "@certd/lib-server";
 import { UserService } from '../../modules/sys/authority/service/user-service.js';
 import { logger } from '@certd/basic';
 import {UserSettingsService} from "../../modules/mine/service/user-settings-service.js";
@@ -17,6 +17,8 @@ export class ResetPasswdMiddleware implements IWebMiddleware {
 
   @Inject()
   userSettingsService: UserSettingsService;
+  @Inject()
+  sysSettingsService: SysSettingsService;
 
   @Config('system.resetAdminPasswd')
   private resetAdminPasswd: boolean;
@@ -40,8 +42,12 @@ export class ResetPasswdMiddleware implements IWebMiddleware {
         userId: 1,
         key:"user.two.factor"
       })
+      const publicSettings = await this.sysSettingsService.getPublicSettings()
+      publicSettings.captchaEnabled = false
+      await this.sysSettingsService.savePublicSettings(publicSettings);
+
       const user = await this.userService.info(1);
-      logger.info(`重置1号管理员用户的密码完成，2FA设置已删除，用户名：${user.username},新密码：${newPasswd}，请在登录进去之后尽快修改密码`);
+      logger.info(`重置1号管理员用户的密码完成，2FA设置已删除，验证码登录已禁用，用户名：${user.username},新密码：${newPasswd}，请在登录进去之后尽快修改密码`);
     }
   }
 }

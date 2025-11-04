@@ -79,6 +79,14 @@ export async function SysSettingsSave(data: SysSettings) {
   });
 }
 
+export async function TestCaptcha(form: any) {
+  return await request({
+    url: apiPrefix + "/captchaTest",
+    method: "post",
+    data: form,
+  });
+}
+
 export async function TestProxy() {
   return await request({
     url: apiPrefix + "/testProxy",

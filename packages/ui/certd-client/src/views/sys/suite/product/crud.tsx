@@ -55,15 +55,15 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           groups: {
             base: {
               header: t("certd.basicInfo"),
-              columns: ["title", "type", "disabled", "order", "supportBuy", "intro"]
+              columns: ["title", "type", "disabled", "order", "supportBuy", "intro"],
             },
             content: {
               header: t("certd.packageContent"),
-              columns: ["content.maxDomainCount", "content.maxPipelineCount", "content.maxDeployCount", "content.maxMonitorCount"]
+              columns: ["content.maxDomainCount", "content.maxPipelineCount", "content.maxDeployCount", "content.maxMonitorCount"],
             },
             price: {
               header: t("certd.price"),
-              columns: ["durationPrices"]
+              columns: ["durationPrices"],
             },
           },
         },

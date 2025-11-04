@@ -1,7 +1,7 @@
 {
   "name": "@certd/pipeline",
   "private": false,
-  "version": "1.36.22",
+  "version": "1.37.4",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -14,11 +14,12 @@
     "build3": "rollup -c",
     "preview": "vite preview",
     "test": "mocha   --loader=ts-node/esm",
-    "pub": "npm publish"
+    "pub": "npm publish",
+    "compile": "tsc --skipLibCheck --watch"
   },
   "dependencies": {
-    "@certd/basic": "^1.36.22",
-    "@certd/plus-core": "^1.36.22",
+    "@certd/basic": "^1.37.4",
+    "@certd/plus-core": "^1.37.4",
     "dayjs": "^1.11.7",
     "lodash-es": "^4.17.21",
     "reflect-metadata": "^0.1.13"
@@ -44,5 +45,5 @@
     "tslib": "^2.8.1",
     "typescript": "^5.4.2"
   },
-  "gitHead": "c98f43b98459d107910c95d23fda785b0edc4702"
+  "gitHead": "dbce75146439dac484597ce6494b935fd7ce75f7"
 }

@@ -1,15 +1,18 @@
 // @ts-ignore
 import { useI18n } from "/src/locales";
-import { AddReq, ColumnCompositionProps, compute, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, EditReq, UserPageQuery, UserPageRes } from "@fast-crud/fast-crud";
+import { AddReq, ColumnCompositionProps, ColumnProps, compute, CreateCrudOptionsProps, CreateCrudOptionsRet, DataFormatterContext, DelReq, dict, EditReq, UserPageQuery, UserPageRes } from "@fast-crud/fast-crud";
 import { siteInfoApi } from "./api";
+import * as settingApi from "./setting/api";
 import dayjs from "dayjs";
-import { Modal, notification } from "ant-design-vue";
+import { message, Modal, notification } from "ant-design-vue";
 import { useSettingStore } from "/@/store/settings";
 import { mySuiteApi } from "/@/views/certd/suite/mine/api";
 import { mitter } from "/@/utils/util.mitt";
 import { useSiteIpMonitor } from "./ip/use";
 import { useSiteImport } from "/@/views/certd/monitor/site/use";
-
+import { ref } from "vue";
+import GroupSelector from "../../basic/group/group-selector.vue";
+import { createGroupDictRef } from "../../basic/group/api";
 export default function ({ crudExpose, context }: CreateCrudOptionsProps): CreateCrudOptionsRet {
   const { t } = useI18n();
   const api = siteInfoApi;
@@ -30,6 +33,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
 
   const addRequest = async (req: AddReq) => {
     const { form } = req;
+    delete form.id;
     const res = await api.AddObj(form);
     return res;
   };
@@ -47,6 +51,35 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
   const { openSiteIpMonitorDialog } = useSiteIpMonitor();
   const { openSiteImportDialog } = useSiteImport();
 
+  const certValidDaysRef = ref(10);
+
+  async function loadSetting() {
+    const setting = await settingApi.SiteMonitorSettingsGet();
+    certValidDaysRef.value = setting?.certValidDays || 10;
+  }
+  loadSetting();
+
+  const selectedRowKeys = ref([]);
+
+  const handleBatchDelete = () => {
+    if (selectedRowKeys.value?.length > 0) {
+      Modal.confirm({
+        title: "确认",
+        content: `确定要批量删除这${selectedRowKeys.value.length}条记录吗`,
+        async onOk() {
+          await api.BatchDelObj(selectedRowKeys.value);
+          message.info("删除成功");
+          crudExpose.doRefresh();
+          selectedRowKeys.value = [];
+        },
+      });
+    } else {
+      message.error("请先勾选记录");
+    }
+  };
+
+  context.handleBatchDelete = handleBatchDelete;
+
   function checkAll() {
     Modal.confirm({
       title: t("certd.monitor.confirmTitle"), // "确认"
@@ -60,6 +93,16 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
       },
     });
   }
+
+  const GroupTypeSite = "site";
+  const groupDictRef = createGroupDictRef(GroupTypeSite);
+
+  function getDefaultGroupId() {
+    const searchFrom = crudExpose.getSearchValidatedFormData();
+    if (searchFrom.groupId) {
+      return searchFrom.groupId;
+    }
+  }
   return {
     id: "siteMonitorCrud",
     crudOptions: {
@@ -68,6 +111,68 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
         addRequest,
         editRequest,
         delRequest,
+      },
+      tabs: {
+        name: "groupId",
+        show: true,
+      },
+      toolbar: {
+        buttons: {
+          export: {
+            show: true,
+          },
+        },
+        export: {
+          dataFrom: "search",
+          columnFilter: (col: ColumnProps) => {
+            //列过滤器，返回true则导出该列
+            //例如： 只导出show=true的列
+            return col.show === true;
+          },
+          dataFormatter: (opts: DataFormatterContext) => {
+            //例如 格式化日期
+            const { row, originalRow, col, exportCol } = opts;
+            const key = col.key;
+            const element = originalRow[key];
+            if (key.includes("Time") && element) {
+              row[key] = dayjs(element).format("YYYY-MM-DD HH:mm:ss");
+            }
+
+            if (col.width) {
+              exportCol.width = col.width / 10;
+            }
+
+            if (col.key === "certInfo" && originalRow?.certProvider) {
+              row[key] = originalRow?.certProvider + " " + originalRow?.certDomains;
+            }
+
+            //参数说明
+            // DataFormatterContext = {row: any,originalRow: any, key: string, col: ColumnProps, exportCol:ExportColumn}
+            // row = 当前行数据
+            // originalRow = 当前行原始数据
+            // key = 当前列的key
+            // col = 当前列的配置
+            // exportCol = 当前列的导出配置
+          },
+        },
+      },
+      pagination: {
+        pageSizeOptions: ["10", "20", "50", "100", "200"],
+      },
+      settings: {
+        plugins: {
+          //这里使用行选择插件，生成行选择crudOptions配置，最终会与crudOptions合并
+          rowSelection: {
+            enabled: true,
+            props: {
+              multiple: true,
+              crossPage: false,
+              selectedRowKeys: () => {
+                return selectedRowKeys;
+              },
+            },
+          },
+        },
       },
       form: {
         labelCol: {
@@ -112,7 +217,10 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
                 }
               }
 
-              await crudExpose.openAdd({});
+              const defaultGroupId = getDefaultGroupId();
+              await crudExpose.openAdd({
+                row: { groupId: defaultGroupId },
+              });
             },
           },
           //导入按钮
@@ -121,7 +229,9 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             text: t("certd.monitor.bulkImport"),
             type: "primary",
             async click() {
+              const defaultGroupId = getDefaultGroupId();
               openSiteImportDialog({
+                defaultGroupId,
                 afterSubmit() {
                   crudExpose.doRefresh();
                 },
@@ -173,10 +283,10 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           },
         },
       },
-      tabs: {
-        name: "disabled",
-        show: true,
-      },
+      // tabs: {
+      //   name: "disabled",
+      //   show: true,
+      // },
       columns: {
         id: {
           title: "ID",
@@ -357,6 +467,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           column: {
             sorter: true,
             width: 155,
+            show: false,
           },
         },
         certExpiresTime: {
@@ -385,10 +496,8 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           column: {
             conditionalRender: false,
             cellRender({ row }) {
-              const {
-                certEffectiveTime: effectiveTime,
-                certExpiresTime: expiresTime,
-              } = row || {};
+              const certValidDays = certValidDaysRef.value;
+              const { certEffectiveTime: effectiveTime, certExpiresTime: expiresTime } = row || {};
               if (!expiresTime) {
                 return "-";
               }
@@ -400,10 +509,50 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
               const effectiveDays = Math.max(90, dayjs(expiresTime).diff(applyDate, "day"));
               // 距离失效时间剩余天数
               const leftDays = dayjs(expiresTime).diff(dayjs(), "day");
-              const color = leftDays < 20 ? "red" : "#389e0d";
+              const color = leftDays < certValidDays ? "red" : "#389e0d";
               const percent = (leftDays / effectiveDays) * 100;
               // console.log('cellRender', 'effectiveDays', effectiveDays, 'expiresTime', expiresTime, 'applyTime', applyTime, 'percent', percent, row)
               return <a-progress title={expireDate + t("certd.monitor.expired")} percent={percent} strokeColor={color} format={(percent: number) => `${leftDays}${t("certd.monitor.days")}`} />;
+            },
+          },
+        },
+        groupId: {
+          title: t("certd.fields.group"),
+          type: "dict-select",
+          search: {
+            show: true,
+          },
+          dict: groupDictRef,
+          form: {
+            component: {
+              name: GroupSelector,
+              vModel: "modelValue",
+              type: GroupTypeSite,
+              onRefresh() {
+                groupDictRef.reloadDict();
+              },
+            },
+          },
+          column: {
+            width: 130,
+            align: "center",
+            component: {
+              color: "auto",
+            },
+            sorter: true,
+          },
+        },
+        remark: {
+          title: t("certd.monitor.remark"),
+          search: {
+            show: false,
+          },
+          type: "text",
+          column: {
+            width: 200,
+            sorter: true,
+            cellRender({ value }) {
+              return <a-tooltip title={value}>{value}</a-tooltip>;
             },
           },
         },
@@ -572,6 +721,21 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             width: 100,
             sorter: true,
             show: false,
+          },
+        },
+        error: {
+          title: t("certd.monitor.error"),
+          search: {
+            show: false,
+          },
+          type: "text",
+          form: { show: false },
+          column: {
+            width: 200,
+            sorter: true,
+            cellRender({ value }) {
+              return <a-tooltip title={value}>{value}</a-tooltip>;
+            },
           },
         },
       },

@@ -17,6 +17,7 @@ export type CnameRecord = {
   cnameProvider: CnameProvider;
   status: string;
   commonDnsProvider?: any;
+  mainDomain?: string;
 };
 
 export type ICnameProxyService = {

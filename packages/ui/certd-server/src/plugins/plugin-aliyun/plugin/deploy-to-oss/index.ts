@@ -7,7 +7,7 @@ import {
 } from '@certd/plugin-lib';
 import {CertInfo, CertReader} from '@certd/plugin-cert';
 import { CertApplyPluginNames} from '@certd/plugin-cert';
-import {optionsUtils} from "@certd/basic/dist/utils/util.options.js";
+import {optionsUtils} from "@certd/basic";
 import {isArray} from "lodash-es";
 @IsTaskPlugin({
   name: 'DeployCertToAliyunOSS',
@@ -121,7 +121,7 @@ export class DeployCertToAliyunOSS extends AbstractTaskPlugin {
       name: 'a-select',
       options: [
         { value: 'cn-hangzhou', label: '中国大陆' },
-        { value: 'southeast-1', label: '新加坡' },
+        { value: 'ap-southeast-1', label: '新加坡' },
         { value: 'eu-central-1', label: '德国（法兰克福）' },
       ],
     },

@@ -1,7 +1,6 @@
-import { ALL, Body, Controller, Inject, Post, Provide, Query } from '@midwayjs/core';
-import { AccessService, Constants } from '@certd/lib-server';
-import { AccessController } from '../../user/pipeline/access-controller.js';
-import { checkComm } from '@certd/plus-core';
+import { ALL, Body, Controller, Inject, Post, Provide, Query } from "@midwayjs/core";
+import { AccessService, Constants } from "@certd/lib-server";
+import { AccessController } from "../../user/pipeline/access-controller.js";
 
 /**
  * 授权
@@ -17,7 +16,7 @@ export class SysAccessController extends AccessController {
   }
 
   getUserId() {
-    checkComm();
+    // checkComm();
     return 0;
   }
 

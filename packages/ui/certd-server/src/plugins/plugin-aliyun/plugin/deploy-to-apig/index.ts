@@ -6,7 +6,7 @@ import {
   createRemoteSelectInputDefine
 } from "@certd/plugin-lib";
 import { CertApplyPluginNames, CertInfo, CertReader } from "@certd/plugin-cert";
-import {optionsUtils} from "@certd/basic/dist/utils/util.options.js";
+import {optionsUtils} from "@certd/basic";
 
 @IsTaskPlugin({
   name: 'DeployCertToAliyunApig',

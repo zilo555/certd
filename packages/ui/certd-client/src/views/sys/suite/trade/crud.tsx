@@ -41,7 +41,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           //这里使用行选择插件，生成行选择crudOptions配置，最终会与crudOptions合并
           rowSelection: {
             enabled: true,
-            order: -2,
+            order: -99,
             before: true,
             // handle: (pluginProps,useCrudProps)=>CrudOptions,
             props: {

@@ -47,4 +47,12 @@ export abstract class BaseController {
     }
     return user;
   }
+
+  isAdmin() {
+    const roleIds: number[] = this.ctx?.user?.roles;
+    if (roleIds?.includes(1)) {
+      return true;
+    }
+  }
+
 }

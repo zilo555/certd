@@ -1,7 +1,7 @@
 import {ALL, Body, Controller, Inject, Post, Provide, Query} from '@midwayjs/core';
 import {Constants, CrudController} from '@certd/lib-server';
 import {SubDomainService} from "../../../modules/pipeline/service/sub-domain-service.js";
-import {DomainParser} from '@certd/plugin-cert/dist/dns-provider/domain-parser.js';
+import {DomainParser} from '@certd/plugin-cert';
 import { SubDomainsGetter } from '../../../modules/pipeline/service/getter/sub-domain-getter.js';
 
 /**

@@ -13,6 +13,8 @@ export class CnameRecordEntity {
 
   @Column({ comment: '证书申请域名', length: 100 })
   domain: string;
+  @Column({ comment: '主域名', name: 'main_domain', length: 100 })
+  mainDomain:string;
 
   @Column({ comment: '主机记录', name: 'host_record', length: 100 })
   hostRecord: string;

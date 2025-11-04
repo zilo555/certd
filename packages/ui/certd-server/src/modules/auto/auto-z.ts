@@ -19,6 +19,8 @@ export class AutoZPrint {
 
   @Config('https')
   httpsConfig: HttpsServerOptions;
+  @Config('koa')
+  koaConfig: any;
 
   @Init()
   async init() {
@@ -58,6 +60,7 @@ export class AutoZPrint {
     httpsServer.start({
       ...this.httpsConfig,
       app: this.app,
+      hostname: this.httpsConfig.hostname || this.koaConfig.hostname,
     });
   }
 }

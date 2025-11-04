@@ -3,7 +3,7 @@
     "description": "Simple and unopinionated ACME client",
     "private": false,
     "author": "nmorsman",
-    "version": "1.36.22",
+    "version": "1.37.4",
     "type": "module",
     "module": "scr/index.js",
     "main": "src/index.js",
@@ -18,7 +18,7 @@
         "types"
     ],
     "dependencies": {
-        "@certd/basic": "^1.36.22",
+        "@certd/basic": "^1.37.4",
         "@peculiar/x509": "^1.11.0",
         "asn1js": "^3.0.5",
         "axios": "^1.7.2",
@@ -52,7 +52,8 @@
         "lint-types": "tsd",
         "prepublishOnly": "npm run build-docs",
         "test": "mocha -t 60000 \"test/setup.js\" \"test/**/*.spec.js\"",
-        "pub": "npm publish"
+        "pub": "npm publish",
+        "compile": "tsc --skipLibCheck --watch"
     },
     "repository": {
         "type": "git",
@@ -69,5 +70,5 @@
     "bugs": {
         "url": "https://github.com/publishlab/node-acme-client/issues"
     },
-    "gitHead": "c98f43b98459d107910c95d23fda785b0edc4702"
+    "gitHead": "dbce75146439dac484597ce6494b935fd7ce75f7"
 }

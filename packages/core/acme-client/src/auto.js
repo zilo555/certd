@@ -2,7 +2,6 @@
  * ACME auto helper
  */
 import { readCsrDomains } from "./crypto/index.js";
-import { log } from "./logger.js";
 import { wait } from "./wait.js";
 import { CancelError } from "./error.js";
 
@@ -45,6 +44,9 @@ export default async (client, userOpts) => {
         accountPayload.externalAccountBinding = opts.externalAccountBinding;
     }
 
+    const log = (...args)=>{
+        return client.logger.info(...args);
+    }
     /**
      * Register account
      */
@@ -255,7 +257,7 @@ export default async (client, userOpts) => {
                 await wait(waitDnsDiffuseTime * 1000)
             }
 
-            log("开始向提供商请求挑战验证");
+            log("开始向提供商请求检查验证");
             await runPromisePa(completeChallengeTasks, 1000);
         } catch (e) {
             log(`证书申请失败${e.message}`);

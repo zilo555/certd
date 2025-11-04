@@ -50,6 +50,12 @@ export type SysPublicSetting = {
   captchaEnabled?: boolean;
   captchaType?: number;
   captchaAddonId?: number;
+
+  //流水线是否启用有效期
+  pipelineValidTimeEnabled?: boolean;
+
+  //证书域名添加到监控
+  certDomainAddToMonitorEnabled?: boolean;
 };
 export type SuiteSetting = {
   enabled?: boolean;
@@ -63,6 +69,9 @@ export type SysPrivateSetting = {
     type?: string;
     config?: any;
   };
+
+  //http请求超时时间
+  httpRequestTimeout?: number;
 };
 export type SysInstallInfo = {
   siteId: string;

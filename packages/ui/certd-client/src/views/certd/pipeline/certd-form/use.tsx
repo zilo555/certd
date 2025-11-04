@@ -6,12 +6,13 @@ import { useRouter } from "vue-router";
 import { compute, CreateCrudOptionsRet, dict, useFormWrapper } from "@fast-crud/fast-crud";
 import NotificationSelector from "/@/views/certd/notification/notification-selector/index.vue";
 import { useReference } from "/@/use/use-refrence";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import * as api from "../api";
 import { PluginGroup, usePluginStore } from "/@/store/plugin";
 import { createNotificationApi } from "/@/views/certd/notification/api";
 import GroupSelector from "../group/group-selector.vue";
 import { useI18n } from "/src/locales";
+import { useSettingStore } from "/@/store/settings";
 
 export function fillPipelineByDefaultForm(pipeline: any, form: any) {
   const triggers = [];
@@ -78,6 +79,7 @@ export function useCertPipelineCreator() {
   const { openCrudFormDialog } = useFormWrapper();
 
   const pluginStore = usePluginStore();
+  const settingStore = useSettingStore();
   const router = useRouter();
 
   function createCrudOptions(certPlugins: any[], getFormData: any, doSubmit: any): CreateCrudOptionsRet {
@@ -251,7 +253,48 @@ export function useCertPipelineCreator() {
                 name: GroupSelector,
                 vModel: "modelValue",
               },
-              order: 9999,
+              order: 888,
+            },
+          },
+          addToMonitorEnabled: {
+            title: t("certd.pipelineForm.addToMonitorEnabled"),
+            type: "switch",
+            form: {
+              show: computed(() => {
+                return settingStore.isPlus && settingStore.sysPublic?.certDomainAddToMonitorEnabled;
+              }),
+              value: false,
+              component: {
+                name: "a-switch",
+                vModel: "checked",
+              },
+              col: {
+                span: 24,
+              },
+              order: 999,
+              valueChange({ value, form }) {
+                if (value) {
+                  form.addToMonitorDomains = form.domains.join("\n").replaceAll("*", "www");
+                }
+              },
+            },
+          },
+          addToMonitorDomains: {
+            title: t("certd.pipelineForm.addToMonitorDomains"),
+            type: "text",
+            form: {
+              show: compute(({ form }) => {
+                return form.addToMonitorEnabled;
+              }),
+              component: {
+                name: "a-textarea",
+                vModel: "value",
+              },
+              col: {
+                span: 24,
+              },
+              helper: t("certd.domainList.helper"),
+              order: 999,
             },
           },
         },
@@ -330,6 +373,8 @@ export function useCertPipelineCreator() {
         keepHistoryCount: 30,
         type: "cert",
         groupId,
+        addToMonitorEnabled: form.addToMonitorEnabled,
+        addToMonitorDomains: form.addToMonitorDomains,
       });
       if (form.email) {
         try {

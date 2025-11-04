@@ -3,6 +3,42 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.4](https://github.com/publishlab/node-acme-client/compare/v1.37.3...v1.37.4) (2025-10-28)
+
+**Note:** Version bump only for package @certd/acme-client
+
+## [1.37.3](https://github.com/publishlab/node-acme-client/compare/v1.37.2...v1.37.3) (2025-10-24)
+
+### Bug Fixes
+
+* 修复并发情况下证书申请日志混乱的bug ([bb2714f](https://github.com/publishlab/node-acme-client/commit/bb2714ff241f9db4a71d805b23a1b0f9f2f6413a))
+
+## [1.37.2](https://github.com/publishlab/node-acme-client/compare/v1.37.1...v1.37.2) (2025-10-14)
+
+### Bug Fixes
+
+* aliyunoss 选择证书接入点选择新加坡无法上传的bug ([e00733a](https://github.com/publishlab/node-acme-client/commit/e00733a34644c23ffe926486b15dc96bf2fa4b57))
+
+## [1.37.1](https://github.com/publishlab/node-acme-client/compare/v1.37.0...v1.37.1) (2025-09-29)
+
+**Note:** Version bump only for package @certd/acme-client
+
+# [1.37.0](https://github.com/publishlab/node-acme-client/compare/v1.36.25...v1.37.0) (2025-09-28)
+
+**Note:** Version bump only for package @certd/acme-client
+
+## [1.36.25](https://github.com/publishlab/node-acme-client/compare/v1.36.24...v1.36.25) (2025-09-27)
+
+**Note:** Version bump only for package @certd/acme-client
+
+## [1.36.24](https://github.com/publishlab/node-acme-client/compare/v1.36.23...v1.36.24) (2025-09-27)
+
+**Note:** Version bump only for package @certd/acme-client
+
+## [1.36.23](https://github.com/publishlab/node-acme-client/compare/v1.36.22...v1.36.23) (2025-09-26)
+
+**Note:** Version bump only for package @certd/acme-client
+
 ## [1.36.22](https://github.com/publishlab/node-acme-client/compare/v1.36.21...v1.36.22) (2025-09-23)
 
 **Note:** Version bump only for package @certd/acme-client

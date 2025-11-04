@@ -92,6 +92,14 @@ export class SiteInfoController extends CrudController<SiteInfoService> {
     return await super.delete(id);
   }
 
+
+  @Post('/batchDelete', { summary: Constants.per.authOnly })
+  async batchDelete(@Body(ALL) body: any) {
+    const userId = this.getUserId();
+    await this.service.batchDelete(body.ids,userId);
+    return this.ok();
+  }
+
   @Post('/check', { summary: Constants.per.authOnly })
   async check(@Body('id') id: number) {
     await this.service.checkUserId(id, this.getUserId());
@@ -111,6 +119,7 @@ export class SiteInfoController extends CrudController<SiteInfoService> {
     const userId = this.getUserId();
     await this.service.doImport({
       text:body.text,
+      groupId:body.groupId,
       userId
     })
     return this.ok();

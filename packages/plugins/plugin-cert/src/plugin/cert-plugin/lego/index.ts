@@ -158,7 +158,7 @@ export class CertApplyLegoPlugin extends CertApplyBasePlugin {
     if (this.eab) {
       eabArgs = ` --eab --kid "${this.eab.kid}" --hmac "${this.eab.hmacKey}"`;
     }
-    const keyType = `-k ${this.privateKeyType}`;
+    const keyType = `-k ${this.privateKeyType?.replaceAll("_", "")}`;
 
     const saveDir = `./data/.lego/pipeline_${this.pipeline.id}/`;
     const savePathArgs = `--path "${saveDir}"`;

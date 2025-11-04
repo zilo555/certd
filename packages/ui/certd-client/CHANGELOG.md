@@ -3,6 +3,58 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.4](https://github.com/certd/certd/compare/v1.37.3...v1.37.4) (2025-10-28)
+
+### Bug Fixes
+
+* 修复站点证书监控复制按钮无效的bug ([efa26a0](https://github.com/certd/certd/commit/efa26a067f06402f30befc016d9934cadcd5a563))
+
+## [1.37.3](https://github.com/certd/certd/compare/v1.37.2...v1.37.3) (2025-10-24)
+
+### Performance Improvements
+
+*  注册页面增加手机注册tab页签 ([6b2f1fc](https://github.com/certd/certd/commit/6b2f1fcd3e058061b814c3331cda8ce1b2d80d73))
+* 流水线创建时支持添加到证书监控 ([59ba408](https://github.com/certd/certd/commit/59ba4080706548828ef1c0a9cd893c1c9a7d591f))
+* 流水线支持有效期设置 ([911e69e](https://github.com/certd/certd/commit/911e69e3bc0cdd48b62953b5d0981d640fc1f8ac))
+* 站点证书监控增加导出和分组功能 ([2ed12c4](https://github.com/certd/certd/commit/2ed12c429eb58274a4f9dd0ed3b66e160d283ded))
+* 证书监控增加批量删除 ([e578c52](https://github.com/certd/certd/commit/e578c52fdf2f838038062aa4209b655fbae461fb))
+
+## [1.37.2](https://github.com/certd/certd/compare/v1.37.1...v1.37.2) (2025-10-14)
+
+### Performance Improvements
+
+* 证书监控支持设置证书即将过期天数 ([cd35568](https://github.com/certd/certd/commit/cd35568e042e6ab928685efad51cdbed823d2d4f))
+* 支持网络测试 ([2bef608](https://github.com/certd/certd/commit/2bef608e07ceb56d52007f290667e0afef401b22))
+
+## [1.37.1](https://github.com/certd/certd/compare/v1.37.0...v1.37.1) (2025-09-29)
+
+### Bug Fixes
+
+* 修复版本比较bug ([109696e](https://github.com/certd/certd/commit/109696e965d68c50c8627ffd40203edd1d2daea5))
+
+# [1.37.0](https://github.com/certd/certd/compare/v1.36.25...v1.37.0) (2025-09-28)
+
+**Note:** Version bump only for package @certd/ui-client
+
+## [1.36.25](https://github.com/certd/certd/compare/v1.36.24...v1.36.25) (2025-09-27)
+
+**Note:** Version bump only for package @certd/ui-client
+
+## [1.36.24](https://github.com/certd/certd/compare/v1.36.23...v1.36.24) (2025-09-27)
+
+**Note:** Version bump only for package @certd/ui-client
+
+## [1.36.23](https://github.com/certd/certd/compare/v1.36.22...v1.36.23) (2025-09-26)
+
+### Bug Fixes
+
+* 授权页面，id列位置不在第一列的bug ([3f1722d](https://github.com/certd/certd/commit/3f1722d54debcb4849dc14521a2da0d9b304b69f))
+
+### Performance Improvements
+
+* 动态加载验证码script ([dcc396a](https://github.com/certd/certd/commit/dcc396afb7a23aeb8af57c01014b09af5f033e61))
+* 验证码支持测试，登录验证码需要测试通过后才能开启 ([83e6476](https://github.com/certd/certd/commit/83e6476408090b741fabb1b542fb458d9a8b4134))
+
 ## [1.36.22](https://github.com/certd/certd/compare/v1.36.21...v1.36.22) (2025-09-23)
 
 ### Bug Fixes

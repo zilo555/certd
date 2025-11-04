@@ -5,6 +5,7 @@ import qs from 'qs';
   name: 'webhook',
   title: '自定义webhook',
   desc: '根据模版自定义http请求',
+  order: -100,
 })
 export class WebhookNotification extends BaseNotification {
   @NotificationInput({

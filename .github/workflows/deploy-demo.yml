@@ -3,11 +3,12 @@ on:
   push:
     branches: ['v2-dev']
     paths:
-      - "deploy.trigger"
+      - "trigger/deploy.trigger"
   workflow_run:
     workflows: [ "build-image" ]
     types:
       - completed
+
 
 #  schedule:
 #    - # 国际时间 19:17 执行，北京时间3:17  ↙↙↙ 改成你想要每天自动执行的时间
@@ -54,14 +55,3 @@ jobs:
           retry-count: 3
           retry-delay: 5000
 
-      - name: deploy-certd-doc
-        uses: tyrrrz/action-http-request@master
-        with:
-          url: http://flow-openapi.aliyun.com/pipeline/webhook/IiSxLDp9aOhgDUxJPytv
-          method: POST
-          body: |
-            {}
-          headers: |
-            Content-Type: application/json
-          retry-count: 3
-          retry-delay: 5000

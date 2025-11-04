@@ -37,6 +37,15 @@ export class SysPublicSettings extends BaseSettings {
   //验证码类型
   captchaType?: string;
   captchaAddonId?:number;
+
+
+
+  //流水线是否启用有效期
+  pipelineValidTimeEnabled?: boolean = false;
+
+  //证书域名添加到监控
+  certDomainAddToMonitorEnabled?: boolean = false;
+
 }
 
 export class SysPrivateSettings extends BaseSettings {
@@ -50,6 +59,8 @@ export class SysPrivateSettings extends BaseSettings {
   httpProxy? = '';
   dnsResultOrder? = '';
   commonCnameEnabled?: boolean = true;
+
+  httpRequestTimeout?: number = 30;
 
   sms?: {
     type?: string;
@@ -213,4 +224,5 @@ export class SysSafeSetting extends BaseSettings {
     autoHiddenTimes: 5,
   };
 }
+
 

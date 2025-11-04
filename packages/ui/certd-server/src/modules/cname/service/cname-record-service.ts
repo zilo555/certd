@@ -17,7 +17,7 @@ import { getAuthoritativeDnsResolver, walkTxtRecord } from "@certd/acme-client";
 import { CnameProviderService } from "./cname-provider-service.js";
 import { CnameProviderEntity } from "../entity/cname-provider.js";
 import { CommonDnsProvider } from "./common-provider.js";
-import { DomainParser } from "@certd/plugin-cert/dist/dns-provider/domain-parser.js";
+import { DomainParser } from "@certd/plugin-cert";
 import punycode from "punycode.js";
 import { SubDomainService } from "../../pipeline/service/sub-domain-service.js";
 import { SubDomainsGetter } from "../../pipeline/service/getter/sub-domain-getter.js";
@@ -37,7 +37,7 @@ type CnameCheckCacheValue = {
  * 授权
  */
 @Provide()
-@Scope(ScopeEnum.Request, {allowDowngrade: true})
+@Scope(ScopeEnum.Request, { allowDowngrade: true })
 export class CnameRecordService extends BaseService<CnameRecordEntity> {
   @InjectEntityModel(CnameRecordEntity)
   repository: Repository<CnameRecordEntity>;
@@ -71,16 +71,16 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
    */
   async add(param: any): Promise<CnameRecordEntity> {
     if (!param.domain) {
-      throw new ValidateException('域名不能为空');
+      throw new ValidateException("域名不能为空");
     }
     if (!param.userId) {
-      throw new ValidateException('userId不能为空');
+      throw new ValidateException("userId不能为空");
     }
-    if (param.domain.startsWith('*.')) {
+    if (param.domain.startsWith("*.")) {
       param.domain = param.domain.substring(2);
     }
-    param.domain = param.domain.trim()
-    const info = await this.getRepository().findOne({where: {domain: param.domain, userId: param.userId}});
+    param.domain = param.domain.trim();
+    const info = await this.getRepository().findOne({ where: { domain: param.domain, userId: param.userId } });
     if (info) {
       return info;
     }
@@ -90,63 +90,64 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
       //获取默认的cnameProviderId
       cnameProvider = await this.cnameProviderService.getByPriority();
       if (cnameProvider == null) {
-        throw new ValidateException('找不到CNAME服务，请先前往“系统管理->CNAME服务设置”添加CNAME服务');
+        throw new ValidateException("找不到CNAME服务，请先前往“系统管理->CNAME服务设置”添加CNAME服务");
       }
     } else {
       cnameProvider = await this.cnameProviderService.info(param.cnameProviderId);
     }
     await this.cnameProviderChanged(param.userId, param, cnameProvider);
 
-    param.status = 'cname';
-    const {id} = await super.add(param);
+    param.status = "cname";
+    const { id } = await super.add(param);
     return await this.info(id);
   }
 
   private async cnameProviderChanged(userId: number, param: any, cnameProvider: CnameProviderEntity) {
     param.cnameProviderId = cnameProvider.id;
 
-    const subDomainGetter = new SubDomainsGetter(userId, this.subDomainService)
+    const subDomainGetter = new SubDomainsGetter(userId, this.subDomainService);
     const domainParser = new DomainParser(subDomainGetter);
 
     const realDomain = await domainParser.parse(param.domain);
-    const prefix = param.domain.replace(realDomain, '');
+    const prefix = param.domain.replace(realDomain, "");
     let hostRecord = `_acme-challenge.${prefix}`;
-    if (hostRecord.endsWith('.')) {
+    if (hostRecord.endsWith(".")) {
       hostRecord = hostRecord.substring(0, hostRecord.length - 1);
     }
     param.hostRecord = hostRecord;
+    param.mainDomain = realDomain;
 
     const randomKey = utils.id.simpleNanoId(6).toLowerCase();
 
-    const userIdHex = utils.hash.toHex(userId)
-    let userKeyHash = ""
-    const installInfo = await  this.sysSettingsService.getSetting<SysInstallInfo>(SysInstallInfo)
-    userKeyHash = `${installInfo.siteId}_${userIdHex}_${randomKey}`
-    userKeyHash = utils.hash.md5(userKeyHash).substring(0, 10)
-    logger.info(`userKeyHash:${userKeyHash},subjectId:${installInfo.siteId},randomKey:${randomKey},userIdHex:${userIdHex}`)
+    const userIdHex = utils.hash.toHex(userId);
+    let userKeyHash = "";
+    const installInfo = await this.sysSettingsService.getSetting<SysInstallInfo>(SysInstallInfo);
+    userKeyHash = `${installInfo.siteId}_${userIdHex}_${randomKey}`;
+    userKeyHash = utils.hash.md5(userKeyHash).substring(0, 10);
+    logger.info(`userKeyHash:${userKeyHash},subjectId:${installInfo.siteId},randomKey:${randomKey},userIdHex:${userIdHex}`);
     const cnameKey = `${userKeyHash}-${userIdHex}-${randomKey}`;
-    const safeDomain = param.domain.replaceAll('.', '-');
+    const safeDomain = param.domain.replaceAll(".", "-");
     param.recordValue = `${safeDomain}.${cnameKey}.${cnameProvider.domain}`;
   }
 
   async update(param: any) {
     if (!param.id) {
-      throw new ValidateException('id不能为空');
+      throw new ValidateException("id不能为空");
     }
     //hostRecord包含所有权校验信息，不允许用户修改hostRecord
     delete param.hostRecord
 
     const old = await this.info(param.id);
     if (!old) {
-      throw new ValidateException('数据不存在');
+      throw new ValidateException("数据不存在");
     }
-    if (old.domain !== param.domain) {
-      throw new ValidateException('域名不允许修改');
+    if (param.domain && old.domain !== param.domain) {
+      throw new ValidateException("域名不允许修改");
     }
-    if (old.cnameProviderId !== param.cnameProviderId) {
+    if (param.cnameProviderId && old.cnameProviderId !== param.cnameProviderId) {
       const cnameProvider = await this.cnameProviderService.info(param.cnameProviderId);
       await this.cnameProviderChanged(old.userId, param, cnameProvider);
-      param.status = 'cname';
+      param.status = "cname";
     }
     return await super.update(param);
   }
@@ -171,7 +172,7 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
     } else {
       record.commonDnsProvider = new CommonDnsProvider({
         config: record.cnameProvider,
-        plusService: this.plusService,
+        plusService: this.plusService
       });
     }
 
@@ -180,19 +181,22 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
 
   async getByDomain(domain: string, userId: number, createOnNotFound = true) {
     if (!domain) {
-      throw new ValidateException('domain不能为空');
+      throw new ValidateException("domain不能为空");
     }
     if (userId == null) {
-      throw new ValidateException('userId不能为空');
+      throw new ValidateException("userId不能为空");
     }
-    let record = await this.getRepository().findOne({where: {domain, userId}});
+    let record = await this.getRepository().findOne({ where: { domain, userId } });
     if (record == null) {
       if (createOnNotFound) {
-        record = await this.add({domain, userId});
+        record = await this.add({ domain, userId });
       } else {
         throw new ValidateException(`找不到${domain}的CNAME记录`);
       }
     }
+
+    await this.fillMainDomain(record);
+
     const provider = await this.cnameProviderService.info(record.cnameProviderId);
     if (provider == null) {
       throw new ValidateException(`找不到${domain}的CNAME服务`);
@@ -201,25 +205,53 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
     return {
       ...record,
       cnameProvider: {
-        ...provider,
-      } as CnameProvider,
+        ...provider
+      } as CnameProvider
     } as CnameRecord;
+  }
+
+  async fillMainDomain(record: CnameRecordEntity, update = true) {
+    const notMainDomain = !record.mainDomain;
+    const hasErrorMainDomain = record.mainDomain && !record.mainDomain.includes(".");
+    if (notMainDomain || hasErrorMainDomain) {
+      let domainPrefix = record.hostRecord.replace("_acme-challenge", "");
+      if (domainPrefix.startsWith(".")) {
+        domainPrefix = domainPrefix.substring(1);
+      }
+
+      if (domainPrefix) {
+        const prefixStr = domainPrefix + ".";
+        record.mainDomain = record.domain.substring(prefixStr.length);
+      }else{
+        record.mainDomain = record.domain;
+      }
+
+      if (update) {
+        await this.update({
+          id: record.id,
+          mainDomain: record.mainDomain
+        });
+      }
+
+    }
   }
 
   /**
    * 验证是否配置好cname
    * @param id
    */
-  async verify(id: string) {
+  async verify(id: number) {
     const bean = await this.info(id);
     if (!bean) {
       throw new ValidateException(`CnameRecord:${id} 不存在`);
     }
-    if (bean.status === 'valid') {
+    if (bean.status === "valid") {
       return true;
     }
 
-    const subDomainGetter = new SubDomainsGetter(bean.userId, this.subDomainService)
+    await this.getByDomain(bean.domain, bean.userId);
+
+    const subDomainGetter = new SubDomainsGetter(bean.userId, this.subDomainService);
     const domainParser = new DomainParser(subDomainGetter);
 
     const cacheKey = `cname.record.verify.${bean.id}`;
@@ -229,7 +261,7 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
       value = {
         validating: false,
         pass: false,
-        startTime: new Date().getTime(),
+        startTime: new Date().getTime()
       };
     }
     let ttl = 5 * 60 * 1000;
@@ -251,16 +283,16 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
         //公共CNAME
         return new CommonDnsProvider({
           config: cnameProvider,
-          plusService: this.plusService,
+          plusService: this.plusService
         });
       }
 
-      const serviceGetter = this.taskServiceBuilder.create({userId:cnameProvider.userId})
+      const serviceGetter = this.taskServiceBuilder.create({ userId: cnameProvider.userId });
       const access = await this.accessService.getById(cnameProvider.accessId, cnameProvider.userId);
-      const context = {access, logger, http, utils, domainParser,serviceGetter};
+      const context = { access, logger, http, utils, domainParser, serviceGetter };
       const dnsProvider: IDnsProvider = await createDnsProvider({
         dnsProviderType: cnameProvider.dnsProviderType,
-        context,
+        context
       });
       return dnsProvider;
     };
@@ -268,15 +300,15 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
     const clearVerifyRecord = async () => {
       cache.delete(cacheKey);
       try {
-        let dnsProvider = value.dnsProvider
+        let dnsProvider = value.dnsProvider;
         if (!dnsProvider) {
           dnsProvider = await buildDnsProvider();
         }
         await dnsProvider.removeRecord({
           recordReq: value.recordReq,
-          recordRes: value.recordRes,
+          recordRes: value.recordRes
         });
-        logger.info('删除CNAME的校验DNS记录成功');
+        logger.info("删除CNAME的校验DNS记录成功");
       } catch (e) {
         logger.error(`删除CNAME的校验DNS记录失败， ${e.message}，req:${JSON.stringify(value.recordReq)}，recordRes:${JSON.stringify(value.recordRes)}`, e);
       }
@@ -289,8 +321,8 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
       if (value.startTime + ttl < new Date().getTime()) {
         logger.warn(`cname验证超时,停止检查,${bean.domain} ${testRecordValue}`);
         clearInterval(value.intervalId);
-        await this.updateStatus(bean.id, 'timeout');
-        await clearVerifyRecord()
+        await this.updateStatus(bean.id, "timeout");
+        await clearVerifyRecord();
         return false;
       }
 
@@ -301,7 +333,7 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
       logger.info(`检查CNAME配置 ${fullDomain} ${testRecordValue}`);
 
       //检查是否有重复的acme配置
-      await this.checkRepeatAcmeChallengeRecords(fullDomain,bean.recordValue)
+      await this.checkRepeatAcmeChallengeRecords(fullDomain, bean.recordValue);
 
       // const txtRecords = await dns.promises.resolveTxt(fullDomain);
       // if (txtRecords.length) {
@@ -318,9 +350,9 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
       if (success) {
         clearInterval(value.intervalId);
         logger.info(`检测到CNAME配置,修改状态 ${fullDomain} ${testRecordValue}`);
-        await this.updateStatus(bean.id, 'valid', "");
+        await this.updateStatus(bean.id, "valid", "");
         value.pass = true;
-        await clearVerifyRecord()
+        await clearVerifyRecord();
         return success;
       }
     };
@@ -331,88 +363,88 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
     }
 
     cache.set(cacheKey, value, {
-      ttl: ttl,
+      ttl: ttl
     });
 
     const domain = await domainParser.parse(bean.recordValue);
     const fullRecord = bean.recordValue;
-    const hostRecord = fullRecord.replace(`.${domain}`, '');
+    const hostRecord = fullRecord.replace(`.${domain}`, "");
     const req = {
       domain: domain,
       fullRecord: fullRecord,
       hostRecord: hostRecord,
-      type: 'TXT',
-      value: testRecordValue,
+      type: "TXT",
+      value: testRecordValue
     };
 
     const dnsProvider = await buildDnsProvider();
-    if(dnsProvider.usePunyCode()){
+    if (dnsProvider.usePunyCode()) {
       //是否需要中文转英文
-      req.domain = dnsProvider.punyCodeEncode(req.domain)
-      req.fullRecord = dnsProvider.punyCodeEncode(req.fullRecord)
-      req.hostRecord = dnsProvider.punyCodeEncode(req.hostRecord)
-      req.value = dnsProvider.punyCodeEncode(req.value)
+      req.domain = dnsProvider.punyCodeEncode(req.domain);
+      req.fullRecord = dnsProvider.punyCodeEncode(req.fullRecord);
+      req.hostRecord = dnsProvider.punyCodeEncode(req.hostRecord);
+      req.value = dnsProvider.punyCodeEncode(req.value);
     }
     const recordRes = await dnsProvider.createRecord(req);
     value.dnsProvider = dnsProvider;
     value.validating = true;
     value.recordReq = req;
     value.recordRes = recordRes;
-    await this.updateStatus(bean.id, 'validating', "");
+    await this.updateStatus(bean.id, "validating", "");
 
     value.intervalId = setInterval(async () => {
       try {
         await checkRecordValue();
       } catch (e) {
-        logger.error('检查cname出错：', e);
+        logger.error("检查cname出错：", e);
         await this.updateError(bean.id, e.message);
       }
     }, 10000);
   }
 
   async updateStatus(id: number, status: CnameRecordStatusType, error?: string) {
-    const updated: any = {status}
+    const updated: any = { status };
     if (error != null) {
-      updated.error = error
+      updated.error = error;
     }
     await this.getRepository().update(id, updated);
   }
 
   async updateError(id: number, error: string) {
-    await this.getRepository().update(id, {error});
+    await this.getRepository().update(id, { error });
   }
 
-  async checkRepeatAcmeChallengeRecords(acmeRecordDomain: string,targetCnameDomain:string) {
+  async checkRepeatAcmeChallengeRecords(acmeRecordDomain: string, targetCnameDomain: string) {
 
-    let dnsResolver = null
-    try{
-      dnsResolver = await getAuthoritativeDnsResolver(acmeRecordDomain)
-    }catch (e) {
-      logger.error(`获取${acmeRecordDomain}的权威DNS服务器失败，${e.message}`)
-      return
+    let dnsResolver = null;
+    try {
+      dnsResolver = await getAuthoritativeDnsResolver(acmeRecordDomain);
+    } catch (e) {
+      logger.error(`获取${acmeRecordDomain}的权威DNS服务器失败，${e.message}`);
+      return;
     }
-    let cnameRecords = []
-    try{
+    let cnameRecords = [];
+    try {
       cnameRecords = await dnsResolver.resolveCname(acmeRecordDomain);
-    }catch (e) {
-      logger.error(`查询CNAME记录失败：${e.message}`)
-      return
+    } catch (e) {
+      logger.error(`查询CNAME记录失败：${e.message}`);
+      return;
     }
-    targetCnameDomain = targetCnameDomain.toLowerCase()
-    targetCnameDomain = punycode.toASCII(targetCnameDomain)
+    targetCnameDomain = targetCnameDomain.toLowerCase();
+    targetCnameDomain = punycode.toASCII(targetCnameDomain);
     if (cnameRecords.length > 0) {
       for (const cnameRecord of cnameRecords) {
-        if(cnameRecord.toLowerCase() !== targetCnameDomain){
+        if (cnameRecord.toLowerCase() !== targetCnameDomain) {
           //确保只有一个cname记录
-          throw new Error(`${acmeRecordDomain}存在多个CNAME记录，请删除多余的CNAME记录：${cnameRecord}`)
+          throw new Error(`${acmeRecordDomain}存在多个CNAME记录，请删除多余的CNAME记录：${cnameRecord}`);
         }
       }
 
     }
 
     // 确保权威服务器里面没有纯粹的TXT记录
-    let txtRecords = []
-    try{
+    let txtRecords = [];
+    try {
       const txtRecordRes = await dnsResolver.resolveTxt(acmeRecordDomain);
 
       if (txtRecordRes && txtRecordRes.length > 0) {
@@ -420,13 +452,13 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
         logger.info(`TXT records: ${JSON.stringify(txtRecords)}`);
         txtRecords = txtRecords.concat(...txtRecordRes);
       }
-    }catch (e) {
-      logger.error(`查询Txt记录失败：${e.message}`)
+    } catch (e) {
+      logger.error(`查询Txt记录失败：${e.message}`);
     }
 
     if (txtRecords.length === 0) {
       //如果权威服务器中查不到txt，无需继续检查
-      return
+      return;
     }
     if (cnameRecords.length > 0) {
       // 从cname记录中获取txt记录
@@ -435,11 +467,18 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
       if (res.length > 0) {
         for (const txtRecord of txtRecords) {
           if (!res.includes(txtRecord)) {
-            throw new Error(`${acmeRecordDomain}存在多个TXT记录，请删除多余的TXT记录:${txtRecord}`)
+            throw new Error(`${acmeRecordDomain}存在多个TXT记录，请删除多余的TXT记录:${txtRecord}`);
           }
         }
       }
     }
 
+  }
+
+  async resetStatus(id: number) {
+    if (!id) {
+      throw new ValidateException("id不能为空");
+    }
+    await this.getRepository().update(id, { status: "cname", mainDomain: "" });
   }
 }

@@ -32,7 +32,7 @@ export class TaskServiceGetter implements IServiceGetter{
       return await this.getNotificationService() as T
     } else if (serviceName === 'domainVerifierGetter') {
       return await this.getDomainVerifierGetter() as T
-    } else{
+    }else{
       if(!serviceNames.includes(serviceName)){
         throw new Error(`${serviceName} not in whitelist`)
       }
@@ -53,6 +53,7 @@ export class TaskServiceGetter implements IServiceGetter{
     return new AccessGetter(this.userId, accessService.getById.bind(accessService));
   }
 
+
   async getCnameProxyService(): Promise<CnameProxyService> {
     const cnameRecordService:CnameRecordService = await  this.appCtx.getAsync("cnameRecordService")
     return new CnameProxyService(this.userId, cnameRecordService.getWithAccessByDomain.bind(cnameRecordService));
@@ -68,10 +69,6 @@ export class TaskServiceGetter implements IServiceGetter{
     return new DomainVerifierGetter(this.userId, domainService);
   }
 }
-export type TaskServiceCreateReq = {
-  userId: number;
-}
-
 @Provide()
 @Scope(ScopeEnum.Request, { allowDowngrade: true })
 export class TaskServiceBuilder  {
@@ -82,6 +79,10 @@ export class TaskServiceBuilder  {
     const userId = req.userId;
     return new TaskServiceGetter(userId,this.appCtx)
   }
+}
+
+export type TaskServiceCreateReq = {
+  userId: number;
 }
 
 

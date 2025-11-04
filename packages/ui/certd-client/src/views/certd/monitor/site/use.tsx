@@ -1,13 +1,13 @@
 import { useFormWrapper } from "@fast-crud/fast-crud";
 import { siteInfoApi } from "./api";
 import { useI18n } from "/src/locales";
-
+import GroupSelector from "../../basic/group/group-selector.vue";
 export function useSiteImport() {
   const { t } = useI18n();
   const { openCrudFormDialog } = useFormWrapper();
 
-  async function openSiteImportDialog(opts: { afterSubmit: any }) {
-    const { afterSubmit } = opts;
+  async function openSiteImportDialog(opts: { afterSubmit: any; defaultGroupId?: number }) {
+    const { afterSubmit, defaultGroupId } = opts;
     await openCrudFormDialog<any>({
       crudOptions: {
         columns: {
@@ -20,6 +20,21 @@ export function useSiteImport() {
               component: {
                 placeholder: t("certd.domainList.placeholder"),
                 rows: 8,
+              },
+              col: {
+                span: 24,
+              },
+            },
+          },
+          groupId: {
+            type: "select",
+            title: t("certd.fields.group"),
+            form: {
+              value: defaultGroupId,
+              component: {
+                name: GroupSelector,
+                vModel: "modelValue",
+                type: "site",
               },
               col: {
                 span: 24,

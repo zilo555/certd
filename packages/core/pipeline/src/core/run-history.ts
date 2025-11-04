@@ -120,10 +120,9 @@ export class RunHistory {
     delete e.stack;
     delete e.cause;
     if (runnable.runnableType === "step") {
-      this._loggers[runnable.id].error(`[${runnable.runnableType}] [${runnable.title}]<id:${runnable.id}> ：`, e, stack, cause);
-    } else {
-      this._loggers[runnable.id].error(`[${runnable.runnableType}] [${runnable.title}]<id:${runnable.id}> ：`, e.message);
+      this._loggers[runnable.id].error(stack, cause);
     }
+    this._loggers[runnable.id].error(`[${runnable.runnableType}] [${runnable.title}]<id:${runnable.id}> ：`, e.message);
   }
 
   finally(runnable: Runnable) {

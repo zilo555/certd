@@ -20,7 +20,7 @@ export class AuthService {
     return true;
   }
 
-  async isAdmin(ctx: any) {
+  isAdmin(ctx: any) {
     const roleIds: number[] = ctx.user.roles;
     if (roleIds.includes(1)) {
       return true;

@@ -255,6 +255,11 @@ export class PipelineService extends BaseService<PipelineEntity> {
       bean.title = pipeline.title;
     }
     pipeline.id = bean.id;
+
+    if (pipeline.version == null) {
+      pipeline.version = 0;
+    }
+    pipeline.version++;
     bean.content = JSON.stringify(pipeline);
     await this.addOrUpdate(bean);
     await this.registerTrigger(bean);
@@ -368,17 +373,21 @@ export class PipelineService extends BaseService<PipelineEntity> {
     }
 
     if (immediateTriggerOnce) {
-      await this.trigger(pipeline.id);
-      await sleep(200);
+      try{
+        await this.trigger(pipeline.id);
+        await sleep(200);
+      }catch(e){
+        logger.error(e);
+      }
+     
     }
   }
 
-  async trigger(id: any, stepId?: string) {
+  async trigger(id: any, stepId?: string , doCheck = false) {
     const entity: PipelineEntity = await this.info(id);
-    if (isComm()) {
-      await this.checkHasDeployCount(id, entity.userId);
+    if (doCheck) {
+      await this.beforeCheck(entity);
     }
-    await this.checkUserStatus(entity.userId);
     this.cron.register({
       name: `pipeline.${id}.trigger.once`,
       cron: null,
@@ -457,11 +466,11 @@ export class PipelineService extends BaseService<PipelineEntity> {
       return;
     }
     cron = cron.trim();
-    if (cron.startsWith("* *")) {
-      cron = cron.replace("\* \*", "0 0");
+    if (cron.startsWith("* * ")) {
+      cron = "0 0 " + cron.substring(5);
     }
-    if (cron.startsWith("*")) {
-      cron = cron.replace("\*", "0");
+    if (cron.startsWith("* ")) {
+      cron = "0 " + cron.substring(2);
     }
     const triggerId = trigger.id;
     const name = this.buildCronKey(pipelineId, triggerId);
@@ -485,6 +494,17 @@ export class PipelineService extends BaseService<PipelineEntity> {
     logger.info("当前定时器数量：", this.cron.getTaskSize());
   }
 
+
+  async isPipelineValidTimeEnabled(entity: PipelineEntity) {
+    const settings = await this.sysSettingsService.getPublicSettings();
+    if (isPlus() && settings.pipelineValidTimeEnabled){
+      if (entity.validTime > 0 && entity.validTime < Date.now()){
+        return false
+      }
+    }
+    return true
+  }
+
   /**
    *
    * @param id
@@ -496,20 +516,34 @@ export class PipelineService extends BaseService<PipelineEntity> {
     await this.doRun(entity, triggerId, stepId);
   }
 
-  async doRun(entity: PipelineEntity, triggerId: string, stepId?: string) {
-    const id = entity.id;
+  async beforeCheck(entity: PipelineEntity) {
+    const validTimeEnabled = await this.isPipelineValidTimeEnabled(entity)
+    if (!validTimeEnabled) {
+      throw new Error(`流水线${entity.id}已过期，不予执行`);
+    }
+   
     let suite: UserSuiteEntity = null;
     if (isComm()) {
-      suite = await this.checkHasDeployCount(id, entity.userId);
+      suite = await this.checkHasDeployCount(entity.id, entity.userId);
     }
-    try {
-      await this.checkUserStatus(entity.userId);
+    await this.checkUserStatus(entity.userId);
+
+    return {
+      suite
+    }
+  }
+
+  async doRun(entity: PipelineEntity, triggerId: string, stepId?: string) {
+
+    let suite:any = null
+    try{
+      const res = await this.beforeCheck(entity);
+      suite = res.suite
     } catch (e) {
-      logger.info(e.message);
-      return;
+      logger.error(`流水线${entity.id}触发${triggerId}失败：${e.message}`);
     }
 
-
+    const id = entity.id;
     const pipeline = JSON.parse(entity.content);
     if (!pipeline.id) {
       pipeline.id = id;

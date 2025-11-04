@@ -49,6 +49,7 @@ export interface ClientOptions {
     backoffMax?: number;
     urlMapping?: UrlMapping;
     signal?: AbortSignal;
+    logger?:any
 }
 
 export interface ClientExternalAccountBindingOptions {

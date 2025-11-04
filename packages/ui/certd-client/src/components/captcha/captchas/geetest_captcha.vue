@@ -7,6 +7,14 @@ import { useSettingStore } from "/@/store/settings";
 import { request } from "/src/api/service";
 import { notification } from "ant-design-vue";
 
+import { loadScript } from "vue-plugin-load-script";
+const loaded = ref(false);
+async function loadCaptchaScript() {
+  // 加载验证码js
+  await loadScript("https://static.geetest.com/v4/gt4.js");
+  loaded.value = true;
+}
+
 defineOptions({
   name: "GeetestCaptcha",
 });
@@ -16,15 +24,10 @@ const props = defineProps<{
   captchaGet: () => Promise<any>;
 }>();
 const captchaRef = ref(null);
-// const addonApi = createAddonApi();
-const settingStore = useSettingStore();
 
 const captchaInstanceRef: Ref = ref({});
 async function init() {
-  // if (!initGeetest4) {
-  //   await import("https://static.geetest.com/v4/gt4.js");
-  // }
-
+  await loadCaptchaScript();
   const { captchaId } = await props.captchaGet();
   // @ts-ignore
   initGeetest4(
