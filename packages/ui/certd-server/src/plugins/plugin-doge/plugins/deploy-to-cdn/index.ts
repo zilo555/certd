@@ -68,7 +68,7 @@ export class DogeCloudDeployToCDNPlugin extends AbstractTaskPlugin {
 
   async onInstance() {
     const access = await this.getAccess(this.accessId);
-    this.dogeClient = new DogeClient(access, this.ctx.http);
+    this.dogeClient = new DogeClient(access, this.ctx.http, this.ctx.logger);
   }
   async execute(): Promise<void> {
     const certId: number = await this.updateCert();
@@ -81,7 +81,10 @@ export class DogeCloudDeployToCDNPlugin extends AbstractTaskPlugin {
       this.ctx.logger.info(`绑定证书${certId}到域名${domain}`);
       await this.bindCert(certId,domain);
     }
-    this.logger.info("执行完成")
+    this.logger.info("执行完成，3秒后删除过期证书");
+
+    await this.ctx.utils.sleep(3000);
+    await this.clearExpiredCert();
   }
 
   async updateCert() {
@@ -102,6 +105,24 @@ export class DogeCloudDeployToCDNPlugin extends AbstractTaskPlugin {
       },
       this.ignoreDeployNullCode
     );
+  }
+
+  async clearExpiredCert() {
+    const res = await this.dogeClient.request(
+      '/cdn/cert/list.json',
+      {},
+    );
+    const list = res.certs?.filter((item: any) => item.expire < dayjs().unix()  && item.domainCount === 0) || [];
+    for (const item of list) {
+      this.ctx.logger.info(`删除过期证书${item.id}->${item.domain}`);
+      await this.dogeClient.request(
+        '/cdn/cert/delete.json',
+        {
+          id: item.id,
+        },
+        this.ignoreDeployNullCode
+      );
+    }
   }
 
 

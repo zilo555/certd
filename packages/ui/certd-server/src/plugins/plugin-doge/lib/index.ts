@@ -1,16 +1,18 @@
 import crypto from 'crypto';
 import querystring from 'querystring';
 import { DogeCloudAccess } from '../access.js';
-import { HttpClient } from '@certd/basic';
+import { HttpClient, ILogger } from '@certd/basic';
 
 export class DogeClient {
   accessKey: string;
   secretKey: string;
   http: HttpClient;
-  constructor(access: DogeCloudAccess, http: HttpClient) {
+  logger: ILogger;
+  constructor(access: DogeCloudAccess, http: HttpClient,logger: ILogger) {
     this.accessKey = access.accessKey;
     this.secretKey = access.secretKey;
     this.http = http;
+    this.logger = logger;
   }
 
   async request(apiPath: string, data: any = {}, jsonMode = false, ignoreResNullCode = false) {
@@ -36,6 +38,7 @@ export class DogeClient {
 
     if (res.code == null && ignoreResNullCode) {
       //ignore
+      this.logger.warn('执行出错：', res);
     } else if (res.code !== 200) {
       throw new Error('API Error: ' + res.msg);
     }
