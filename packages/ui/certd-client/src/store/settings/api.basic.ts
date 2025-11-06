@@ -56,6 +56,9 @@ export type SysPublicSetting = {
 
   //证书域名添加到监控
   certDomainAddToMonitorEnabled?: boolean;
+
+  // 固定证书有效期天数，0表示不固定
+  fixedCertExpireDays?: number;
 };
 export type SuiteSetting = {
   enabled?: boolean;

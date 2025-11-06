@@ -9,6 +9,7 @@ import { useModal } from "/@/use/use-modal";
 import { notification } from "ant-design-vue";
 import CertView from "/@/views/certd/pipeline/cert-view.vue";
 import { useCertUpload } from "/@/views/certd/pipeline/cert-upload/use";
+import { useSettingStore } from "/@/store/settings";
 
 export default function ({ crudExpose, context }: CreateCrudOptionsProps): CreateCrudOptionsRet {
   const { t } = useI18n();
@@ -34,6 +35,8 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
   };
   const { openCrudFormDialog } = useFormWrapper();
   const router = useRouter();
+
+  const settingStore = useSettingStore();
 
   const model = useModal();
   const viewCert = async (row: any) => {
@@ -224,12 +227,19 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
               if (!expiresTime) {
                 return "-";
               }
+
               // 申请时间 ps:此处为证书在certd创建的时间而非实际证书申请时间
               const applyDate = dayjs(effectiveTime ?? applyTime ?? Date.now()).format("YYYY-MM-DD");
               // 失效时间
               const expireDate = dayjs(expiresTime).format("YYYY-MM-DD");
               // 有效天数 ps:此处证书最小设置为90d
-              const effectiveDays = Math.max(90, dayjs(expiresTime).diff(applyDate, "day"));
+              let effectiveDays = Math.max(90, dayjs(expiresTime).diff(applyDate, "day"));
+
+              const fixedCertExpireDays = settingStore.getSysPublic?.fixedCertExpireDays;
+              if (fixedCertExpireDays && fixedCertExpireDays > 0) {
+                effectiveDays = fixedCertExpireDays;
+              }
+
               // 距离失效时间剩余天数
               const leftDays = dayjs(expiresTime).diff(dayjs(), "day");
               const color = leftDays < 20 ? "red" : "#389e0d";

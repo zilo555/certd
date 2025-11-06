@@ -46,6 +46,9 @@ export class SysPublicSettings extends BaseSettings {
   //证书域名添加到监控
   certDomainAddToMonitorEnabled?: boolean = false;
 
+  // 固定证书有效期天数，0表示不固定
+  fixedCertExpireDays?: number;
+
 }
 
 export class SysPrivateSettings extends BaseSettings {

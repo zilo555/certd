@@ -757,6 +757,8 @@ export default {
       pipelineValidTimeEnabledHelper: "Whether to enable the valid time of the pipeline",
       certDomainAddToMonitorEnabled: "Add Domain to Certificate Monitor",
       certDomainAddToMonitorEnabledHelper: "Whether to add the domain to the certificate monitor",
+      fixedCertExpireDays: "Fixed Cert Expire Days",
+      fixedCertExpireDaysHelper: "Fixed cert expiration days, helpful for table list progress bar display",
     },
   },
   modal: {

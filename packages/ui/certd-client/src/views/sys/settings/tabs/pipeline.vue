@@ -24,6 +24,14 @@
         <div class="helper">{{ t("certd.sys.setting.certDomainAddToMonitorEnabledHelper") }}</div>
       </a-form-item>
 
+      <a-form-item :label="t('certd.sys.setting.fixedCertExpireDays')" :name="['public', 'fixedCertExpireDays']">
+        <div class="flex items-center">
+          <a-input-number v-model:value="formState.public.fixedCertExpireDays" />
+          <vip-button class="ml-5" mode="button"></vip-button>
+        </div>
+        <div class="helper">{{ t("certd.sys.setting.fixedCertExpireDaysHelper") }}</div>
+      </a-form-item>
+
       <a-form-item label=" " :colon="false" :wrapper-col="{ span: 8 }">
         <a-button :loading="saveLoading" type="primary" html-type="submit">{{ t("certd.saveButton") }}</a-button>
       </a-form-item>

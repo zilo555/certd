@@ -61,6 +61,8 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
 
   const selectedRowKeys = ref([]);
 
+  const settingStore = useSettingStore();
+
   const handleBatchDelete = () => {
     if (selectedRowKeys.value?.length > 0) {
       Modal.confirm({
@@ -506,7 +508,13 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
               // 失效时间
               const expireDate = dayjs(expiresTime).format("YYYY-MM-DD");
               // 有效天数 ps:此处证书最小设置为90d
-              const effectiveDays = Math.max(90, dayjs(expiresTime).diff(applyDate, "day"));
+              let effectiveDays = Math.max(90, dayjs(expiresTime).diff(applyDate, "day"));
+
+              const fixedCertExpireDays = settingStore.getSysPublic?.fixedCertExpireDays;
+              if (fixedCertExpireDays && fixedCertExpireDays > 0) {
+                effectiveDays = fixedCertExpireDays;
+              }
+
               // 距离失效时间剩余天数
               const leftDays = dayjs(expiresTime).diff(dayjs(), "day");
               const color = leftDays < certValidDays ? "red" : "#389e0d";

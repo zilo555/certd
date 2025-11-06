@@ -757,6 +757,9 @@ export default {
       pipelineValidTimeEnabledHelper: "是否启用流水线有效期",
       certDomainAddToMonitorEnabled: "证书域名添加到证书监控",
       certDomainAddToMonitorEnabledHelper: "创建证书流水线时是否可以选择将域名添加到证书监控",
+
+      fixedCertExpireDays: "固定证书有效期天数",
+      fixedCertExpireDaysHelper: "固定证书有效期天数，有助于列表进度条整齐显示",
     },
   },
   modal: {
