@@ -9,8 +9,8 @@
       </div>
     </template>
     <template v-if="currentTask">
-      <pi-container>
-        <a-form ref="taskFormRef" class="task-form" :model="currentTask" :label-col="labelCol" :wrapper-col="wrapperCol">
+      <pi-container class="task-form-container">
+        <a-form ref="taskFormRef" class="task-form md:ml-20 md:mr-20" :model="currentTask" :label-col="labelCol" :wrapper-col="wrapperCol">
           <fs-form-item
             v-model="currentTask.title"
             :item="{
@@ -258,8 +258,8 @@ export default {
     return {
       userStore,
       settingStore,
-      labelCol: { span: 6 },
-      wrapperCol: { span: 16 },
+      labelCol: { span: 4 },
+      wrapperCol: { span: 20 },
       ...useTaskForm(),
       ...useStep(),
     };
@@ -269,8 +269,18 @@ export default {
 
 <style lang="less">
 .pi-task-form {
+  .task-form-container {
+    .body {
+      .task-form {
+        .ant-form-item-label {
+          text-align: left !important ;
+        }
+      }
+    }
+  }
+
   .steps {
-    margin: 0 50px 0 50px;
+    margin: 0;
   }
   .ant-list .ant-list-item .ant-list-item-meta .ant-list-item-meta-title {
     margin: 0;
@@ -283,7 +293,6 @@ export default {
     }
   }
   .step-list {
-    padding: 10px;
     .icon-button {
       font-size: 18px;
       color: #1677ff;
@@ -291,7 +300,7 @@ export default {
     }
 
     .step-row {
-      padding: 10px;
+      margin-bottom: 10px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -306,7 +315,7 @@ export default {
         display: flex;
         align-items: center;
         > * {
-          margin-right: 15px;
+          margin-right: 10px;
           font-size: 14px;
         }
       }

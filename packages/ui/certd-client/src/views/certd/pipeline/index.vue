@@ -9,9 +9,9 @@
           <span>{{ t("certd.selectedCount", { count: selectedRowKeys.length }) }}</span>
           <fs-button icon="ion:trash-outline" class="color-red" type="link" :text="t('certd.batchDelete')" @click="batchDelete"></fs-button>
           <fs-button icon="icon-park-outline:replay-music" class="need-plus" type="link" :text="t('certd.batchForceRerun')" @click="batchRerun"></fs-button>
-          <change-group class="color-green" :selected-row-keys="selectedRowKeys" @change="batchFinished"></change-group>
-          <change-notification class="color-green" :selected-row-keys="selectedRowKeys" @change="batchFinished"></change-notification>
-          <change-trigger class="color-green" :selected-row-keys="selectedRowKeys" @change="batchFinished"></change-trigger>
+          <change-group :selected-row-keys="selectedRowKeys" @change="batchFinished"></change-group>
+          <change-notification :selected-row-keys="selectedRowKeys" @change="batchFinished"></change-notification>
+          <change-trigger :selected-row-keys="selectedRowKeys" @change="batchFinished"></change-trigger>
         </div>
       </div>
       <template #actionbar-right> </template>
@@ -34,6 +34,7 @@ import { useI18n } from "/src/locales";
 
 const { t } = useI18n();
 import ChangeNotification from "/@/views/certd/pipeline/components/change-notification.vue";
+import { useSettingStore } from "/@/store/settings";
 
 defineOptions({
   name: "PipelineManager",
@@ -61,8 +62,10 @@ onActivated(async () => {
   await crudExpose.doRefresh();
 });
 
+const settingStore = useSettingStore();
+
 function batchFinished() {
-  crudExpose.doRefresh();
+  if (settingStore) crudExpose.doRefresh();
   selectedRowKeys.value = [];
 }
 function batchDelete() {
@@ -79,6 +82,7 @@ function batchDelete() {
 }
 
 function batchRerun() {
+  settingStore.checkPlus();
   Modal.confirm({
     title: "确认强制重新运行吗",
     content: "确定要强制重新运行选中流水线吗？(20条一批执行)",

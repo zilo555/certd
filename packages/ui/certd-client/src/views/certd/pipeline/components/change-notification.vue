@@ -1,11 +1,11 @@
 <template>
-  <fs-button icon="mdi:format-list-group" type="link" text="修改通知" @click="openFormDialog"></fs-button>
+  <fs-button icon="mdi:format-list-group" class="need-plus" type="link" text="修改通知" @click="openFormDialog"></fs-button>
 </template>
 <script setup lang="ts">
-import * as api from "../api";
 import { useFormWrapper } from "@fast-crud/fast-crud";
+import * as api from "../api";
+import { useSettingStore } from "/@/store/settings";
 import NotificationSelector from "/@/views/certd/notification/notification-selector/index.vue";
-import { ref } from "vue";
 
 const props = defineProps<{
   selectedRowKeys: any[];
@@ -32,8 +32,9 @@ async function batchUpdateRequest(form: any) {
 }
 
 const { openCrudFormDialog } = useFormWrapper();
-
+const settingStore = useSettingStore();
 async function openFormDialog() {
+  settingStore.checkPlus();
   const crudOptions: any = {
     columns: {
       when: {

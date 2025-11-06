@@ -1,10 +1,11 @@
 <template>
-  <fs-button icon="mdi:format-list-group" type="link" text="修改分组" @click="openGroupSelectDialog"></fs-button>
+  <fs-button icon="mdi:format-list-group" class="need-plus" type="link" text="修改分组" @click="openGroupSelectDialog"></fs-button>
 </template>
 <script setup lang="ts">
 import * as api from "../api";
 import { notification } from "ant-design-vue";
 import { dict, useFormWrapper } from "@fast-crud/fast-crud";
+import { useSettingStore } from "/@/store/settings";
 
 const props = defineProps<{
   selectedRowKeys: any[];
@@ -24,8 +25,9 @@ const pipelineGroupDictRef = dict({
   label: "name",
 });
 const { openCrudFormDialog } = useFormWrapper();
-
+const settingStore = useSettingStore();
 async function openGroupSelectDialog() {
+  settingStore.checkPlus();
   const crudOptions: any = {
     columns: {
       groupId: {

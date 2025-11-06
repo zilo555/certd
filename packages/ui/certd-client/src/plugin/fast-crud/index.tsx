@@ -232,15 +232,15 @@ function install(app: App, options: any = {}) {
           },
           wrapperCol: {
             span: null,
-            buttons: {
-              copy: { show: false },
-              paste: { show: false },
-            },
           },
           wrapper: {
             saveRemind: true,
             // inner: true,
-            // innerContainerSelector: "main.fs-framework-content"
+            // innerContainerSelector: "main.fs-framework-content"，
+            buttons: {
+              copy: { show: false },
+              paste: { show: false },
+            },
           },
         },
         columns: {

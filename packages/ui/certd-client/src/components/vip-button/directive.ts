@@ -1,4 +1,3 @@
-import { notification } from "ant-design-vue";
 import { useSettingStore } from "/@/store/settings";
 
 export default {
@@ -7,17 +6,15 @@ export default {
     const settingStore = useSettingStore();
     el.className = el.className + " need-plus";
     if (!settingStore.isPlus) {
-      function checkPlus() {
-        // 事件处理代码
-        notification.warn({
-          message: "此为专业版功能，请升级到专业版",
-        });
-      }
       el.addEventListener("click", function (event: any) {
-        checkPlus();
+        event.stopPropagation();
+        event.preventDefault();
+        settingStore.checkPlus();
       });
       el.addEventListener("move", function (event: any) {
-        checkPlus();
+        event.stopPropagation();
+        event.preventDefault();
+        settingStore.checkPlus();
       });
     }
   },

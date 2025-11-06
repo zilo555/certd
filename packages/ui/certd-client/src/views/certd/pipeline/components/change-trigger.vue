@@ -1,12 +1,12 @@
 <template>
-  <fs-button icon="mdi:format-list-group" type="link" :text="t('certd.editSchedule')" @click="openFormDialog"></fs-button>
+  <fs-button icon="mdi:format-list-group" class="need-plus" type="link" :text="t('certd.editSchedule')" @click="openFormDialog"></fs-button>
 </template>
 
 <script setup lang="ts">
-import * as api from "../api";
 import { useFormWrapper } from "@fast-crud/fast-crud";
+import * as api from "../api";
+import { useSettingStore } from "/@/store/settings";
 import { useI18n } from "/src/locales";
-
 const { t } = useI18n();
 
 const props = defineProps<{
@@ -27,7 +27,10 @@ async function batchUpdateRequest(form: any) {
 
 const { openCrudFormDialog } = useFormWrapper();
 
+const settingStore = useSettingStore();
+
 async function openFormDialog() {
+  settingStore.checkPlus();
   const crudOptions: any = {
     columns: {
       "props.cron": {

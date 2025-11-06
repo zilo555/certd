@@ -84,6 +84,12 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           edit: {
             show: false,
           },
+          copy: { show: false },
+          view: {
+            async click({ row }) {
+              await router.push({ path: "/certd/pipeline/detail", query: { id: row.pipelineId, historyId: row.id, editMode: "false" } });
+            },
+          },
         },
       },
       columns: {

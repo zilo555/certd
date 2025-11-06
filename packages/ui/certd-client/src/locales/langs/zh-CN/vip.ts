@@ -88,4 +88,5 @@ export default {
   activation_code_one_use: "激活码使用过一次之后，不可再次使用，如果要更换站点，请",
   bind_account: "绑定账号",
   transfer_vip: '，然后"转移VIP"即可',
+  needVipTip: "此为专业版功能，请先开通专业版",
 };

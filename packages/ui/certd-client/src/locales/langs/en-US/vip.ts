@@ -88,4 +88,5 @@ export default {
   activation_code_one_use: "Activation code can only be used once. To change site, please ",
   bind_account: "bind account",
   transfer_vip: ' then "Transfer VIP"',
+  needVipTip: "This feature requires a professional version, please upgrade to a professional version first.",
 };
