@@ -241,7 +241,10 @@ export class PipelineService extends BaseService<PipelineEntity> {
       fromType = "auto";
     }
     await this.certInfoService.updateDomains(pipeline.id, pipeline.userId || bean.userId, domains, fromType);
-    return bean;
+    return {
+      ...bean,
+      version: pipeline.version,
+    };
   }
 
   /**

@@ -739,6 +739,10 @@ export default defineComponent({
           async onOk() {
             //@ts-ignore
             await changeCurrentHistory(null);
+            if (histories.value.length > 0) {
+              pipeline.value = histories.value[0].pipeline;
+            }
+
             await props.options.doTrigger({ pipelineId: pipeline.value.id, stepId: stepId });
             notification.success({ message: "管道已经开始运行" });
           },
@@ -837,7 +841,11 @@ export default defineComponent({
               return item.tasks.length === 0;
             });
 
-            await props.options.doSave(pipeline.value);
+            const { version } = await props.options.doSave(pipeline.value);
+            if (version) {
+              pipeline.value.version = version;
+              currentPipeline.value.version = version;
+            }
           }
           if (offEdit) {
             toggleEditMode(false);

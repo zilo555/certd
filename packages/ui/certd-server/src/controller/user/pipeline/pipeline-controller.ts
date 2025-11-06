@@ -91,7 +91,7 @@ export class PipelineController extends CrudController<PipelineService> {
       delete bean.validTime
     }
 
-    await this.service.save(bean);
+    const {version} = await this.service.save(bean);
     //是否增加证书监控
     if (bean.addToMonitorEnabled && bean.addToMonitorDomains) {
       const sysPublicSettings = await this.sysSettingsService.getPublicSettings();
@@ -103,7 +103,7 @@ export class PipelineController extends CrudController<PipelineService> {
         });
       }
     }
-    return this.ok(bean.id);
+    return this.ok({id:bean.id,version:version});
   }
 
   @Post('/delete', { summary: Constants.per.authOnly })

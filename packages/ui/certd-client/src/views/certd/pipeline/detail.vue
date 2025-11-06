@@ -56,7 +56,7 @@ const pipelineOptions: PipelineOptions = {
   },
 
   async doSave(pipelineConfig: any) {
-    await api.Save({
+    return await api.Save({
       id: pipelineConfig.id,
       content: JSON.stringify(pipelineConfig),
     });
