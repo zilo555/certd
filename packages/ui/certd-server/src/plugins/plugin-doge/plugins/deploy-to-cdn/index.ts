@@ -106,12 +106,9 @@ export class DogeCloudDeployToCDNPlugin extends AbstractTaskPlugin {
 
 
   async onGetDomainList(data: PageSearch = {}) {
-
     const res = await this.dogeClient.request(
       '/cdn/domain/list.json',
-      {
-      },
-      this.ignoreDeployNullCode
+      {},
     );
 
     const list = res.domains
