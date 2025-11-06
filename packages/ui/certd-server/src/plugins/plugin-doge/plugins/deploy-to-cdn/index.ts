@@ -1,8 +1,9 @@
-import { AbstractTaskPlugin, IsTaskPlugin, pluginGroups, RunStrategy, TaskInput } from '@certd/pipeline';
+import { AbstractTaskPlugin, IsTaskPlugin, PageSearch, pluginGroups, RunStrategy, TaskInput } from '@certd/pipeline';
 import { CertInfo } from '@certd/plugin-cert';
 import { DogeClient } from '../../lib/index.js';
 import dayjs from 'dayjs';
-import { CertApplyPluginNames} from '@certd/plugin-cert';
+import { CertApplyPluginNames } from '@certd/plugin-cert';
+import { createCertDomainGetterInputDefine, createRemoteSelectInputDefine } from '@certd/plugin-lib';
 @IsTaskPlugin({
   name: 'DogeCloudDeployToCDN',
   title: '多吉云-部署到多吉云CDN',
@@ -15,12 +16,6 @@ import { CertApplyPluginNames} from '@certd/plugin-cert';
   },
 })
 export class DogeCloudDeployToCDNPlugin extends AbstractTaskPlugin {
-  @TaskInput({
-    title: '域名',
-    helper: 'CDN域名',
-    required: true,
-  })
-  domain!: string;
   //证书选择，此项必须要有
   @TaskInput({
     title: '证书',
@@ -33,6 +28,9 @@ export class DogeCloudDeployToCDNPlugin extends AbstractTaskPlugin {
   })
   cert!: CertInfo;
 
+  @TaskInput(createCertDomainGetterInputDefine({ props: { required: false } }))
+  certDomains!: string[];
+
   //授权选择框
   @TaskInput({
     title: '多吉云授权',
@@ -44,6 +42,16 @@ export class DogeCloudDeployToCDNPlugin extends AbstractTaskPlugin {
     rules: [{ required: true, message: '此项必填' }],
   })
   accessId!: string;
+
+  @TaskInput(createRemoteSelectInputDefine({
+    title: 'CDN域名',
+    helper: '请选择CDN域名，可以选择多个，一次性部署',
+    required: true,
+    action: DogeCloudDeployToCDNPlugin.prototype.onGetDomainList.name,
+    pager: false,
+    search: false
+  }))
+  domain!: string | string[];
 
   @TaskInput({
     title: '忽略部署接口报错',
@@ -64,7 +72,16 @@ export class DogeCloudDeployToCDNPlugin extends AbstractTaskPlugin {
   }
   async execute(): Promise<void> {
     const certId: number = await this.updateCert();
-    await this.bindCert(certId);
+
+    let domains = this.domain 
+    if (typeof domains === 'string'){
+      domains = [domains]
+    }
+    for (const domain of domains) {
+      this.ctx.logger.info(`绑定证书${certId}到域名${domain}`);
+      await this.bindCert(certId,domain);
+    }
+    this.logger.info("执行完成")
   }
 
   async updateCert() {
@@ -76,15 +93,42 @@ export class DogeCloudDeployToCDNPlugin extends AbstractTaskPlugin {
     return data.id;
   }
 
-  async bindCert(certId: number) {
+  async bindCert(certId: number,domain: string) {
     await this.dogeClient.request(
       '/cdn/cert/bind.json',
       {
         id: certId,
-        domain: this.domain,
+        domain: domain,
       },
       this.ignoreDeployNullCode
     );
+  }
+
+
+  async onGetDomainList(data: PageSearch = {}) {
+
+    const res = await this.dogeClient.request(
+      '/cdn/domain/list.json',
+      {
+      },
+      this.ignoreDeployNullCode
+    );
+
+    const list = res.domains
+    if (!list || list.length === 0) {
+      throw new Error("没有找到CDN域名");
+    }
+
+    const options = list.map((item: any) => {
+      return {
+        label: `${item.name}`,
+        value: item.name,
+        domain: item.name
+      };
+    });
+    return {
+      list: this.ctx.utils.options.buildGroupOptions(options, this.certDomains),
+    };
   }
 }
 new DogeCloudDeployToCDNPlugin();

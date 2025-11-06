@@ -3,7 +3,7 @@
     <template #dot>
       <fs-icon v-bind="status" :color="status.iconColor || status.color" />
     </template>
-    <p>
+    <p class="flex items-center">
       <fs-date-format :model-value="runnable.createTime"></fs-date-format>
       <a-tag class="ml-5" :color="status.color" :closable="status.value === 'start'" @close="cancelTask">
         {{ status.label }}
