@@ -759,6 +759,7 @@ export default {
       certDomainAddToMonitorEnabledHelper: "Whether to add the domain to the certificate monitor",
       fixedCertExpireDays: "Fixed Cert Expire Days",
       fixedCertExpireDaysHelper: "Fixed cert expiration days, helpful for table list progress bar display",
+      fixedCertExpireDaysRecommend: "Recommend 90",
     },
   },
   modal: {

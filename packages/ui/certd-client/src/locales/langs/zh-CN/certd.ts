@@ -760,6 +760,7 @@ export default {
 
       fixedCertExpireDays: "固定证书有效期天数",
       fixedCertExpireDaysHelper: "固定证书有效期天数，有助于列表进度条整齐显示",
+      fixedCertExpireDaysRecommend: "推荐90",
     },
   },
   modal: {
