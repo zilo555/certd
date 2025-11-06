@@ -127,8 +127,8 @@ export const useSettingStore = defineStore({
       return this.installInfo;
     },
     isPlus(): boolean {
-      // return this.plusInfo?.isPlus && this.plusInfo?.expireTime > new Date().getTime();
-      return false;
+      return this.plusInfo?.isPlus && this.plusInfo?.expireTime > new Date().getTime();
+      // return false;
     },
     isComm(): boolean {
       return this.plusInfo?.isComm && this.plusInfo?.expireTime > new Date().getTime();

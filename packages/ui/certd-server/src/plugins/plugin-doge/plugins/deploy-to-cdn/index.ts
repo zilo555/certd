@@ -115,13 +115,16 @@ export class DogeCloudDeployToCDNPlugin extends AbstractTaskPlugin {
     const list = res.certs?.filter((item: any) => item.expire < dayjs().unix()  && item.domainCount === 0) || [];
     for (const item of list) {
       this.ctx.logger.info(`删除过期证书${item.id}->${item.domain}`);
-      await this.dogeClient.request(
-        '/cdn/cert/delete.json',
-        {
-          id: item.id,
-        },
-        this.ignoreDeployNullCode
-      );
+      try{
+        await this.dogeClient.request(
+          '/cdn/cert/delete.json',
+          {
+            id: item.id,
+          },
+        );
+      }catch(err){
+        this.ctx.logger.warn(`删除过期证书${item.id}->${item.domain}失败`, err);
+      }
     }
   }
 
