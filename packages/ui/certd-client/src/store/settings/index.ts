@@ -10,6 +10,7 @@ import { useTitle } from "@vueuse/core";
 import { utils } from "/@/utils";
 import { cloneDeep, merge } from "lodash-es";
 import { useI18n } from "/src/locales";
+import dayjs from "dayjs";
 import { $t } from "/src/locales";
 export interface SettingState {
   skipReset?: boolean; // 注销登录时，不清空此store的状态
@@ -126,18 +127,32 @@ export const useSettingStore = defineStore({
     getInstallInfo(): SysInstallInfo {
       return this.installInfo;
     },
+    isPerpetual(): boolean {
+      return this.plusInfo?.isPlus && this.plusInfo?.expireTime === -1;
+    },
     isPlus(): boolean {
-      return this.plusInfo?.isPlus && this.plusInfo?.expireTime > new Date().getTime();
-      // return false;
+      return this.plusInfo?.isPlus && (this.plusInfo?.expireTime === -1 || this.plusInfo?.expireTime > new Date().getTime());
     },
     isComm(): boolean {
-      return this.plusInfo?.isComm && this.plusInfo?.expireTime > new Date().getTime();
+      return this.plusInfo?.isComm && (this.plusInfo?.expireTime === -1 || this.plusInfo?.expireTime > new Date().getTime());
     },
     isAgent(): boolean {
       return this.siteEnv?.agent?.enabled === true;
     },
     isCommOrAgent() {
       return this.isComm || this.isAgent;
+    },
+    expiresText() {
+      if (this.plusInfo?.expireTime == null) {
+        return "";
+      }
+      if (this.plusInfo?.expireTime === -1) {
+        return "永久";
+      }
+      return dayjs(this.plusInfo?.expireTime).format("YYYY-MM-DD");
+    },
+    isForever() {
+      return this.isPlus && this.plusInfo?.expireTime === -1;
     },
     vipLabel(): string {
       const { t } = useI18n();

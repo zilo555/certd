@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!settingStore.isComm || userStore.isAdmin" class="layout-vip isPlus" @click="openUpgrade">
+  <div v-if="!settingStore.isComm || userStore.isAdmin" class="layout-vip isPlus" :class="{ isForever: settingStore.isForever }" @click="openUpgrade">
     <contextHolder />
     <fs-icon icon="mingcute:vip-1-line" :title="text.title" />
 
@@ -12,7 +12,7 @@
   </div>
 </template>
 <script lang="tsx" setup>
-import { computed, onMounted, reactive } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import dayjs from "dayjs";
 import { message, Modal } from "ant-design-vue";
 import * as api from "./api";
@@ -21,7 +21,7 @@ import { useRouter } from "vue-router";
 import { useUserStore } from "/@/store/user";
 import { mitter } from "/@/utils/util.mitt";
 import { useI18n } from "vue-i18n";
-
+import { env } from "/@/utils/util.env";
 const { t } = useI18n();
 
 const settingStore = useSettingStore();
@@ -106,7 +106,7 @@ const text = computed<Text>(() => {
 
 const expireTime = computed(() => {
   if (settingStore.isPlus) {
-    return dayjs(settingStore.plusInfo.expireTime).format("YYYY-MM-DD");
+    return settingStore.expiresText;
   }
   return "";
 });
@@ -165,34 +165,38 @@ function goAccount() {
   router.push("/sys/account");
 }
 
-async function getVipTrial() {
-  const res = await api.getVipTrial();
+async function getVipTrial(vipType = "plus") {
+  const res = await api.getVipTrial(vipType);
   message.success(t("vip.congratulations_vip_trial", { duration: res.duration }));
   await settingStore.init();
 }
 
-function openTrialModal() {
+function openTrialModal(vipType = "plus") {
   Modal.destroyAll();
 
   modal.confirm({
     title: t("vip.trial_modal_title"),
     okText: t("vip.trial_modal_ok_text"),
     onOk() {
-      getVipTrial();
+      getVipTrial(vipType);
     },
     width: 600,
     content: () => {
       return (
         <div class="flex-col mt-10 mb-10">
           <div>{t("vip.trial_modal_thanks")}</div>
-          <div>{t("vip.trial_modal_click_confirm")}</div>
+          <div>{t("vip.trial_modal_click_confirm", { vipType })}</div>
         </div>
       );
     },
   });
 }
 
-function openStarModal() {
+function openStarModal(vipType: string) {
+  if (settingStore.isPlus) {
+    message.error(t("vip.already_vip"));
+    return;
+  }
   Modal.destroyAll();
   const goGithub = () => {
     window.open("https://github.com/certd/certd/");
@@ -203,7 +207,7 @@ function openStarModal() {
     okText: t("vip.star_now"),
     onOk() {
       goGithub();
-      openTrialModal();
+      openTrialModal(vipType);
     },
     width: 600,
     content: () => {
@@ -231,7 +235,49 @@ function openUpgrade() {
     title = t("vip.renew_pro_upgrade_business");
   }
 
+  // const goBuyUrl = "https://afdian.com/a/greper"
+  const subjectId = settingStore.installInfo.siteId;
+  const appKey = settingStore.installInfo.appKey;
+  const location = window.location;
+  const callbackUrl = encodeURIComponent(`${location.origin}${location.pathname}#/sys/account`);
+  const goBuyUrl = `${env.VIP_PRODUCT_URL}?appKey=${appKey}&subjectId=${subjectId}&callback=${callbackUrl}`;
+  const goBuyCommUrl = `${goBuyUrl}&vipType=comm`;
   const productInfo = settingStore.productInfo;
+
+  function checkPerpetualPlus() {
+    if (settingStore.isPerpetual) {
+      Modal.warn({
+        title: t("vip.already_perpetual_plus"),
+        okText: t("vip.confirm"),
+      });
+      throw new Error(t("vip.already_perpetual_plus"));
+    }
+  }
+  function goBuyPlusPage() {
+    checkPerpetualPlus();
+    if (settingStore.isComm) {
+      Modal.warn({
+        title: t("vip.already_comm"),
+        okText: t("vip.confirm"),
+      });
+      return;
+    }
+    window.open(goBuyUrl);
+  }
+  function goBuyCommPage() {
+    checkPerpetualPlus();
+    if (settingStore.isPlus && !settingStore.isComm) {
+      Modal.confirm({
+        title: t("vip.already_plus"),
+        okText: t("vip.confirm"),
+        onOk() {
+          window.open(goBuyCommUrl);
+        },
+      });
+      return;
+    }
+    window.open(goBuyCommUrl);
+  }
   const vipTypeDefine = {
     free: {
       title: t("vip.basic_edition"),
@@ -248,7 +294,7 @@ function openUpgrade() {
       trial: {
         title: t("vip.click_to_get_7_day_trial"),
         click: () => {
-          openStarModal();
+          openStarModal("plus");
         },
       },
       icon: "stash:thumb-up",
@@ -258,7 +304,7 @@ function openUpgrade() {
       get() {
         return (
           <a-tooltip title={t("vip.afdian_support_vip")}>
-            <a-button size="small" type="primary" href="https://afdian.com/a/greper" target="_blank">
+            <a-button size="small" type="primary" onClick={goBuyPlusPage}>
               {t("vip.get_after_support")}
             </a-button>
           </a-tooltip>
@@ -274,30 +320,57 @@ function openUpgrade() {
       price: productInfo.comm.price,
       price3: `¥${productInfo.comm.price3}/3${t("vip.years")}`,
       tooltip: productInfo.comm.tooltip,
+      trial: {
+        title: t("vip.click_to_get_7_day_trial"),
+        click: () => {
+          openStarModal("comm");
+        },
+      },
       get() {
-        return <a-button size="small">{t("vip.contact_author_for_trial")}</a-button>;
+        return (
+          <a-button size="small" type="primary" onClick={goBuyCommPage}>
+            {t("vip.buy")}
+          </a-button>
+        );
       },
     },
   };
 
-  const modalRef = modal.confirm({
+  const manualActiveFlag = ref();
+  function showManualActivation() {
+    manualActiveFlag.value = true;
+  }
+  const modalRef = modal.success({
     title,
-    async onOk() {
-      return await doActive();
-    },
     maskClosable: true,
-    okText: t("vip.activate"),
+    okText: t("vip.close"),
     width: 1100,
     content: () => {
-      let activationCodeGetWay = (
-        <span>
-          <a href="https://afdian.com/a/greper" target="_blank">
-            {t("vip.get_pro_code_after_support")}
-          </a>
-          <span> {t("vip.business_contact_author")}</span>
-        </span>
-      );
+      let manualActiveBlock: any = "";
+      if (manualActiveFlag.value) {
+        manualActiveBlock = (
+          <div>
+            <div class="mt-10">
+              <a-input-search class="w-2/6" v-model:value={formState.code} placeholder={placeholder} enter-button={t("vip.activate")} onSearch={doActive}></a-input-search>
+            </div>
+            <div class="mt-10">
+              {t("vip.activation_code_one_use")}
+              <a onClick={goAccount}>{t("vip.bind_account")}</a>，{t("vip.transfer_vip")}
+            </div>
+          </div>
+        );
+      }
       const vipLabel = settingStore.vipLabel;
+      let plusInfo: any = "";
+      if (isPlus) {
+        plusInfo = (
+          <div class="mt-10">
+            {t("vip.current")} {vipLabel} {t("vip.activated_expire_time")}
+            {settingStore.expiresText}
+          </div>
+        );
+      }
+
       const slots = [];
       for (const key in vipTypeDefine) {
         // @ts-ignore
@@ -363,26 +436,19 @@ function openUpgrade() {
             <a-row gutter={20}>{slots}</a-row>
           </div>
           <div class="mt-10">
-            <h3 class="block-header">{isPlus ? t("vip.renew") : t("vip.activate_immediately")}</h3>
-            <div>{isPlus ? `${t("vip.current")} ${vipLabel} ${t("vip.activated_expire_time")}` + dayjs(settingStore.plusInfo.expireTime).format("YYYY-MM-DD") : ""}</div>
-            <div class="mt-10">
-              <div class="flex-o w-100">
-                <span>{t("vip.site_id")}：</span>
-                <fs-copyable class="flex-1" v-model={computedSiteId.value}></fs-copyable>
-              </div>
-              <a-input class="mt-10" v-model:value={formState.code} placeholder={placeholder} />
-              <a-input class="mt-10" v-model:value={formState.inviteCode} placeholder={t("vip.invite_code_optional")} />
-            </div>
-
-            <div class="mt-10">
-              {t("vip.no_activation_code")}
-              {activationCodeGetWay}
-            </div>
-            <div class="mt-10">
-              {t("vip.activation_code_one_use")}
-              <a onClick={goAccount}>{t("vip.bind_account")}</a>，{t("vip.transfer_vip")}
+            <div class="flex-o w-100">
+              <span>{t("vip.site_id")}：</span>
+              <fs-copyable v-model={computedSiteId.value}></fs-copyable>
             </div>
           </div>
+          {plusInfo}
+          <div class="mt-10">
+            {t("vip.have_activation_code")}
+            <span>
+              <a onClick={showManualActivation}>{t("vip.manual_activation")}</a>
+            </span>
+          </div>
+          <div class="mt-10">{manualActiveBlock}</div>
         </div>
       );
     },
@@ -406,6 +472,10 @@ onMounted(() => {
 
   &.isPlus {
     color: #c5913f;
+
+    &.isForever {
+      color: #ff2e83;
+    }
   }
 
   .text {
@@ -420,6 +490,11 @@ onMounted(() => {
     border: 1px solid #eee;
     border-radius: 5px;
     height: 275px;
+    line-height: 24px;
+
+    .privilege {
+      margin-top: 5px;
+    }
 
     //background-color: rgba(250, 237, 167, 0.79);
     &.current {

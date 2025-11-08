@@ -375,7 +375,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           },
         },
         createTime: {
-          title: t("certd.create_time"),
+          title: t("certd.createTime"),
           type: "datetime",
           form: {
             show: false,
@@ -387,7 +387,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           },
         },
         updateTime: {
-          title: t("certd.update_time"),
+          title: t("certd.updateTime"),
           type: "datetime",
           form: {
             show: false,

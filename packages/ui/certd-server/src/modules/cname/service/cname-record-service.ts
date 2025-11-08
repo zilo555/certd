@@ -134,6 +134,8 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
     if (!param.id) {
       throw new ValidateException("id不能为空");
     }
+    //hostRecord包含所有权校验信息，不允许用户修改hostRecord
+    delete param.hostRecord
 
     const old = await this.info(param.id);
     if (!old) {

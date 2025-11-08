@@ -130,12 +130,15 @@ export class PlusService {
     return res.accessToken;
   }
 
-  async getVipTrial() {
+  async getVipTrial(vipType= "plus") {
     await this.register();
     const plusRequestService = await this.getPlusRequestService();
     const res = await plusRequestService.request({
       url: '/activation/subject/vip/trialGet',
       method: 'POST',
+      data:{
+        vipType
+      }
     });
     if (res.license) {
       await this.updateLicense(res.license);
