@@ -89,4 +89,12 @@ export default {
   activation_code_one_use: "Activation code can only be used once. To change site, please ",
   bind_account: "bind account",
   transfer_vip: ' then "Transfer VIP"',
+  manual_activation: "Manual activation use code",
+  close: "Close",
+  have_activation_code: "Already have activation code?",
+  buy: "Buy",
+  already_plus: "Already Professional Edition, will upgrade to Business Edition, Professional Edition time will be lost",
+  already_comm: "Already Business Edition, can't change to Professional Edition",
+  already_perpetual_plus: "You already have a perpetual Professional Edition, can't upgrade",
+  confirm: "Confirm",
 };

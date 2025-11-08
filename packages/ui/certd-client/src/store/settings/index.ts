@@ -126,6 +126,9 @@ export const useSettingStore = defineStore({
     getInstallInfo(): SysInstallInfo {
       return this.installInfo;
     },
+    isPerpetual(): boolean {
+      return this.plusInfo?.isPlus && this.plusInfo?.expireTime === -1;
+    },
     isPlus(): boolean {
       return this.plusInfo?.isPlus && (this.plusInfo?.expireTime === -1 || this.plusInfo?.expireTime > new Date().getTime());
     },

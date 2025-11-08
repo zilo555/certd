@@ -12,7 +12,7 @@
   </div>
 </template>
 <script lang="tsx" setup>
-import { computed, onMounted, reactive } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import dayjs from "dayjs";
 import { message, Modal } from "ant-design-vue";
 import * as api from "./api";
@@ -243,6 +243,41 @@ function openUpgrade() {
   const goBuyUrl = `${env.VIP_PRODUCT_URL}?appKey=${appKey}&subjectId=${subjectId}&callback=${callbackUrl}`;
   const goBuyCommUrl = `${goBuyUrl}&vipType=comm`;
   const productInfo = settingStore.productInfo;
+
+  function checkPerpetualPlus() {
+    if (settingStore.isPerpetual) {
+      Modal.warn({
+        title: t("vip.already_perpetual_plus"),
+        okText: t("vip.confirm"),
+      });
+      throw new Error(t("vip.already_perpetual_plus"));
+    }
+  }
+  function goBuyPlusPage() {
+    checkPerpetualPlus();
+    if (settingStore.isComm) {
+      Modal.warn({
+        title: t("vip.already_comm"),
+        okText: t("vip.confirm"),
+      });
+      return;
+    }
+    window.open(goBuyUrl);
+  }
+  function goBuyCommPage() {
+    checkPerpetualPlus();
+    if (settingStore.isPlus && !settingStore.isComm) {
+      Modal.confirm({
+        title: t("vip.already_plus"),
+        okText: t("vip.confirm"),
+        onOk() {
+          window.open(goBuyCommUrl);
+        },
+      });
+      return;
+    }
+    window.open(goBuyCommUrl);
+  }
   const vipTypeDefine = {
     free: {
       title: t("vip.basic_edition"),
@@ -269,7 +304,7 @@ function openUpgrade() {
       get() {
         return (
           <a-tooltip title={t("vip.afdian_support_vip")}>
-            <a-button size="small" type="primary" href={goBuyUrl} target="_blank">
+            <a-button size="small" type="primary" onClick={goBuyPlusPage}>
               {t("vip.get_after_support")}
             </a-button>
           </a-tooltip>
@@ -293,32 +328,49 @@ function openUpgrade() {
       },
       get() {
         return (
-          <a-button size="small" type="primary" href={goBuyCommUrl} target="_blank">
-            {t("vip.contact_author_for_trial")}
+          <a-button size="small" type="primary" onClick={goBuyCommPage}>
+            {t("vip.buy")}
           </a-button>
         );
       },
     },
   };
 
-  const modalRef = modal.confirm({
+  const manualActiveFlag = ref();
+  function showManualActivation() {
+    manualActiveFlag.value = true;
+  }
+  const modalRef = modal.success({
     title,
-    async onOk() {
-      return await doActive();
-    },
     maskClosable: true,
-    okText: t("vip.activate"),
+    okText: t("vip.close"),
     width: 1100,
     content: () => {
-      let activationCodeGetWay = (
-        <span>
-          <a href={goBuyUrl} target="_blank">
-            {t("vip.get_pro_code_after_support")}
-          </a>
-          <span> {t("vip.business_contact_author")}</span>
-        </span>
-      );
+      let manualActiveBlock: any = "";
+      if (manualActiveFlag.value) {
+        manualActiveBlock = (
+          <div>
+            <div class="mt-10">
+              <a-input-search class="w-2/6" v-model:value={formState.code} placeholder={placeholder} enter-button={t("vip.activate")} onSearch={doActive}></a-input-search>
+            </div>
+            <div class="mt-10">
+              {t("vip.activation_code_one_use")}
+              <a onClick={goAccount}>{t("vip.bind_account")}</a>，{t("vip.transfer_vip")}
+            </div>
+          </div>
+        );
+      }
       const vipLabel = settingStore.vipLabel;
+      let plusInfo: any = "";
+      if (isPlus) {
+        plusInfo = (
+          <div class="mt-10">
+            {t("vip.current")} {vipLabel} {t("vip.activated_expire_time")}
+            {settingStore.expiresText}
+          </div>
+        );
+      }
+
       const slots = [];
       for (const key in vipTypeDefine) {
         // @ts-ignore
@@ -384,26 +436,19 @@ function openUpgrade() {
             <a-row gutter={20}>{slots}</a-row>
           </div>
           <div class="mt-10">
-            <h3 class="block-header">{isPlus ? t("vip.renew") : t("vip.activate_immediately")}</h3>
-            <div>{isPlus ? `${t("vip.current")} ${vipLabel} ${t("vip.activated_expire_time")}` + settingStore.expiresText : ""}</div>
-            <div class="mt-10">
-              <div class="flex-o w-100">
-                <span>{t("vip.site_id")}：</span>
-                <fs-copyable class="flex-1" v-model={computedSiteId.value}></fs-copyable>
-              </div>
-              <a-input class="mt-10" v-model:value={formState.code} placeholder={placeholder} />
-              <a-input class="mt-10" v-model:value={formState.inviteCode} placeholder={t("vip.invite_code_optional")} />
-            </div>
-
-            <div class="mt-10">
-              {t("vip.no_activation_code")}
-              {activationCodeGetWay}
-            </div>
-            <div class="mt-10">
-              {t("vip.activation_code_one_use")}
-              <a onClick={goAccount}>{t("vip.bind_account")}</a>，{t("vip.transfer_vip")}
+            <div class="flex-o w-100">
+              <span>{t("vip.site_id")}：</span>
+              <fs-copyable v-model={computedSiteId.value}></fs-copyable>
             </div>
           </div>
+          {plusInfo}
+          <div class="mt-10">
+            {t("vip.have_activation_code")}
+            <span>
+              <a onClick={showManualActivation}>{t("vip.manual_activation")}</a>
+            </span>
+          </div>
+          <div class="mt-10">{manualActiveBlock}</div>
         </div>
       );
     },
