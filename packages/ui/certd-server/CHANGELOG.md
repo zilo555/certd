@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.5](https://github.com/certd/certd/compare/v1.37.4...v1.37.5) (2025-11-08)
+
+### Bug Fixes
+
+* 修复某些情况下编辑流水线，没有立即展示变更效果的bug ([65e5309](https://github.com/certd/certd/commit/65e53092e8d677eb34b7d04d68c6f738165f5de2))
+* 修复批量修改定时没有立即显示生效的bug ([c166602](https://github.com/certd/certd/commit/c16660254b8d637bd3ca100695934b343875fcbf))
+* 修复新部署的无法保存公共eab配置的bug ([6b7631e](https://github.com/certd/certd/commit/6b7631ed5e920582d8e2162ec788b9429238ac29))
+
+### Performance Improvements
+
+* cname方式hostRecord增加user校验 ([bc174f7](https://github.com/certd/certd/commit/bc174f70545e487bd549eff250f8ef69c6d343f3))
+* doge云插件支持选择CDN域名，以及支持同时部署多个域名 ([041954c](https://github.com/certd/certd/commit/041954c0674fabed54ed2cf5e727fecfb6943d19))
+* doge云支持删除过期证书 ([335cf93](https://github.com/certd/certd/commit/335cf9397080a5e09074d5a89d03f59bd051cda5))
+
 ## [1.37.4](https://github.com/certd/certd/compare/v1.37.3...v1.37.4) (2025-10-28)
 
 ### Performance Improvements

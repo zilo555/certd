@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.5](https://github.com/certd/certd/compare/v1.37.4...v1.37.5) (2025-11-08)
+
+### Bug Fixes
+
+* 修复某些情况下编辑流水线，没有立即展示变更效果的bug ([65e5309](https://github.com/certd/certd/commit/65e53092e8d677eb34b7d04d68c6f738165f5de2))
+* 修复批量修改定时没有立即显示生效的bug ([c166602](https://github.com/certd/certd/commit/c16660254b8d637bd3ca100695934b343875fcbf))
+* 修复在苹果手机下输入框被放大的问题 ([5ff7e6e](https://github.com/certd/certd/commit/5ff7e6ef0eaa6bc111d0dd3c5713e1658f9113ad))
+
+### Performance Improvements
+
+*  支持记忆字段排序 ([d46b9c5](https://github.com/certd/certd/commit/d46b9c54b14ec5c892f4eed141fb549485941edd))
+* 优化任务参数配置界面在手机版下的展示效果 ([0203aa2](https://github.com/certd/certd/commit/0203aa2b6e86e58e5e66a1b9d0278d186aa92554))
+* 支持列表展示时固定证书最大天数，有助于列表进度条整齐展示 ([4a94eab](https://github.com/certd/certd/commit/4a94eab3935c89a63892661d9cf0d0891e54aa81))
+* 子域名托管说明 ([b5d8161](https://github.com/certd/certd/commit/b5d8161bc2e686e6c8b552de0c29117a5d405313))
+
 ## [1.37.4](https://github.com/certd/certd/compare/v1.37.3...v1.37.4) (2025-10-28)
 
 ### Bug Fixes

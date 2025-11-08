@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.5](https://github.com/certd/certd/compare/v1.37.4...v1.37.5) (2025-11-08)
+
+### Performance Improvements
+
+* 支持列表展示时固定证书最大天数，有助于列表进度条整齐展示 ([4a94eab](https://github.com/certd/certd/commit/4a94eab3935c89a63892661d9cf0d0891e54aa81))
+
 ## [1.37.4](https://github.com/certd/certd/compare/v1.37.3...v1.37.4) (2025-10-28)
 
 **Note:** Version bump only for package @certd/lib-server
