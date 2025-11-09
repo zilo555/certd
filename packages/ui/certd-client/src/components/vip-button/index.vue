@@ -340,6 +340,13 @@ function openUpgrade() {
   function showManualActivation() {
     manualActiveFlag.value = true;
   }
+
+  function goBindAccount() {
+    modalRef?.destroy();
+    router.push({
+      path: "/sys/account",
+    });
+  }
   const modalRef = modal.success({
     title,
     maskClosable: true,
@@ -367,6 +374,9 @@ function openUpgrade() {
           <div class="mt-10">
             {t("vip.current")} {vipLabel} {t("vip.activated_expire_time")}
             {settingStore.expiresText}
+            <a class="ml-2" onClick={goBindAccount}>
+              没有生效?
+            </a>
           </div>
         );
       }
