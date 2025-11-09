@@ -36,6 +36,7 @@
     "pub": "echo 1"
   },
   "dependencies": {
+    "@peculiar/x509": "^1.11.0",
     "@alicloud/fc20230330": "^4.1.7",
     "@alicloud/openapi-client": "^0.4.12",
     "@alicloud/pop-core": "^1.7.10",
