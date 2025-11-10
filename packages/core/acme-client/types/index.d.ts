@@ -108,6 +108,9 @@ export const directory: {
         staging: string,
         production: string
     },
+    letsencrypt_staging: {
+        production: string
+    },
     zerossl: {
         staging: string,
         production: string

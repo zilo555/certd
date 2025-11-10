@@ -137,6 +137,7 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
         { value: "google", label: "Google（免费）", icon: "flat-color-icons:google" },
         { value: "zerossl", label: "ZeroSSL（免费）", icon: "emojione:digit-zero" },
         { value: "sslcom", label: "SSL.com（仅主域名和www免费）", icon: "la:expeditedssl" },
+        { value: "letsencrypt_staging", label: "Let's Encrypt测试环境（IP证书）", icon: "simple-icons:letsencrypt" },
       ],
     },
     helper: "Let's Encrypt：申请最简单\nGoogle：大厂光环，兼容性好，仅首次需要翻墙获取EAB授权\nZeroSSL：需要EAB授权，无需翻墙\nSSL.com：仅主域名和www免费,必须设置CAA记录",
@@ -412,7 +413,7 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
   async onInit() {
     let eab: EabAccess = null;
 
-    if (this.sslProvider && this.sslProvider !== "letsencrypt") {
+    if (this.sslProvider && !this.sslProvider.startsWith("letsencrypt")) {
       if (this.sslProvider === "google" && this.googleAccessId) {
         this.logger.info("当前正在使用 google服务账号授权获取EAB");
         const googleAccess = await this.getAccess(this.googleAccessId);
@@ -495,7 +496,6 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
         dnsProvider,
         domainsVerifyPlan,
         csrInfo,
-        isTest: false,
         privateKeyType: this.privateKeyType,
         profile: this.certProfile,
         preferredChain: this.preferredChain,
