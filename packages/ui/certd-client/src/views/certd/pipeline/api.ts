@@ -62,7 +62,7 @@ export async function GetDetail(id: any) {
   });
 }
 
-export async function Save(pipelineEntity: any) {
+export async function Save(pipelineEntity: any): Promise<{ id: number; version: number }> {
   return await request({
     url: apiPrefix + "/save",
     method: "post",

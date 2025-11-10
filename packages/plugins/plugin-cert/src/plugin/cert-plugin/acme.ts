@@ -50,7 +50,7 @@ export type CertInfo = {
   one?: string;
   p7b?: string;
 };
-export type SSLProvider = "letsencrypt" | "google" | "zerossl" | "sslcom";
+export type SSLProvider = "letsencrypt" | "google" | "zerossl" | "sslcom" | "letsencrypt_staging";
 export type PrivateKeyType = "rsa_1024" | "rsa_2048" | "rsa_3072" | "rsa_4096" | "ec_256" | "ec_384" | "ec_521";
 type AcmeServiceOptions = {
   userContext: IContext;
@@ -111,7 +111,7 @@ export class AcmeService {
     await this.userContext.setObj(this.buildAccountKey(email), conf);
   }
 
-  async getAcmeClient(email: string, isTest = false): Promise<acme.Client> {
+  async getAcmeClient(email: string): Promise<acme.Client> {
     const mappings = {};
     if (this.sslProvider === "letsencrypt") {
       mappings["acme-v02.api.letsencrypt.org"] = this.options.reverseProxy || "le.px.certd.handfree.work";
@@ -128,12 +128,7 @@ export class AcmeService {
       await this.saveAccountConfig(email, conf);
       this.logger.info(`创建新的Accountkey:${email}`);
     }
-    let directoryUrl = "";
-    if (isTest) {
-      directoryUrl = acme.directory[this.sslProvider].staging;
-    } else {
-      directoryUrl = acme.directory[this.sslProvider].production;
-    }
+    const directoryUrl = acme.directory[this.sslProvider].production;
     if (this.options.useMappingProxy) {
       urlMapping.enabled = true;
     } else {
@@ -327,13 +322,12 @@ export class AcmeService {
     domainsVerifyPlan?: DomainsVerifyPlan;
     httpUploader?: any;
     csrInfo: any;
-    isTest?: boolean;
     privateKeyType?: string;
     profile?: string;
     preferredChain?: string;
   }): Promise<CertInfo> {
-    const { email, isTest, csrInfo, dnsProvider, domainsVerifyPlan, profile, preferredChain } = options;
-    const client: acme.Client = await this.getAcmeClient(email, isTest);
+    const { email, csrInfo, dnsProvider, domainsVerifyPlan, profile, preferredChain } = options;
+    const client: acme.Client = await this.getAcmeClient(email);
 
     let domains = options.domains;
     const encodingDomains = [];
