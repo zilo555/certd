@@ -374,8 +374,8 @@ function openUpgrade() {
           <div class="mt-10">
             {t("vip.current")} {vipLabel} {t("vip.activated_expire_time")}
             {settingStore.expiresText}
-            <a class="ml-2" onClick={goBindAccount}>
-              没有生效?
+            <a class="ml-15" href="https://app.handfree.work/subject/#/page/detail/1" target="_blank">
+              {t("vip.learn_more")}
             </a>
           </div>
         );
@@ -449,6 +449,10 @@ function openUpgrade() {
             <div class="flex-o w-100">
               <span>{t("vip.site_id")}：</span>
               <fs-copyable v-model={computedSiteId.value}></fs-copyable>
+
+              <a class="ml-2" onClick={goBindAccount}>
+                {t("vip.not_effective")}
+              </a>
             </div>
           </div>
           {plusInfo}
