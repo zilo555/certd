@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.6](https://github.com/certd/certd/compare/v1.37.5...v1.37.6) (2025-11-10)
+
+### Performance Improvements
+
+* 支持letencrypt测试环境，支持IP证书？ ([1462cdd](https://github.com/certd/certd/commit/1462cddd1eb347b7ff238286b5c977b29a0591ec))
+
 ## [1.37.5](https://github.com/certd/certd/compare/v1.37.4...v1.37.5) (2025-11-08)
 
 **Note:** Version bump only for package @certd/plugin-cert
