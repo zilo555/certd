@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.7](https://github.com/certd/certd/compare/v1.37.6...v1.37.7) (2025-11-12)
+
+### Performance Improvements
+
+* 支持使用letencrypt测试环境申请ip证书 ([86ce00a](https://github.com/certd/certd/commit/86ce00adf92ff98fead87a3eaaa6631036708f47))
+
 ## [1.37.6](https://github.com/certd/certd/compare/v1.37.5...v1.37.6) (2025-11-10)
 
 **Note:** Version bump only for package @certd/basic

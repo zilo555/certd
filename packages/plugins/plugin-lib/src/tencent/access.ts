@@ -64,4 +64,8 @@ export class TencentAccess extends BaseAccess {
   intlDomain() {
     return this.isIntl() ? "intl." : "";
   }
+
+  buildEndpoint(endpoint: string) {
+    return `${this.intlDomain()}${endpoint}`;
+  }
 }

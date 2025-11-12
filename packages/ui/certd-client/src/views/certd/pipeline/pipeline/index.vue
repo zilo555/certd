@@ -327,11 +327,11 @@ export default defineComponent({
   },
   props: {
     pipelineId: {
-      type: [Number, String],
+      type: Number,
       default: 0,
     },
     historyId: {
-      type: [Number, String],
+      type: Number,
       default: 0,
     },
     editMode: {
@@ -348,6 +348,7 @@ export default defineComponent({
   emits: ["update:modelValue", "update:editMode"],
   setup(props, ctx) {
     const { t } = useI18n();
+    //右侧选中的pipeline
     const currentPipeline: Ref<any> = ref({});
     const pipeline: Ref<any> = ref({});
     const pipelineEntity: Ref<any> = ref({});
@@ -399,7 +400,7 @@ export default defineComponent({
       currentPipeline.value = currentHistory.value.pipeline;
     };
 
-    async function loadHistoryList(reload = false) {
+    async function loadHistoryList(reload = false, historyId: number) {
       if (props.editMode) {
         return;
       }
@@ -416,11 +417,11 @@ export default defineComponent({
       histories.value = historyList;
 
       if (historyList.length > 0) {
-        //@ts-ignore
-        if (props.historyId > 0) {
-          const found = historyList.find(item => {
+        if (historyId > 0) {
+          //如果传递了history，优先显示历史记录作为当前
+          const found = histories.value.find(item => {
             //字符串==int
-            return item.id == props.historyId;
+            return item.id == historyId;
           });
           if (found) {
             await changeCurrentHistory(found);
@@ -428,7 +429,8 @@ export default defineComponent({
           }
         }
         //@ts-ignore
-        if (historyList[0]?.version === pipeline.value.version) {
+        if (historyList[0]?.version === pipeline.value?.version) {
+          //如果当前的流水线版本与历史记录最后一条一致，则将该记录设置为current
           await changeCurrentHistory(historyList[0]);
         }
       }
@@ -482,7 +484,7 @@ export default defineComponent({
         if (editMode) {
           changeCurrentHistory();
         } else if (histories.value.length > 0) {
-          if (histories.value[0].pipeline.version === pipeline.value.version) {
+          if (histories.value[0].pipeline?.version === pipeline.value?.version) {
             changeCurrentHistory(histories.value[0]);
           }
         }
@@ -508,7 +510,7 @@ export default defineComponent({
           detail.pipeline
         );
         pipeline.value = currentPipeline.value;
-        await loadHistoryList(true);
+        await loadHistoryList(true, props.historyId);
       },
       {
         immediate: true,
@@ -740,7 +742,11 @@ export default defineComponent({
             //@ts-ignore
             await changeCurrentHistory(null);
             if (histories.value.length > 0) {
-              pipeline.value = histories.value[0].pipeline;
+              //看是不是最新的pipeline版本
+              if (pipeline.value?.version !== histories.value[0].pipeline?.version) {
+                const detail: PipelineDetail = await props.options.getPipelineDetail({ pipelineId: pipeline.value.id });
+                pipeline.value = detail.pipeline;
+              }
             }
 
             await props.options.doTrigger({ pipelineId: pipeline.value.id, stepId: stepId });

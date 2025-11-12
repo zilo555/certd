@@ -1,7 +1,7 @@
 {
   "name": "@certd/plugin-lib",
   "private": false,
-  "version": "1.37.6",
+  "version": "1.37.7",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -22,8 +22,8 @@
     "@alicloud/pop-core": "^1.7.10",
     "@alicloud/tea-util": "^1.4.10",
     "@aws-sdk/client-s3": "^3.787.0",
-    "@certd/basic": "^1.37.6",
-    "@certd/pipeline": "^1.37.6",
+    "@certd/basic": "^1.37.7",
+    "@certd/pipeline": "^1.37.7",
     "@kubernetes/client-node": "0.21.0",
     "ali-oss": "^6.22.0",
     "basic-ftp": "^5.0.5",
@@ -53,5 +53,5 @@
     "tslib": "^2.8.1",
     "typescript": "^5.4.2"
   },
-  "gitHead": "9fcdeca6920fc7d465e2443dab4f246d279f108b"
+  "gitHead": "55d2a1f09b617bc73bd81a65796446c4602ed1b2"
 }

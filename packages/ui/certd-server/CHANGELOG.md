@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.7](https://github.com/certd/certd/compare/v1.37.6...v1.37.7) (2025-11-12)
+
+### Performance Improvements
+
+* 支持腾讯云teo dns解析 ([1d23dd2](https://github.com/certd/certd/commit/1d23dd2426bd1e4c4dfea0a9e561d665e045ba9d))
+
 ## [1.37.6](https://github.com/certd/certd/compare/v1.37.5...v1.37.6) (2025-11-10)
 
 ### Performance Improvements

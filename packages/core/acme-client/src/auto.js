@@ -4,6 +4,9 @@
 import { readCsrDomains } from "./crypto/index.js";
 import { wait } from "./wait.js";
 import { CancelError } from "./error.js";
+import { domainUtils } from '@certd/basic';
+
+
 
 
 const defaultOpts = {
@@ -65,7 +68,7 @@ export default async (client, userOpts) => {
      * Parse domains from CSR
      */
 
-    log("[auto] Parsing domains from Certificate Signing Request ");
+    log("[auto] Parsing domains from Certificate Signing Request");
     const { commonName, altNames } = readCsrDomains(opts.csr);
     const uniqueDomains = Array.from(new Set([commonName].concat(altNames).filter((d) => d)));
 
@@ -76,9 +79,21 @@ export default async (client, userOpts) => {
      */
 
     log("[auto] Placing new certificate order with ACME provider");
-    const orderPayload = { identifiers: uniqueDomains.map((d) => ({ type: "dns", value: d })) };
-    if (opts.profile && client.sslProvider === 'letsencrypt' ){
+
+    let hasIp = false
+    const orderPayload = { identifiers: uniqueDomains.map((d) =>{
+        // 判断是否为IP（v4或v6），否则按域名处理
+        const type = domainUtils.isIp(d) ? 'ip' : 'dns';
+        if(type === 'ip'){
+            hasIp = true
+        }
+        return { type, value: d }
+    }) };
+    if (opts.profile && client.sslProvider.startsWith("letsencrypt") ){
         orderPayload.profile = opts.profile;
+        if(hasIp){
+            orderPayload.profile = "shortlived"
+        }
     }
     const order = await client.createOrder(orderPayload);
     const authorizations = await client.getAuthorizations(order);

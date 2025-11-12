@@ -9,15 +9,16 @@
 | 5.| **新网** | 新网域名解析 | 
 | 6.| **新网(代理方式)** | 新网域名解析(代理方式) | 
 | 7.| **腾讯云** | 腾讯云域名DNS解析提供者 | 
-| 8.| **华为云** | 华为云DNS解析提供商 | 
-| 9.| **西部数码** | west dns provider | 
-| 10.| **dns.la** | dns.la | 
-| 11.| **雨云** | 雨云DNS解析提供商 | 
-| 12.| **cloudflare** | cloudflare dns provider | 
-| 13.| **namesilo** | namesilo dns provider | 
-| 14.| **godaddy** | GoDaddy | 
-| 15.| **51dns** | 51DNS | 
-| 16.| **新网互联** | 新网互联 | 
+| 8.| **腾讯云EO DNS** | 腾讯云EO DNS解析提供者 | 
+| 9.| **华为云** | 华为云DNS解析提供商 | 
+| 10.| **西部数码** | west dns provider | 
+| 11.| **dns.la** | dns.la | 
+| 12.| **雨云** | 雨云DNS解析提供商 | 
+| 13.| **cloudflare** | cloudflare dns provider | 
+| 14.| **namesilo** | namesilo dns provider | 
+| 15.| **godaddy** | GoDaddy | 
+| 16.| **51dns** | 51DNS | 
+| 17.| **新网互联** | 新网互联 | 
 
 <style module>
 table th:first-of-type {

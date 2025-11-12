@@ -4,14 +4,22 @@
 
 import dnsSdk from "dns"
 import https from 'https'
-import {log} from './logger.js'
+import {log as defaultLog} from './logger.js'
 import axios from './axios.js'
 import * as util from './util.js'
 import {isAlpnCertificateAuthorizationValid} from './crypto/index.js'
 
 
 const dns = dnsSdk.promises
-/**
+
+
+export function createChallengeFn(opts = {}){
+    const logger = opts?.logger || {info:defaultLog,error:defaultLog,warn:defaultLog,debug:defaultLog}
+    
+    const log = function(...args){
+        logger.info(...args)
+    }
+    /**
  * Verify ACME HTTP challenge
  *
  * https://datatracker.ietf.org/doc/html/rfc8555#section-8.3
@@ -112,7 +120,7 @@ async function walkDnsChallengeRecord(recordName, resolver = dns,deep = 0) {
     return records
 }
 
-export async function walkTxtRecord(recordName,deep = 0) {
+ async function walkTxtRecord(recordName,deep = 0) {
     if(deep >5){
         log(`walkTxtRecord too deep (#${deep}) , skip walk`)
         return []
@@ -136,7 +144,7 @@ export async function walkTxtRecord(recordName,deep = 0) {
     try{
         /* Authoritative DNS resolver */
         log(`从域名权威服务器获取TXT解析记录`);
-        const authoritativeResolver = await util.getAuthoritativeDnsResolver(recordName);
+        const authoritativeResolver = await util.getAuthoritativeDnsResolver(recordName,log);
         const res = await walkDnsChallengeRecord(recordName, authoritativeResolver,deep);
         if (res && res.length > 0) {
             for (const item of res) {
@@ -173,7 +181,8 @@ async function verifyDnsChallenge(authz, challenge, keyAuthorization, prefix = '
     recordValues = [...new Set(recordValues)];
     log(`DNS查询成功, 找到 ${recordValues.length} 条TXT记录：${recordValues}`);
     if (!recordValues.length || !recordValues.includes(keyAuthorization)) {
-        throw new Error(`没有找到需要的DNS TXT记录: ${recordName}，期望:${keyAuthorization},结果:${recordValues}`);
+        const err = `没有找到需要的DNS TXT记录: ${recordName}，期望:${keyAuthorization},结果:${recordValues}`
+        throw new Error(err);
     }
 
     log(`关键授权匹配成功（${challenge.type}/${recordName}）:${keyAuthorization}，校验成功， ACME challenge verified`);
@@ -207,12 +216,13 @@ async function verifyTlsAlpnChallenge(authz, challenge, keyAuthorization) {
     return true;
 }
 
-/**
- * Export API
- */
+    return {
+        challenges:{
+            'http-01': verifyHttpChallenge,
+            'dns-01': verifyDnsChallenge,
+            'tls-alpn-01': verifyTlsAlpnChallenge,
+        },
+        walkTxtRecord,
+    }
 
-export default {
-    'http-01': verifyHttpChallenge,
-    'dns-01': verifyDnsChallenge,
-    'tls-alpn-01': verifyTlsAlpnChallenge,
-};
+}

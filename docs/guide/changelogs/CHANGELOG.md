@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.7](https://github.com/certd/certd/compare/v1.37.6...v1.37.7) (2025-11-12)
+
+### Bug Fixes
+
+* 修复点击立即触发运行报错的bug ([e1eef01](https://github.com/certd/certd/commit/e1eef013a856d26fe80a05d9ec6e505e2e31e5f9))
+* 账号绑定页面某些情况下打不开的bug ([44973eb](https://github.com/certd/certd/commit/44973ebd00e89c0fee8f3b91174157757ce0160f))
+
+### Performance Improvements
+
+* 支持使用letencrypt测试环境申请ip证书 ([86ce00a](https://github.com/certd/certd/commit/86ce00adf92ff98fead87a3eaaa6631036708f47))
+* 支持腾讯云teo dns解析 ([1d23dd2](https://github.com/certd/certd/commit/1d23dd2426bd1e4c4dfea0a9e561d665e045ba9d))
+
 ## [1.37.6](https://github.com/certd/certd/compare/v1.37.5...v1.37.6) (2025-11-10)
 
 ### Bug Fixes

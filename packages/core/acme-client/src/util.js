@@ -48,7 +48,7 @@ class Backoff {
  * @returns {Promise}
  */
 
-async function retryPromise(fn, attempts, backoff) {
+async function retryPromise(fn, attempts, backoff, logger = log) {
     let aborted = false;
 
     try {
@@ -60,12 +60,12 @@ async function retryPromise(fn, attempts, backoff) {
             throw e;
         }
 
-        log(`Promise rejected: ${e.message}`);
+        logger(`Promise rejected: ${e.message}`);
         const duration = backoff.duration();
-        log(`Promise rejected attempt #${backoff.attempts}, ${duration}ms 后重试: ${e.message}`);
+        logger(`Promise rejected attempt #${backoff.attempts}, ${duration}ms 后重试: ${e.message}`);
 
         await new Promise((resolve) => { setTimeout(resolve, duration); });
-        return retryPromise(fn, attempts, backoff);
+        return retryPromise(fn, attempts, backoff, logger);
     }
 }
 
@@ -80,9 +80,9 @@ async function retryPromise(fn, attempts, backoff) {
  * @returns {Promise}
  */
 
-function retry(fn, { attempts = 5, min = 5000, max = 30000 } = {}) {
+function retry(fn, { attempts = 5, min = 5000, max = 30000 } = {}, logger = log) {
     const backoff = new Backoff({ min, max });
-    return retryPromise(fn, attempts, backoff);
+    return retryPromise(fn, attempts, backoff, logger);
 }
 
 /**
@@ -216,21 +216,21 @@ function formatResponseError(resp) {
  * @returns {Promise<string>} Root domain name
  */
 
-async function resolveDomainBySoaRecord(recordName) {
+async function resolveDomainBySoaRecord(recordName, logger = log) {
     try {
         await dns.resolveSoa(recordName);
-        log(`找到${recordName}的SOA记录`);
+        logger(`找到${recordName}的SOA记录`);
         return recordName;
     }
     catch (e) {
-        log(`找不到${recordName}的SOA记录,继续往主域名查找`);
+        logger(`找不到${recordName}的SOA记录,继续往主域名查找`);
         const parentRecordName = recordName.split('.').slice(1).join('.');
 
         if (!parentRecordName.includes('.')) {
             throw new Error('SOA record查找失败');
         }
 
-        return resolveDomainBySoaRecord(parentRecordName);
+        return resolveDomainBySoaRecord(parentRecordName,logger);
     }
 }
 
@@ -241,18 +241,18 @@ async function resolveDomainBySoaRecord(recordName) {
  * @returns {Promise<dns.Resolver>} DNS resolver
  */
 
-async function getAuthoritativeDnsResolver(recordName) {
-    log(`获取域名${recordName}的权威NS服务器: `);
+async function getAuthoritativeDnsResolver(recordName, logger = log) {
+    logger(`获取域名${recordName}的权威NS服务器: `);
     const resolver = new dns.Resolver();
 
     try {
         /* Resolve root domain by SOA */
-        const domain = await resolveDomainBySoaRecord(recordName);
+        const domain = await resolveDomainBySoaRecord(recordNam,logger);
 
         /* Resolve authoritative NS addresses */
-        log(`获取到权威NS服务器name: ${domain}`);
+        logger(`获取到权威NS服务器name: ${domain}`);
         const nsRecords = await dns.resolveNs(domain);
-        log(`域名权威NS服务器：${nsRecords}`);
+        logger(`域名权威NS服务器：${nsRecords}`);
         const nsAddrArray = await Promise.all(nsRecords.map(async (r) => dns.resolve4(r)));
         const nsAddresses = [].concat(...nsAddrArray).filter((a) => a);
 
@@ -261,16 +261,16 @@ async function getAuthoritativeDnsResolver(recordName) {
         }
 
         /* Authoritative NS success */
-        log(`Found ${nsAddresses.length} authoritative NS addresses for domain: ${domain}`);
+        logger(`Found ${nsAddresses.length} authoritative NS addresses for domain: ${domain}`);
         resolver.setServers(nsAddresses);
     }
     catch (e) {
-        log(`Authoritative NS lookup error（获取权威NS服务器地址失败）: ${e.message}`);
+        logger(`Authoritative NS lookup error（获取权威NS服务器地址失败）: ${e.message}`);
     }
 
     /* Return resolver */
     const addresses = resolver.getServers();
-    log(`DNS resolver addresses（域名的权威NS服务器地址）: ${addresses.join(', ')}`);
+    logger(`DNS resolver addresses（域名的权威NS服务器地址）: ${addresses.join(', ')}`);
 
     return resolver;
 }

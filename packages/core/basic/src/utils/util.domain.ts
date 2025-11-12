@@ -7,29 +7,29 @@ function match(targetDomains: string | string[], inDomains: string[]) {
     return false;
   }
 
-  if (typeof targetDomains === 'string') {
+  if (typeof targetDomains === "string") {
     targetDomains = [targetDomains];
   }
   for (let targetDomain of targetDomains) {
     let matched = false;
-    if (targetDomain.startsWith('.')) {
-      targetDomain = '*' + targetDomain;
+    if (targetDomain.startsWith(".")) {
+      targetDomain = "*" + targetDomain;
     }
     for (let inDomain of inDomains) {
-      if (inDomain.startsWith('.')) {
-        inDomain = '*' + inDomain;
+      if (inDomain.startsWith(".")) {
+        inDomain = "*" + inDomain;
       }
       if (targetDomain === inDomain) {
         matched = true;
         break;
       }
 
-      if (!inDomain.startsWith('*.')) {
+      if (!inDomain.startsWith("*.")) {
         //不可能匹配
         continue;
       }
       //子域名匹配通配符即可
-      const firstDotIndex = targetDomain.indexOf('.');
+      const firstDotIndex = targetDomain.indexOf(".");
       const targetDomainSuffix = targetDomain.substring(firstDotIndex + 1);
       if (targetDomainSuffix === inDomain.substring(2)) {
         matched = true;
@@ -46,6 +46,32 @@ function match(targetDomains: string | string[], inDomains: string[]) {
   return true;
 }
 
+function isIpv4(d: string) {
+  if (!d) {
+    return false;
+  }
+  const isIPv4Regex = /^(\d{1,3}\.){3}\d{1,3}$/;
+  return isIPv4Regex.test(d);
+}
+
+function isIpv6(d: string) {
+  if (!d) {
+    return false;
+  }
+  const isIPv6Regex = /^([\da-f]{1,4}:){2,7}[\da-f]{1,4}$/i;
+  return isIPv6Regex.test(d);
+}
+
+function isIp(d: string) {
+  if (!d) {
+    return false;
+  }
+  return isIpv4(d) || isIpv6(d);
+}
+
 export const domainUtils = {
   match,
+  isIpv4,
+  isIpv6,
+  isIp,
 };
