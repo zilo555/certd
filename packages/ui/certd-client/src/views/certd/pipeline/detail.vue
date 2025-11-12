@@ -20,8 +20,8 @@ defineOptions({
   name: "PipelineDetail",
 });
 const route = useRoute();
-const pipelineId: Ref = ref(route.query.id);
-const historyId = ref(route.query.historyId as string);
+const pipelineId: Ref = ref(parseInt((route.query.id as string) || "0"));
+const historyId: Ref = ref(parseInt((route.query.historyId as string) || "0"));
 const pluginStore = usePluginStore();
 const pipelineOptions: PipelineOptions = {
   async getPipelineDetail({ pipelineId }) {
