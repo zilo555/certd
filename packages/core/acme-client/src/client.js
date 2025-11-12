@@ -7,7 +7,7 @@ import { createHash } from 'crypto';
 import  { getPemBodyAsB64u } from './crypto/index.js';
 import HttpClient from './http.js';
 import AcmeApi from './api.js';
-import verify from './verify.js';
+import {createChallengeFn} from './verify.js';
 import * as util from './util.js';
 import auto from './auto.js';
 import { CancelError } from './error.js';
@@ -492,6 +492,9 @@ class AcmeClient {
             throw new Error('Unable to verify ACME challenge, URL not found');
         }
 
+        const {challenges} = createChallengeFn({logger:this.opts.logger});
+ 
+        const verify = challenges
         if (typeof verify[challenge.type] === 'undefined') {
             throw new Error(`Unable to verify ACME challenge, unknown type: ${challenge.type}`);
         }

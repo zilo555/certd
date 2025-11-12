@@ -207,7 +207,8 @@ export const agents: any;
 
 export function setLogger(fn: (message: any, ...args: any[]) => void): void;
 
-export function walkTxtRecord(record: any): Promise<string[]>;
+export function createChallengeFn(opts?: {logger?:any}): any;
+// export function walkTxtRecord(record: any): Promise<string[]>;
 export function getAuthoritativeDnsResolver(record:string): Promise<any>;
 
 export const CancelError: typeof CancelError;

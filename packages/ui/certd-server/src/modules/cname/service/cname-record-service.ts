@@ -13,7 +13,7 @@ import { CnameRecordEntity, CnameRecordStatusType } from "../entity/cname-record
 import { createDnsProvider, IDnsProvider } from "@certd/plugin-cert";
 import { CnameProvider, CnameRecord } from "@certd/pipeline";
 import { cache, http, isDev, logger, utils } from "@certd/basic";
-import { getAuthoritativeDnsResolver, walkTxtRecord } from "@certd/acme-client";
+import { getAuthoritativeDnsResolver, createChallengeFn } from "@certd/acme-client";
 import { CnameProviderService } from "./cname-provider-service.js";
 import { CnameProviderEntity } from "../entity/cname-provider.js";
 import { CommonDnsProvider } from "./common-provider.js";
@@ -241,6 +241,8 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
    * @param id
    */
   async verify(id: number) {
+
+    const {walkTxtRecord} = createChallengeFn({logger});
     const bean = await this.info(id);
     if (!bean) {
       throw new ValidateException(`CnameRecord:${id} 不存在`);
@@ -416,6 +418,7 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
 
   async checkRepeatAcmeChallengeRecords(acmeRecordDomain: string, targetCnameDomain: string) {
 
+    
     let dnsResolver = null;
     try {
       dnsResolver = await getAuthoritativeDnsResolver(acmeRecordDomain);
@@ -460,6 +463,9 @@ export class CnameRecordService extends BaseService<CnameRecordEntity> {
       //如果权威服务器中查不到txt，无需继续检查
       return;
     }
+
+    const {walkTxtRecord} = createChallengeFn({logger});
+
     if (cnameRecords.length > 0) {
       // 从cname记录中获取txt记录
       // 对比是否存在，如果不存在于cname中获取的txt中，说明本体有创建多余的txt记录

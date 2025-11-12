@@ -337,7 +337,7 @@ export class AcmeService {
     domains = encodingDomains;
 
     /* Create CSR */
-    const { commonName, altNames } = this.buildCommonNameByDomains(domains);
+    const { altNames } = this.buildCommonNameByDomains(domains);
     let privateKey = null;
     const privateKeyType = options.privateKeyType || "rsa_2048";
     const privateKeyArr = privateKeyType.split("_");

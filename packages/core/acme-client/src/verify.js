@@ -4,14 +4,22 @@
 
 import dnsSdk from "dns"
 import https from 'https'
-import {log} from './logger.js'
+import {log as defaultLog} from './logger.js'
 import axios from './axios.js'
 import * as util from './util.js'
 import {isAlpnCertificateAuthorizationValid} from './crypto/index.js'
 
 
 const dns = dnsSdk.promises
-/**
+
+
+export function createChallengeFn(opts = {}){
+    const logger = opts?.logger || {info:defaultLog,error:defaultLog,warn:defaultLog,debug:defaultLog}
+    
+    const log = function(...args){
+        logger.info(...args)
+    }
+    /**
  * Verify ACME HTTP challenge
  *
  * https://datatracker.ietf.org/doc/html/rfc8555#section-8.3
@@ -112,7 +120,7 @@ async function walkDnsChallengeRecord(recordName, resolver = dns,deep = 0) {
     return records
 }
 
-export async function walkTxtRecord(recordName,deep = 0) {
+ async function walkTxtRecord(recordName,deep = 0) {
     if(deep >5){
         log(`walkTxtRecord too deep (#${deep}) , skip walk`)
         return []
@@ -207,12 +215,13 @@ async function verifyTlsAlpnChallenge(authz, challenge, keyAuthorization) {
     return true;
 }
 
-/**
- * Export API
- */
+    return {
+        challenges:{
+            'http-01': verifyHttpChallenge,
+            'dns-01': verifyDnsChallenge,
+            'tls-alpn-01': verifyTlsAlpnChallenge,
+        },
+        walkTxtRecord,
+    }
 
-export default {
-    'http-01': verifyHttpChallenge,
-    'dns-01': verifyDnsChallenge,
-    'tls-alpn-01': verifyTlsAlpnChallenge,
-};
+}
