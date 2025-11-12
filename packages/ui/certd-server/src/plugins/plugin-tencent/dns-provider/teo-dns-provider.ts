@@ -60,7 +60,8 @@ export class TencentEoDnsProvider extends AbstractDnsProvider {
             "ZoneId": zoneId,
             "Name": fullRecord,
             "Type": type,
-            "Content": value
+            "Content": value,
+            "TTL": 60,
         };
 
         try {

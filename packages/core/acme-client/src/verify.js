@@ -144,7 +144,7 @@ async function walkDnsChallengeRecord(recordName, resolver = dns,deep = 0) {
     try{
         /* Authoritative DNS resolver */
         log(`从域名权威服务器获取TXT解析记录`);
-        const authoritativeResolver = await util.getAuthoritativeDnsResolver(recordName);
+        const authoritativeResolver = await util.getAuthoritativeDnsResolver(recordName,log);
         const res = await walkDnsChallengeRecord(recordName, authoritativeResolver,deep);
         if (res && res.length > 0) {
             for (const item of res) {
@@ -182,7 +182,6 @@ async function verifyDnsChallenge(authz, challenge, keyAuthorization, prefix = '
     log(`DNS查询成功, 找到 ${recordValues.length} 条TXT记录：${recordValues}`);
     if (!recordValues.length || !recordValues.includes(keyAuthorization)) {
         const err = `没有找到需要的DNS TXT记录: ${recordName}，期望:${keyAuthorization},结果:${recordValues}`
-        log(err);
         throw new Error(err);
     }
 
