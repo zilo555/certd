@@ -364,15 +364,13 @@ export class AcmeService {
       //兼容老版本
       createCsr = acme.forge.createCsr;
     }
-    const [key, csr] = await createCsr(
-      {
-        commonName,
-        ...csrInfo,
-        altNames,
-        // emailAddress: email,
-      },
-      privateKey
-    );
+    const csrData: any = {
+      // commonName,
+      ...csrInfo,
+      altNames,
+      // emailAddress: email,
+    };
+    const [key, csr] = await createCsr(csrData, privateKey);
 
     if (dnsProvider == null && domainsVerifyPlan == null) {
       throw new Error("dnsProvider 、 domainsVerifyPlan不能都为空");
@@ -417,7 +415,7 @@ export class AcmeService {
   }
 
   buildCommonNameByDomains(domains: string | string[]): {
-    commonName: string;
+    commonName?: string;
     altNames: string[] | undefined;
   } {
     if (typeof domains === "string") {
@@ -426,14 +424,14 @@ export class AcmeService {
     if (domains.length === 0) {
       throw new Error("domain can not be empty");
     }
-    const commonName = domains[0];
-    let altNames: undefined | string[] = undefined;
-    if (domains.length > 1) {
-      altNames = _.slice(domains, 1);
-    }
+    // const commonName = domains[0];
+    // let altNames: undefined | string[] = undefined;
+    // if (domains.length > 1) {
+    //   altNames = _.slice(domains, 1);
+    // }
     return {
-      commonName,
-      altNames,
+      // commonName,
+      altNames: domains,
     };
   }
 

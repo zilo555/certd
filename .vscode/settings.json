@@ -4,5 +4,6 @@
     "typescript.tsc.autoDetect": "watch",
     "git.scanRepositories": [
         "./packages/pro"
-    ]
+    ],
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
 }
