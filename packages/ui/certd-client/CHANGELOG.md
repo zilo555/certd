@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.8](https://github.com/certd/certd/compare/v1.37.7...v1.37.8) (2025-11-17)
+
+### Performance Improvements
+
+* 支持回车键触发登录 ([eb5c88f](https://github.com/certd/certd/commit/eb5c88fbb2901f1a9669429a7cd8dc76f6806d01))
+
 ## [1.37.7](https://github.com/certd/certd/compare/v1.37.6...v1.37.7) (2025-11-12)
 
 ### Bug Fixes

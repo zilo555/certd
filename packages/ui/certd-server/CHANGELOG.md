@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.8](https://github.com/certd/certd/compare/v1.37.7...v1.37.8) (2025-11-17)
+
+### Bug Fixes
+
+* **plugins/woai-cdn:** 修正默认接口域名与帮助链接中的路径 ([#576](https://github.com/certd/certd/issues/576)) @LjyLab ([d20046c](https://github.com/certd/certd/commit/d20046c86681ea177ece434423b7c81a76b437fb))
+
+### Performance Improvements
+
+* 修复西数解析记录添加失败的bug，支持部署证书到西数虚拟主机 ([1102952](https://github.com/certd/certd/commit/1102952b4703e8c0bbc17b0700c0ed3ef6f866d3))
+
 ## [1.37.7](https://github.com/certd/certd/compare/v1.37.6...v1.37.7) (2025-11-12)
 
 ### Performance Improvements
