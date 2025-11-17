@@ -7,14 +7,14 @@
           <template v-if="formState.loginType === 'password'">
             <!--      <div class="login-title">登录</div>-->
             <a-form-item required has-feedback name="username" :rules="rules.username">
-              <a-input v-model:value="formState.username" :placeholder="t('authentication.usernamePlaceholder')" autocomplete="off">
+              <a-input v-model:value="formState.username" :placeholder="t('authentication.usernamePlaceholder')" autocomplete="off" @keydown.enter="handleFinish">
                 <template #prefix>
                   <fs-icon icon="ion:phone-portrait-outline"></fs-icon>
                 </template>
               </a-input>
             </a-form-item>
             <a-form-item has-feedback name="password" :rules="rules.password">
-              <a-input-password v-model:value="formState.password" :placeholder="t('authentication.passwordPlaceholder')" autocomplete="off">
+              <a-input-password v-model:value="formState.password" :placeholder="t('authentication.passwordPlaceholder')" autocomplete="off" @keyup.enter="handleFinish">
                 <template #prefix>
                   <fs-icon icon="ion:lock-closed-outline"></fs-icon>
                 </template>
@@ -22,7 +22,7 @@
             </a-form-item>
 
             <a-form-item v-if="settingStore.sysPublic.captchaEnabled" has-feedback required name="captcha" :rules="rules.captcha">
-              <CaptchaInput v-model:model-value="formState.captcha"></CaptchaInput>
+              <CaptchaInput v-model:model-value="formState.captcha" @keydown.enter="handleFinish"></CaptchaInput>
             </a-form-item>
           </template>
         </a-tab-pane>
@@ -37,7 +37,7 @@
             </a-form-item>
 
             <a-form-item has-feedback name="smsCaptcha">
-              <CaptchaInput v-model:model-value="formState.smsCaptcha"></CaptchaInput>
+              <CaptchaInput v-model:model-value="formState.smsCaptcha" @keydown.enter="handleFinish"></CaptchaInput>
             </a-form-item>
 
             <a-form-item name="smsCode" :rules="rules.smsCode">
@@ -169,7 +169,7 @@ export default defineComponent({
       await userStore.loginByTwoFactor(twoFactor);
     };
 
-    const handleFinish = async (values: any) => {
+    const handleFinish = async () => {
       loading.value = true;
       try {
         // formState.captcha = await doCaptchaValidate();
