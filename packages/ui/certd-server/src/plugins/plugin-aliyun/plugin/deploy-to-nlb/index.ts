@@ -232,6 +232,7 @@ export class AliyunDeployCertToNLB extends AbstractTaskPlugin {
 
     const certIds = [];
     for (const item of list) {
+      this.logger.info(`监听器${listener}绑定的证书${item.CertificateId},status:${item.Status},IsDefault:${item.IsDefault}`);
       if (item.Status !== "Associated") {
         continue;
       }
@@ -240,10 +241,12 @@ export class AliyunDeployCertToNLB extends AbstractTaskPlugin {
       }
       certIds.push( parseInt(item.CertificateId));
     }
+    this.logger.info(`监听器${listener}绑定的证书${certIds}`);
     //检查是否过期，过期则删除
     const invalidCertIds = [];
     for (const certId of certIds) {
       const res = await sslClient.getCertInfo(certId);
+      this.logger.info(`证书${certId}过期时间:${res.notAfter}`);
       if (res.notAfter < new Date().getTime()) {
         invalidCertIds.push(certId);
       }
