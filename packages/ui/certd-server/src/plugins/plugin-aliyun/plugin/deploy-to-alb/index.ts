@@ -155,10 +155,14 @@ export class AliyunDeployCertToALB extends AbstractTaskPlugin {
       const client = await this.getLBClient(access, this.regionId);
       await this.deployDefaultCert(certId, client);
     }
-
-    await this.ctx.utils.sleep(10000)
+    this.logger.info(`准备开始清理过期证书`);
+    await this.ctx.utils.sleep(20000)
     for (const listener of this.listeners) {
-      await this.clearInvalidCert(albClientV2, listener);
+      try{
+        await this.clearInvalidCert(albClientV2, listener);
+      }catch(e){
+        this.logger.error(`清理监听器${listener}的过期证书失败`, e);
+      }
     }
 
 
@@ -259,7 +263,7 @@ export class AliyunDeployCertToALB extends AbstractTaskPlugin {
       this.logger.info(`监听器${listener}没有过期的证书`);
       return
     }
-    this.logger.info(`开始解绑过期的证书:${invalidCertIds}`);
+    this.logger.info(`开始解绑过期的证书:${invalidCertIds}，listener:${listener}`);
     await client.doRequest({
       // 接口名称
       action: "DissociateAdditionalCertificatesFromListener",

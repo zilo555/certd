@@ -152,9 +152,14 @@ export class AliyunDeployCertToNLB extends AbstractTaskPlugin {
       await this.deployDefaultCert(certId, client);
     }
 
-    await this.ctx.utils.sleep(10000)
+    this.logger.info(`准备开始清理过期证书`);
+    await this.ctx.utils.sleep(20000)
     for (const listener of this.listeners) {
-      await this.clearInvalidCert(nlbClientV2, listener);
+      try{
+        await this.clearInvalidCert(nlbClientV2, listener);
+      }catch(e){
+        this.logger.error(`清理监听器${listener}的过期证书失败`, e);
+      }
     }
 
     this.logger.info('执行完成');
@@ -255,7 +260,7 @@ export class AliyunDeployCertToNLB extends AbstractTaskPlugin {
       this.logger.info(`监听器${listener}没有过期的证书`);
       return
     }
-    this.logger.info(`开始解绑过期的证书:${invalidCertIds}`);
+    this.logger.info(`开始解绑过期的证书:${invalidCertIds},listener:${listener}`);
 
     const ids:any = {}
     let i = 0
