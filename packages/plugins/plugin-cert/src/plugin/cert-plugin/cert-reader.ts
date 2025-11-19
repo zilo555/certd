@@ -36,6 +36,7 @@ export class CertReader {
   detail: CertificateInfo;
   //毫秒时间戳
   effective: number;
+  //毫秒时间戳
   expires: number;
   constructor(certInfo: CertInfo) {
     this.cert = certInfo;

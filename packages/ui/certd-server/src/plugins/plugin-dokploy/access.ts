@@ -50,6 +50,14 @@ export class DokployAccess extends BaseAccess {
     return "ok"
   }
 
+  async getServerList(){
+    const req = {
+      url :"/api/server.all",
+      method: "get",
+    }
+    return await this.doRequest(req);
+  }
+
   async getCertList(){
     const req = {
       url :"/api/certificates.all",
@@ -96,7 +104,7 @@ export class DokployAccess extends BaseAccess {
       headers,
       baseURL: this.endpoint,
       ...req,
-      logRes: true,
+      logRes: false,
     });
   }
 
