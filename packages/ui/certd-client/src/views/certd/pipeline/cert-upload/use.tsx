@@ -204,7 +204,7 @@ export function useCertUpload() {
                 notifications,
               };
 
-              const id = await api.Save({
+              const { id } = await api.Save({
                 title: pipeline.title,
                 content: JSON.stringify(pipeline),
                 keepHistoryCount: 30,
