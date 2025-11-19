@@ -555,7 +555,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           search: {
             show: false,
           },
-          type: "text",
+          type: "textarea",
           column: {
             width: 200,
             sorter: true,
