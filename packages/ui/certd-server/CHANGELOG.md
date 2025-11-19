@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.9](https://github.com/certd/certd/compare/v1.37.8...v1.37.9) (2025-11-19)
+
+### Performance Improvements
+
+* 优化阿里云clb 过期证书清理报错的问题 ([d465367](https://github.com/certd/certd/commit/d4653678b2e3643460f918992eeae4044d3a1cc7))
+
 ## [1.37.8](https://github.com/certd/certd/compare/v1.37.7...v1.37.8) (2025-11-17)
 
 ### Bug Fixes

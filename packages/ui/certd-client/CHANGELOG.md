@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.9](https://github.com/certd/certd/compare/v1.37.8...v1.37.9) (2025-11-19)
+
+### Bug Fixes
+
+* 商用证书上传保存失败的bug ([075b1dc](https://github.com/certd/certd/commit/075b1dc0eb8c39acc277277b1b334d66b6717ab2))
+
 ## [1.37.8](https://github.com/certd/certd/compare/v1.37.7...v1.37.8) (2025-11-17)
 
 ### Performance Improvements
