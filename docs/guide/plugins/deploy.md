@@ -62,7 +62,7 @@
 | 14.| **威联通-部署证书到威联通** | 部署证书到qnap | 
 | 15.| **飞牛NAS-部署证书** |  | 
 | 16.| **Proxmox-上传证书到Proxmox** |  | 
-| 17.| **Dokploy-更新证书** | 自动更新Dokploy证书 | 
+| 17.| **Dokploy-部署server证书** | 自动更新Dokploy server证书 | 
 ## 5. 阿里云
 
 | 序号 | 名称 | 说明 |
