@@ -57,6 +57,10 @@ https://your_server_ip:7002
 
 ::: warning   
 如果您是第一次升级certd版本，切记切记先备份一下数据    
+```
+# docker-compose.yaml配置
+- /data/certd:/app/data   # 请务必确保 /app/data 这个路径没有改动，固定写死
+```
 :::
 
 

@@ -156,7 +156,7 @@ export class AliyunDeployCertToALB extends AbstractTaskPlugin {
       await this.deployDefaultCert(certId, client);
     }
     this.logger.info(`准备开始清理过期证书`);
-    await this.ctx.utils.sleep(20000)
+    await this.ctx.utils.sleep(30000)
     for (const listener of this.listeners) {
       try{
         await this.clearInvalidCert(albClientV2, listener);

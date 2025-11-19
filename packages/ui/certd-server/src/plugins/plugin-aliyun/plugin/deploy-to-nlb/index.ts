@@ -153,7 +153,7 @@ export class AliyunDeployCertToNLB extends AbstractTaskPlugin {
     }
 
     this.logger.info(`准备开始清理过期证书`);
-    await this.ctx.utils.sleep(20000)
+    await this.ctx.utils.sleep(30000)
     for (const listener of this.listeners) {
       try{
         await this.clearInvalidCert(nlbClientV2, listener);
