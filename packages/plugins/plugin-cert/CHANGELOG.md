@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.10](https://github.com/certd/certd/compare/v1.37.9...v1.37.10) (2025-11-19)
+
+### Performance Improvements
+
+* 优化dokploy 部署插件，配置选择serverId ([c9709f2](https://github.com/certd/certd/commit/c9709f26981c1cc9f71c14babb204329fcae0db5))
+
 ## [1.37.9](https://github.com/certd/certd/compare/v1.37.8...v1.37.9) (2025-11-19)
 
 **Note:** Version bump only for package @certd/plugin-cert

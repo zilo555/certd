@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.10](https://github.com/certd/certd/compare/v1.37.9...v1.37.10) (2025-11-19)
+
+### Performance Improvements
+
+* 优化dokploy 部署插件，配置选择serverId ([c9709f2](https://github.com/certd/certd/commit/c9709f26981c1cc9f71c14babb204329fcae0db5))
+* 站点证书监控备注输入框改成textarea ([70b603d](https://github.com/certd/certd/commit/70b603d601c34f39148c2ab70c655c51babf563d))
+
 ## [1.37.9](https://github.com/certd/certd/compare/v1.37.8...v1.37.9) (2025-11-19)
 
 ### Bug Fixes
