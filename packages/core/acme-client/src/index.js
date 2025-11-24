@@ -41,13 +41,13 @@ export function getDirectoryUrl(opts) {
   if (!list) {
     throw new Error(`sslProvider ${sslProvider} not found`)
   }
-  pkType = pkType || 'rsa'
+  let pkTypePrefix = pkType || 'rsa'
   if (pkType) {
-   pkType = pkType.toLowerCase().split("_")[0]
+   pkTypePrefix = pkType.toLowerCase().split("_")[0]
   }
 
-  if (pkType && list[pkType]) {
-    return list[pkType]
+  if (pkTypePrefix && list[pkTypePrefix]) {
+    return list[pkTypePrefix]
   }
 
   return list.production
