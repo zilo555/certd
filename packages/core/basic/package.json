@@ -17,6 +17,7 @@
     "compile": "tsc --skipLibCheck --watch"
   },
   "dependencies": {
+    "async-lock": "^1.4.1",
     "axios": "^1.7.2",
     "dayjs": "^1.11.7",
     "http-proxy-agent": "^7.0.2",
