@@ -35,7 +35,7 @@
     "rimraf": "^5.0.5",
     "socks": "^2.8.3",
     "socks-proxy-agent": "^8.0.4",
-    "ssh2": "^1.15.0",
+    "ssh2": "1.17.0",
     "strip-ansi": "^7.1.0",
     "tencentcloud-sdk-nodejs": "^4.0.1005"
   },

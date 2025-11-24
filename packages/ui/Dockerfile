@@ -19,6 +19,8 @@ RUN apk add --no-cache openjdk8
 WORKDIR /app/
 COPY --from=builder /workspace/certd-server/ /app/
 
+COPY ./patch/ssh2/*.js /app/node_modules/.pnpm/node_modules/ssh2/lib/protocol/
+
 ENV LEGO_VERSION=4.22.2
 ENV LEGO_DOWNLOAD_DIR=/app/tools/lego
 RUN mkdir -p $LEGO_DOWNLOAD_DIR
