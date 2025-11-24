@@ -128,7 +128,7 @@ export class AcmeService {
       await this.saveAccountConfig(email, conf);
       this.logger.info(`创建新的Accountkey:${email}`);
     }
-    const directoryUrl = acme.directory[this.sslProvider].production;
+    const directoryUrl = acme.getDirectoryUrl({ sslProvider: this.sslProvider, pkType: this.options.privateKeyType });
     if (this.options.useMappingProxy) {
       urlMapping.enabled = true;
     } else {

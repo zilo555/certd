@@ -117,6 +117,8 @@ export const directory: {
     }
 };
 
+export function getDirectoryUrl(opts:{sslProvider:string, pkType: string}): string;
+
 /**
  * Crypto
  */

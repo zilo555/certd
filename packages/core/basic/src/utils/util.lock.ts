@@ -1,4 +1,3 @@
-import { logger } from "./index.js";
 // @ts-ignore
 import AsyncLock from "async-lock";
 

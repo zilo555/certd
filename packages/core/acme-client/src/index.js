@@ -31,8 +31,27 @@ export const directory = {
     sslcom:{
       staging: 'https://acme.ssl.com/sslcom-dv-rsa',
       production: 'https://acme.ssl.com/sslcom-dv-rsa',
+      ec: 'https://acme.ssl.com/sslcom-dv-ecc',
     }
 };
+
+export function getDirectoryUrl(opts) {
+  const {sslProvider, pkType} = opts
+  const list= directory[sslProvider]
+  if (!list) {
+    throw new Error(`sslProvider ${sslProvider} not found`)
+  }
+  pkType = pkType || 'rsa'
+  if (pkType) {
+   pkType = pkType.toLowerCase().split("_")[0]
+  }
+
+  if (pkType && list[pkType]) {
+    return list[pkType]
+  }
+
+  return list.production
+}
 
 /**
  * Crypto
