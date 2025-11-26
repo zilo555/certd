@@ -17,9 +17,9 @@ import { TwoFactorService } from "../../mine/service/two-factor-service.js";
 import { UserSettingsService } from "../../mine/service/user-settings-service.js";
 import { isPlus } from "@certd/plus-core";
 import { AddonService } from "@certd/lib-server";
+import { OauthBoundService } from "./oauth-bound-service.js";
 
 /**
- * 系统用户
  */
 @Provide()
 @Scope(ScopeEnum.Request, {allowDowngrade: true})
@@ -42,6 +42,8 @@ export class LoginService {
   twoFactorService: TwoFactorService;
   @Inject()
   addonService: AddonService;
+  @Inject()
+  oauthBoundService: OauthBoundService;
 
   checkIsBlocked(username: string) {
     const blockDurationKey = `login_block_duration:${username}`;
@@ -204,6 +206,10 @@ export class LoginService {
    * @param roleIds
    */
   async generateToken(user: UserEntity) {
+    if (user.status === 0) {
+      throw new CommonException('用户已被禁用');
+    }
+
     const roleIds = await this.roleService.getRoleIdsByUserId(user.id);
     const tokenInfo = {
       username: user.username,
@@ -223,5 +229,21 @@ export class LoginService {
       token,
       expire,
     };
+  }
+
+
+  async loginByOpenId(req: { openId: string, type:string }) {
+    const {openId, type} = req;
+    const oauthBound = await this.oauthBoundService.findOne({
+      where:{openId, type}
+    });
+    if (oauthBound == null) {
+      return null
+    }
+    const info = await this.userService.findOne({id: oauthBound.userId});
+    if (info == null) {
+      throw new CommonException('用户不存在');
+    }
+    return this.generateToken(info);
   }
 }

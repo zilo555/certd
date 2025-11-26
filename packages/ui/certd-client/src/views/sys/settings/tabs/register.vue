@@ -54,6 +54,33 @@
             <div class="helper">{{ t("certd.saveThenTest") }}</div>
           </a-form-item>
         </template>
+        <a-form-item :label="t('certd.enableOauth')" :name="['public', 'oauthEnabled']">
+          <div class="flex-o">
+            <a-switch v-model:checked="formState.public.oauthEnabled" :disabled="!settingsStore.isPlus" :title="t('certd.plusFeature')" />
+            <vip-button class="ml-5" mode="plus"></vip-button>
+          </div>
+        </a-form-item>
+        <a-form-item v-if="formState.public.oauthEnabled" :label="t('certd.oauthProviders')" :name="['public', 'oauthProviders']">
+          <div class="flex flex-wrap">
+            <table>
+              <tr>
+                <th>{{ t("certd.oauthType") }}</th>
+                <th>{{ t("certd.oauthConfig") }}</th>
+              </tr>
+              <tr v-for="(item, key) of oauthProviders" :key="key">
+                <td>
+                  <div class="flex items-center">
+                    <fs-icon :icon="item.icon" />
+                    {{ item.title }}
+                  </div>
+                </td>
+                <td>
+                  <AddonSelector v-model:model-value="item.addonId" addon-type="oauth" from="sys" :type="item.name" :placeholder="t('certd.clientIdPlaceholder')" />
+                </td>
+              </tr>
+            </table>
+          </div>
+        </a-form-item>
       </template>
 
       <a-form-item label=" " :colon="false" :wrapper-col="{ span: 16 }">
@@ -64,14 +91,14 @@
 </template>
 
 <script setup lang="tsx">
-import { reactive, ref, Ref } from "vue";
+import { computed, reactive, ref, Ref } from "vue";
 import { GetSmsTypeDefine, SysSettings } from "/@/views/sys/settings/api";
 import * as api from "/@/views/sys/settings/api";
 import { merge } from "lodash-es";
 import { useSettingStore } from "/@/store/settings";
 import { notification } from "ant-design-vue";
 import { useI18n } from "/src/locales";
-
+import AddonSelector from "../../../certd/addon/addon-selector/index.vue";
 const { t } = useI18n();
 
 defineOptions({
@@ -158,6 +185,35 @@ async function loadTypeDefine(type: string) {
   smsTypeDefineInputs.value = inputs;
 }
 
+const oauthProviders = ref([]);
+async function loadOauthProviders() {
+  let list: any = await api.GetOauthProviders();
+  oauthProviders.value = list;
+  for (const item of list) {
+    debugger;
+    const type = item.name;
+    const provider = formState.public.oauthProviders?.[type];
+    if (provider) {
+      item.addonId = provider.addonId;
+    }
+  }
+}
+
+function fillOauthProviders(form: any) {
+  const providers: any = {};
+  for (const item of oauthProviders.value) {
+    const type = item.name;
+    providers[type] = {
+      type: type,
+      title: item.title,
+      icon: item.icon,
+      addonId: item.addonId || null,
+    };
+  }
+  form.public.oauthProviders = providers;
+  return providers;
+}
+
 async function loadSysSettings() {
   const data: any = await api.SysSettingsGet();
   merge(formState, data);
@@ -172,6 +228,7 @@ async function loadSysSettings() {
   if (!settingsStore.isComm) {
     formState.public.smsLoginEnabled = false;
   }
+  await loadOauthProviders();
 }
 
 const saveLoading = ref(false);
@@ -180,6 +237,7 @@ const settingsStore = useSettingStore();
 const onFinish = async (form: any) => {
   try {
     saveLoading.value = true;
+    fillOauthProviders(form);
     await api.SysSettingsSave(form);
     await settingsStore.loadSysSettings();
     notification.success({

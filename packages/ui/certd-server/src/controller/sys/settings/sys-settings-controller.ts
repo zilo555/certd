@@ -1,5 +1,6 @@
 import { ALL, Body, Controller, Inject, Post, Provide, Query } from "@midwayjs/core";
 import {
+  addonRegistry,
   CrudController,
   SysPrivateSettings,
   SysPublicSettings,
@@ -198,5 +199,11 @@ export class SysSettingsController extends CrudController<SysSettingsService> {
   async captchaTest(@Body(ALL) body: any) {
     await this.codeService.checkCaptcha(body)
     return this.ok({});
+  }
+
+  @Post('/oauth/providers', { summary: 'sys:settings:view' })
+  async oauthProviders() {
+    const list = await addonRegistry.getDefineList("oauth");
+    return this.ok(list);
   }
 }

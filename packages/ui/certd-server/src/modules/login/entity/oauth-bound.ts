@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('cd_oauth_bind')
-export class OauthBindEntity {
+@Entity('cd_oauth_bound')
+export class OauthBoundEntity {
   @PrimaryGeneratedColumn()
   id: number;
 

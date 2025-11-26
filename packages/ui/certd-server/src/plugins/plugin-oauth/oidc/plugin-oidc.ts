@@ -58,7 +58,7 @@ export class OidcOauthProvider extends BaseAddon implements IOauthProvider {
   async onCallback(req: OnCallbackReq) {
     const { config, client } = await this.getClient()
 
-    const currentUrl = new URL(req.redirectUri)
+    const currentUrl = new URL("")
     let tokens: any = await client.authorizationCodeGrant(
       config,
       currentUrl,

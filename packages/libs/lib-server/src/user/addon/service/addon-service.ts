@@ -76,7 +76,7 @@ export class AddonService extends BaseService<AddonEntity> {
 
 
   getDefineList(addonType: string) {
-    return addonRegistry.getDefineList();
+    return addonRegistry.getDefineList(addonType);
   }
 
   getDefineByType(type: string, prefix?: string) {

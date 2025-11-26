@@ -82,6 +82,7 @@ function createCrudOptionsWithApi(opts: any) {
   opts.context = {
     api,
     addonType: props.addonType,
+    type: props.type,
   };
   return createCrudOptions(opts);
 }

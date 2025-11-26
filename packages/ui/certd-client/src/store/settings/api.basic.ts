@@ -59,6 +59,17 @@ export type SysPublicSetting = {
 
   // 固定证书有效期天数，0表示不固定
   fixedCertExpireDays?: number;
+
+  // 第三方OAuth配置
+  oauthEnabled?: boolean;
+  oauthProviders?: Record<
+    string,
+    {
+      type: string;
+      title: string;
+      addonId: number;
+    }
+  >;
 };
 export type SuiteSetting = {
   enabled?: boolean;

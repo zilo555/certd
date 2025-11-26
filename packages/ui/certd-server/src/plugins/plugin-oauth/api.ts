@@ -1,6 +1,5 @@
 export type OnCallbackReq = {
     code: string;
-    redirectUri: string;
     state: string;
 }
 

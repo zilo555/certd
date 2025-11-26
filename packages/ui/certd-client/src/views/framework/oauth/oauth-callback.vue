@@ -1,0 +1,105 @@
+<template>
+  <div class="oauth-callback-page">
+    <div class="oauth-callback-content">
+      <div v-if="!bindRequired" class="oauth-callback-title">
+        <span>登录中...</span>
+      </div>
+      <div v-else class="oauth-callback-title">
+        <div>第三方登录成功，还未绑定账号，请选择</div>
+
+        <div>
+          <a-button class="w-full mt-5" type="primary" @click="goBindUser">绑定已有账号</a-button>
+          <a-button class="w-full mt-5" type="primary" @click="autoRegister">创建新账号</a-button>
+        </div>
+
+        <div class="w-full mt-5">
+          <router-link to="/login" class="w-full mt-5" type="primary">返回登录页</router-link>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, onMounted } from "vue";
+import * as api from "./api";
+import { useRoute, useRouter } from "vue-router";
+import { useUserStore } from "/@/store/user";
+
+const route = useRoute();
+const router = useRouter();
+const oauthType = route.params.type as string;
+
+const query = route.query as Record<string, string>;
+
+const userStore = useUserStore();
+
+const bindRequired = ref(false);
+const bindCode = ref("");
+
+async function handleOauthCallback() {
+  //处理第三方登录回调
+  const res = await api.OauthCallback(oauthType, query);
+  if (res.token) {
+    //登录成功
+    userStore.onLoginSuccess(res);
+    //跳转到首页
+    router.replace("/");
+    return;
+  }
+  if (res.bindRequired) {
+    //需要绑定
+    bindRequired.value = true;
+    bindCode.value = res.validationCode;
+  }
+}
+
+onMounted(async () => {
+  await handleOauthCallback();
+});
+
+async function goBindUser() {
+  //绑定已有账号
+  router.replace({
+    path: "/login",
+    query: {
+      bindCode: bindCode.value,
+    },
+  });
+}
+
+async function autoRegister() {
+  //自动注册账号
+  const res = await api.AutoRegister(oauthType, bindCode.value);
+  //登录成功
+  userStore.onLoginSuccess(res);
+  //跳转到首页
+  router.replace("/");
+}
+</script>
+<style lang="less">
+.oauth-callback-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+
+  .oauth-callback-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    border-radius: 16px;
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.1);
+    width: 500px;
+    margin: 0 auto;
+    margin-top: 50px;
+
+    .oauth-callback-title {
+      font-size: 24px;
+      font-weight: 500;
+    }
+  }
+}
+</style>

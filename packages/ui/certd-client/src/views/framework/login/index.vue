@@ -51,7 +51,7 @@
           {{ t("authentication.loginButton") }}
         </a-button>
 
-        <div v-if="!!settingStore.sysPublic.selfServicePasswordRetrievalEnabled" class="mt-2">
+        <div v-if="!!settingStore.sysPublic.selfServicePasswordRetrievalEnabled && !queryBindCode" class="mt-2">
           <router-link :to="{ name: 'forgotPassword' }">
             {{ t("authentication.forgotPassword") }}
           </router-link>
@@ -61,9 +61,13 @@
       <a-form-item class="user-login-other">
         <div class="flex flex-between justify-between items-center">
           <language-toggle class="color-blue"></language-toggle>
-          <router-link v-if="hasRegisterTypeEnabled()" class="register" :to="{ name: 'register' }">
+          <router-link v-if="hasRegisterTypeEnabled() && !queryBindCode" class="register" :to="{ name: 'register' }">
             {{ t("authentication.registerLink") }}
           </router-link>
+        </div>
+
+        <div class="flex flex-between justify-between items-center mt-5">
+          <oauth-footer></oauth-footer>
         </div>
       </a-form-item>
     </a-form>
@@ -96,12 +100,18 @@ import { useI18n } from "/@/locales";
 import { LanguageToggle } from "/@/vben/layouts";
 import CaptchaInput from "/@/components/captcha/captcha-input.vue";
 import { useRoute } from "vue-router";
+import OauthFooter from "/@/views/framework/oauth/oauth-footer.vue";
+import * as oauthApi from "../oauth/api";
+import { notification } from "ant-design-vue";
 export default defineComponent({
   name: "LoginPage",
-  components: { LanguageToggle, SmsCode, CaptchaInput },
+  components: { LanguageToggle, SmsCode, CaptchaInput, OauthFooter },
   setup() {
     const { t } = useI18n();
     const route = useRoute();
+
+    const queryBindCode = ref(route.query.bindCode as string | undefined);
+
     const urlLoginType = route.query.loginType as string | undefined;
     const verifyCodeInputRef = ref();
     const loading = ref(false);
@@ -160,6 +170,13 @@ export default defineComponent({
       },
     };
 
+    async function afterLoginSuccess() {
+      if (queryBindCode.value) {
+        await oauthApi.BindUser(queryBindCode.value);
+        notification.success({ message: "绑定第三方账号成功" });
+      }
+    }
+
     const twoFactor = reactive({
       loginId: "",
       verifyCode: "",
@@ -167,6 +184,7 @@ export default defineComponent({
 
     const handleTwoFactorSubmit = async () => {
       await userStore.loginByTwoFactor(twoFactor);
+      afterLoginSuccess();
     };
 
     const handleFinish = async () => {
@@ -178,6 +196,7 @@ export default defineComponent({
         // }
         const loginType = formState.loginType;
         await userStore.login(loginType, toRaw(formState));
+        afterLoginSuccess();
       } catch (e: any) {
         //@ts-ignore
         if (e.code === 10020) {
@@ -233,6 +252,7 @@ export default defineComponent({
       settingStore,
       captchaInputRef,
       captchaInputForSmsCode,
+      queryBindCode,
     };
   },
 });

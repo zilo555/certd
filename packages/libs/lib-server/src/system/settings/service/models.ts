@@ -16,7 +16,7 @@ export class SysPublicSettings extends BaseSettings {
   static __access__ = 'public';
 
   registerEnabled = false;
-  userValidTimeEnabled?:boolean = false;
+  userValidTimeEnabled?: boolean = false;
   passwordLoginEnabled = true;
   usernameRegisterEnabled = true;
   mobileRegisterEnabled = false;
@@ -36,7 +36,7 @@ export class SysPublicSettings extends BaseSettings {
   captchaEnabled = false;
   //验证码类型
   captchaType?: string;
-  captchaAddonId?:number;
+  captchaAddonId?: number;
 
 
 
@@ -48,6 +48,14 @@ export class SysPublicSettings extends BaseSettings {
 
   // 固定证书有效期天数，0表示不固定
   fixedCertExpireDays?: number;
+
+  // 第三方OAuth配置
+  oauthEnabled?: boolean = false;
+  oauthProviders: Record<string, {
+    type: string;
+    title: string;
+    addonId: number;
+  }> = {};
 
 }
 
@@ -69,9 +77,9 @@ export class SysPrivateSettings extends BaseSettings {
     type?: string;
     config?: any;
   } = {
-    type: 'aliyun',
-    config: {},
-  };
+      type: 'aliyun',
+      config: {},
+    };
 
   removeSecret() {
     const clone = cloneDeep(this);
@@ -196,7 +204,7 @@ export class SysSuiteSetting extends BaseSettings {
   static __key__ = 'sys.suite';
   static __access__ = 'private';
 
-  enabled:boolean = false;
+  enabled: boolean = false;
 
   registerGift?: {
     productId: number;
@@ -221,22 +229,9 @@ export class SysSafeSetting extends BaseSettings {
   static __access__ = 'private';
 
   // 站点隐藏
-  hidden:SiteHidden = {
+  hidden: SiteHidden = {
     enabled: false,
-    hiddenOpenApi:false,
+    hiddenOpenApi: false,
     autoHiddenTimes: 5,
   };
-}
-
-
-export class SysOauthSetting extends BaseSettings {
-  static __title__ = 'OAuth设置';
-  static __key__ = 'sys.oauth';
-  static __access__ = 'private';
-
-  oauths: Record<string, {
-    type: string;
-    title: string;
-    addonId: number;
-  }> = {};
 }

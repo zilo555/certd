@@ -1,5 +1,5 @@
 import { Inject, Provide, Scope, ScopeEnum } from '@midwayjs/core';
-import { cache, isDev, randomNumber } from '@certd/basic';
+import { cache, isDev, randomNumber, simpleNanoId } from '@certd/basic';
 import { SysSettingsService, SysSiteInfo } from '@certd/lib-server';
 import { SmsServiceFactory } from '../sms/factory.js';
 import { ISmsService } from '../sms/api.js';
@@ -187,5 +187,21 @@ export class CodeService {
       }
     `
     );
+  }
+
+
+  buildValidationValueKey(code:string) {
+    return `validationValue:${code}`;
+  }
+  setValidationValue(value:any) {
+    const randomCode = simpleNanoId(12);
+    const key = this.buildValidationValueKey(randomCode);
+    cache.set(key, value, {
+      ttl: 5 * 60 * 1000, //5分钟
+    });
+    return randomCode;
+  }
+  getValidationValue(code:string) {
+    return cache.get(this.buildValidationValueKey(code));
   }
 }

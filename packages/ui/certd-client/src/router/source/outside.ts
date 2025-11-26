@@ -32,6 +32,14 @@ export const outsideResource = [
         path: "/forgotPassword",
         component: "/framework/forgot-password/index.vue",
       },
+      {
+        meta: {
+          title: "第三方登录回调",
+        },
+        name: "oauthCallback",
+        path: "/oauth/callback/:type",
+        component: "/framework/oauth/oauth-callback.vue",
+      },
     ],
   },
   ...errorPage,
