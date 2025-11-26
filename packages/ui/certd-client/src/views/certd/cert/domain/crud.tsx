@@ -184,7 +184,8 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
               name: "AccessSelector",
               vModel: "modelValue",
               type: compute(({ form }) => {
-                return form.dnsProviderType;
+                const type = form.dnsProviderType || "aliyun";
+                return dnsProviderTypeDict?.dataMap[type]?.accessType;
               }),
             },
             show: compute(({ form }) => {

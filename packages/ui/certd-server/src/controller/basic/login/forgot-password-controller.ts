@@ -8,7 +8,7 @@ import { LoginService } from "../../../modules/login/service/login-service.js";
  */
 @Provide()
 @Controller('/api')
-export class LoginController extends BaseController {
+export class ForgotPasswordController extends BaseController {
   @Inject()
   loginService: LoginService;
   @Inject()

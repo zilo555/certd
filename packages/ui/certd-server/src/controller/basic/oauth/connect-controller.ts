@@ -1,7 +1,7 @@
-import { AddonService, BaseController, Constants, newAddon, SysInstallInfo, SysOauthSetting, SysSettingsService } from "@certd/lib-server";
-import { ALL, Body, Controller, Get, Inject, Post, Provide, Query } from "@midwayjs/core";
-import { IOauthProvider } from "../../../plugins/plugin-oauth/api.js";
+import { BaseController, Constants, SysInstallInfo, SysOauthSetting, SysSettingsService } from "@certd/lib-server";
+import { ALL, Body, Controller, Inject, Post, Provide } from "@midwayjs/core";
 import { AddonGetterService } from "../../../modules/pipeline/service/addon-getter-service.js";
+import { IOauthProvider } from "../../../plugins/plugin-oauth/api.js";
 
 /**
  */
@@ -29,7 +29,7 @@ export class ConnectController extends BaseController {
   }
 
   @Post('/login', { summary: Constants.per.guest })
-  public async login(@Query(ALL) body: {type:string}) {
+  public async login(@Body(ALL) body: {type:string}) {
 
     const addon = await this.getOauthProvider(body.type);
     const installInfo = await this.sysSettingsService.getSetting<SysInstallInfo>(SysInstallInfo);
@@ -40,7 +40,7 @@ export class ConnectController extends BaseController {
     return this.ok(loginUrl);
   }
   @Post('/callback', { summary: Constants.per.guest })
-  public async callback(@Query(ALL) body: any) {
+  public async callback(@Body(ALL) body: any) {
     //处理登录回调
     const addon = await this.getOauthProvider(body.type);
     const tokenRes = await addon.onCallback({
@@ -51,16 +51,15 @@ export class ConnectController extends BaseController {
 
     const userInfo = tokenRes.userInfo;
 
-    
+    const openId = userInfo.openId;
 
-
-    return this.ok(tokenRes);
+    return this.ok(openId);
   }
 
   @Post('/bind', { summary: Constants.per.guest })
   public async bind(@Body(ALL) body: any) {
-    const autoRegister = body.autoRegister || false;
-    const bindInfo = body.bind || {};
+    // const autoRegister = body.autoRegister || false;
+    // const bindInfo = body.bind || {};
     //处理登录回调
     return this.ok(1);
   }
