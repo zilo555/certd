@@ -187,4 +187,14 @@ export class AddonService extends BaseService<AddonEntity> {
     });
     return this.buildAddonInstanceConfig(res);
   }
+
+  async getOneByType(req:{addonType:string,type:string,userId:number}) {
+    return await this.repository.findOne({
+      where: {
+        addonType: req.addonType,
+        type: req.type,
+        userId: req.userId
+      }
+    });
+  }
 }

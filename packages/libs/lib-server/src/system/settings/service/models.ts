@@ -229,3 +229,14 @@ export class SysSafeSetting extends BaseSettings {
 }
 
 
+export class SysOauthSetting extends BaseSettings {
+  static __title__ = 'OAuth设置';
+  static __key__ = 'sys.oauth';
+  static __access__ = 'private';
+
+  oauths: Record<string, {
+    type: string;
+    title: string;
+    addonId: number;
+  }> = {};
+}

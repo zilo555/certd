@@ -8,3 +8,4 @@ export * from "./ctyun/index.js";
 export * from "./oss/index.js";
 export * from "./s3/index.js";
 export * from "./lib/index.js";
+export * from "./service/index.js";
