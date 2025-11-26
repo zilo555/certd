@@ -559,6 +559,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
           column: {
             width: 200,
             sorter: true,
+            ellipsis: true,
             cellRender({ value }) {
               return <a-tooltip title={value}>{value}</a-tooltip>;
             },

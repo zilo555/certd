@@ -350,6 +350,7 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             show: false,
           },
           column: {
+            ellipsis: true,
             width: 200,
             sorter: true,
             tooltip: true,
