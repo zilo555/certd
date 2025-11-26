@@ -1,7 +1,8 @@
 import { request } from "/src/api/service";
 import { RequestHandleReq } from "/@/components/plugins/lib";
+import { AddonTypeDefines } from "./types";
 
-export function createAddonApi(opts: { from: any; addonType: string }) {
+export function createAddonApi(opts: { from: any; addonType: string } = { from: "user", addonType: "" }) {
   let apiPrefix = "/addon";
   if (opts.from === "sys") {
     apiPrefix = "/sys/addon";
@@ -127,15 +128,6 @@ export function createAddonApi(opts: { from: any; addonType: string }) {
     },
   };
 }
-
-export const AddonTypeDefines = {
-  captcha: {
-    name: "captcha",
-    title: "验证码",
-    showDefault: false,
-    showTest: false,
-  },
-};
 
 export function getAddonTypeDefine(addonType: string) {
   return AddonTypeDefines[addonType];

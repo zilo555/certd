@@ -20,7 +20,7 @@ import { addonProvide } from "/@/views/certd/addon/common";
 export default defineComponent({
   name: "AddonManager",
   setup() {
-    const api = createAddonApi();
+    const api = createAddonApi({ from: "user", addonType: "" });
     addonProvide(api);
     const { crudBinding, crudRef, crudExpose } = useFs({ createCrudOptions, context: { api } });
 
