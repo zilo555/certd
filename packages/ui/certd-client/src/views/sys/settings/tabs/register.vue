@@ -54,30 +54,34 @@
             <div class="helper">{{ t("certd.saveThenTest") }}</div>
           </a-form-item>
         </template>
-        <a-form-item :label="t('certd.enableOauth')" :name="['public', 'oauthEnabled']">
+        <a-form-item :label="t('certd.sys.setting.enableOauth')" :name="['public', 'oauthEnabled']">
           <div class="flex-o">
             <a-switch v-model:checked="formState.public.oauthEnabled" :disabled="!settingsStore.isPlus" :title="t('certd.plusFeature')" />
-            <vip-button class="ml-5" mode="plus"></vip-button>
+            <vip-button class="ml-5" mode="button"></vip-button>
           </div>
         </a-form-item>
-        <a-form-item v-if="formState.public.oauthEnabled" :label="t('certd.oauthProviders')" :name="['public', 'oauthProviders']">
+        <a-form-item v-if="formState.public.oauthEnabled" :label="t('certd.sys.setting.oauthProviders')" :name="['public', 'oauthProviders']">
           <div class="flex flex-wrap">
-            <table>
-              <tr>
-                <th>{{ t("certd.oauthType") }}</th>
-                <th>{{ t("certd.oauthConfig") }}</th>
-              </tr>
-              <tr v-for="(item, key) of oauthProviders" :key="key">
-                <td>
-                  <div class="flex items-center">
-                    <fs-icon :icon="item.icon" />
-                    {{ item.title }}
-                  </div>
-                </td>
-                <td>
-                  <AddonSelector v-model:model-value="item.addonId" addon-type="oauth" from="sys" :type="item.name" :placeholder="t('certd.clientIdPlaceholder')" />
-                </td>
-              </tr>
+            <table class="w-full table-auto border-collapse border border-gray-400">
+              <thead>
+                <tr>
+                  <th class="border border-gray-300 px-4 py-2 w-1/2">{{ t("certd.sys.setting.oauthType") }}</th>
+                  <th class="border border-gray-300 px-4 py-2 w-1/2">{{ t("certd.sys.setting.oauthConfig") }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, key) of oauthProviders" :key="key">
+                  <td class="border border-gray-300 px-4 py-2">
+                    <div class="flex items-center" :title="item.desc">
+                      <fs-icon :icon="item.icon" class="mr-2 text-blue-600" />
+                      {{ item.title }}
+                    </div>
+                  </td>
+                  <td class="border border-gray-300 px-4 py-2">
+                    <AddonSelector v-model:model-value="item.addonId" addon-type="oauth" from="sys" :type="item.name" :placeholder="t('certd.sys.setting.oauthProviderSelectorPlaceholder')" />
+                  </td>
+                </tr>
+              </tbody>
             </table>
           </div>
         </a-form-item>
@@ -190,7 +194,6 @@ async function loadOauthProviders() {
   let list: any = await api.GetOauthProviders();
   oauthProviders.value = list;
   for (const item of list) {
-    debugger;
     const type = item.name;
     const provider = formState.public.oauthProviders?.[type];
     if (provider) {

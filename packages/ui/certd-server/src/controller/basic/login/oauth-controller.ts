@@ -1,12 +1,12 @@
 import { addonRegistry, BaseController, Constants, SysInstallInfo, SysSettingsService } from "@certd/lib-server";
-import { ALL, Body, Controller, Inject, Post, Provide } from "@midwayjs/core";
+import { ALL, Body, Controller, Get, Inject, Param, Post, Provide, Query } from "@midwayjs/core";
 import { AddonGetterService } from "../../../modules/pipeline/service/addon-getter-service.js";
 import { IOauthProvider } from "../../../plugins/plugin-oauth/api.js";
 import { LoginService } from "../../../modules/login/service/login-service.js";
 import { CodeService } from "../../../modules/basic/service/code-service.js";
 import { UserService } from "../../../modules/sys/authority/service/user-service.js";
 import { UserEntity } from "../../../modules/sys/authority/entity/user.js";
-import { simpleNanoId } from "@certd/basic";
+import { logger, simpleNanoId } from "@certd/basic";
 import { OauthBoundService } from "../../../modules/login/service/oauth-bound-service.js";
 import { OauthBoundEntity } from "../../../modules/login/entity/oauth-bound.js";
 
@@ -56,33 +56,83 @@ export class ConnectController extends BaseController {
     const installInfo = await this.sysSettingsService.getSetting<SysInstallInfo>(SysInstallInfo);
     const bindUrl = installInfo?.bindUrl || "";
     //构造登录url
-    const redirectUrl = `${bindUrl}#/oauth/callback/${body.type}`;
-    const loginUrl = await addon.buildLoginUrl({ redirectUri: redirectUrl });
-    return this.ok({loginUrl});
+    const redirectUrl = `${bindUrl}api/oauth/callback/${body.type}`;
+    const { loginUrl, ticketValue } = await addon.buildLoginUrl({ redirectUri: redirectUrl });
+    const ticket = this.codeService.setValidationValue(ticketValue)
+    this.ctx.cookies.set("oauth_ticket", ticket, {
+      httpOnly: true,
+      // secure: true,
+      // sameSite: "strict",
+    })
+    return this.ok({ loginUrl, ticket });
   }
-  @Post('/callback', { summary: Constants.per.guest })
-  public async callback(@Body(ALL) body: any) {
+  @Get('/callback/:type', { summary: Constants.per.guest })
+  public async callback(@Param('type') type: string, @Query() query: Record<string, string>) {
     //处理登录回调
-    const addon = await this.getOauthProvider(body.type);
-    const tokenRes = await addon.onCallback({
-      code: body.code,
-      state: body.state,
-    });
+    const addon = await this.getOauthProvider(type);
+    const request = this.ctx.request;
+    // const ticketValue = this.codeService.getValidationValue(ticket);
+    // if (!ticketValue) {
+    //   throw new Error("登录ticket已过期");
+    // }
 
-    const userInfo = tokenRes.userInfo;
+    const ticket = this.ctx.cookies.get("oauth_ticket");
+    if (!ticket) {
+      throw new Error("ticket已过期");
+    }
+    const ticketValue = this.codeService.getValidationValue(ticket);
+    if (!ticketValue) {
+      throw new Error("ticketValue已过期");
+    }
 
-    const openId = userInfo.openId;
+    const installInfo = await this.sysSettingsService.getSetting<SysInstallInfo>(SysInstallInfo);
+    const bindUrl = installInfo?.bindUrl || "";
+    const currentUrl = `${bindUrl}api/oauth/callback/${type}?${request.querystring}`
+    try {
+      const tokenRes = await addon.onCallback({
+        code: query.code,
+        state: query.state,
+        ticketValue,
+        currentURL: new URL(currentUrl)
+      });
 
-    const loginRes = await this.loginService.loginByOpenId({ openId, type: body.type });
-    if (loginRes == null) {
-      // 用户还未绑定，让用户选择绑定已有账号还是自动注册新账号
+      const userInfo = tokenRes.userInfo;
+
       const validationCode = await this.codeService.setValidationValue({
-        type: body.type,
+        type,
         userInfo,
       });
+
+      const redirectUrl = `${bindUrl}#/oauth/callback/${type}?validationCode=${validationCode}`;
+      this.ctx.redirect(redirectUrl);
+    } catch (err) {
+      logger.error(err);
+      this.ctx.redirect(`${bindUrl}#/oauth/callback/${type}?error=${err.error_description || err.message}`);
+    }
+
+  }
+
+
+  @Post('/token', { summary: Constants.per.guest })
+  public async token(@Body(ALL) body: { validationCode: string, type: string }) {
+    const validationValue = await this.codeService.getValidationValue(body.validationCode);
+    if (!validationValue) {
+      throw new Error("校验码错误");
+    }
+
+    const type = validationValue.type;
+    if (type !== body.type) {
+      throw new Error("校验码错误");
+    }
+    const userInfo = validationValue.userInfo;
+    const openId = userInfo.openId;
+
+    const loginRes = await this.loginService.loginByOpenId({ openId, type });
+    if (loginRes == null) {
+
       return this.ok({
         bindRequired: true,
-        validationCode,
+        validationCode: body.validationCode,
       });
     }
 
@@ -98,11 +148,13 @@ export class ConnectController extends BaseController {
     if (!validationValue) {
       throw new Error("校验码错误");
     }
-
+    const type = validationValue.type;
+    const userInfo = validationValue.userInfo;
+    const openId = userInfo.openId;
     await this.oauthBoundService.bind({
       userId,
-      type: body.type,
-      openId: validationValue.openId,
+      type,
+      openId,
     });
     return this.ok(1);
   }
@@ -117,12 +169,12 @@ export class ConnectController extends BaseController {
     const userInfo = validationValue.userInfo;
     const oauthType = validationValue.type;
     let newUser = new UserEntity()
-    newUser.username = `${oauthType}:_${userInfo.nickName}_${simpleNanoId(6)}`;
+    newUser.username = `${oauthType}_${userInfo.nickName}_${simpleNanoId(6)}`;
     newUser.avatar = userInfo.avatar;
-    newUser.nickName = userInfo.nickName;
+    newUser.nickName = userInfo.nickName || simpleNanoId(6);
 
     newUser = await this.userService.register("username", newUser, async (txManager) => {
-      const oauthBound : OauthBoundEntity = new OauthBoundEntity()
+      const oauthBound: OauthBoundEntity = new OauthBoundEntity()
       oauthBound.userId = newUser.id;
       oauthBound.type = oauthType;
       oauthBound.openId = userInfo.openId;

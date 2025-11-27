@@ -1,8 +1,8 @@
 <template>
   <div id="userLayout" :class="['user-layout-wrapper']">
-    <div class="login-container flex-center">
-      <div class="user-layout-content flex-center flex-col">
-        <div class="top flex flex-col items-center justify-center">
+    <div class="login-container flex justify-start">
+      <div class="user-layout-content flex-col justify-start">
+        <div class="top flex flex-col items-center justify-start">
           <div class="header flex flex-row items-center">
             <img :src="siteInfo.loginLogo" class="logo" alt="logo" />
             <span class="title"></span>
@@ -10,8 +10,9 @@
           <div class="desc">{{ siteInfo.slogan }}</div>
         </div>
 
-        <router-view />
-
+        <div class="flex-1 flex flex-col justify-start items-center">
+          <router-view />
+        </div>
         <div class="footer">
           <div class="copyright">
             <span v-if="!settingStore.isComm">

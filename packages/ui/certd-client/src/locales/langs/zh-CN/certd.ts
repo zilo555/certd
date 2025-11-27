@@ -761,6 +761,13 @@ export default {
       fixedCertExpireDays: "固定证书有效期天数",
       fixedCertExpireDaysHelper: "固定证书有效期天数，有助于列表进度条整齐显示",
       fixedCertExpireDaysRecommend: "推荐90",
+
+      enableOauth: "启用OAuth2登录",
+      oauthEnabledHelper: "是否启用OAuth2登录",
+      oauthProviders: "OAuth2登录提供商",
+      oauthType: "OAuth2登录类型",
+      oauthConfig: "OAuth2登录配置",
+      oauthProviderSelectorPlaceholder: "请选择OAuth2登录提供商",
     },
   },
   modal: {

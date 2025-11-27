@@ -57,6 +57,7 @@ export default {
   passwordPlaceholder: "Please enter your password",
   mobilePlaceholder: "Please enter your mobile number",
   loginButton: "Log In",
+  bindButton: "Bind Account",
   forgotPassword: "Forgot password?",
   forgotAdminPassword: "Forgot admin password?",
   registerLink: "Register",

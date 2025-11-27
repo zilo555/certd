@@ -1,5 +1,5 @@
 import { PermissionException, ValidateException } from './exception/index.js';
-import { In, Repository, SelectQueryBuilder } from 'typeorm';
+import { FindOneOptions, In, Repository, SelectQueryBuilder } from 'typeorm';
 import { Inject } from '@midwayjs/core';
 import { TypeORMDataSourceManager } from '@midwayjs/typeorm';
 import { EntityManager } from 'typeorm/entity-manager/EntityManager.js';
@@ -237,5 +237,9 @@ export abstract class BaseService<T> {
     }
 
     await this.delete(ids);
+  }
+
+  async findOne(options: FindOneOptions<T>) {
+    return await this.getRepository().findOne(options);
   }
 }

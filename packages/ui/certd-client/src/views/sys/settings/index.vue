@@ -66,7 +66,7 @@ function onChange(value: string) {
 <style lang="less">
 .page-sys-settings {
   .sys-settings-form {
-    width: 800px;
+    width: 900px;
     max-width: 100%;
     padding: 20px;
   }

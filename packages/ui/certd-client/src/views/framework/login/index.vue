@@ -48,28 +48,26 @@
       </a-tabs>
       <a-form-item>
         <a-button type="primary" size="large" html-type="button" :loading="loading" class="login-button" @click="handleFinish">
-          {{ t("authentication.loginButton") }}
+          {{ queryBindCode ? t("authentication.bindButton") : t("authentication.loginButton") }}
         </a-button>
 
-        <div v-if="!!settingStore.sysPublic.selfServicePasswordRetrievalEnabled && !queryBindCode" class="mt-2">
-          <router-link :to="{ name: 'forgotPassword' }">
-            {{ t("authentication.forgotPassword") }}
-          </router-link>
-        </div>
-      </a-form-item>
+        <div class="mt-2 flex justify-between items-center">
+          <div class="flex items-center gap-2">
+            <language-toggle class="text-blue-500"></language-toggle>
+            <router-link v-if="!!settingStore.sysPublic.selfServicePasswordRetrievalEnabled && !queryBindCode" :to="{ name: 'forgotPassword' }">
+              {{ t("authentication.forgotPassword") }}
+            </router-link>
+          </div>
 
-      <a-form-item class="user-login-other">
-        <div class="flex flex-between justify-between items-center">
-          <language-toggle class="color-blue"></language-toggle>
           <router-link v-if="hasRegisterTypeEnabled() && !queryBindCode" class="register" :to="{ name: 'register' }">
             {{ t("authentication.registerLink") }}
           </router-link>
         </div>
-
-        <div class="flex flex-between justify-between items-center mt-5">
-          <oauth-footer></oauth-footer>
-        </div>
       </a-form-item>
+
+      <div v-if="!queryBindCode" class="w-full">
+        <oauth-footer></oauth-footer>
+      </div>
     </a-form>
     <a-form v-else ref="twoFactorFormRef" class="user-layout-login" :model="twoFactor" v-bind="layout">
       <div class="mb-10 flex flex-center">请打开您的Authenticator APP，获取动态验证码。</div>

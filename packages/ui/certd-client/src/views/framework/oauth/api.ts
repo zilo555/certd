@@ -12,13 +12,13 @@ export async function OauthLogin(type: string) {
   });
 }
 
-export async function OauthCallback(type: string, query: Record<string, string>) {
+export async function OauthToken(type: string, validationCode: string) {
   return await request({
-    url: apiPrefix + `/callback`,
+    url: apiPrefix + `/token`,
     method: "post",
     data: {
       type,
-      ...query,
+      validationCode,
     },
   });
 }
@@ -41,5 +41,12 @@ export async function BindUser(code: string) {
     data: {
       validationCode: code,
     },
+  });
+}
+
+export async function GetOauthProviders() {
+  return await request({
+    url: apiPrefix + "/providers",
+    method: "post",
   });
 }

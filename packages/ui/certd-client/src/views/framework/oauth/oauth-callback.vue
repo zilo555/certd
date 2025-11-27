@@ -2,7 +2,8 @@
   <div class="oauth-callback-page">
     <div class="oauth-callback-content">
       <div v-if="!bindRequired" class="oauth-callback-title">
-        <span>登录中...</span>
+        <span v-if="!error">登录中...</span>
+        <span v-else>{{ error }}</span>
       </div>
       <div v-else class="oauth-callback-title">
         <div>第三方登录成功，还未绑定账号，请选择</div>
@@ -29,17 +30,16 @@ import { useUserStore } from "/@/store/user";
 const route = useRoute();
 const router = useRouter();
 const oauthType = route.params.type as string;
-
-const query = route.query as Record<string, string>;
-
+const validationCode = route.query.validationCode as string;
+const error = ref(route.query.error as string);
 const userStore = useUserStore();
 
 const bindRequired = ref(false);
 const bindCode = ref("");
 
-async function handleOauthCallback() {
+async function handleOauthToken() {
   //处理第三方登录回调
-  const res = await api.OauthCallback(oauthType, query);
+  const res = await api.OauthToken(oauthType, validationCode);
   if (res.token) {
     //登录成功
     userStore.onLoginSuccess(res);
@@ -55,7 +55,10 @@ async function handleOauthCallback() {
 }
 
 onMounted(async () => {
-  await handleOauthCallback();
+  if (error.value) {
+    return;
+  }
+  await handleOauthToken();
 });
 
 async function goBindUser() {
@@ -95,6 +98,7 @@ async function autoRegister() {
     width: 500px;
     margin: 0 auto;
     margin-top: 50px;
+    margin-bottom: 100px;
 
     .oauth-callback-title {
       font-size: 24px;

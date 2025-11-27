@@ -225,6 +225,7 @@ export class UserService extends BaseService<UserEntity> {
 
     await this.transaction(async txManager => {
       newUser = await txManager.save(newUser);
+      user.id = newUser.id;
       const userRole: UserRoleEntity = UserRoleEntity.of(newUser.id, Constants.role.defaultUser);
       await txManager.save(userRole);
 

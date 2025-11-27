@@ -31,6 +31,7 @@ export type AddonDefine = Registrable & {
     [key: string]: AddonInputDefine;
   };
   showTest?: boolean;
+  icon?: string;
 };
 
 export type AddonInstanceConfig = {

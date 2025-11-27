@@ -1,11 +1,12 @@
 import { AddonInput, BaseAddon, IsAddon } from "@certd/lib-server";
-import { IOauthProvider, OnBindReq, OnCallbackReq } from "../api.js";
+import { IOauthProvider, OnCallbackReq } from "../api.js";
 
 @IsAddon({
   addonType: "oauth",
   name: 'oidc',
-  title: 'OpenId connect 认证',
-  desc: '',
+  title: 'OIDC认证',
+  desc: 'OpenID Connect 认证，统一认证服务',
+  icon:"simple-icons:fusionauth",
   showTest: false,
 })
 export class OidcOauthProvider extends BaseAddon implements IOauthProvider {
@@ -54,41 +55,7 @@ export class OidcOauthProvider extends BaseAddon implements IOauthProvider {
       client
     }
   }
-
-  async onCallback(req: OnCallbackReq) {
-    const { config, client } = await this.getClient()
-
-    const currentUrl = new URL("")
-    let tokens: any = await client.authorizationCodeGrant(
-      config,
-      currentUrl,
-      {
-        pkceCodeVerifier: req.code,
-        expectedState: req.state,
-      },
-    )
-
-    console.log('Token Endpoint Response', tokens)
-    const claims = tokens.claims()
-    return {
-      token:{
-        accessToken: tokens.access_token,
-        refreshToken: tokens.refresh_token,
-        expiresIn: tokens.expires_in,
-      },
-      userInfo: {
-        openId: claims.sub,
-        nickName: claims.nickname,
-        avatar: claims.picture,
-      },
-    }
-  };
-  async onBind(req: OnBindReq) {
-    return {
-      success: false,
-      message: '绑定失败',
-    }
-  }
+  
   async buildLoginUrl(params: { redirectUri: string }) {
     const { config, client } = await this.getClient()
 
@@ -126,6 +93,40 @@ export class OidcOauthProvider extends BaseAddon implements IOauthProvider {
 
     // now redirect the user to redirectTo.href
     console.log('redirecting to', redirectTo.href)
-    return redirectTo.href;
+    return {
+      loginUrl: redirectTo.href,
+      ticketValue: {
+        codeVerifier: code_verifier,
+      },
+    };
   }
+
+  async onCallback(req: OnCallbackReq) {
+    const { config, client } = await this.getClient()
+
+    
+    let tokens: any = await client.authorizationCodeGrant(
+      config,
+      req.currentURL,
+      {
+        expectedState: client.skipStateCheck ,
+        pkceCodeVerifier: req.ticketValue.codeVerifier,
+      }
+    )
+
+    console.log('Token Endpoint Response', tokens)
+    const claims = tokens.claims()
+    return {
+      token:{
+        accessToken: tokens.access_token,
+        refreshToken: tokens.refresh_token,
+        expiresIn: tokens.expires_in,
+      },
+      userInfo: {
+        openId: claims.sub,
+        nickName: claims.nickname || claims.preferred_username || "",
+        avatar: claims.picture,
+      },
+    }
+  };
 }

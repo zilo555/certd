@@ -760,6 +760,13 @@ export default {
       fixedCertExpireDays: "Fixed Cert Expire Days",
       fixedCertExpireDaysHelper: "Fixed cert expiration days, helpful for table list progress bar display",
       fixedCertExpireDaysRecommend: "Recommend 90",
+
+      enableOauth: "Enable OAuth2 Login",
+      oauthEnabledHelper: "Whether to enable OAuth2 login",
+      oauthProviders: "OAuth2 Login Providers",
+      oauthType: "OAuth2 Login Type",
+      oauthConfig: "OAuth2 Login Config",
+      oauthProviderSelectorPlaceholder: "Please select OAuth2 login provider",
     },
   },
   modal: {
