@@ -90,6 +90,35 @@ export class AliyunDeployCertToWaf extends AbstractTaskPlugin {
   )
   cnameDomains!: string[];
 
+
+  @TaskInput({
+    title: 'TLS版本',
+    value: 'TLSv1.2',
+    component: {
+      name: 'a-select',
+      options: [
+        { value: 'TLSv1', label: 'TLSv1' },
+        { value: 'TLSv1.1', label: 'TLSv1.1' },
+        { value: 'TLSv1.2', label: 'TLSv1.2' },
+      ],
+    },
+    required: true,
+  })
+  tlsVersion!: string;
+
+    @TaskInput({
+    title: '启用TLSv3',
+    value: true,
+    component: {
+      name: 'a-switch',
+      vModel: 'checked',
+    },
+    required: true,
+  })
+  enableTLSv3!: boolean;
+
+
+
   async onInstance() {}
 
   async getWafClient(access: AliyunAccess) {
@@ -163,6 +192,8 @@ export class AliyunDeployCertToWaf extends AbstractTaskPlugin {
         Redirect: JSON.stringify(redirect),
         Listen: JSON.stringify(listen),
         Domain: siteDomain,
+        TLSVersion: this.tlsVersion || 'TLSv1.2',
+        EnableTLSv3: this.enableTLSv3 ?? true,
       };
       const res = await client.request('ModifyDomain', updateParams);
       this.logger.info('部署成功', JSON.stringify(res));

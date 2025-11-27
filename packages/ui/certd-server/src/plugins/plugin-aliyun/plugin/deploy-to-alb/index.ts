@@ -99,26 +99,38 @@ export class AliyunDeployCertToALB extends AbstractTaskPlugin {
 
 
   @TaskInput({
-      title: "部署证书类型",
-      value: "default",
-      component: {
-        name: "a-select",
-        vModel: "value",
-        options: [
-          {
-            label: "默认证书",
-            value: "default"
-          },
-          {
-            label: "扩展证书",
-            value: "extension"
-          }
-        ]
-      },
-      required: true
-    }
+    title: "部署证书类型",
+    value: "default",
+    component: {
+      name: "a-select",
+      vModel: "value",
+      options: [
+        {
+          label: "默认证书",
+          value: "default"
+        },
+        {
+          label: "扩展证书",
+          value: "extension"
+        }
+      ]
+    },
+    required: true
+  }
   )
   deployType: string = "default";
+
+  @TaskInput({
+    title: "是否清理过期证书",
+    value: true,
+    component: {
+      name: "a-switch",
+      vModel: "checked",
+    },
+    required: true
+  }
+  )
+  clearExpiredCert: boolean;
 
 
   async onInstance() {
@@ -155,16 +167,17 @@ export class AliyunDeployCertToALB extends AbstractTaskPlugin {
       const client = await this.getLBClient(access, this.regionId);
       await this.deployDefaultCert(certId, client);
     }
-    this.logger.info(`准备开始清理过期证书`);
-    await this.ctx.utils.sleep(30000)
-    for (const listener of this.listeners) {
-      try{
-        await this.clearInvalidCert(albClientV2, listener);
-      }catch(e){
-        this.logger.error(`清理监听器${listener}的过期证书失败`, e);
+    if (this.clearExpiredCert!==false) {
+      this.logger.info(`准备开始清理过期证书`);
+      await this.ctx.utils.sleep(30000)
+      for (const listener of this.listeners) {
+        try {
+          await this.clearInvalidCert(albClientV2, listener);
+        } catch (e) {
+          this.logger.error(`清理监听器${listener}的过期证书失败`, e);
+        }
       }
     }
-
 
     this.logger.info("执行完成");
   }
@@ -247,7 +260,7 @@ export class AliyunDeployCertToALB extends AbstractTaskPlugin {
       if (item.IsDefault) {
         continue;
       }
-      certIds.push( parseInt(item.CertificateId));
+      certIds.push(parseInt(item.CertificateId));
     }
     this.logger.info(`监听器${listener}绑定的证书${certIds}`);
     //检查是否过期，过期则删除
