@@ -9,7 +9,7 @@ export class Locker {
   }
 
   async execute(lockStr: string, callback: any, options?: { timeout?: number }) {
-    const timeout = options?.timeout ?? 20000;
+    const timeout = options?.timeout ?? 120000;
     return this.asyncLocker.acquire(lockStr, callback, { timeout });
   }
 }

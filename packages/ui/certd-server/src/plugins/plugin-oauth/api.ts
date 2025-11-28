@@ -38,6 +38,6 @@ export type LoginUrlReply = {
 }
 
 export interface IOauthProvider {
-    buildLoginUrl: (params: { redirectUri: string }) => Promise<LoginUrlReply>;
+    buildLoginUrl: (params: { redirectUri: string, forType?: string }) => Promise<LoginUrlReply>;
     onCallback: (params: OnCallbackReq) => Promise<OauthToken>;
 }

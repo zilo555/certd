@@ -29,7 +29,7 @@ export class OidcOauthProvider extends BaseAddon implements IOauthProvider {
 
   @AddonInput({
     title: "服务地址",
-    helper: "Issuer地址",
+    helper: "Issuer地址，去掉/.well-known/openid-configuration的服务发现地址",
     component: {
       placeholder: "https://oidc.example.com/oidc",
     },
@@ -56,7 +56,7 @@ export class OidcOauthProvider extends BaseAddon implements IOauthProvider {
     }
   }
   
-  async buildLoginUrl(params: { redirectUri: string }) {
+  async buildLoginUrl(params: { redirectUri: string, forType?: string }) {
     const { config, client } = await this.getClient()
 
     let redirect_uri = new URL(params.redirectUri)
@@ -69,7 +69,10 @@ export class OidcOauthProvider extends BaseAddon implements IOauthProvider {
      */
     let code_verifier = client.randomPKCECodeVerifier()
     let code_challenge = await client.calculatePKCECodeChallenge(code_verifier)
-    let state = client.randomState()
+    let state:any = {
+      forType: params.forType || 'login',
+    }
+    state = this.ctx.utils.hash.base64(JSON.stringify(state))
 
     let parameters: any = {
       redirect_uri,
@@ -90,13 +93,11 @@ export class OidcOauthProvider extends BaseAddon implements IOauthProvider {
     // }
 
     let redirectTo = client.buildAuthorizationUrl(config, parameters)
-
-    // now redirect the user to redirectTo.href
-    console.log('redirecting to', redirectTo.href)
     return {
       loginUrl: redirectTo.href,
       ticketValue: {
         codeVerifier: code_verifier,
+        state,
       },
     };
   }
@@ -114,7 +115,6 @@ export class OidcOauthProvider extends BaseAddon implements IOauthProvider {
       }
     )
 
-    console.log('Token Endpoint Response', tokens)
     const claims = tokens.claims()
     return {
       token:{

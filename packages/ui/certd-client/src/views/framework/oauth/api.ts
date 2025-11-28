@@ -2,12 +2,13 @@ import { request } from "/src/api/service";
 
 const apiPrefix = "/oauth";
 
-export async function OauthLogin(type: string) {
+export async function OauthLogin(type: string, forType?: string) {
   return await request({
     url: apiPrefix + `/login`,
     method: "post",
     data: {
       type,
+      forType: forType || "login",
     },
   });
 }

@@ -44,8 +44,11 @@ export class OauthBoundService extends BaseService<OauthBoundEntity> {
         type,
       },
     });
-    if (exist) {
-      throw new Error('该第三方账号已绑定用户');
+    if (exist ) {
+      if(exist.userId === userId){
+        return;
+      }
+      throw new Error('该第三方账号已绑定其他用户');
     }
 
     const exist2 = await this.repository.findOne({

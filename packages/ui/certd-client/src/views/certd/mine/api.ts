@@ -22,3 +22,36 @@ export async function UpdateProfile(form: any) {
     data: form,
   });
 }
+
+export async function GetOauthBounds() {
+  return await request({
+    url: "/oauth/bounds",
+    method: "POST",
+  });
+}
+
+export async function GetOauthProviders() {
+  return await request({
+    url: "/oauth/providers",
+    method: "POST",
+  });
+}
+
+export async function UnbindOauth(type: string) {
+  return await request({
+    url: "/oauth/unbind",
+    method: "POST",
+    data: { type },
+  });
+}
+
+export async function OauthBoundUrl(type: string) {
+  return await request({
+    url: "/oauth/login",
+    method: "POST",
+    data: {
+      type,
+      forType: "bind",
+    },
+  });
+}

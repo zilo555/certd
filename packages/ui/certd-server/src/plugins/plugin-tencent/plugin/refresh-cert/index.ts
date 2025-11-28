@@ -124,6 +124,9 @@ export class TencentRefreshCert extends AbstractTaskPlugin {
 
     let resourceTypes = []
     const resourceTypesRegions = []
+    if(!this.resourceTypesRegions){
+      this.resourceTypesRegions = []
+    }
     for (const item of this.resourceTypesRegions) {
       const [type,region] = item.split("_")
       if (!resourceTypes.includes( type)){
@@ -156,13 +159,17 @@ export class TencentRefreshCert extends AbstractTaskPlugin {
           break;
         }
         retryCount++
-        deployRes = await sslClient.UploadUpdateCertificateInstance({
-          OldCertificateId: certId,
+        const params = {
+          "OldCertificateId": certId,
           "ResourceTypes": resourceTypes,
-          "CertificatePublicKey": this.cert.crt,
-          "CertificatePrivateKey": this.cert.key,
+          "CertificatePublicKey": "xxx",
+          "CertificatePrivateKey": "xxx",
           "ResourceTypesRegions":resourceTypesRegions
-        });
+        }
+        this.logger.info(`请求参数：${JSON.stringify(params)}`);
+        params.CertificatePublicKey = this.cert.crt
+        params.CertificatePrivateKey = this.cert.key
+        deployRes = await sslClient.UploadUpdateCertificateInstance(params);
         if (deployRes && deployRes.DeployRecordId>0){
           this.logger.info(`任务创建成功，开始检查结果：${JSON.stringify(deployRes)}`);
           break;
@@ -325,7 +332,7 @@ export class TencentRefreshCert extends AbstractTaskPlugin {
      */
     const options = list.map((item: any) => {
       return {
-        label: `${item.Alias}<${item.Domain}_${item.CertificateId}>`,
+        label: `${item.CertificateId}<${item.Domain}_${item.Alias}_${item.BoundResource.length}>`,
         value: item.CertificateId,
         domain: item.SubjectAltName,
       };

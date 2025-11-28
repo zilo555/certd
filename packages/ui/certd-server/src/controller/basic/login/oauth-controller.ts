@@ -6,9 +6,10 @@ import { LoginService } from "../../../modules/login/service/login-service.js";
 import { CodeService } from "../../../modules/basic/service/code-service.js";
 import { UserService } from "../../../modules/sys/authority/service/user-service.js";
 import { UserEntity } from "../../../modules/sys/authority/entity/user.js";
-import { logger, simpleNanoId } from "@certd/basic";
+import { logger, simpleNanoId, utils } from "@certd/basic";
 import { OauthBoundService } from "../../../modules/login/service/oauth-bound-service.js";
 import { OauthBoundEntity } from "../../../modules/login/entity/oauth-bound.js";
+import { checkPlus } from "@certd/plus-core";
 
 /**
  */
@@ -50,14 +51,14 @@ export class ConnectController extends BaseController {
   }
 
   @Post('/login', { summary: Constants.per.guest })
-  public async login(@Body(ALL) body: { type: string }) {
+  public async login(@Body(ALL) body: { type: string, forType?:string }) {
 
     const addon = await this.getOauthProvider(body.type);
     const installInfo = await this.sysSettingsService.getSetting<SysInstallInfo>(SysInstallInfo);
     const bindUrl = installInfo?.bindUrl || "";
     //构造登录url
     const redirectUrl = `${bindUrl}api/oauth/callback/${body.type}`;
-    const { loginUrl, ticketValue } = await addon.buildLoginUrl({ redirectUri: redirectUrl });
+    const { loginUrl, ticketValue } = await addon.buildLoginUrl({ redirectUri: redirectUrl, forType: body.forType });
     const ticket = this.codeService.setValidationValue(ticketValue)
     this.ctx.cookies.set("oauth_ticket", ticket, {
       httpOnly: true,
@@ -68,6 +69,9 @@ export class ConnectController extends BaseController {
   }
   @Get('/callback/:type', { summary: Constants.per.guest })
   public async callback(@Param('type') type: string, @Query() query: Record<string, string>) {
+
+    checkPlus()
+
     //处理登录回调
     const addon = await this.getOauthProvider(type);
     const request = this.ctx.request;
@@ -103,7 +107,9 @@ export class ConnectController extends BaseController {
         userInfo,
       });
 
-      const redirectUrl = `${bindUrl}#/oauth/callback/${type}?validationCode=${validationCode}`;
+      const state = JSON.parse(utils.hash.base64Decode(query.state));
+
+      const redirectUrl = `${bindUrl}#/oauth/callback/${type}?validationCode=${validationCode}&forType=${state.forType}`;
       this.ctx.redirect(redirectUrl);
     } catch (err) {
       logger.error(err);
@@ -115,6 +121,7 @@ export class ConnectController extends BaseController {
 
   @Post('/token', { summary: Constants.per.guest })
   public async token(@Body(ALL) body: { validationCode: string, type: string }) {
+    checkPlus()
     const validationValue = await this.codeService.getValidationValue(body.validationCode);
     if (!validationValue) {
       throw new Error("校验码错误");
@@ -140,24 +147,6 @@ export class ConnectController extends BaseController {
     return this.ok(loginRes);
   }
 
-  @Post('/bind', { summary: Constants.per.loginOnly })
-  public async bind(@Body(ALL) body: any) {
-    //需要已登录
-    const userId = this.getUserId();
-    const validationValue = this.codeService.getValidationValue(body.validationCode);
-    if (!validationValue) {
-      throw new Error("校验码错误");
-    }
-    const type = validationValue.type;
-    const userInfo = validationValue.userInfo;
-    const openId = userInfo.openId;
-    await this.oauthBoundService.bind({
-      userId,
-      type,
-      openId,
-    });
-    return this.ok(1);
-  }
 
   @Post('/autoRegister', { summary: Constants.per.guest })
   public async autoRegister(@Body(ALL) body: { validationCode: string, type: string }) {
@@ -185,6 +174,26 @@ export class ConnectController extends BaseController {
     return this.ok(loginRes);
   }
 
+
+  @Post('/bind', { summary: Constants.per.loginOnly })
+  public async bind(@Body(ALL) body: any) {
+    //需要已登录
+    const userId = this.getUserId();
+    const validationValue = this.codeService.getValidationValue(body.validationCode);
+    if (!validationValue) {
+      throw new Error("校验码错误");
+    }
+    const type = validationValue.type;
+    const userInfo = validationValue.userInfo;
+    const openId = userInfo.openId;
+    await this.oauthBoundService.bind({
+      userId,
+      type,
+      openId,
+    });
+    return this.ok(1);
+  }
+
   @Post('/unbind', { summary: Constants.per.loginOnly })
   public async unbind(@Body(ALL) body: any) {
     //需要已登录
@@ -194,6 +203,18 @@ export class ConnectController extends BaseController {
       type: body.type,
     });
     return this.ok(1);
+  }
+
+   @Post('/bounds', { summary: Constants.per.loginOnly })
+  public async bounds(@Body(ALL) body: any) {
+    //需要已登录
+    const userId = this.getUserId();
+    const bounds = await this.oauthBoundService.find({
+      where :{
+        userId,
+      }
+    });
+    return this.ok(bounds);
   }
 
   @Post('/providers', { summary: Constants.per.guest })

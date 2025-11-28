@@ -65,7 +65,7 @@
         </div>
       </a-form-item>
 
-      <div v-if="!queryBindCode" class="w-full">
+      <div v-if="!queryBindCode && settingStore.sysPublic.oauthEnabled && settingStore.isPlus" class="w-full">
         <oauth-footer></oauth-footer>
       </div>
     </a-form>
@@ -82,7 +82,7 @@
         <loading-button type="primary" size="large" html-type="button" class="login-button" :click="handleTwoFactorSubmit">OTP验证登录</loading-button>
       </a-form-item>
 
-      <a-form-item class="user-login-other">
+      <a-form-item class="mt-10">
         <a class="register" @click="twoFactor.loginId = null"> 返回 </a>
       </a-form-item>
     </a-form>

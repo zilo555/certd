@@ -5,16 +5,16 @@
         <span v-if="!error">登录中...</span>
         <span v-else>{{ error }}</span>
       </div>
-      <div v-else class="oauth-callback-title">
-        <div>第三方登录成功，还未绑定账号，请选择</div>
+      <div v-else class="oauth-callback-title mt-10">
+        <div>第三方（{{ oauthType }}）登录成功，您还未绑定账号，请选择</div>
 
-        <div>
-          <a-button class="w-full mt-5" type="primary" @click="goBindUser">绑定已有账号</a-button>
-          <a-button class="w-full mt-5" type="primary" @click="autoRegister">创建新账号</a-button>
+        <div class="mt-10">
+          <a-button class="w-full mt-10" type="primary" @click="goBindUser">绑定已有账号</a-button>
+          <a-button class="w-full mt-10" type="primary" @click="autoRegister">创建新账号</a-button>
         </div>
 
-        <div class="w-full mt-5">
-          <router-link to="/login" class="w-full mt-5" type="primary">返回登录页</router-link>
+        <div class="w-full mt-10">
+          <router-link to="/login" class="w-full mt-10" type="primary">返回登录页</router-link>
         </div>
       </div>
     </div>
@@ -26,11 +26,13 @@ import { ref, onMounted } from "vue";
 import * as api from "./api";
 import { useRoute, useRouter } from "vue-router";
 import { useUserStore } from "/@/store/user";
+import { notification } from "ant-design-vue";
 
 const route = useRoute();
 const router = useRouter();
 const oauthType = route.params.type as string;
 const validationCode = route.query.validationCode as string;
+const forType = route.query.forType as string;
 const error = ref(route.query.error as string);
 const userStore = useUserStore();
 
@@ -58,6 +60,18 @@ onMounted(async () => {
   if (error.value) {
     return;
   }
+
+  if (forType === "bind") {
+    //绑定第三方账号
+    await api.BindUser(validationCode);
+    notification.success({
+      message: "绑定成功",
+    });
+    //跳转到首页
+    router.replace("/certd/mine/user-profile");
+    return;
+  }
+
   await handleOauthToken();
 });
 
@@ -86,7 +100,7 @@ async function autoRegister() {
   justify-content: center;
   align-items: center;
   gap: 16px;
-
+  width: 100%;
   .oauth-callback-content {
     display: flex;
     justify-content: center;
@@ -96,12 +110,14 @@ async function autoRegister() {
     border-radius: 16px;
     box-shadow: 0 0 16px rgba(0, 0, 0, 0.1);
     width: 500px;
+    max-width: 90%;
     margin: 0 auto;
     margin-top: 50px;
     margin-bottom: 100px;
+    min-height: 200px;
 
     .oauth-callback-title {
-      font-size: 24px;
+      font-size: 16px;
       font-weight: 500;
     }
   }

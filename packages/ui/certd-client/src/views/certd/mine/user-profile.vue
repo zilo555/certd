@@ -15,7 +15,14 @@
         </a-descriptions-item>
         <a-descriptions-item :label="t('authentication.email')">{{ userInfo.email }}</a-descriptions-item>
         <a-descriptions-item :label="t('authentication.phoneNumber')">{{ userInfo.phoneCode }}{{ userInfo.mobile }}</a-descriptions-item>
-        <a-descriptions-item></a-descriptions-item>
+        <a-descriptions-item v-if="settingStore.sysPublic.oauthEnabled && settingStore.isPlus" label="第三方账号绑定">
+          <div v-for="item in computedOauthBounds" :key="item.name" class="flex items-center gap-2">
+            <fs-icon :icon="item.icon" class="mr-2 text-blue-500" />
+            <span class="mr-2 w-36">{{ item.title }}</span>
+            <a-button v-if="item.bound" type="link" danger @click="unbind(item.name)">解绑</a-button>
+            <a-button v-else type="primary" @click="bind(item.name)">绑定</a-button>
+          </div>
+        </a-descriptions-item>
         <a-descriptions-item :label="t('common.handle')">
           <a-button type="primary" @click="doUpdate">{{ t("authentication.updateProfile") }}</a-button>
           <change-password-button class="ml-10" :show-button="true"> </change-password-button>
@@ -27,10 +34,12 @@
 
 <script lang="ts" setup>
 import * as api from "./api";
-import { Ref, ref } from "vue";
+import { computed, onMounted, Ref, ref } from "vue";
 import ChangePasswordButton from "/@/views/certd/mine/change-password-button.vue";
 import { useI18n } from "/src/locales";
 import { useUserProfile } from "./use";
+import { Modal } from "ant-design-vue";
+import { useSettingStore } from "/@/store/settings";
 
 const { t } = useI18n();
 
@@ -38,13 +47,13 @@ defineOptions({
   name: "UserProfile",
 });
 
+const settingStore = useSettingStore();
+
 const userInfo: Ref = ref({});
 
 const getUserInfo = async () => {
   userInfo.value = await api.getMineInfo();
 };
-getUserInfo();
-
 const { openEditProfileDialog } = useUserProfile();
 
 function doUpdate() {
@@ -54,4 +63,51 @@ function doUpdate() {
     },
   });
 }
+
+const oauthBounds = ref([]);
+const oauthProviders = ref([]);
+async function loadOauthBounds() {
+  const res = await api.GetOauthBounds();
+  oauthBounds.value = res;
+}
+async function loadOauthProviders() {
+  const res = await api.GetOauthProviders();
+  oauthProviders.value = res;
+}
+
+const computedOauthBounds = computed(() => {
+  const list = oauthProviders.value.map(item => {
+    const bound = oauthBounds.value.find(bound => bound.type === item.name);
+    return {
+      ...item,
+      bound,
+    };
+  });
+  return list;
+});
+
+async function unbind(type: string) {
+  Modal.confirm({
+    title: "确认解绑吗？",
+    okText: "确认",
+    okType: "danger",
+    onOk: async () => {
+      await api.UnbindOauth(type);
+      await loadOauthBounds();
+    },
+  });
+}
+
+async function bind(type: string) {
+  //获取第三方登录URL
+  const res = await api.OauthBoundUrl(type);
+  const loginUrl = res.loginUrl;
+  window.location.href = loginUrl;
+}
+
+onMounted(async () => {
+  await getUserInfo();
+  await loadOauthBounds();
+  await loadOauthProviders();
+});
 </script>

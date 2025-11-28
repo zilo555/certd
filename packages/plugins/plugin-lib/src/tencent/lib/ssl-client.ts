@@ -36,7 +36,7 @@ export class TencentSslClient {
 
   checkRet(ret: any) {
     if (!ret || ret.Error) {
-      throw new Error("请求失败：" + ret.Error.Code + "," + ret.Error.Message);
+      throw new Error("请求失败：" + ret.Error.Code + "," + ret.Error.Message + ",requestId" + ret.RequestId);
     }
   }
 
@@ -70,43 +70,33 @@ export class TencentSslClient {
   }
 
   async deployCertificateInstance(params: any) {
-    const client = await this.getSslClient();
-    const res = await client.DeployCertificateInstance(params);
-    this.checkRet(res);
-    return res;
+    return await this.doRequest("DeployCertificateInstance", params);
   }
 
   async DescribeHostUploadUpdateRecordDetail(params: any) {
-    const client = await this.getSslClient();
-    const res = await client.request("DescribeHostUploadUpdateRecordDetail", params);
-    this.checkRet(res);
-    return res;
+    return await this.doRequest("DescribeHostUploadUpdateRecordDetail", params);
   }
 
   async UploadUpdateCertificateInstance(params: any) {
-    const client = await this.getSslClient();
-    const res = await client.request("UploadUpdateCertificateInstance", params);
-    this.checkRet(res);
-    return res;
+    return await this.doRequest("UploadUpdateCertificateInstance", params);
   }
 
   async DescribeCertificates(params: { Limit?: number; Offset?: number; SearchKey?: string }) {
-    const client = await this.getSslClient();
-    const res = await client.DescribeCertificates({
+    return await this.doRequest("DescribeCertificates", {
       ExpirationSort: "ASC",
       ...params,
     });
-    this.checkRet(res);
-    return res;
   }
 
   async doRequest(action: string, params: any) {
     const client = await this.getSslClient();
-    if (!client[action]) {
-      throw new Error(`action ${action} not found`);
+    try {
+      const res = await client.request(action, params);
+      this.checkRet(res);
+      return res;
+    } catch (e) {
+      this.logger.error(`action ${action} error: ${e.message},requestId=${e.RequestId}`);
+      throw e;
     }
-    const res = await client[action](params);
-    this.checkRet(res);
-    return res;
   }
 }
