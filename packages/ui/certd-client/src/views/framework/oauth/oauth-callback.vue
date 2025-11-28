@@ -10,7 +10,7 @@
 
         <div class="mt-10">
           <a-button class="w-full mt-10" type="primary" @click="goBindUser">绑定已有账号</a-button>
-          <a-button class="w-full mt-10" type="primary" @click="autoRegister">创建新账号</a-button>
+          <a-button v-if="settingStore.sysPublic.registerEnabled" class="w-full mt-10" type="primary" @click="autoRegister">创建新账号</a-button>
         </div>
 
         <div class="w-full mt-10">
@@ -27,9 +27,11 @@ import * as api from "./api";
 import { useRoute, useRouter } from "vue-router";
 import { useUserStore } from "/@/store/user";
 import { notification } from "ant-design-vue";
+import { useSettingStore } from "/@/store/settings";
 
 const route = useRoute();
 const router = useRouter();
+const settingStore = useSettingStore();
 const oauthType = route.params.type as string;
 const validationCode = route.query.validationCode as string;
 const forType = route.query.forType as string;
