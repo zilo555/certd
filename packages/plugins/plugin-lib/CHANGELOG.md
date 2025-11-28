@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.11](https://github.com/certd/certd/compare/v1.37.10...v1.37.11) (2025-11-28)
+
+### Performance Improvements
+
+*  ssh支持ppk格式私钥 ([575ae16](https://github.com/certd/certd/commit/575ae164c863d0b1f9fa0890549a2ee7472fb469))
+* 优化天翼云cdn 等待5秒部署完成 ([53c88ad](https://github.com/certd/certd/commit/53c88ad5afe66a3f7c38b9b759747918913a4edc))
+
 ## [1.37.10](https://github.com/certd/certd/compare/v1.37.9...v1.37.10) (2025-11-19)
 
 **Note:** Version bump only for package @certd/plugin-lib

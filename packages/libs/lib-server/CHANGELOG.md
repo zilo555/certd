@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.11](https://github.com/certd/certd/compare/v1.37.10...v1.37.11) (2025-11-28)
+
+### Performance Improvements
+
+* 支持oidc单点登录 ([ec75afb](https://github.com/certd/certd/commit/ec75afbc44139dbe9da534d8a8c08a5b91f86d3c))
+
 ## [1.37.10](https://github.com/certd/certd/compare/v1.37.9...v1.37.10) (2025-11-19)
 
 **Note:** Version bump only for package @certd/lib-server

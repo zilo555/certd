@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.11](https://github.com/certd/certd/compare/v1.37.10...v1.37.11) (2025-11-28)
+
+### Bug Fixes
+
+* 修复备注撑开表格行高的bug ([c7b298c](https://github.com/certd/certd/commit/c7b298c46f0d52b43bd2bb17b374e7970a446446))
+* 修复域名管理无法创建tencent-eo dns授权的bug ([3406bb5](https://github.com/certd/certd/commit/3406bb5a4a56bb310cddc1a1f410c70909fd129b))
+
+### Performance Improvements
+
+* 优化天翼云cdn 等待5秒部署完成 ([53c88ad](https://github.com/certd/certd/commit/53c88ad5afe66a3f7c38b9b759747918913a4edc))
+* 支持oidc单点登录 ([ec75afb](https://github.com/certd/certd/commit/ec75afbc44139dbe9da534d8a8c08a5b91f86d3c))
+
 ## [1.37.10](https://github.com/certd/certd/compare/v1.37.9...v1.37.10) (2025-11-19)
 
 ### Performance Improvements

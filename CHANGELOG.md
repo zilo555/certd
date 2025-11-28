@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.11](https://github.com/certd/certd/compare/v1.37.10...v1.37.11) (2025-11-28)
+
+### Bug Fixes
+
+* 修复阿里云 waf tlsVersion参数缺失导致部署失败的问题 ([2fabee6](https://github.com/certd/certd/commit/2fabee647acf64afe689f5bea3603028cd0ba4a2))
+* 修复备注撑开表格行高的bug ([c7b298c](https://github.com/certd/certd/commit/c7b298c46f0d52b43bd2bb17b374e7970a446446))
+* 修复域名管理无法创建tencent-eo dns授权的bug ([3406bb5](https://github.com/certd/certd/commit/3406bb5a4a56bb310cddc1a1f410c70909fd129b))
+* openapi 成功后失败都返回msg ([6e735bb](https://github.com/certd/certd/commit/6e735bbd1e29712e939f775a4db974db70e3b4b0))
+
+### Performance Improvements
+
+*  ssh支持ppk格式私钥 ([575ae16](https://github.com/certd/certd/commit/575ae164c863d0b1f9fa0890549a2ee7472fb469))
+* 优化宝塔网站证书在并发部署时导致nginx配置文件错乱的问题 ([51cc084](https://github.com/certd/certd/commit/51cc08411fd2dbab66d769b495dc1b0bf2f2578c))
+* 优化天翼云cdn 等待5秒部署完成 ([53c88ad](https://github.com/certd/certd/commit/53c88ad5afe66a3f7c38b9b759747918913a4edc))
+* 支持oidc单点登录 ([ec75afb](https://github.com/certd/certd/commit/ec75afbc44139dbe9da534d8a8c08a5b91f86d3c))
+* ssl.com支持ecc ([b5ec047](https://github.com/certd/certd/commit/b5ec04723db48422f71041f4043002e7f5b450b1))
+
 ## [1.37.10](https://github.com/certd/certd/compare/v1.37.9...v1.37.10) (2025-11-19)
 
 ### Performance Improvements

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.11](https://github.com/certd/certd/compare/v1.37.10...v1.37.11) (2025-11-28)
+
+### Performance Improvements
+
+* 优化宝塔网站证书在并发部署时导致nginx配置文件错乱的问题 ([51cc084](https://github.com/certd/certd/commit/51cc08411fd2dbab66d769b495dc1b0bf2f2578c))
+* 优化天翼云cdn 等待5秒部署完成 ([53c88ad](https://github.com/certd/certd/commit/53c88ad5afe66a3f7c38b9b759747918913a4edc))
+* ssl.com支持ecc ([b5ec047](https://github.com/certd/certd/commit/b5ec04723db48422f71041f4043002e7f5b450b1))
+
 ## [1.37.10](https://github.com/certd/certd/compare/v1.37.9...v1.37.10) (2025-11-19)
 
 **Note:** Version bump only for package @certd/basic

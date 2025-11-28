@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.11](https://github.com/publishlab/node-acme-client/compare/v1.37.10...v1.37.11) (2025-11-28)
+
+### Performance Improvements
+
+* ssl.com支持ecc ([b5ec047](https://github.com/publishlab/node-acme-client/commit/b5ec04723db48422f71041f4043002e7f5b450b1))
+
 ## [1.37.10](https://github.com/publishlab/node-acme-client/compare/v1.37.9...v1.37.10) (2025-11-19)
 
 **Note:** Version bump only for package @certd/acme-client
