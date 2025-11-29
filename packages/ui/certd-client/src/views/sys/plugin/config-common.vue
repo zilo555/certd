@@ -26,6 +26,16 @@
           </div>
         </a-form-item>
 
+        <a-form-item label="公共litessl EAB授权" :name="['CertApply', 'sysSetting', 'input', 'litesslCommonEabAccessId']">
+          <access-selector v-model:model-value="formState.CertApply.sysSetting.input.litesslCommonEabAccessId" type="eab" from="sys"></access-selector>
+          <div class="helper">
+            <div>设置公共litessl EAB授权给用户使用，避免用户自己获取litessl EAB授权</div>
+            <div>
+              <a href="https://freessl.cn/automation/eab-manager">litessl EAB授权管理 </a>
+            </div>
+          </div>
+        </a-form-item>
+
         <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
           <a-button :loading="saveLoading" type="primary" html-type="submit">保存</a-button>
         </a-form-item>

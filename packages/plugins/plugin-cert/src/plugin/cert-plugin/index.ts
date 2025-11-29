@@ -136,6 +136,7 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
         { value: "letsencrypt", label: "Let's Encrypt（免费，新手推荐）", icon: "simple-icons:letsencrypt" },
         { value: "google", label: "Google（免费）", icon: "flat-color-icons:google" },
         { value: "zerossl", label: "ZeroSSL（免费）", icon: "emojione:digit-zero" },
+        { value: "litessl", label: "litessl（免费）", icon: "roentgen:free" },
         { value: "sslcom", label: "SSL.com（仅主域名和www免费）", icon: "la:expeditedssl" },
         { value: "letsencrypt_staging", label: "Let's Encrypt测试环境（IP证书）", icon: "simple-icons:letsencrypt" },
       ],
@@ -251,6 +252,13 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
   sslcomCommonEabAccessId!: number;
 
   @TaskInput({
+    title: "litessl公共EAB授权",
+    isSys: true,
+    show: false,
+  })
+  litesslCommonEabAccessId!: number;
+
+  @TaskInput({
     title: "EAB授权",
     component: {
       name: "access-selector",
@@ -262,13 +270,15 @@ export class CertApplyPlugin extends CertApplyBasePlugin {
       "需要提供EAB授权" +
       "\nZeroSSL：请前往[zerossl开发者中心](https://app.zerossl.com/developer),生成 'EAB Credentials'" +
       "\nGoogle:请查看[google获取eab帮助文档](https://certd.docmirror.cn/guide/use/google/)，用过一次后会绑定邮箱，后续复用EAB要用同一个邮箱" +
-      "\nSSL.com:[SSL.com账号页面](https://secure.ssl.com/account),然后点击api credentials链接，然后点击编辑按钮，查看Secret key和HMAC key",
+      "\nSSL.com:[SSL.com账号页面](https://secure.ssl.com/account),然后点击api credentials链接，然后点击编辑按钮，查看Secret key和HMAC key" +
+      "\nlitessl:[litesslEAB页面](https://freessl.cn/automation/eab-manager),然后点击新增EAB",
     mergeScript: `
     return {
         show: ctx.compute(({form})=>{
             return (form.sslProvider === 'zerossl' && !form.zerosslCommonEabAccessId)
             || (form.sslProvider === 'google' && !form.googleCommonEabAccessId)
             || (form.sslProvider === 'sslcom' && !form.sslcomCommonEabAccessId)
+            || (form.sslProvider === 'litessl' && !form.litesslCommonEabAccessId)
         })
     }
     `,

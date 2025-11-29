@@ -32,7 +32,11 @@ export const directory = {
       staging: 'https://acme.ssl.com/sslcom-dv-rsa',
       production: 'https://acme.ssl.com/sslcom-dv-rsa',
       ec: 'https://acme.ssl.com/sslcom-dv-ecc',
-    }
+    },
+    litessl: {
+        staging: 'https://acme.litessl.com/acme/v2/directory',
+        production: 'https://acme.litessl.com/acme/v2/directory',
+    },
 };
 
 export function getDirectoryUrl(opts) {
