@@ -15,8 +15,9 @@ import GroupSelector from "/@/views/certd/pipeline/group/group-selector.vue";
 import { useCertViewer } from "/@/views/certd/pipeline/use";
 import { useI18n } from "/src/locales";
 import { GetDetail, GetObj } from "./api";
+import { groupDictRef } from "./group/dicts";
 
-export default function ({ crudExpose, context: { groupDictRef, selectedRowKeys } }: CreateCrudOptionsProps): CreateCrudOptionsRet {
+export default function ({ crudExpose, context: { selectedRowKeys } }: CreateCrudOptionsProps): CreateCrudOptionsRet {
   const router = useRouter();
   const lastResRef = ref();
 
@@ -495,6 +496,11 @@ export default function ({ crudExpose, context: { groupDictRef, selectedRowKeys 
             component: {
               name: GroupSelector,
               vModel: "modelValue",
+              on: {
+                refresh: async () => {
+                  await groupDictRef.reloadDict();
+                },
+              },
             },
           },
           column: {

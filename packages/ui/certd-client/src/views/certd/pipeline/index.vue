@@ -35,19 +35,14 @@ import { useI18n } from "/src/locales";
 const { t } = useI18n();
 import ChangeNotification from "/@/views/certd/pipeline/components/change-notification.vue";
 import { useSettingStore } from "/@/store/settings";
+import { groupDictRef } from "./group/dicts";
 
 defineOptions({
   name: "PipelineManager",
 });
 
-const groupDictRef = dict({
-  url: "/pi/pipeline/group/all",
-  value: "id",
-  label: "name",
-});
 const selectedRowKeys = ref([]);
 const context: any = {
-  groupDictRef,
   selectedRowKeys,
 };
 const { crudBinding, crudRef, crudExpose } = useFs({ createCrudOptions, context });

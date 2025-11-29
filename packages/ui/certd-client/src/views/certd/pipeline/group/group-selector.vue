@@ -35,6 +35,7 @@
 <script setup lang="ts">
 import createCrudOptions from "./crud";
 import { dict, FsDictSelect } from "@fast-crud/fast-crud";
+import { groupDictRef } from "./dicts";
 
 const props = defineProps<{
   modelValue?: number;
@@ -43,11 +44,7 @@ const props = defineProps<{
 defineOptions({
   name: "GroupSelector",
 });
-const groupDictRef = dict({
-  url: "/pi/pipeline/group/all",
-  value: "id",
-  label: "name",
-});
+
 const emit = defineEmits(["refresh", "update:modelValue"]);
 function doRefresh() {
   emit("refresh");
