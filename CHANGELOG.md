@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.12](https://github.com/certd/certd/compare/v1.37.11...v1.37.12) (2025-11-29)
+
+### Bug Fixes
+
+* 修复waf tls版本号小写 ([0adcc6a](https://github.com/certd/certd/commit/0adcc6a8d194469be0c26940ed4837fb34929b68))
+
+### Performance Improvements
+
+* 支持微信扫码登录 ([73325aa](https://github.com/certd/certd/commit/73325aaefb0e750a22aaac40929e7bf3f5864996))
+* 支持证书颁发机构 LiteSSL ([6be7591](https://github.com/certd/certd/commit/6be75913324e2828d9016eb307ff2d0abbbb2191))
+
 ## [1.37.11](https://github.com/certd/certd/compare/v1.37.10...v1.37.11) (2025-11-28)
 
 ### Bug Fixes
