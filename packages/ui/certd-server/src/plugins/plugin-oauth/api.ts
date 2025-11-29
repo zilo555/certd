@@ -37,7 +37,13 @@ export type LoginUrlReply = {
     ticketValue: any;
 }
 
+export type BuildLoginUrlReq = {
+    redirectUri: string;
+    forType?: string;
+    from?:string;
+}
+
 export interface IOauthProvider {
-    buildLoginUrl: (params: { redirectUri: string, forType?: string }) => Promise<LoginUrlReply>;
+    buildLoginUrl: (params: BuildLoginUrlReq) => Promise<LoginUrlReply>;
     onCallback: (params: OnCallbackReq) => Promise<OauthToken>;
 }

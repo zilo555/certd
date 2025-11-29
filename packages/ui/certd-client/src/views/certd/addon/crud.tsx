@@ -40,6 +40,12 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
         editRequest,
         delRequest,
       },
+      search: {
+        initialForm: {
+          addonType: addonType,
+          type: type,
+        },
+      },
       form: {
         labelCol: {
           //固定label宽度

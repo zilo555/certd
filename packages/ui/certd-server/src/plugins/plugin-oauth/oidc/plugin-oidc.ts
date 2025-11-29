@@ -1,5 +1,5 @@
 import { AddonInput, BaseAddon, IsAddon } from "@certd/lib-server";
-import { IOauthProvider, OnCallbackReq } from "../api.js";
+import { BuildLoginUrlReq, IOauthProvider, OnCallbackReq } from "../api.js";
 
 @IsAddon({
   addonType: "oauth",
@@ -56,7 +56,7 @@ export class OidcOauthProvider extends BaseAddon implements IOauthProvider {
     }
   }
   
-  async buildLoginUrl(params: { redirectUri: string, forType?: string }) {
+  async buildLoginUrl(params: BuildLoginUrlReq) {
     const { config, client } = await this.getClient()
 
     let redirect_uri = new URL(params.redirectUri)

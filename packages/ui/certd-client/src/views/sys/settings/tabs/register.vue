@@ -67,8 +67,9 @@
           <table class="w-full table-auto border-collapse border border-gray-400">
             <thead>
               <tr>
-                <th class="border border-gray-300 px-4 py-2 w-1/2">{{ t("certd.sys.setting.oauthType") }}</th>
-                <th class="border border-gray-300 px-4 py-2 w-1/2">{{ t("certd.sys.setting.oauthConfig") }}</th>
+                <th class="border border-gray-300 px-4 py-2 w-1/3">{{ t("certd.sys.setting.oauthType") }}</th>
+                <th class="border border-gray-300 px-4 py-2 w-1/3">{{ t("certd.sys.setting.oauthCallback") }}</th>
+                <th class="border border-gray-300 px-4 py-2 w-1/3">{{ t("certd.sys.setting.oauthConfig") }}</th>
               </tr>
             </thead>
             <tbody>
@@ -78,6 +79,11 @@
                     <fs-icon :icon="item.icon" class="mr-2 text-blue-600" />
                     {{ item.title }}
                   </div>
+                </td>
+                <td class="border border-gray-300 px-4 py-2 overflow-ellipsis" :title="t('certd.sys.setting.oauthCallbackHelper')">
+                  <fs-copyable :model-value="buildCallbackUrl(item.name)">
+                    {{ t("certd.sys.setting.oauthCallbackCopy") }}
+                  </fs-copyable>
                 </td>
                 <td class="border border-gray-300 px-4 py-2">
                   <AddonSelector v-model:model-value="item.addonId" addon-type="oauth" from="sys" :type="item.name" :placeholder="t('certd.sys.setting.oauthProviderSelectorPlaceholder')" />
@@ -96,14 +102,14 @@
 </template>
 
 <script setup lang="tsx">
-import { computed, reactive, ref, Ref } from "vue";
-import { GetSmsTypeDefine, SysSettings } from "/@/views/sys/settings/api";
-import * as api from "/@/views/sys/settings/api";
-import { merge } from "lodash-es";
-import { useSettingStore } from "/@/store/settings";
 import { notification } from "ant-design-vue";
-import { useI18n } from "/src/locales";
+import { merge } from "lodash-es";
+import { reactive, ref, Ref } from "vue";
 import AddonSelector from "../../../certd/addon/addon-selector/index.vue";
+import { useSettingStore } from "/@/store/settings";
+import * as api from "/@/views/sys/settings/api";
+import { SysSettings } from "/@/views/sys/settings/api";
+import { useI18n } from "/src/locales";
 const { t } = useI18n();
 
 defineOptions({
@@ -192,15 +198,7 @@ async function loadTypeDefine(type: string) {
 
 const oauthProviders = ref([]);
 async function loadOauthProviders() {
-  let list: any = await api.GetOauthProviders();
-  oauthProviders.value = list;
-  for (const item of list) {
-    const type = item.name;
-    const provider = formState.public.oauthProviders?.[type];
-    if (provider) {
-      item.addonId = provider.addonId;
-    }
-  }
+  oauthProviders.value = await api.GetOauthProviders();
 }
 
 function fillOauthProviders(form: any) {
@@ -251,8 +249,19 @@ const onFinish = async (form: any) => {
     saveLoading.value = false;
   }
 };
+
+function buildCallbackUrl(type: string) {
+  return `${window.location.origin}/api/oauth/callback/${type}`;
+}
 </script>
 <style lang="less">
-.sys-settings-site {
+.sys-settings-register {
+  width: 1000px !important;
+
+  .addon-selector {
+    .inner {
+      justify-content: space-between;
+    }
+  }
 }
 </style>

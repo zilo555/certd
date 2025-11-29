@@ -1,4 +1,4 @@
-import { addonRegistry, BaseController, Constants, SysInstallInfo, SysSettingsService } from "@certd/lib-server";
+import { addonRegistry, AddonService, BaseController, Constants, SysInstallInfo, SysSettingsService } from "@certd/lib-server";
 import { ALL, Body, Controller, Get, Inject, Param, Post, Provide, Query } from "@midwayjs/core";
 import { AddonGetterService } from "../../../modules/pipeline/service/addon-getter-service.js";
 import { IOauthProvider } from "../../../plugins/plugin-oauth/api.js";
@@ -31,6 +31,9 @@ export class ConnectController extends BaseController {
   @Inject()
   oauthBoundService: OauthBoundService;
 
+  @Inject()
+  addonService: AddonService;
+
 
 
   private async getOauthProvider(type: string) {
@@ -51,14 +54,14 @@ export class ConnectController extends BaseController {
   }
 
   @Post('/login', { summary: Constants.per.guest })
-  public async login(@Body(ALL) body: { type: string, forType?:string }) {
+  public async login(@Body(ALL) body: { type: string, forType?:string ,from?:string }) {
 
     const addon = await this.getOauthProvider(body.type);
     const installInfo = await this.sysSettingsService.getSetting<SysInstallInfo>(SysInstallInfo);
     const bindUrl = installInfo?.bindUrl || "";
     //构造登录url
     const redirectUrl = `${bindUrl}api/oauth/callback/${body.type}`;
-    const { loginUrl, ticketValue } = await addon.buildLoginUrl({ redirectUri: redirectUrl, forType: body.forType });
+    const { loginUrl, ticketValue } = await addon.buildLoginUrl({ redirectUri: redirectUrl, forType: body.forType ,from: body.from || "web" });
     const ticket = this.codeService.setValidationValue(ticketValue)
     this.ctx.cookies.set("oauth_ticket", ticket, {
       httpOnly: true,
@@ -217,10 +220,32 @@ export class ConnectController extends BaseController {
     return this.ok(bounds);
   }
 
-  @Post('/providers', { summary: Constants.per.guest })
+
+   @Post('/providers', { summary: Constants.per.guest })
   public async providers() {
-    const list = addonRegistry.getDefineList("oauth");
+    const defineList = addonRegistry.getDefineList("oauth");
+
+    const publicSetting = await this.sysSettingsService.getPublicSettings();
+    const oauthProviders = publicSetting.oauthProviders || {};
+    const list = [];
+
+    for (const item of defineList) {
+      const type = item.name 
+      const conf = oauthProviders[type];
+      const provider:any = {
+        ...item,
+      }
+      delete provider.input
+      if (conf && conf.addonId) {
+        const addonEntity = await this.addonService.info(conf.addonId);
+        if (addonEntity) {
+          provider.addonId = conf.addonId;
+          provider.addonTitle = addonEntity.name;
+        }
+      }
+      list.push(provider);
+    }
+
     return this.ok(list);
   }
-
 }

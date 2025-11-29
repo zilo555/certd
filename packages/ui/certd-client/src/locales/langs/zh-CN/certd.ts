@@ -767,7 +767,10 @@ export default {
       oauthProviders: "第三方登录提供商",
       oauthType: "第三方登录类型",
       oauthConfig: "第三方登录配置",
-      oauthProviderSelectorPlaceholder: "请选择第三方登录提供商",
+      oauthProviderSelectorPlaceholder: "未配置",
+      oauthCallback: "回调地址",
+      oauthCallbackHelper: "复制回调地址，配置到对应提供商的回调地址中",
+      oauthCallbackCopy: "复制回调地址",
     },
   },
   modal: {

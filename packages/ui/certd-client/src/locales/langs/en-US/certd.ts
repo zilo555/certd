@@ -766,7 +766,10 @@ export default {
       oauthProviders: "OAuth2 Login Providers",
       oauthType: "OAuth2 Login Type",
       oauthConfig: "OAuth2 Login Config",
-      oauthProviderSelectorPlaceholder: "Please select OAuth2 login provider",
+      oauthProviderSelectorPlaceholder: "Not Configured",
+      oauthCallback: "Callback URL",
+      oauthCallbackHelper: "Copy this URL to the callback address of the OAuth2 login provider",
+      oauthCallbackCopy: "Copy Callback URL",
     },
   },
   modal: {

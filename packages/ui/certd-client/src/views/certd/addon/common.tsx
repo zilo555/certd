@@ -121,7 +121,14 @@ export function getCommonColumnDefine(crudExpose: any, typeRef: any, api: any, a
       },
       editForm: {
         component: {
-          disabled: false,
+          disabled: true,
+        },
+      },
+      addForm: {
+        component: {
+          disabled: compute(({ form }) => {
+            return form.type ? true : false;
+          }),
         },
       },
       form: {

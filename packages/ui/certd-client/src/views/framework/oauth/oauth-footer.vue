@@ -3,11 +3,13 @@
     <div class="oauth-title">
       <div class="oauth-title-text">其他方式登录</div>
     </div>
-    <div v-for="item in oauthList" :key="item.type">
-      <div class="oauth-icon-button pointer" @click="goOauthLogin(item.name)">
-        <div><fs-icon :icon="item.icon" class="text-blue-600 text-40" /></div>
-        <div>{{ item.title }}</div>
-      </div>
+    <div class="flex justify-center items-center gap-4">
+      <template v-for="item in oauthProviderList" :key="item.type">
+        <div v-if="item.addonId" class="oauth-icon-button pointer" @click="goOauthLogin(item.name)">
+          <div><fs-icon :icon="item.icon" class="text-blue-600 text-40" /></div>
+          <div>{{ item.addonTitle || item.title }}</div>
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -15,15 +17,16 @@
 import { onMounted, ref } from "vue";
 import * as api from "./api";
 
-const oauthList = ref([]);
+const oauthProviderList = ref([]);
 
 onMounted(async () => {
-  oauthList.value = await api.GetOauthProviders();
+  oauthProviderList.value = await api.GetOauthProviders();
 });
 
 async function goOauthLogin(type: string) {
   //获取第三方登录URL
-  const res = await api.OauthLogin(type);
+  const from = "web";
+  const res = await api.OauthLogin(type, from);
   const loginUrl = res.loginUrl;
   window.location.href = loginUrl;
 }
