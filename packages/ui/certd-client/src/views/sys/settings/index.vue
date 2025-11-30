@@ -11,6 +11,9 @@
         <a-tab-pane key="register" :tab="t('certd.sys.setting.registerSetting')">
           <SettingRegister v-if="activeKey === 'register'" />
         </a-tab-pane>
+        <a-tab-pane key="oauth" :tab="t('certd.sys.setting.oauthSetting')">
+          <SettingOauth v-if="activeKey === 'oauth'" />
+        </a-tab-pane>
         <a-tab-pane v-if="settingsStore.isComm" key="payment" :tab="t('certd.sys.setting.paymentSetting')">
           <SettingPayment v-if="activeKey === 'payment'" />
         </a-tab-pane>
@@ -35,6 +38,7 @@ import SettingPayment from "/@/views/sys/settings/tabs/payment.vue";
 import SettingSafe from "/@/views/sys/settings/tabs/safe.vue";
 import SettingCaptcha from "/@/views/sys/settings/tabs/captcha.vue";
 import SettingPipeline from "/@/views/sys/settings/tabs/pipeline.vue";
+import SettingOauth from "/@/views/sys/settings/tabs/oauth.vue";
 import { useRoute, useRouter } from "vue-router";
 import { ref } from "vue";
 import { useSettingStore } from "/@/store/settings";
@@ -47,9 +51,7 @@ const settingsStore = useSettingStore();
 const activeKey = ref("base");
 const route = useRoute();
 const router = useRouter();
-if (route.query.tab) {
-  activeKey.value = (route.query.tab as string) || "base";
-}
+activeKey.value = (route.query.tab as string) || "base";
 
 function onChange(value: string) {
   // activeKey.value = value;

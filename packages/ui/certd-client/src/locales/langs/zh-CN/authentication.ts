@@ -85,4 +85,7 @@ export default {
   phoneNumber: "手机号",
   changePassword: "修改密码",
   updateProfile: "修改个人信息",
+
+  oauthLoginTitle: "其他登录方式",
+  oauthOnlyLoginTitle: "登录",
 };

@@ -1,7 +1,7 @@
 <template>
   <div class="oauth-footer relative">
     <div class="oauth-title">
-      <div class="oauth-title-text">其他方式登录</div>
+      <div class="oauth-title-text">{{ computedTitle }}</div>
     </div>
     <div class="flex justify-center items-center gap-4">
       <template v-for="item in oauthProviderList" :key="item.type">
@@ -14,13 +14,31 @@
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import * as api from "./api";
+import { useI18n } from "vue-i18n";
+import { useSettingStore } from "/@/store/settings";
 
 const oauthProviderList = ref([]);
+const props = defineProps<{
+  oauthOnly?: boolean;
+}>();
 
+const { t } = useI18n();
+const computedTitle = computed(() => {
+  return props.oauthOnly ? t("authentication.oauthOnlyLoginTitle") : t("authentication.oauthLoginTitle");
+});
+
+const settingStore = useSettingStore();
 onMounted(async () => {
   oauthProviderList.value = await api.GetOauthProviders();
+  //如果开启了自动跳转登录
+  if (settingStore.sysPublic.oauthAutoRedirect) {
+    const firstOauth = oauthProviderList.value.find(item => item.addonId > 0);
+    if (firstOauth) {
+      goOauthLogin(firstOauth.name);
+    }
+  }
 });
 
 async function goOauthLogin(type: string) {
@@ -82,6 +100,7 @@ async function goOauthLogin(type: string) {
     .fs-icon {
       font-size: 36px;
       color: #006be6 !important;
+      margin: 0px !important;
     }
   }
 }

@@ -43,7 +43,15 @@ export type BuildLoginUrlReq = {
     from?:string;
 }
 
+export type BuildLogoutUrlReq = {
+}
+
+export type LogoutUrlReply = {
+    logoutUrl?: string;
+}
+
 export interface IOauthProvider {
     buildLoginUrl: (params: BuildLoginUrlReq) => Promise<LoginUrlReply>;
     onCallback: (params: OnCallbackReq) => Promise<OauthToken>;
+    buildLogoutUrl: (params: BuildLogoutUrlReq) => Promise<LogoutUrlReply>;
 }

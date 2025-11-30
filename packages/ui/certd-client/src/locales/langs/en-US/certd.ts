@@ -743,6 +743,8 @@ export default {
       paymentSetting: "Payment Settings",
       captchaSetting: "Captcha Setting",
       pipelineSetting: "Pipeline Settings",
+      oauthSetting: "OAuth2 Settings",
+
       showRunStrategy: "Show RunStrategy",
       showRunStrategyHelper: "Allow modify the run strategy of the task",
 
@@ -770,6 +772,14 @@ export default {
       oauthCallback: "Callback URL",
       oauthCallbackHelper: "Copy this URL to the callback address of the OAuth2 login provider",
       oauthCallbackCopy: "Copy Callback URL",
+      oauthAutoRegister: "Auto Register User",
+      oauthAutoRegisterCheckedText: "Auto Register",
+      oauthAutoRegisterUnCheckedText: "User Select",
+      oauthAutoRegisterHelper: "Whether to auto register user when login",
+      oauthAutoRedirect: "Auto Redirect to OAuth2 Login",
+      oauthAutoRedirectHelper: "Whether to auto redirect to OAuth2 login when login (using the first enabled OAuth2 login type)",
+      oauthOnly: "OAuth2 Login Only",
+      oauthOnlyHelper: "Whether to only allow OAuth2 login, disable password login",
     },
   },
   modal: {

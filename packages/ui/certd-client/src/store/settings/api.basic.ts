@@ -62,6 +62,13 @@ export type SysPublicSetting = {
 
   // 第三方OAuth配置
   oauthEnabled?: boolean;
+  // 是否自动注册用户
+  oauthAutoRegister?: boolean;
+  // 是否自动跳转第三方登录
+  oauthAutoRedirect?: boolean;
+  // 是否仅允许使用第三方登录
+  oauthOnly?: boolean;
+  // 第三方OAuth登录提供者配置
   oauthProviders?: Record<
     string,
     {

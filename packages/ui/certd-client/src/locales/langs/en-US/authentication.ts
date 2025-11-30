@@ -84,4 +84,6 @@ export default {
   phoneNumber: "Phone Number",
   changePassword: "Change Password",
   updateProfile: "Update Profile",
+  oauthLoginTitle: "Other ways of login",
+  oauthOnlyLoginTitle: "Login",
 };

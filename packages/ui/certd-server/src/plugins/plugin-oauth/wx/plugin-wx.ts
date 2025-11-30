@@ -1,5 +1,5 @@
 import { AddonInput, BaseAddon, IsAddon } from "@certd/lib-server";
-import { BuildLoginUrlReq, IOauthProvider, OnCallbackReq } from "../api.js";
+import { BuildLoginUrlReq, BuildLogoutUrlReq, IOauthProvider, OnCallbackReq } from "../api.js";
 
 @IsAddon({
   addonType: "oauth",
@@ -125,4 +125,9 @@ export class WxOauthProvider extends BaseAddon implements IOauthProvider {
       },
     }
   };
+
+
+  async buildLogoutUrl(params: BuildLogoutUrlReq) {
+    return {};
+  }
 }

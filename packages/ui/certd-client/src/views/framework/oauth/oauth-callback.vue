@@ -53,8 +53,13 @@ async function handleOauthToken() {
   }
   if (res.bindRequired) {
     //需要绑定
-    bindRequired.value = true;
     bindCode.value = res.validationCode;
+    //如果开启了自动注册，默认自动注册账号
+    if (settingStore.sysPublic.registerEnabled) {
+      autoRegister();
+    } else {
+      bindRequired.value = true;
+    }
   }
 }
 
@@ -64,7 +69,7 @@ onMounted(async () => {
   }
 
   if (forType === "bind") {
-    //绑定第三方账号
+    //从用户中心页面，进行第三方账号的绑定
     await api.BindUser(validationCode);
     notification.success({
       message: "绑定成功",

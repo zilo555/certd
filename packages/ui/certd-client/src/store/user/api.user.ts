@@ -100,3 +100,10 @@ export async function loginByTwoFactor(data: any) {
     data,
   });
 }
+
+export async function OauthProviders() {
+  return await request({
+    url: "/oauth/providers",
+    method: "post",
+  });
+}

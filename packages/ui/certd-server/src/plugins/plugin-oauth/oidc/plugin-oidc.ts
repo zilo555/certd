@@ -1,5 +1,5 @@
 import { AddonInput, BaseAddon, IsAddon } from "@certd/lib-server";
-import { BuildLoginUrlReq, IOauthProvider, OnCallbackReq } from "../api.js";
+import { BuildLoginUrlReq, BuildLogoutUrlReq, IOauthProvider, OnCallbackReq } from "../api.js";
 
 @IsAddon({
   addonType: "oauth",
@@ -129,4 +129,12 @@ export class OidcOauthProvider extends BaseAddon implements IOauthProvider {
       },
     }
   };
+
+  async buildLogoutUrl(params: BuildLogoutUrlReq) {
+    const { config } = await this.getClient()
+    let logoutUrl =  config.serverMetadata().end_session_endpoint
+    return {
+      logoutUrl: logoutUrl,
+    };
+  }
 }

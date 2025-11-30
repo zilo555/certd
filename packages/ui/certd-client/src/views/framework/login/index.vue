@@ -2,71 +2,74 @@
   <div class="main login-page">
     <a-form v-if="!twoFactor.loginId" ref="formRef" class="user-layout-login" name="custom-validation" :model="formState" v-bind="layout" @finish="handleFinish" @finish-failed="handleFinishFailed">
       <!--      <div class="login-title">登录</div>-->
-      <a-tabs v-model:active-key="formState.loginType" :tab-bar-style="{ textAlign: 'center', borderBottom: 'unset' }">
-        <a-tab-pane key="password" :tab="t('authentication.passwordTab')" :disabled="sysPublicSettings.passwordLoginEnabled !== true">
-          <template v-if="formState.loginType === 'password'">
-            <!--      <div class="login-title">登录</div>-->
-            <a-form-item required has-feedback name="username" :rules="rules.username">
-              <a-input v-model:value="formState.username" :placeholder="t('authentication.usernamePlaceholder')" autocomplete="off" @keydown.enter="handleFinish">
-                <template #prefix>
-                  <fs-icon icon="ion:phone-portrait-outline"></fs-icon>
-                </template>
-              </a-input>
-            </a-form-item>
-            <a-form-item has-feedback name="password" :rules="rules.password">
-              <a-input-password v-model:value="formState.password" :placeholder="t('authentication.passwordPlaceholder')" autocomplete="off" @keyup.enter="handleFinish">
-                <template #prefix>
-                  <fs-icon icon="ion:lock-closed-outline"></fs-icon>
-                </template>
-              </a-input-password>
-            </a-form-item>
+      <template v-if="!isOauthOnly">
+        <a-tabs v-model:active-key="formState.loginType" :tab-bar-style="{ textAlign: 'center', borderBottom: 'unset' }">
+          <a-tab-pane key="password" :tab="t('authentication.passwordTab')" :disabled="sysPublicSettings.passwordLoginEnabled !== true">
+            <template v-if="formState.loginType === 'password'">
+              <!--      <div class="login-title">登录</div>-->
+              <a-form-item required has-feedback name="username" :rules="rules.username">
+                <a-input v-model:value="formState.username" :placeholder="t('authentication.usernamePlaceholder')" autocomplete="off" @keydown.enter="handleFinish">
+                  <template #prefix>
+                    <fs-icon icon="ion:phone-portrait-outline"></fs-icon>
+                  </template>
+                </a-input>
+              </a-form-item>
+              <a-form-item has-feedback name="password" :rules="rules.password">
+                <a-input-password v-model:value="formState.password" :placeholder="t('authentication.passwordPlaceholder')" autocomplete="off" @keyup.enter="handleFinish">
+                  <template #prefix>
+                    <fs-icon icon="ion:lock-closed-outline"></fs-icon>
+                  </template>
+                </a-input-password>
+              </a-form-item>
 
-            <a-form-item v-if="settingStore.sysPublic.captchaEnabled" has-feedback required name="captcha" :rules="rules.captcha">
-              <CaptchaInput v-model:model-value="formState.captcha" @keydown.enter="handleFinish"></CaptchaInput>
-            </a-form-item>
-          </template>
-        </a-tab-pane>
-        <a-tab-pane v-if="sysPublicSettings.smsLoginEnabled === true" key="sms" :tab="t('authentication.smsTab')">
-          <template v-if="formState.loginType === 'sms'">
-            <a-form-item has-feedback name="mobile" :rules="rules.mobile">
-              <a-input v-model:value="formState.mobile" :placeholder="t('authentication.mobilePlaceholder')" autocomplete="off">
-                <template #prefix>
-                  <fs-icon icon="ion:phone-portrait-outline"></fs-icon>
-                </template>
-              </a-input>
-            </a-form-item>
+              <a-form-item v-if="settingStore.sysPublic.captchaEnabled" has-feedback required name="captcha" :rules="rules.captcha">
+                <CaptchaInput v-model:model-value="formState.captcha" @keydown.enter="handleFinish"></CaptchaInput>
+              </a-form-item>
+            </template>
+          </a-tab-pane>
+          <a-tab-pane v-if="sysPublicSettings.smsLoginEnabled === true" key="sms" :tab="t('authentication.smsTab')">
+            <template v-if="formState.loginType === 'sms'">
+              <a-form-item has-feedback name="mobile" :rules="rules.mobile">
+                <a-input v-model:value="formState.mobile" :placeholder="t('authentication.mobilePlaceholder')" autocomplete="off">
+                  <template #prefix>
+                    <fs-icon icon="ion:phone-portrait-outline"></fs-icon>
+                  </template>
+                </a-input>
+              </a-form-item>
 
-            <a-form-item has-feedback name="smsCaptcha">
-              <CaptchaInput v-model:model-value="formState.smsCaptcha" @keydown.enter="handleFinish"></CaptchaInput>
-            </a-form-item>
+              <a-form-item has-feedback name="smsCaptcha">
+                <CaptchaInput v-model:model-value="formState.smsCaptcha" @keydown.enter="handleFinish"></CaptchaInput>
+              </a-form-item>
 
-            <a-form-item name="smsCode" :rules="rules.smsCode">
-              <sms-code v-model:value="formState.smsCode" :captcha="formState.smsCaptcha" :mobile="formState.mobile" :phone-code="formState.phoneCode" @error="formState.smsCaptcha = null" />
-            </a-form-item>
-          </template>
-        </a-tab-pane>
-      </a-tabs>
-      <a-form-item>
-        <a-button type="primary" size="large" html-type="button" :loading="loading" class="login-button" @click="handleFinish">
-          {{ queryBindCode ? t("authentication.bindButton") : t("authentication.loginButton") }}
-        </a-button>
+              <a-form-item name="smsCode" :rules="rules.smsCode">
+                <sms-code v-model:value="formState.smsCode" :captcha="formState.smsCaptcha" :mobile="formState.mobile" :phone-code="formState.phoneCode" @error="formState.smsCaptcha = null" />
+              </a-form-item>
+            </template>
+          </a-tab-pane>
+        </a-tabs>
+        <a-form-item>
+          <a-button type="primary" size="large" html-type="button" :loading="loading" class="login-button" @click="handleFinish">
+            {{ queryBindCode ? t("authentication.bindButton") : t("authentication.loginButton") }}
+          </a-button>
+        </a-form-item>
+        <a-form-item>
+          <div class="mt-2 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+              <language-toggle class="text-blue-500"></language-toggle>
+              <router-link v-if="!!settingStore.sysPublic.selfServicePasswordRetrievalEnabled && !queryBindCode" :to="{ name: 'forgotPassword' }">
+                {{ t("authentication.forgotPassword") }}
+              </router-link>
+            </div>
 
-        <div class="mt-2 flex justify-between items-center">
-          <div class="flex items-center gap-2">
-            <language-toggle class="text-blue-500"></language-toggle>
-            <router-link v-if="!!settingStore.sysPublic.selfServicePasswordRetrievalEnabled && !queryBindCode" :to="{ name: 'forgotPassword' }">
-              {{ t("authentication.forgotPassword") }}
+            <router-link v-if="hasRegisterTypeEnabled() && !queryBindCode" class="register" :to="{ name: 'register' }">
+              {{ t("authentication.registerLink") }}
             </router-link>
           </div>
-
-          <router-link v-if="hasRegisterTypeEnabled() && !queryBindCode" class="register" :to="{ name: 'register' }">
-            {{ t("authentication.registerLink") }}
-          </router-link>
-        </div>
-      </a-form-item>
+        </a-form-item>
+      </template>
 
       <div v-if="!queryBindCode && settingStore.sysPublic.oauthEnabled && settingStore.isPlus" class="w-full">
-        <oauth-footer></oauth-footer>
+        <oauth-footer :oauth-only="isOauthOnly"></oauth-footer>
       </div>
     </a-form>
     <a-form v-else ref="twoFactorFormRef" class="user-layout-login" :model="twoFactor" v-bind="layout">
@@ -89,7 +92,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, nextTick, reactive, ref, toRaw } from "vue";
+import { computed, defineComponent, nextTick, reactive, ref, toRaw } from "vue";
 import { useUserStore } from "/src/store/user";
 import { useSettingStore } from "/@/store/settings";
 import { utils } from "@fast-crud/fast-crud";
@@ -110,6 +113,7 @@ export default defineComponent({
 
     const queryBindCode = ref(route.query.bindCode as string | undefined);
 
+    const queryOauthOnly = route.query.oauthOnly as string;
     const urlLoginType = route.query.loginType as string | undefined;
     const verifyCodeInputRef = ref();
     const loading = ref(false);
@@ -231,6 +235,12 @@ export default defineComponent({
     const captchaInputRef = ref();
     const captchaInputForSmsCode = ref();
 
+    const isOauthOnly = computed(() => {
+      if (queryOauthOnly === "false" || queryOauthOnly === "0") {
+        return false;
+      }
+      return sysPublicSettings.oauthOnly && settingStore.isPlus && sysPublicSettings.oauthEnabled;
+    });
     return {
       t,
       loading,
@@ -238,6 +248,7 @@ export default defineComponent({
       formRef,
       rules,
       layout,
+      isOauthOnly,
       handleFinishFailed,
       handleFinish,
       resetForm,
@@ -265,6 +276,11 @@ export default defineComponent({
     //label {
     //  font-size: 14px;
     //}
+
+    .fs-icon {
+      color: rgba(0, 0, 0, 0.45);
+      margin-right: 4px;
+    }
 
     .login-title {
       font-size: 18px;
@@ -317,11 +333,6 @@ export default defineComponent({
       .register {
         float: right;
       }
-    }
-
-    .fs-icon {
-      color: rgba(0, 0, 0, 0.45);
-      margin-right: 4px;
     }
 
     .ant-input-affix-wrapper {

@@ -1,15 +1,15 @@
-import { addonRegistry, AddonService, BaseController, Constants, SysInstallInfo, SysSettingsService } from "@certd/lib-server";
-import { ALL, Body, Controller, Get, Inject, Param, Post, Provide, Query } from "@midwayjs/core";
-import { AddonGetterService } from "../../../modules/pipeline/service/addon-getter-service.js";
-import { IOauthProvider } from "../../../plugins/plugin-oauth/api.js";
-import { LoginService } from "../../../modules/login/service/login-service.js";
-import { CodeService } from "../../../modules/basic/service/code-service.js";
-import { UserService } from "../../../modules/sys/authority/service/user-service.js";
-import { UserEntity } from "../../../modules/sys/authority/entity/user.js";
 import { logger, simpleNanoId, utils } from "@certd/basic";
-import { OauthBoundService } from "../../../modules/login/service/oauth-bound-service.js";
-import { OauthBoundEntity } from "../../../modules/login/entity/oauth-bound.js";
+import { addonRegistry, AddonService, BaseController, Constants, SysInstallInfo, SysSettingsService } from "@certd/lib-server";
 import { checkPlus } from "@certd/plus-core";
+import { ALL, Body, Controller, Get, Inject, Param, Post, Provide, Query } from "@midwayjs/core";
+import { CodeService } from "../../../modules/basic/service/code-service.js";
+import { OauthBoundEntity } from "../../../modules/login/entity/oauth-bound.js";
+import { LoginService } from "../../../modules/login/service/login-service.js";
+import { OauthBoundService } from "../../../modules/login/service/oauth-bound-service.js";
+import { AddonGetterService } from "../../../modules/pipeline/service/addon-getter-service.js";
+import { UserEntity } from "../../../modules/sys/authority/entity/user.js";
+import { UserService } from "../../../modules/sys/authority/service/user-service.js";
+import { IOauthProvider } from "../../../plugins/plugin-oauth/api.js";
 
 /**
  */
@@ -119,6 +119,14 @@ export class ConnectController extends BaseController {
       this.ctx.redirect(`${bindUrl}#/oauth/callback/${type}?error=${err.error_description || err.message}`);
     }
 
+  }
+
+  @Post('/getLogoutUrl', { summary: Constants.per.guest })
+  public async logout(@Body(ALL) body: any) {
+    checkPlus()
+    const addon = await this.getOauthProvider(body.type);
+    const { logoutUrl } = await addon.buildLogoutUrl(body);
+    return this.ok({ logoutUrl });
   }
 
 
@@ -241,6 +249,12 @@ export class ConnectController extends BaseController {
         if (addonEntity) {
           provider.addonId = conf.addonId;
           provider.addonTitle = addonEntity.name;
+
+          const addon = await this.addonGetterService.getAddonById(conf.addonId,true,0);
+          const {logoutUrl} = await addon.buildLogoutUrl();
+          if (logoutUrl){
+            provider.logoutUrl = logoutUrl;
+          }
         }
       }
       list.push(provider);

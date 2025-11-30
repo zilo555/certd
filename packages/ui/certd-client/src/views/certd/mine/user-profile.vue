@@ -16,10 +16,10 @@
         <a-descriptions-item :label="t('authentication.email')">{{ userInfo.email }}</a-descriptions-item>
         <a-descriptions-item :label="t('authentication.phoneNumber')">{{ userInfo.phoneCode }}{{ userInfo.mobile }}</a-descriptions-item>
         <a-descriptions-item v-if="settingStore.sysPublic.oauthEnabled && settingStore.isPlus" label="第三方账号绑定">
-          <div v-for="item in computedOauthBounds" :key="item.name" class="flex items-center gap-2">
+          <div v-for="item in computedOauthBounds" :key="item.name" class="flex items-center gap-2 mb-2">
             <fs-icon :icon="item.icon" class="mr-2 text-blue-500" />
             <span class="mr-2 w-36">{{ item.title }}</span>
-            <a-button v-if="item.bound" type="link" danger @click="unbind(item.name)">解绑</a-button>
+            <a-button v-if="item.bound" type="primary" danger @click="unbind(item.name)">解绑</a-button>
             <a-button v-else type="primary" @click="bind(item.name)">绑定</a-button>
           </div>
         </a-descriptions-item>

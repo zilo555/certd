@@ -743,6 +743,7 @@ export default {
       paymentSetting: "支付设置",
       captchaSetting: "验证码设置",
       pipelineSetting: "流水线设置",
+      oauthSetting: "第三方登录",
 
       showRunStrategy: "显示运行策略选择",
       showRunStrategyHelper: "任务设置中是否允许选择运行策略",
@@ -771,6 +772,14 @@ export default {
       oauthCallback: "回调地址",
       oauthCallbackHelper: "复制回调地址，配置到对应提供商的回调地址中",
       oauthCallbackCopy: "复制回调地址",
+      oauthAutoRegister: "自动注册用户",
+      oauthAutoRegisterHelper: "当第三方账户未绑定本站账号时，是否自动注册用户，默认由用户选择",
+      oauthAutoRegisterCheckedText: "自动注册",
+      oauthAutoRegisterUnCheckedText: "用户选择",
+      oauthAutoRedirect: "自动跳转第三方登录",
+      oauthAutoRedirectHelper: "是否自动跳转第三方登录（使用第一个已启用的第三方登录类型）",
+      oauthOnly: "仅使用第三方登录",
+      oauthOnlyHelper: "是否仅使用第三方登录，关闭密码登录（注意：请务必在测试第三方登录功能正常后再开启）",
     },
   },
   modal: {

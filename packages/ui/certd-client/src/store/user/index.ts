@@ -14,6 +14,7 @@ import { mitter } from "/src/utils/util.mitt";
 import { resetAllStores, useAccessStore } from "/@/vben/stores";
 
 import { useUserStore as vbenUserStore } from "/@/vben/stores/modules/user";
+import { request } from "/@/api/service";
 
 interface UserState {
   userInfo: Nullable<UserInfoRes>;
@@ -116,15 +117,38 @@ export const useUserStore = defineStore({
      * @description: logout
      */
     async logout(goLogin = true, from401 = false) {
+      if (!from401 && this.getToken) {
+        try {
+          await UserApi.logout(); //主要是清空cookie
+        } catch (e) {
+          console.error("注销登录请求失败：", e);
+        }
+      }
+
       this.resetState();
       resetAllStores();
-      if (!from401) {
-        await UserApi.logout(); //主要是清空cookie
-      }
+      // 第三方登录注销
+      await this.oauthLogout();
       goLogin && router.push("/login");
       mitter.emit("app.logout");
     },
 
+    async oauthLogout() {
+      const providers = await UserApi.OauthProviders();
+      for (const provider of providers) {
+        if (provider.logoutUrl) {
+          try {
+            await request({
+              url: provider.logoutUrl,
+              method: "get",
+              withCredentials: true,
+            });
+          } catch (e) {
+            console.error("注销第三方登录失败：", e);
+          }
+        }
+      }
+    },
     /**
      * @description: Confirm before logging out
      */
