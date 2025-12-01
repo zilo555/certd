@@ -5,8 +5,10 @@
 
 配置环境变量
 ```shell
-ALIYUN_CLIENT_CONNECT_TIMEOUT=10000 # 连接超时，单位毫秒
-ALIYUN_CLIENT_READ_TIMEOUT=10000 #读取数据超时，单位毫秒
+# docker-compose.yaml
+environment:
+  - ALIYUN_CLIENT_CONNECT_TIMEOUT=16000 # 连接超时，单位毫秒
+  - ALIYUN_CLIENT_READ_TIMEOUT=16000 #读取数据超时，单位毫秒
 
 ```
 
