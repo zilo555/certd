@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.14](https://github.com/certd/certd/compare/v1.37.13...v1.37.14) (2025-12-02)
+
+### Bug Fixes
+
+* 修复注销登录时，第三方登录注销请求失败的报错 ([677e110](https://github.com/certd/certd/commit/677e1101e6cf4451abd8a876cc1d0ddd26a10b88))
+
 ## [1.37.13](https://github.com/certd/certd/compare/v1.37.12...v1.37.13) (2025-12-02)
 
 ### Bug Fixes
