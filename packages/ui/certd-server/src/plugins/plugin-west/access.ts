@@ -1,6 +1,7 @@
 import { HttpRequestConfig } from '@certd/basic';
 import { IsAccess, AccessInput, BaseAccess } from '@certd/pipeline';
 import qs from 'qs';
+import iconv from 'iconv-lite';
 /**
  * 这个注解将注册一个授权配置
  * 在certd的后台管理系统中，用户可以选择添加此类型的授权
@@ -213,7 +214,7 @@ token=md5(zhangsan + 5dh232kfg!* + 1554691950854)=cfcd208495d565ef66e7dff9f98764
     const headers = {}
     const body: any = {}
     if (method.toUpperCase() === 'POST') {
-      headers['Content-Type'] = 'application/x-www-form-urlencoded';
+      headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
       body.data = data
     } else if (method.toUpperCase() === 'GET') {
       let queryString = '';
@@ -230,6 +231,25 @@ token=md5(zhangsan + 5dh232kfg!* + 1554691950854)=cfcd208495d565ef66e7dff9f98764
       method,
       ...body,
       headers,
+      responseType: 'arraybuffer', // 关键：获取原始二进制数据
+      transformResponse: [
+        function(data, headers) { // headers 参数包含响应头
+          try {
+            const contentType = headers['content-type'] || '';
+            // 判断是否是 GB2312/GBK 编码
+            if (contentType.includes('gb2312') || contentType.includes('gbk')) {
+              // 使用 iconv-lite 解码
+              data = iconv.decode(data, 'gb2312');
+            }else{
+              // 默认按 UTF-8 处理
+              data = data.toString('utf-8');
+            }
+          } catch (error) {
+            console.error('解码失败:', error);
+          }
+          return JSON.parse(data);
+        }
+      ]
     });
     this.ctx.logger.info(`request ${url} ${method} res:${JSON.stringify(res)}`);
     if (res.msg !== 'success' && res.result!= 200) {
