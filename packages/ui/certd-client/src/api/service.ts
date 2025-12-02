@@ -47,11 +47,12 @@ function createService() {
         //如果不需要解包
         return dataAxios;
       }
-
+      //@ts-ignore
+      const showErrorNotify = response?.config?.showErrorNotify;
       // 这个状态码是和后端约定的
       if (dataAxios?.code === undefined) {
         // 如果没有 code 代表这不是项目后端开发的接口
-        errorCreate(`非标准返回：${dataAxios}， ${response.config.url}`);
+        errorCreate(`非标准返回：${dataAxios}， ${response.config.url}`, showErrorNotify);
         return dataAxios;
       }
       const { code } = dataAxios;
@@ -70,8 +71,6 @@ function createService() {
             // @ts-ignore
             response.config.onError(err);
           }
-          //@ts-ignore
-          const showErrorNotify = response?.config?.showErrorNotify;
           errorCreate(`${errorMessage}: ${response.config.url}`, showErrorNotify, dataAxios);
       }
     },
