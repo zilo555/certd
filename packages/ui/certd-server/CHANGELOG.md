@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.37.13](https://github.com/certd/certd/compare/v1.37.12...v1.37.13) (2025-12-02)
+
+### Bug Fixes
+
+* 修复西部数据返回信息乱码问题 ([78b1650](https://github.com/certd/certd/commit/78b1650bdb071c858b3f90d53a700d11ee6de328))
+* 修复西部数码使用域名级别的key申请证书失败的问题 ([5edc72d](https://github.com/certd/certd/commit/5edc72d47550b8e3364dabda70a41cce75d87956))
+
+### Performance Improvements
+
+* 第三方登录允许选择logo ([bb3085e](https://github.com/certd/certd/commit/bb3085ef84201ccd2dc632ba8c5097cb00258be4))
+* 支持OIDC单点登录 ([fbf12f1](https://github.com/certd/certd/commit/fbf12f16b5eaa7676fd41923587bf6bd2595adba))
+
 ## [1.37.12](https://github.com/certd/certd/compare/v1.37.11...v1.37.12) (2025-11-29)
 
 ### Bug Fixes
