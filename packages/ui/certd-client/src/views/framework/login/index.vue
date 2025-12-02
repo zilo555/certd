@@ -278,7 +278,7 @@ export default defineComponent({
     //}
 
     .fs-icon {
-      color: rgba(0, 0, 0, 0.45);
+      // color: rgba(0, 0, 0, 0.45);
       margin-right: 4px;
     }
 

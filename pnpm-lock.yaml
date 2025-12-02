@@ -1080,20 +1080,20 @@ importers:
         specifier: ^4.1.0
         version: 4.1.0
       '@fast-crud/editor-code':
-        specifier: ^1.27.4
-        version: 1.27.4
+        specifier: ^1.27.6
+        version: 1.27.6
       '@fast-crud/fast-crud':
-        specifier: ^1.27.4
-        version: 1.27.4(vue@3.5.14(typescript@5.8.3))
+        specifier: ^1.27.6
+        version: 1.27.6(vue@3.5.14(typescript@5.8.3))
       '@fast-crud/fast-extends':
-        specifier: ^1.27.4
-        version: 1.27.4(aws-crt@1.26.2)(vue@3.5.14(typescript@5.8.3))
+        specifier: ^1.27.6
+        version: 1.27.6(aws-crt@1.26.2)(vue@3.5.14(typescript@5.8.3))
       '@fast-crud/ui-antdv4':
-        specifier: ^1.27.4
-        version: 1.27.4
+        specifier: ^1.27.6
+        version: 1.27.6
       '@fast-crud/ui-interface':
-        specifier: ^1.27.4
-        version: 1.27.4
+        specifier: ^1.27.6
+        version: 1.27.6
       '@iconify/tailwind':
         specifier: ^1.2.0
         version: 1.2.0
@@ -3411,20 +3411,20 @@ packages:
     resolution: {integrity: sha512-Ys+3g2TaW7gADOJzPt83SJtCDhMjndcDMFVQ/Tj9iA1BfJzFKD9mAUXT3OenpuPHbI6P/myECxRJrofUsDx/5g==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
 
-  '@fast-crud/editor-code@1.27.4':
-    resolution: {integrity: sha512-syuSxpNc/So5xoGGZkiC4Iqa8MdrQpeHJRqs6/A8pRUDh9UEN1iBFm8PPxmSluHc7sFXZdt0IIRfJE6sDBhRiA==}
+  '@fast-crud/editor-code@1.27.6':
+    resolution: {integrity: sha512-ynEfltaR11wVDwZjwMDlgKa7B/oudyEG5rgX8uUQbCcFb13tXArz/3KButB3+kaqQWK/jNakPhb/oM1lUkjv7g==}
 
-  '@fast-crud/fast-crud@1.27.4':
-    resolution: {integrity: sha512-wwTqwETgcgBa8v2P/C2MGFfAxZGvAPDFiyrg3b9k+6eMePR//RbY9+M1knsTVaHTTkabAmgwZ+OnnCJzpmnK/A==}
+  '@fast-crud/fast-crud@1.27.6':
+    resolution: {integrity: sha512-V4sma2wWFLnivJT/vxEsSX5A80IRRppD6oSq935BlQ4a8tTuZ26QNNplmhL1L6Hp5NWDBDSxKfBIuJmTMBzm4A==}
 
-  '@fast-crud/fast-extends@1.27.4':
-    resolution: {integrity: sha512-GVWmwondzouPsDD2mCLmxbR7RV5Cf1pJQS0nracQZfrwKsJdNcKlIZ3F3SULklAELMtW01hFbwt7VC+ZehjvAQ==}
+  '@fast-crud/fast-extends@1.27.6':
+    resolution: {integrity: sha512-85Eu7JuAQN9eRHi9vL9gunIApgayBrK9z6RIcPp0jY41nq5pKZA0DEQoU7jy1PL0bhvbtj9E22bDaA7rXqbTcw==}
 
-  '@fast-crud/ui-antdv4@1.27.4':
-    resolution: {integrity: sha512-WcDYmlc06/BIpOnpfN7cZuWqW2kxZC5EfazVw1IaY+kxx3eLRdWX1dShh23oZEsKdwKwGcgY7xeiptFgEpel+Q==}
+  '@fast-crud/ui-antdv4@1.27.6':
+    resolution: {integrity: sha512-Eszzn6KgLy9TrjsJOfe3FFu2yMFF/oslCwiy8jknbuiZs/PUOhIhdQgQAn5hwmqTas/T62C/9pje5DVbgOUbNA==}
 
-  '@fast-crud/ui-interface@1.27.4':
-    resolution: {integrity: sha512-hZJiABhXOZma6kaxes9waKMdVEjaEMUtEGZ7TIXXJuExynNOMK1AVtfgACSP5uwTj8mKxUEa7iBKx2vr9EcfFA==}
+  '@fast-crud/ui-interface@1.27.6':
+    resolution: {integrity: sha512-T6Fgwe1WUWoYMsK0uIZu4fbtaxN5IngUy/nikPREwHTePHS6br9vQTFefG8bZv5e+L381TIETXzfU70RoSJLGg==}
 
   '@fidm/asn1@1.0.4':
     resolution: {integrity: sha512-esd1jyNvRb2HVaQGq2Gg8Z0kbQPXzV9Tq5Z14KNIov6KfFD6PTaRIO8UpcsYiTNzOqJpmyzWgVTrUwFV3UF4TQ==}
@@ -15325,14 +15325,14 @@ snapshots:
 
   '@eslint/js@8.57.0': {}
 
-  '@fast-crud/editor-code@1.27.4':
+  '@fast-crud/editor-code@1.27.6':
     dependencies:
       js-yaml: 4.1.0
       lodash-es: 4.17.21
       monaco-editor: 0.52.2
       monaco-yaml: 5.4.0(monaco-editor@0.52.2)
 
-  '@fast-crud/fast-crud@1.27.4(vue@3.5.14(typescript@5.8.3))':
+  '@fast-crud/fast-crud@1.27.6(vue@3.5.14(typescript@5.8.3))':
     dependencies:
       '@iconify/types': 2.0.0
       file-saver: 2.0.5
@@ -15342,7 +15342,7 @@ snapshots:
     transitivePeerDependencies:
       - vue
 
-  '@fast-crud/fast-extends@1.27.4(aws-crt@1.26.2)(vue@3.5.14(typescript@5.8.3))':
+  '@fast-crud/fast-extends@1.27.6(aws-crt@1.26.2)(vue@3.5.14(typescript@5.8.3))':
     dependencies:
       '@aws-sdk/client-s3': 3.810.0(aws-crt@1.26.2)
       '@aws-sdk/s3-request-presigner': 3.810.0
@@ -15372,9 +15372,9 @@ snapshots:
       - utf-8-validate
       - vue
 
-  '@fast-crud/ui-antdv4@1.27.4': {}
+  '@fast-crud/ui-antdv4@1.27.6': {}
 
-  '@fast-crud/ui-interface@1.27.4':
+  '@fast-crud/ui-interface@1.27.6':
     dependencies:
       lodash-es: 4.17.21
 

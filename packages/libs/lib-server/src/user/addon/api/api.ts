@@ -65,6 +65,7 @@ export abstract class BaseAddon implements IAddon {
   http!: HttpClient;
   logger!: ILogger;
 
+  title!: string;
 
 
 

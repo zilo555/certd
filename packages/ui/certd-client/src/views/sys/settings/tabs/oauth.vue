@@ -128,6 +128,7 @@ const onFinish = async (form: any) => {
     notification.success({
       message: t("certd.saveSuccess"),
     });
+    await loadOauthProviders();
   } finally {
     saveLoading.value = false;
   }

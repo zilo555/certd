@@ -142,6 +142,7 @@ export const useUserStore = defineStore({
               url: provider.logoutUrl,
               method: "get",
               withCredentials: true,
+              showErrorNotify: false,
             });
           } catch (e) {
             console.error("注销第三方登录失败：", e);

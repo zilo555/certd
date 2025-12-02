@@ -255,6 +255,9 @@ export class ConnectController extends BaseController {
           if (logoutUrl){
             provider.logoutUrl = logoutUrl;
           }
+          if(addon.icon){
+            provider.icon = addon.icon;
+          }
         }
       }
       list.push(provider);

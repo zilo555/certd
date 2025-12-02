@@ -6,10 +6,20 @@ import { BuildLoginUrlReq, BuildLogoutUrlReq, IOauthProvider, OnCallbackReq } fr
   name: 'oidc',
   title: 'OIDC认证',
   desc: 'OpenID Connect 认证，统一认证服务',
-  icon:"simple-icons:fusionauth",
+  icon:"simple-icons:fusionauth:#006be6",
   showTest: false,
 })
 export class OidcOauthProvider extends BaseAddon implements IOauthProvider {
+
+  @AddonInput({
+    title: "自定义图标",
+    component: {
+      name:"fs-icon-selector",
+      vModel:"modelValue"
+    },
+    required: false,
+  })
+  icon = "";
 
   @AddonInput({
     title: "ClientId",
@@ -29,7 +39,7 @@ export class OidcOauthProvider extends BaseAddon implements IOauthProvider {
 
   @AddonInput({
     title: "服务地址",
-    helper: "Issuer地址，去掉/.well-known/openid-configuration的服务发现地址",
+    helper: "Issuer地址，服务发现地址去掉/.well-known/openid-configuration",
     component: {
       placeholder: "https://oidc.example.com/oidc",
     },

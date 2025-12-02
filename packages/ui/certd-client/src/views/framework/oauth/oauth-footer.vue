@@ -18,6 +18,7 @@ import { computed, onMounted, ref } from "vue";
 import * as api from "./api";
 import { useI18n } from "vue-i18n";
 import { useSettingStore } from "/@/store/settings";
+import { useRoute } from "vue-router";
 
 const oauthProviderList = ref([]);
 const props = defineProps<{
@@ -30,10 +31,13 @@ const computedTitle = computed(() => {
 });
 
 const settingStore = useSettingStore();
+
+const route = useRoute();
+const queryOauthOnly = route.query.oauthOnly as string;
 onMounted(async () => {
   oauthProviderList.value = await api.GetOauthProviders();
   //如果开启了自动跳转登录
-  if (settingStore.sysPublic.oauthAutoRedirect) {
+  if (settingStore.sysPublic.oauthAutoRedirect && queryOauthOnly !== "false") {
     const firstOauth = oauthProviderList.value.find(item => item.addonId > 0);
     if (firstOauth) {
       goOauthLogin(firstOauth.name);
@@ -99,7 +103,7 @@ async function goOauthLogin(type: string) {
     border-radius: 100px;
     .fs-icon {
       font-size: 36px;
-      color: #006be6 !important;
+      color: #006be6;
       margin: 0px !important;
     }
   }

@@ -6,7 +6,7 @@ import { BuildLoginUrlReq, BuildLogoutUrlReq, IOauthProvider, OnCallbackReq } fr
   name: 'wx',
   title: '微信登录',
   desc: '微信网站应用登录',
-  icon: "mdi:wechat",
+  icon: "ion:logo-wechat:green",
   showTest: false,
 })
 export class WxOauthProvider extends BaseAddon implements IOauthProvider {

@@ -69,7 +69,7 @@ export function errorLog(error: any, notify = true) {
  * @description 创建一个错误
  */
 export function errorCreate(msg: string, notify = true, data?: any) {
-  const err = new CodeError(msg, data.code, data.data);
+  const err = new CodeError(msg, data?.code || 1, data?.data);
   console.error("errorCreate", err);
   if (notify) {
     uiContext.get().notification.error({ message: err.message });
