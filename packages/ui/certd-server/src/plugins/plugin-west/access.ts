@@ -91,6 +91,27 @@ export class WestAccess extends BaseAccess {
   apidomainkey = '';
 
 
+   /**
+   * 授权属性配置
+   */
+  @AccessInput({
+    title: '域名',
+    component: {
+      placeholder: '域名级别的key对应的域名',
+    },
+    encrypt: false,
+    required: false,
+    mergeScript: `
+    return {
+      show:ctx.compute(({form})=>{
+        return form.access.scope === 'domain'
+      })
+    }
+    `,
+  })
+  domain = '';
+
+
   @AccessInput({
     title: "测试",
     component: {
@@ -102,10 +123,44 @@ export class WestAccess extends BaseAccess {
   testRequest = true;
 
   async onTestRequest() {
+
+    if(this.scope === 'domain'){
+      if(!this.domain){
+        throw new Error('domain 必填');
+      }
+      await this.getDomainRecordList({limit:1});
+      return "ok";
+    }
+
     await this.getDomainList();
     return "ok";
   }
 
+  async getDomainRecordList(req:{limit:number}){
+     // 获取域名解析记录列表
+    return await this.doDoimainApiRequest('https://api.west.cn/API/v2/domain/dns/',{
+      act:'dnsrec.list',
+      domain:this.domain,
+      limit: req.limit || 10,
+     })
+  }
+
+
+  async doDoimainApiRequest(url: string, data: any = null, method = 'post') {
+    data.apidomainkey = this.apidomainkey;
+    const res = await this.ctx.http.request<any, any>({
+      url,
+      method,
+      data,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    });
+    if (res.msg !== 'success') {
+      throw new Error(`${JSON.stringify(res.msg)}`);
+    }
+    return res;
+  }
 
   async getDomainList() {
     const res = await this.doRequest({
