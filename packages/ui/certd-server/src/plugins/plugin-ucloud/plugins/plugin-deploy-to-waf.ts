@@ -5,9 +5,9 @@ import { UCloudAccess } from "../access.js";
 
 @IsTaskPlugin({
   //命名规范，插件类型+功能（就是目录plugin-demo中的demo），大写字母开头，驼峰命名
-  name: "UCloudDeployToCDN",
-  title: "UCloud-部署到CDN",
-  desc: "将证书部署到UCloud CDN",
+  name: "UCloudDeployToWaf",
+  title: "UCloud-部署到WAF",
+  desc: "将证书部署到UCloud WAF",
   icon: "svg:icon-ucloud",
   //插件分组
   group: pluginGroups.ucloud.key,
