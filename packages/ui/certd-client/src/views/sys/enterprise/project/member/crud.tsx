@@ -1,11 +1,11 @@
-import * as api from "./api";
-import { useI18n } from "/src/locales";
-import { computed, Ref, ref } from "vue";
-import { useRouter } from "vue-router";
-import { AddReq, compute, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, EditReq, UserPageQuery, UserPageRes, utils } from "@fast-crud/fast-crud";
-import { useUserStore } from "/@/store/user";
-import { useSettingStore } from "/@/store/settings";
+import { AddReq, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, EditReq, UserPageQuery, UserPageRes } from "@fast-crud/fast-crud";
 import { Modal } from "ant-design-vue";
+import { Ref, ref } from "vue";
+import { useRouter } from "vue-router";
+import * as api from "./api";
+import { useSettingStore } from "/@/store/settings";
+import { useUserStore } from "/@/store/user";
+import { useI18n } from "/src/locales";
 
 export default function ({ crudExpose, context }: CreateCrudOptionsProps): CreateCrudOptionsRet {
   const router = useRouter();
@@ -72,50 +72,58 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             show: false,
           },
         },
-        name: {
-          title: t("certd.ent.projectName"),
+        projectId: {
+          title: "项目ID",
           type: "text",
+          search: {
+            show: false,
+          },
+          form: {
+            show: false,
+          },
+          column: {
+            width: 200,
+            show: false,
+          },
+        },
+        userId: {
+          title: "用户ID",
+          type: "dict-select",
+          dict: dict({
+            url: "/sys/authority/user/getSimpleUsers",
+            value: "id",
+            label: "nickName",
+            labelBuilder: (item: any) => item.nickName || item.username || item.phoneCode + item.mobile,
+          }),
+          search: {
+            show: false,
+          },
+          form: {
+            show: false,
+          },
+          column: {
+            width: 200,
+            show: false,
+          },
+        },
+        permission: {
+          title: t("certd.ent.projectPermission"),
+          type: "dict-select",
+          dict: dict({
+            data: [
+              { label: t("certd.read"), value: "read", color: "cyan" },
+              { label: t("certd.write"), value: "write", color: "blue" },
+              { label: t("certd.admin"), value: "admin", color: "green" },
+            ],
+          }),
           search: {
             show: true,
           },
           form: {
-            component: {},
-            helper: t("certd.ent.projectNameHelper"),
-            rules: [{ required: true, message: t("certd.requiredField") }],
+            show: true,
           },
           column: {
             width: 200,
-          },
-        },
-        disabled: {
-          title: t("certd.disabled"),
-          type: "dict-switch",
-          dict: dict({
-            data: [
-              { label: t("certd.enabled"), value: false, color: "success" },
-              { label: t("certd.disabledLabel"), value: true, color: "error" },
-            ],
-          }),
-          form: {
-            value: false,
-          },
-          column: {
-            width: 100,
-            component: {
-              title: t("certd.clickToToggle"),
-              on: {
-                async click({ value, row }) {
-                  Modal.confirm({
-                    title: t("certd.prompt"),
-                    content: t("certd.confirmToggleStatus", { action: !value ? t("certd.disable") : t("certd.enable") }),
-                    onOk: async () => {
-                      await api.SetDisabled(row.id, !value);
-                      await crudExpose.doRefresh();
-                    },
-                  });
-                },
-              },
-            },
           },
         },
         createTime: {

@@ -1,8 +1,7 @@
 import { request } from "/src/api/service";
 
-const apiPrefix = "/sys/enterprise/project";
+const apiPrefix = "/sys/enterprise/projectMember";
 const userApiPrefix = "/sys/authority/user";
-
 export async function GetList(query: any) {
   return await request({
     url: apiPrefix + "/page",
@@ -59,10 +58,10 @@ export async function DeleteBatch(ids: any[]) {
   });
 }
 
-export async function SetDisabled(id: any, disabled: boolean) {
+export async function GetUserSimpleByIds(query: any) {
   return await request({
-    url: apiPrefix + "/setDisabled",
+    url: userApiPrefix + "/getSimpleByIds",
     method: "post",
-    data: { id, disabled },
+    data: query,
   });
 }

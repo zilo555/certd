@@ -1,10 +1,5 @@
 <template>
-  <fs-page class="page-cert">
-    <template #header>
-      <div class="title">
-        {{ t("certd.sysResources.projectManager") }}
-      </div>
-    </template>
+  <fs-page class="page-project-member">
     <fs-crud ref="crudRef" v-bind="crudBinding">
       <template #pagination-left>
         <a-tooltip :title="t('certd.batchDelete')">
@@ -26,7 +21,7 @@ import { useI18n } from "/src/locales";
 const { t } = useI18n();
 
 defineOptions({
-  name: "ProjectManager",
+  name: "ProjectMemberManager",
 });
 const { crudBinding, crudRef, crudExpose, context } = useFs({ createCrudOptions });
 
