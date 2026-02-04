@@ -1,24 +1,20 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('pi_pipeline_group')
-export class PipelineGroupEntity {
+/**
+ */
+@Entity('cd_project')
+export class ProjectEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'user_id', comment: '用户id' })
+  @Column({ name: 'user_id', comment: 'UserId' })
   userId: number;
 
-  @Column({ name: 'name', comment: '分组名称' })
+  @Column({ name: 'name', comment: '项目名称' })
   name: string;
 
-  @Column({ name: 'icon', comment: '图标' })
-  icon: string;
-
-  @Column({ name: 'favorite', comment: '收藏' })
-  favorite: boolean;
-
-  @Column({ name: 'project_id', comment: '项目id' })
-  projectId: number;
+  @Column({ name: 'disabled', comment: '禁用' })
+  disabled: boolean;
 
   @Column({
     name: 'create_time',
@@ -26,7 +22,6 @@ export class PipelineGroupEntity {
     default: () => 'CURRENT_TIMESTAMP',
   })
   createTime: Date;
-
   @Column({
     name: 'update_time',
     comment: '修改时间',
