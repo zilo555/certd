@@ -1,18 +1,25 @@
-import { AddReq, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, EditReq, UserPageQuery, UserPageRes } from "@fast-crud/fast-crud";
-import { Modal } from "ant-design-vue";
-import { Ref, ref } from "vue";
-import { useRouter } from "vue-router";
 import * as api from "./api";
-import { useSettingStore } from "/@/store/settings";
-import { useUserStore } from "/@/store/user";
 import { useI18n } from "/src/locales";
-import { userDict } from "../../dicts";
+import { computed, Ref, ref } from "vue";
+import { useRouter } from "vue-router";
+import { AddReq, compute, CreateCrudOptionsProps, CreateCrudOptionsRet, DelReq, dict, EditReq, UserPageQuery, UserPageRes, utils } from "@fast-crud/fast-crud";
+import { useUserStore } from "/@/store/user";
+import { useSettingStore } from "/@/store/settings";
+import { Modal } from "ant-design-vue";
+import { userDict } from "../dicts";
 
 export default function ({ crudExpose, context }: CreateCrudOptionsProps): CreateCrudOptionsRet {
   const router = useRouter();
   const { t } = useI18n();
   const pageRequest = async (query: UserPageQuery): Promise<UserPageRes> => {
-    return await api.GetList(query);
+    const list = await api.GetList(query);
+
+    return {
+      records: list,
+      total: list.length,
+      offset: 0,
+      limit: 999,
+    };
   };
   const editRequest = async ({ form, row }: EditReq) => {
     form.id = row.id;
@@ -27,8 +34,6 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
     const res = await api.AddObj(form);
     return res;
   };
-
-  const projectId = context.projectId;
 
   const userStore = useUserStore();
   const settingStore = useSettingStore();
@@ -63,11 +68,6 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
         minWidth: 200,
         fixed: "right",
       },
-      search: {
-        initialForm: {
-          projectId,
-        },
-      },
       columns: {
         id: {
           title: "ID",
@@ -80,57 +80,60 @@ export default function ({ crudExpose, context }: CreateCrudOptionsProps): Creat
             show: false,
           },
         },
-        projectId: {
-          title: "项目ID",
-          type: "text",
-          search: {
-            show: false,
-          },
-          form: {
-            value: projectId,
-            show: false,
-          },
-          editForm: {
-            show: false,
-          },
-          column: {
-            width: 200,
-            show: false,
-          },
-        },
-        userId: {
-          title: "用户",
-          type: "dict-select",
-          dict: userDict,
+        name: {
+          title: t("certd.ent.projectName"),
+          type: "link",
           search: {
             show: true,
           },
-          form: {},
-          editForm: {
-            show: false,
+          form: {
+            component: {},
+            rules: [{ required: true, message: t("certd.requiredField") }],
           },
           column: {
             width: 200,
+            cellRender({ row }) {
+              return <router-link to={{ path: `/certd/project/detail`, query: { projectId: row.id } }}>{row.name}</router-link>;
+            },
           },
         },
-        permission: {
-          title: t("certd.ent.projectPermission"),
-          type: "dict-select",
+        disabled: {
+          title: t("certd.disabled"),
+          type: "dict-switch",
           dict: dict({
             data: [
-              { label: t("certd.ent.permission.read"), value: "read", color: "cyan" },
-              { label: t("certd.ent.permission.write"), value: "write", color: "blue" },
-              { label: t("certd.ent.permission.admin"), value: "admin", color: "green" },
+              { label: t("certd.enabled"), value: false, color: "success" },
+              { label: t("certd.disabledLabel"), value: true, color: "error" },
             ],
           }),
-          search: {
-            show: true,
-          },
           form: {
-            show: true,
+            value: false,
           },
           column: {
-            width: 200,
+            width: 100,
+            component: {
+              title: t("certd.clickToToggle"),
+              on: {
+                async click({ value, row }) {
+                  Modal.confirm({
+                    title: t("certd.prompt"),
+                    content: t("certd.confirmToggleStatus", { action: !value ? t("certd.disable") : t("certd.enable") }),
+                    onOk: async () => {
+                      await api.SetDisabled(row.id, !value);
+                      await crudExpose.doRefresh();
+                    },
+                  });
+                },
+              },
+            },
+          },
+        },
+        adminId: {
+          title: t("certd.fields.adminId"),
+          type: "dict-select",
+          dict: userDict,
+          column: {
+            width: 160,
           },
         },
         createTime: {

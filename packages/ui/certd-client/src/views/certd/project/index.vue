@@ -1,19 +1,18 @@
 <template>
-  <fs-page class="page-project-detail">
+  <fs-page class="page-cert">
     <template #header>
       <div class="title">
-        {{ t("certd.ent.projectDetailManager") }}
-        <span class="sub">
-          {{ t("certd.ent.projectDetailDescription") }}
-        </span>
+        {{ t("certd.sysResources.myProjectManager") }}
       </div>
     </template>
     <fs-crud ref="crudRef" v-bind="crudBinding">
-      <template #pagination-left>
-        <a-tooltip :title="t('certd.batchDelete')">
-          <fs-button icon="DeleteOutlined" @click="handleBatchDelete"></fs-button>
-        </a-tooltip>
-      </template>
+      <!-- <div v-if="crudBinding.data" class="project-list">
+        <div v-for="item of crudBinding.data" :key="item.id" class="project-item">
+          <a-card style="width: 300px">
+            <p>{{ item.name }}</p>
+          </a-card>
+        </div>
+      </div> -->
     </fs-crud>
   </fs-page>
 </template>
@@ -25,22 +24,13 @@ import createCrudOptions from "./crud";
 import { message, Modal } from "ant-design-vue";
 import { DeleteBatch } from "./api";
 import { useI18n } from "/src/locales";
-import { useRoute } from "vue-router";
 
 const { t } = useI18n();
 
 defineOptions({
-  name: "ProjectDetail",
+  name: "MyProjectManager",
 });
-
-const route = useRoute();
-const projectIdStr = route.query.projectId as string;
-const projectId = Number(projectIdStr);
-
-const context: any = {
-  projectId,
-};
-const { crudBinding, crudRef, crudExpose } = useFs({ createCrudOptions, context });
+const { crudBinding, crudRef, crudExpose, context } = useFs({ createCrudOptions });
 
 const selectedRowKeys = context.selectedRowKeys;
 const handleBatchDelete = () => {
