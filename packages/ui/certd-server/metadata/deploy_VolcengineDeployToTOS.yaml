@@ -2,11 +2,11 @@ showRunStrategy: false
 default:
   strategy:
     runStrategy: 1
-name: VolcengineDeployToVOD
-title: 火山引擎-部署证书至VOD
+name: VolcengineDeployToTOS
+title: 火山引擎-部署证书至TOS自定义域名
 icon: svg:icon-volcengine
 group: volcengine
-desc: 部署至火山引擎视频点播
+desc: 仅限TOS自定义域名，加速域名请选择火山引擎的CDN插件
 input:
   cert:
     title: 域名证书
@@ -43,64 +43,44 @@ input:
       type: volcengine
     required: true
     order: 0
-  regionId:
-    title: 区域
-    helper: 选择火山引擎区域
-    component:
-      name: select
-      options:
-        - value: cn-north-1
-          label: 华北1（北京）
-        - value: ap-southeast-1
-          label: 东南亚1（新加坡）
-    default: cn-north-1
-    required: true
-    order: 0
-  spaceName:
-    title: 空间名称
-    component:
-      name: remote-select
-      vModel: value
-      mode: default
-      type: plugin
-      action: onGetSpaceList
-      search: false
-      pager: false
-      multi: false
-      watches:
-        - certDomains
-        - accessId
-        - accessId
-        - regionId
-    required: true
-    mergeScript: |2-
-
-                return {
-                  component:{
-                    form: ctx.compute(({form})=>{
-                      return form
-                    })
-                  },
-               }
-              
-    helper: 选择要部署证书的点播空间
-    order: 0
-  domainType:
-    title: 域名类型
-    helper: 选择域名类型
+  region:
+    title: 地域
+    helper: TOS服务所在地域
     component:
       name: a-select
-      vModel: value
       options:
-        - value: play
-          label: 点播加速域名
-        - value: image
-          label: 封面加速域名
-    value: play
+        - label: 华北2（北京）
+          value: cn-beijing
+        - label: 华东2（上海）
+          value: cn-shanghai
+        - label: 华南1（广州）
+          value: cn-guangzhou
+        - label: 中国香港
+          value: cn-hongkong
+        - label: 亚太东南（柔佛）
+          value: ap-southeast-1
+        - label: 亚太东南（雅加达）
+          value: ap-southeast-3
+    value: cn-beijing
     required: true
     order: 0
-  domainList:
-    title: 域名
+  bucket:
+    title: Bucket
+    helper: 存储桶名称
+    component:
+      name: remote-auto-complete
+      vModel: value
+      type: plugin
+      action: onGetBucketList
+      search: false
+      pager: false
+      watches:
+        - accessId
+        - region
+    required: true
+    order: 0
+  domainName:
+    title: TOS自定义域名
     component:
       name: remote-select
       vModel: value
@@ -115,8 +95,8 @@ input:
         - accessId
         - certDomains
         - accessId
-        - spaceName
-        - domainType
+        - region
+        - bucket
     required: true
     mergeScript: |2-
 
@@ -128,11 +108,9 @@ input:
                   },
                }
               
-    helper: |-
-      选择要部署证书的域名
-      需要先在域名管理页面进行证书中心访问授权（即点击去配置SSL证书）
+    helper: 你在火山引擎上配置的TOS自定义域名，比如:example.com
     order: 0
 output: {}
 pluginType: deploy
 type: builtIn
-scriptFilePath: /plugins/plugin-volcengine/plugins/plugin-deploy-to-vod.js
+scriptFilePath: /plugins/plugin-volcengine/plugins/plugin-deploy-to-tos.js
