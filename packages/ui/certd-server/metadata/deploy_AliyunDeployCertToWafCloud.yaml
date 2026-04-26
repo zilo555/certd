@@ -2,11 +2,11 @@ showRunStrategy: false
 default:
   strategy:
     runStrategy: 1
-name: AliyunDeployCertToWaf
-title: 阿里云-部署至阿里云WAF(cname接入)
+name: AliyunDeployCertToWafCloud
+title: 阿里云-部署至阿里云WAF(云产品接入)
 icon: svg:icon-aliyun
 group: aliyun
-desc: 部署证书到阿里云WAF(cname接入)，云资源的请选择另外一个waf插件
+desc: 部署证书到阿里云WAF(云产品接入)，CNAME方式接入的请选择另外一个waf插件
 needPlus: false
 input:
   cert:
@@ -46,9 +46,9 @@ input:
       name: a-select
       options:
         - value: cn-hangzhou
-          label: 中国大陆-华东1(杭州)
+          label: 中国内地
         - value: ap-southeast-1
-          label: 新加坡
+          label: 非中国内地
     required: true
     order: 0
   casEndpoint:
@@ -74,14 +74,14 @@ input:
       type: aliyun
     required: true
     order: 0
-  cnameDomains:
-    title: CNAME站点
+  cloudResources:
+    title: 云产品资源
     component:
       name: remote-select
       vModel: value
       mode: tags
       type: plugin
-      action: onGetCnameList
+      action: onGetCloudResourceList
       search: true
       pager: true
       multi: true
@@ -101,31 +101,21 @@ input:
                   },
                }
               
-    helper: 请选择要部署证书的CNAME站点
+    helper: 请选择要部署证书的云产品资源
     order: 0
-  tlsVersion:
-    title: TLS版本
-    value: tlsv1.2
+  certType:
+    title: 证书部署类型
+    value: default
     component:
       name: a-select
       options:
-        - value: tlsv1
-          label: TLSv1
-        - value: tlsv1.1
-          label: TLSv1.1
-        - value: tlsv1.2
-          label: TLSv1.2
-    required: true
-    order: 0
-  enableTLSv3:
-    title: 启用TLSv3
-    value: true
-    component:
-      name: a-switch
-      vModel: checked
+        - value: default
+          label: 默认证书
+        - value: extension
+          label: 扩展证书
     required: true
     order: 0
 output: {}
 pluginType: deploy
 type: builtIn
-scriptFilePath: /plugins/plugin-aliyun/plugin/deploy-to-waf/deploy-to-waf-cname.js
+scriptFilePath: /plugins/plugin-aliyun/plugin/deploy-to-waf/deploy-to-waf-cloud.js
